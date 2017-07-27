@@ -1,0 +1,22 @@
+$phone: 460px;
+$container: 1120px;
+$tablet-portrait: 768px;
+$tablet-landscape: 1024px;
+
+@mixin phone {
+    @media (max-width: #{$tablet-portrait - 1px}) {
+        @content
+    }
+}
+
+@mixin tablet {
+    @media (min-width: #{$tablet-portrait}) and (max-width: #{$tablet-landscape - 1px}) {
+        @content
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$container}) {
+        @content
+    }
+}
