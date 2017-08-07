@@ -1,25 +1,29 @@
 <template>
     <span>
         <label>
-            <input type="radio" :name="`location-${id}-${index}`" v-model="modelComp" value="pickup1" @click="update('a')">
-            Avocado Cafe
+            <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="pickup1" @click="update('a')">
+            Motion Cafe
         </label>
         &nbsp;&middot;&nbsp;
-        <label>
-            <input type="radio" :name="`location-${id}-${index}`" v-model="modelComp" value="pickup2" @click="update('b')">
-            Motion Fitness
+        <label v-if="this.category != 6">
+            <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="pickup2" @click="update('b')">
+            Motion Studio
         </label>
+		<label v-else>
+			<input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="wanderlust" @click="update('e')">
+            Wanderlust Gym
+		</label>
         <template v-if="this.address.address1 != undefined && this.address.address1.length > 0">
             &nbsp;&middot;&nbsp;
             <label>
-                <input type="radio" :name="`location-${id}-${index}`" v-model="modelComp" value="address1" @click="update('c')">
+                <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="address1" @click="update('c')">
                 Address A
             </label>
         </template>
         <template v-if="this.address.address2 != undefined && this.address.address2.length > 0">
             &nbsp;&middot;&nbsp;
             <label>
-                <input type="radio" :name="`location-${id}-${index}`" v-model="modelComp" value="address2" @click="update('d')">
+                <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="address2" @click="update('d')">
                 Address B
             </label>
         </template>
@@ -31,11 +35,13 @@
 import mixin from '../mixins.js'
 export default {
     name: 'LocationPicker',
-    props: ['id', 'index', 'addressA', 'addressB', 'value', 'model', 'itemid', 'type'],
+    props: ['id', 'index', 'addressA', 'addressB', 'value', 'model', 'itemid', 'type', 'category'],
     mixins: [mixin],
-    mounted() {
-        //console.log(this.model)
-    },
+    data() {
+		return {
+			mc: this.model
+		}
+	},
     computed: {
         modelComp() {
             return this.model
@@ -78,7 +84,10 @@ export default {
                 break
                 case 'd':
                     value = 'address2'
-                break
+				break
+				case 'e':
+					value = 'wanderlust'
+				break
             }
             this.$emit('input', value)
         }

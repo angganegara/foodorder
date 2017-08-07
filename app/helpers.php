@@ -15,3 +15,4 @@ if ( ! function_exists('config_path'))
         return app()->basePath().DIRECTORY_SEPARATOR.'config' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
+

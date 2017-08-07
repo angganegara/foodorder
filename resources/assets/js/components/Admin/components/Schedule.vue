@@ -20,7 +20,7 @@
                 </tr>
                 <tr v-for="(s,i) in schedule" v-if="s[typeAddress] != ''">
                     <td>{{ s.id }}</td>
-                    <td><router-link :to="`/admin/orders/${s.id}`">{{ s.name }}</router></td>
+                    <td><router-link :to="`/admin/orders/${s.id}`">{{ s.name }}</router-link></td>
                     <td>{{ s[typeTime] }}</td>
                     <td>{{ s.menu }}</td>
                     <td v-html="s[typeAddress]"></td>

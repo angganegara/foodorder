@@ -94,6 +94,7 @@ class CartController extends Controller
 			}
 			$arr[] = [
 				'id'            => $food->id,
+				'category_id'   => $food->category_id,
 				'name'          => $food->name,
 				'subname'       => $subname,
 				'price'         => $price,

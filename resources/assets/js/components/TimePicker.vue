@@ -102,7 +102,9 @@ export default {
                 return false
             } else {
                 if (schedule[product][index][typename] != undefined) {
-                    return schedule[product][index][typename] == 'pickup1' || schedule[product][index][typename] == 'pickup2'
+					return schedule[product][index][typename] == 'pickup1'
+						|| schedule[product][index][typename] == 'pickup2'
+						|| schedule[product][index][typename] == 'wanderlust'
                 }
             }
         },

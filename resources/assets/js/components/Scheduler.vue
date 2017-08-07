@@ -84,9 +84,10 @@
                                         <time-picker v-model="s.breakfast" :product="product.id" :index="key" type="breakfast"></time-picker>
                                         <location-picker
                                             v-model="s.breakfastLocation"
-                                            :model="s.breakfastLocation"
+											:model="s.breakfastLocation"
                                             :addressA="address.address1"
                                             :addressB="address.address2"
+											:category="product.category_id"
                                             :id="`b-${product.id}`"
                                             :itemid="product.id"
                                             type="breakfast"
@@ -98,9 +99,10 @@
                                         <time-picker v-model="s.lunch" :product="product.id" :index="key" type="lunch"></time-picker>
                                         <location-picker
                                             v-model="s.lunchLocation"
-                                            :model="s.lunchLocation"
+											:model="s.lunchLocation"
                                             :addressA="address.address1"
                                             :addressB="address.address2"
+											:category="product.category_id"
                                             :id="`l-${product.id}`"
                                             :itemid="product.id"
                                             type="lunch"
@@ -112,9 +114,10 @@
                                         <time-picker v-model="s.dinner" :product="product.id" :index="key" type="dinner"></time-picker>
                                         <location-picker
                                             v-model="s.dinnerLocation"
-                                            :model="s.dinnerLocation"
+											:model="s.dinnerLocation"
                                             :addressA="address.address1"
                                             :addressB="address.address2"
+											:category="product.category_id"
                                             :id="`d-${product.id}`"
                                             :itemid="product.id"
                                             type="dinner"

@@ -9,7 +9,7 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 global.Tether = require('tether');
-require('bootstrap');
+require('../../../node_modules/bootstrap/dist/js/bootstrap.min.js');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -20,9 +20,6 @@ require('bootstrap');
 window.Vue = require('vue');
 Vue.config.devtools = true;
 require('vue-resource');
-
-VueRouter = require('vue-router');
-Vue.use(VueRouter);
 
 /**
  * Numeral JS

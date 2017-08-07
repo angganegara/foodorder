@@ -11,8 +11,15 @@ export default {
             object.qty++
         },
         remove (object) {
-            this.$store.dispatch('removeItem', object)
-            object.qty = 0
+			if (window.confirm('Remove item from shopping cart?')) {
+				this.$store.dispatch('removeItem', object)
+				bus.$emit('updateCartContent')
+                this.$root.itemAdded = true
+                setTimeout(() => {
+                    this.$root.itemAdded = false
+				}, 100)
+				object.qty = 0
+			}
         },
         showPopup(product) {
             this.$store.state.popup = true
@@ -25,7 +32,24 @@ export default {
         },
         isSpecialDetox(product) {
             return (product.id == 19 || product.id == 20 || product.id == 15)
-        },
+		},
+		format(num) {
+            return numeral(num).format('0,0')
+		},
+		isAdded(id) {
+            return _.find(this.$store.state.cart, (o) => {
+                return o.id == id
+            });
+		},
+		removeItem(obj) {
+            if (window.confirm('Remove item from shopping cart?')) {
+                this.$store.dispatch('removeItem', obj)
+                this.$root.itemAdded = true
+                setTimeout(() => {
+                    this.$root.itemAdded = false
+                }, 100)
+            }
+        }
     },
     computed: {
         ...mapState({

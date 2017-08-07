@@ -29,12 +29,11 @@ class FoodController extends Controller
     	return $arr;
     }
 
-    public function categorize()
-    {
-        $categories = Category::where('id', '!=', 1)->orderBy('sort', 'asc')->get();
-        $c = [];
+	public function populateData($data)
+	{
+		$c = [];
         $diets = '';
-        foreach ($categories as $category) {
+        foreach ($data as $category) {
             $d = [];
             foreach ($category->diet as $food) {
         		$d[] = [
@@ -55,8 +54,21 @@ class FoodController extends Controller
                 'diets' => $d
             ];
         }
-        return $c;
+
+		return $c;
+	}
+
+    public function categorize()
+    {
+        $categories = Category::where('id', '!=', 1)->where('id', '!=', 6)->orderBy('sort', 'asc')->get();
+        return $this->populateData($categories);
     }
+
+	public function getItems($id)
+	{
+		$foods = Category::where('id', $id)->get();
+		return $this->populateData($foods);
+	}
 
     public function show($id)
     {

@@ -64,12 +64,14 @@ export default {
 						if (schedule != undefined) {
 							// use filter baby
 							var found = schedule.filter((date) => {
-								return ((date.breakfastLocation != 'pickup1' && date.breakfastLocation != 'pickup2')
-										||
-										(date.lunchLocation != 'pickup1' && date.lunchLocation != 'pickup2')
-										||
-										(date.dinnerLocation != 'pickup1' && date.dinnerLocation != 'pickup2'))
+								return (
+									( date.breakfastLocation != 'pickup1' && date.breakfastLocation != 'pickup2' && date.breakfastLocation != 'wanderlust' )
+									|| ( date.lunchLocation != 'pickup1' && date.lunchLocation != 'pickup2' && date.lunchLocation != 'wanderlust' )
+									|| ( date.dinnerLocation != 'pickup1' && date.dinnerLocation != 'pickup2' && date.dinnerLocation != 'wanderlust' )
+								)
 							}).length
+
+							console.log( d.name +' total = '+ found)
 
 							if (found <= 0) {
 								// gak ada, semuanya pickup. add 1 total

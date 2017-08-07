@@ -215,6 +215,7 @@ export default {
 			date1 = moment().day(dateIndex)
 			var date2 = moment().day(dateIndex + 7)   // +1 week
 			var date3 = moment().day(dateIndex + 14)  // +2 weeks
+			var date4 = moment().day(dateIndex + 21)  // +3 weeks only for wanderlust
 			this.weeklyDates = {
 				date1: date1.format('dddd, DD MMM YYYY'),
 				date2: date2.format('dddd, DD MMM YYYY'),
@@ -270,6 +271,7 @@ export default {
 
 			var newObject = {
 				id: product.id,
+				category_id: product.category_id,
 				meal: this.form.mealOpt,
 				singleMeal: {
 					breakfast: this.form.singleMealOpt.breakfast,

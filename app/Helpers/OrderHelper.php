@@ -99,14 +99,14 @@ class OrderHelper
 		// parse cart
 		//return view('emails.order', compact('order', 'that', 'extra'));
 		// pdfs
-		$pdf = rtrim(app()->basePath('public/pdf/avocado-payment-details.pdf'), '/');
+		$pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
 		$pdf_hp = rtrim(app()->basePath('public/pdf/high-protein-diet.pdf'), '/');
 		$pdf_dt = rtrim(app()->basePath('public/pdf/detox-questionnaire.pdf'), '/');
 		$pdf_ayu1 = rtrim(app()->basePath('public/pdf/ayurveda-information.pdf'), '/');
 		$pdf_ayu2 = rtrim(app()->basePath('public/pdf/ayurveda-test.pdf'), '/');
 
 		$email_layout = $resend ? 'emails.resend' : 'emails.order';
-		$email_subject = $resend ? 'Payment Reminder' : 'Avocado Cafe - Food order';
+		$email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
 
 		try {
 			Mail::send($email_layout, compact('order', 'items', 'that', 'extra'),
@@ -115,10 +115,10 @@ class OrderHelper
 					$dtv, $dts, $dtj, $sbd, $cd, $email_subject, $resend
 				) {
 					$m
-						->from('no-reply@avocadocafebali.com', 'Avocado Cafe Bali')
+						->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
 						->to($order->email, $order->fname .' '. $order->lname)
-						->replyTo('foodorder@avocadocafebali.com', 'Avocado Cafe Bali')
-						->cc('foodorder@avocadocafebali.com', 'Avocado Cafe Bali');
+						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+						//->cc('foodorder@avocadocafebali.com', 'Avocado Cafe Bali');
 
 					if ($order->referral == 'balimma') {
 						// bali mma order - cc to roland and bali mma

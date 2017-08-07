@@ -123,13 +123,6 @@ export default {
         formatPrice (price) {
             return numeral(price).format('0,0')
         }
-    },
-    computed: {
-        isAdded () {
-            return _.find(this.$store.state.cart, (o) => {
-                return o.id == this.id
-            });
-        }
     }
 }
 </script>

@@ -11,6 +11,9 @@ import Admin from './components/Admin/Admin.vue'
 import auth from './helpers/auth.js'
 import Notification from './components/Notification.vue'
 
+import VueRouter from 'vue-router'
+Vue.use(VueRouter);
+
 const Overview = resolve => {
     require.ensure(['./components/Overview.vue'], () => {
         resolve(require('./components/Overview.vue'))
@@ -21,11 +24,7 @@ const Checkout = resolve => {
         resolve(require('./components/Checkout.vue'))
     })
 }
-const Food = resolve => {
-    require.ensure(['./components/Food.vue'], () => {
-        resolve(require('./components/Food.vue'))
-    })
-}
+const Food = resolve => require.ensure(['./components/Food.vue'], () => resolve(require('./components/Food.vue')))
 
 Vue.http.headers.common['Authorization'] = auth.getJwtBearer();
 auth.checkAuth()

@@ -14,6 +14,6 @@ class Category extends Model
 
     public function diet()
     {
-        return $this->hasMany('App\Models\Diet', 'category_id')->orderBy('position', 'asc');
+        return $this->hasMany('App\Models\Diet', 'category_id')->where('visible', 1)->orderBy('position', 'asc');
     }
 }

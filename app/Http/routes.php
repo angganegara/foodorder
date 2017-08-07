@@ -25,15 +25,12 @@ if (env('APP_ENV') === 'local') {
 		$data = $order->where('id', $id);
 
 		return ($data->with('ordercart.schedule')->get());
-	});
-
-	$app->get('/paypal/1', 'PaypalController@index');
-	$app->get('/paypal/2', 'PaypalController@review');
-	
+	});	
 }
 
 $app->get('/api/foods/categorize', 'FoodController@categorize');
 $app->get('/api/foods', 'FoodController@index');
+$app->get('/api/foods/category/{id}', 'FoodController@getItems');
 $app->get('/api/foods/{id}', 'FoodController@show');
 $app->get('/api/foods/{id}/type/{type}', 'FoodController@price');
 
