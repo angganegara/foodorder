@@ -8097,6 +8097,10 @@ section.home .inner .arrow-down {
   border-radius: 4px;
 }
 
+.items a.figure.no-overlay:before {
+  background: none;
+}
+
 .items a.figure img,
 .items figure img {
   display: block;

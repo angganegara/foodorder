@@ -3,7 +3,7 @@
 		<div class="page-title"><h2>WANDERLUST CROSS FIT MENUS</h2></div>
         <div class="row items fitslim">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 item-thumbs flex">
-                <a href="#" class="figure diet-info"><img src="/images/wanderlust-logo.jpg" alt="Wanderlust Cross Fit Menus" class="product-picture"></a>
+                <a href="#" class="figure no-overlay diet-info"><img src="/images/wanderlust-logo.jpg" alt="Wanderlust Cross Fit Menus" class="product-picture"></a>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9">
                 <div class="fitslim-description">

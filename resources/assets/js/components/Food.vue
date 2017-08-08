@@ -12,7 +12,7 @@
                 <router-link to="/" class="button no-border">
                     <i class="fa fa-fw fa-angle-left"></i> back
                 </router-link>
-                <button class="button primary" v-if="! isAdded" @click="showPopup(data)">
+                <button class="button primary" v-if="! isAdded(this.id)" @click="showPopup(data)">
                     <i class="fa fa-fw fa-plus"></i> add to cart
                 </button>
                 <button class="button primary" v-else>
@@ -83,7 +83,7 @@
                 <router-link to="/" class="button no-border">
                     <i class="fa fa-fw fa-angle-left"></i> back
                 </router-link>
-                <button class="button primary" v-if="! isAdded" @click="showPopup(data)">
+                <button class="button primary" v-if="! isAdded(this.id)" @click="showPopup(data)">
                     <i class="fa fa-fw fa-plus"></i> add to cart
                 </button>
                 <button class="button primary" v-else>
@@ -117,7 +117,7 @@ export default {
             this.data = res.body
             this.$Progress.finish()
             this.loading = false
-        })
+		})		
     },
     methods: {
         formatPrice (price) {

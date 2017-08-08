@@ -1,36 +1,6 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	var parentJsonpFunction = window["webpackJsonp"];
-/******/ 	window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules, executeModules) {
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [], result;
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
-/******/
-/******/ 	};
-/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
-/******/ 	// objects to store loaded and loading chunks
-/******/ 	var installedChunks = {
-/******/ 		3: 0
-/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -56,55 +26,6 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-/******/ 	// This file contains only the entry chunk.
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		var installedChunkData = installedChunks[chunkId];
-/******/ 		if(installedChunkData === 0) {
-/******/ 			return new Promise(function(resolve) { resolve(); });
-/******/ 		}
-/******/
-/******/ 		// a Promise means "currently loading".
-/******/ 		if(installedChunkData) {
-/******/ 			return installedChunkData[2];
-/******/ 		}
-/******/
-/******/ 		// setup Promise in chunk cache
-/******/ 		var promise = new Promise(function(resolve, reject) {
-/******/ 			installedChunkData = installedChunks[chunkId] = [resolve, reject];
-/******/ 		});
-/******/ 		installedChunkData[2] = promise;
-/******/
-/******/ 		// start chunk loading
-/******/ 		var head = document.getElementsByTagName('head')[0];
-/******/ 		var script = document.createElement('script');
-/******/ 		script.type = 'text/javascript';
-/******/ 		script.charset = 'utf-8';
-/******/ 		script.async = true;
-/******/ 		script.timeout = 120000;
-/******/
-/******/ 		if (__webpack_require__.nc) {
-/******/ 			script.setAttribute("nonce", __webpack_require__.nc);
-/******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + ".js";
-/******/ 		var timeout = setTimeout(onScriptComplete, 120000);
-/******/ 		script.onerror = script.onload = onScriptComplete;
-/******/ 		function onScriptComplete() {
-/******/ 			// avoid mem leaks in IE.
-/******/ 			script.onerror = script.onload = null;
-/******/ 			clearTimeout(timeout);
-/******/ 			var chunk = installedChunks[chunkId];
-/******/ 			if(chunk !== 0) {
-/******/ 				if(chunk) {
-/******/ 					chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
-/******/ 				}
-/******/ 				installedChunks[chunkId] = undefined;
-/******/ 			}
-/******/ 		};
-/******/ 		head.appendChild(script);
-/******/
-/******/ 		return promise;
-/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -137,9 +58,6 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// on error function for async loading
-/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
@@ -1276,6 +1194,616 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Checkout.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _mixins = __webpack_require__("./resources/assets/js/mixins.js");
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+var _Cart = __webpack_require__("./resources/assets/js/components/Cart.vue");
+
+var _Cart2 = _interopRequireDefault(_Cart);
+
+var _ScheduleList = __webpack_require__("./resources/assets/js/components/ScheduleList.vue");
+
+var _ScheduleList2 = _interopRequireDefault(_ScheduleList);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+	name: 'Checkout',
+	mixins: [_mixins2.default],
+	components: { cart: _Cart2.default, schedule: _ScheduleList2.default },
+	props: ['cart'],
+	created: function created() {
+		this.$Progress.finish();
+	},
+
+	methods: {
+		checkout: function checkout() {
+			var _this = this;
+
+			this.loading = true;
+			this.$validator.validateAll();
+
+			if (this.errors.any()) {
+				this.scroll('#form', 750, -140);
+				this.loading = false;
+				return false;
+			}
+
+			// sudah tidak ada masalah
+			if (window.confirm('You are about to send a binding food order. Do you want to submit?')) {
+				this.$http.post('/api/send-order', { cart: this.cart, form: this.form, schedule: this.schedule, address: this.address }).then(function (res) {
+					_this.loading = false;
+					_this.finish = true;
+					_this.$store.state.cart = [];
+					_this.$store.state.schedule = [];
+					_this.$store.state.address = {
+						address1: '',
+						address1_outside: false,
+						address2: '',
+						address2_outside: false
+					};
+					localStorage.removeItem('cart', '');
+					localStorage.removeItem('schedule', '');
+					localStorage.setItem('address', JSON.stringify(_this.$store.state.address));
+					_this.scroll('.checkout', 750);
+				}).catch(function (err) {
+					_this.loading = false;
+					_this.error = true;
+					_this.scroll('.checkout', 750);
+				});
+			} else {
+				this.loading = false;
+			}
+			return false;
+		}
+	},
+	data: function data() {
+		return {
+			loading: false,
+			finish: false,
+			error: false,
+			form: {
+				fname: '',
+				lname: '',
+				email: '',
+				phone: '',
+				comments: '',
+				terms: false,
+				intolerances: '',
+				intolerancesText: '',
+				allergies: '',
+				allergiesText: '',
+				dislikefood: '',
+				deliveryprice: 0,
+				totaldays: 0,
+				discount: 0
+			}
+		};
+	}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Food.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _mixins = __webpack_require__("./resources/assets/js/mixins.js");
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+var _Detox = __webpack_require__("./resources/assets/js/components/Food/Detox.vue");
+
+var _Detox2 = _interopRequireDefault(_Detox);
+
+var _FitSlim = __webpack_require__("./resources/assets/js/components/Food/FitSlim.vue");
+
+var _FitSlim2 = _interopRequireDefault(_FitSlim);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    mixins: [_mixins2.default],
+    components: { 'detox-page': _Detox2.default, 'fit-slim': _FitSlim2.default },
+    name: 'Food',
+    data: function data() {
+        return {
+            slug: this.$route.params.slug,
+            id: this.$route.params.id,
+            data: {},
+            loading: true,
+            date: new Date('Y-m-d')
+        };
+    },
+    created: function created() {
+        this.$http.get('/api/foods/' + this.id).then(function (res) {
+            this.data = res.body;
+            this.$Progress.finish();
+            this.loading = false;
+        });
+    },
+
+    methods: {
+        formatPrice: function formatPrice(price) {
+            return numeral(price).format('0,0');
+        }
+    }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Food/Detox.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'food-detox',
+    props: ['data'],
+    methods: {
+        formatPrice: function formatPrice(price) {
+            return numeral(price).format('0,0');
+        }
+    }
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Food/FitSlim.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var marked = __webpack_require__("./resources/assets/js/plugins/marked.js");
+exports.default = {
+	name: 'fit-slim',
+	props: ['data'],
+	data: function data() {
+		return {
+			menus: {}
+		};
+	},
+
+	methods: {
+		formatPrice: function formatPrice(price) {
+			return numeral(price).format('0,0');
+		},
+		markdown: function markdown(string) {
+			return marked(string, { sanitize: true });
+		}
+	},
+	created: function created() {
+		var _this = this;
+
+		this.$http.get('/api/menus').then(function (res) {
+			_this.menus = res.body;
+		});
+	}
+};
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/FoodPrompt.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1301,6 +1829,11 @@ var _TimePicker2 = _interopRequireDefault(_TimePicker);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var $ = __webpack_require__("./node_modules/jquery/dist/jquery.js"); //
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1545,6 +2078,15 @@ exports.default = {
 		},
 		isSingleMeal: function isSingleMeal(price) {
 			return price.type == 'breakfast' || price.type == 'lunch' || price.type == 'dinner';
+		},
+		getSingleMealPrice: function getSingleMealPrice(price) {
+			var singlePrice = price.filter(function (val) {
+				return val.type == 'lunch';
+			}).map(function (val) {
+				return val.price;
+			});
+
+			return singlePrice[0];
 		},
 		close: function close() {
 			this.$store.state.popup = false;
@@ -1984,6 +2526,117 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/LocationPicker.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _mixins = __webpack_require__("./resources/assets/js/mixins.js");
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    name: 'LocationPicker',
+    props: ['id', 'index', 'addressA', 'addressB', 'value', 'model', 'itemid', 'type', 'category'],
+    mixins: [_mixins2.default],
+    data: function data() {
+        return {
+            mc: this.model
+        };
+    },
+
+    computed: {
+        modelComp: function modelComp() {
+            return this.model;
+        }
+    },
+    watch: {
+        modelComp: function modelComp(val, old) {
+            var schedule = this.schedule,
+                itemid = this.itemid,
+                index = this.index,
+                type = this.type,
+                time = '';
+            if (schedule[itemid] != undefined) {
+                if (val == 'pickup1' || val == 'pickup2') {
+                    if (type == 'breakfast') {
+                        time = '07:30';
+                    } else if (type == 'lunch') {
+                        time = '13:00';
+                    } else {
+                        time = '17:30';
+                    }
+                    schedule[itemid][index][type] = time;
+                }
+            }
+        }
+    },
+    methods: {
+        update: function update(type) {
+            var value = '';
+            switch (type) {
+                case 'a':
+                    value = 'pickup1';
+                    break;
+                case 'b':
+                    value = 'pickup2';
+                    break;
+                case 'c':
+                    value = 'address1';
+                    break;
+                case 'd':
+                    value = 'address2';
+                    break;
+                case 'e':
+                    value = 'wanderlust';
+                    break;
+            }
+            this.$emit('input', value);
+        }
+    }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/MiniCart.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2120,6 +2773,114 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Overview.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _Scheduler = __webpack_require__("./resources/assets/js/components/Scheduler.vue");
+
+var _Scheduler2 = _interopRequireDefault(_Scheduler);
+
+var _mixins = __webpack_require__("./resources/assets/js/mixins.js");
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    name: 'Overview',
+    props: ['cart'],
+    components: { scheduler: _Scheduler2.default },
+    mixins: [_mixins2.default],
+    created: function created() {
+        this.$Progress.finish();
+        // sync address here?
+    },
+
+    methods: {
+        checkSchedule: function checkSchedule() {
+            var missing = 0;
+            var check = this.schedule;
+            var cartState = this.cartState;
+
+            check.forEach(function (index, i) {
+                if (index != null) {
+                    missing = 0;
+                    index.forEach(function (schedule) {
+                        var delivery = _.find(cartState, ['id', schedule.itemid]);
+
+                        if (delivery.meal != 'singlemeal') {
+                            if (delivery.id != 7 && delivery.id != 15 && delivery.id != 19 && delivery.id != 20) {
+                                // rules for all items but detox
+                                if (schedule.breakfastLocation == '' && delivery.id != 10 || schedule.lunchLocation == '' || schedule.dinnerLocation == '') {
+                                    missing += 1;
+                                }
+                            } else {
+                                // rules for detox
+                                if (schedule.allowed.breakfast && schedule.breakfastLocation == '') {
+                                    missing += 1;
+                                }
+                                if (schedule.allowed.lunch && schedule.lunchLocation == '') {
+                                    missing += 1;
+                                }
+                                if (schedule.allowed.dinner && schedule.dinnerLocation == '') {
+                                    missing += 1;
+                                }
+                            }
+                        } else {
+                            if (delivery.singleMeal.breakfast && schedule.breakfastLocation == '') {
+                                missing += 1;
+                            }
+                            if (delivery.singleMeal.lunch && schedule.lunchLocation == '') {
+                                missing += 1;
+                            }
+                            if (delivery.singleMeal.dinner && schedule.dinnerLocation == '') {
+                                missing += 1;
+                            }
+                        }
+                    });
+                } else {
+                    missing += 1;
+                }
+            });
+
+            if (missing > 0) {
+                alert('Please complete your food delivery schedule');
+            } else {
+                this.$router.push('/checkout');
+            }
+        }
+    }
+};
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Partials/Footer.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2226,6 +2987,305 @@ exports.default = {
     name: 'app-header',
     components: { MiniCart: _MiniCart2.default, FoodPrompt: _FoodPrompt2.default },
     props: ['popup', 'cart']
+};
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ScheduleList.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _mixins = __webpack_require__("./resources/assets/js/mixins.js");
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+	name: 'ScheduleList',
+	mixins: [_mixins2.default],
+	props: ['cart'],
+	created: function created() {
+		this.$store.dispatch('loadSchedule').then(function () {
+			// tell Cart to calculate discount now that we got the schedule
+			bus.$emit('scheduleIsReady');
+		});
+		this.$store.dispatch('loadAddress');
+	},
+
+	methods: {
+		getLocation: function getLocation(type) {
+			if (type != 'pickup1' && type != 'pickup2' && type != 'wanderlust') {
+				var outside = type + '_outside';
+				var extra = '';
+				if (this.address[outside]) {
+					extra = '<br><span class="extra"><i class="fa fa-fw fa-bus"></i> extra delivery</span>';
+				}
+				return this.address[type] + extra;
+			} else {
+				return type == 'pickup1' ? 'Motion Cafe' : type == 'wanderlust' ? 'Wanderlust Gym' : 'Motion Studio';
+			}
+		}
+	}
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Scheduler.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _mixins = __webpack_require__("./resources/assets/js/mixins.js");
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+var _scheduler = __webpack_require__("./resources/assets/js/helpers/scheduler.js");
+
+var _scheduler2 = _interopRequireDefault(_scheduler);
+
+var _TimePicker = __webpack_require__("./resources/assets/js/components/TimePicker.vue");
+
+var _TimePicker2 = _interopRequireDefault(_TimePicker);
+
+var _LocationPicker = __webpack_require__("./resources/assets/js/components/LocationPicker.vue");
+
+var _LocationPicker2 = _interopRequireDefault(_LocationPicker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var $ = __webpack_require__("./node_modules/jquery/dist/jquery.js");
+
+exports.default = {
+    mixins: [_mixins2.default, _scheduler2.default],
+    components: {
+        'time-picker': _TimePicker2.default,
+        'location-picker': _LocationPicker2.default
+    }
 };
 
 /***/ }),
@@ -51972,7 +53032,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-xs-12 col-sm-6 col-md-6 col-lg-3 item-thumbs flex"
   }, [_c('a', {
-    staticClass: "figure diet-info",
+    staticClass: "figure no-overlay diet-info",
     attrs: {
       "href": "#"
     }
@@ -52388,7 +53448,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.mealOpt = "singlemeal"
       }
     }
-  })]), _vm._v(" "), _vm._m(7), _vm._v(" "), _c('td', [_vm._v("110,000 IDR")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.product.prices), function(price) {
+  })]), _vm._v(" "), _vm._m(7), _vm._v(" "), _c('td', [_vm._v("110,000 IDR")])]) : _vm._e(), _vm._v(" "), (_vm.product.category_id == 6) ? _c('tr', [_c('td', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.mealOpt),
+      expression: "form.mealOpt"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "meal-opt",
+      "value": "singlemeal",
+      "id": "opt-singlemeal"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.form.mealOpt, "singlemeal")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.form.mealOpt = "singlemeal"
+      }
+    }
+  })]), _vm._v(" "), _vm._m(8), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatNumber(_vm.getSingleMealPrice(_vm.product.prices))) + " IDR")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.product.prices), function(price) {
     return (_vm.form.mealOpt == 'singlemeal') ? [(_vm.isSingleMeal(price)) ? _c('tr', [_c('td', {
       attrs: {
         "width": "10%"
@@ -52442,7 +53523,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "width": "25%"
       }
     }, [_vm._v(_vm._s(_vm.formatNumber(price.price)) + " IDR")])]) : _vm._e()] : _vm._e()
-  })], 2), _vm._v(" "), (_vm.form.mealOpt.length > 0) ? _c('div', [_c('br'), _vm._v(" "), (_vm.form.mealOpt == 'fullday' || _vm.form.mealOpt == 'singlemeal') ? [_vm._m(8), _vm._v(" "), _c('select', {
+  })], 2), _vm._v(" "), (_vm.form.mealOpt.length > 0) ? _c('div', [_c('br'), _vm._v(" "), (_vm.form.mealOpt == 'fullday' || _vm.form.mealOpt == 'singlemeal') ? [_vm._m(9), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -52484,7 +53565,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "5"
     }
-  }, [_vm._v("5 days")])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(9), _vm._v(" "), _c('br')] : _vm._e(), _vm._v(" "), _vm._m(10), _vm._v(" "), (_vm.form.mealOpt == 'weekly' || _vm.form.mealOpt == 'sunday') ? [_c('select', {
+  }, [_vm._v("5 days")])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(10), _vm._v(" "), _c('br')] : _vm._e(), _vm._v(" "), _vm._m(11), _vm._v(" "), (_vm.form.mealOpt == 'weekly' || _vm.form.mealOpt == 'sunday') ? [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -52537,7 +53618,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.deliveryDates = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(11), _vm._v(" "), _c('br')], _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(12), _vm._v(" "), _c('br')], _vm._v(" "), _c('div', {
     staticStyle: {
       "display": "flex",
       "justify-content": "space-between"
@@ -52596,6 +53677,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Single Meal")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('td', [_c('label', {
+    attrs: {
+      "for": "opt-singlemeal"
+    }
+  }, [_vm._v("Single Meal")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "page-title"
   }, [_c('h3', [_vm._v("Number of days")])])
@@ -52617,6 +53704,105 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-275aee94", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-296dff07\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ScheduleList.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._l((_vm.cart), function(product, i) {
+    return (product) ? [_c('div', {
+      staticClass: "delivery-compact"
+    }, [_c('div', {
+      staticClass: "delivery-title"
+    }, [_c('h2', [_vm._v("\n\t\t\t\t\t" + _vm._s(product.name) + " " + _vm._s(product.subname) + "\n\t\t\t\t\t"), (product.typeraw == 'fullday' || product.typeraw == 'singlemeal') ? _c('span', [_vm._v("for " + _vm._s(product.totaldays) + " day(s)")]) : _vm._e()]), _vm._v(" "), _c('span', {
+      staticClass: "delivery-type"
+    }, [_vm._v(_vm._s(product.type))])]), _vm._v(" "), _c('div', {
+      staticClass: "delivery-body"
+    }, [_c('table', {
+      staticClass: "table-schedule",
+      attrs: {
+        "width": "100%"
+      }
+    }, [_vm._l((_vm.schedule[product.id]), function(s) {
+      return [_c('tr', {
+        staticClass: "day"
+      }, [_c('td', {
+        attrs: {
+          "colspan": "2"
+        }
+      }, [_c('b', [_vm._v(_vm._s(s.date))])])]), _vm._v(" "), (s.breakfastLocation != '') ? _c('tr', [_c('td', {
+        staticClass: "type",
+        attrs: {
+          "width": "65%"
+        }
+      }, [_c('div', {
+        staticClass: "type"
+      }, [_vm._v("Breakfast")]), _vm._v(" "), _c('div', {
+        domProps: {
+          "innerHTML": _vm._s(_vm.getLocation(s.breakfastLocation))
+        }
+      })]), _vm._v(" "), _c('td', {
+        staticClass: "text-xs-right",
+        attrs: {
+          "width": "10%"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(s.breakfast) + "\n\t\t\t\t\t\t\t")])]) : _vm._e(), _vm._v(" "), (s.lunchLocation != '') ? _c('tr', [_c('td', {
+        staticClass: "type",
+        attrs: {
+          "width": "65%"
+        }
+      }, [_c('div', {
+        staticClass: "type"
+      }, [_vm._v("Lunch")]), _vm._v(" "), _c('div', {
+        domProps: {
+          "innerHTML": _vm._s(_vm.getLocation(s.lunchLocation))
+        }
+      })]), _vm._v(" "), _c('td', {
+        staticClass: "text-xs-right",
+        attrs: {
+          "width": "10%"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(s.lunch) + "\n\t\t\t\t\t\t\t")])]) : _vm._e(), _vm._v(" "), (s.dinnerLocation != '') ? _c('tr', [_c('td', {
+        staticClass: "type",
+        attrs: {
+          "width": "65%"
+        }
+      }, [_c('div', {
+        staticClass: "type"
+      }, [_vm._v("Dinner")]), _vm._v(" "), _c('div', {
+        domProps: {
+          "innerHTML": _vm._s(_vm.getLocation(s.dinnerLocation))
+        }
+      })]), _vm._v(" "), _c('td', {
+        staticClass: "text-xs-right",
+        attrs: {
+          "width": "10%"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(s.dinner) + "\n\t\t\t\t\t\t\t")])]) : _vm._e()]
+    }), _vm._v(" "), (product.typeraw == 'weekly' && product.id == 3 && product.easysunday) ? [_vm._m(0, true), _vm._v(" "), _vm._m(1, true)] : _vm._e()], 2)])])] : _vm._e()
+  })], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', {
+    staticClass: "day"
+  }, [_c('td', {
+    attrs: {
+      "colspan": "2"
+    }
+  }, [_c('b', [_vm._v("Easy Sunday")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [_c('td', {
+    staticClass: "type"
+  }, [_vm._v("\n\t\t\t\t\t\t\t\tThe Easy Sunday food items will be delivered on Saturday, together with your Fit & Slim dishes\n\t\t\t\t\t\t\t")]), _vm._v(" "), _c('td', [_vm._v(" ")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-296dff07", module.exports)
   }
 }
 
@@ -52997,6 +54183,137 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-35f12e55\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/LocationPicker.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mc),
+      expression: "mc"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": ("location-" + _vm.id + "-" + _vm.index),
+      "value": "pickup1"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.mc, "pickup1")
+    },
+    on: {
+      "click": function($event) {
+        _vm.update('a')
+      },
+      "__c": function($event) {
+        _vm.mc = "pickup1"
+      }
+    }
+  }), _vm._v("\n            Motion Cafe\n        ")]), _vm._v("\n         · \n        "), (this.category != 6) ? _c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mc),
+      expression: "mc"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": ("location-" + _vm.id + "-" + _vm.index),
+      "value": "pickup2"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.mc, "pickup2")
+    },
+    on: {
+      "click": function($event) {
+        _vm.update('b')
+      },
+      "__c": function($event) {
+        _vm.mc = "pickup2"
+      }
+    }
+  }), _vm._v("\n            Motion Studio\n        ")]) : _c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mc),
+      expression: "mc"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": ("location-" + _vm.id + "-" + _vm.index),
+      "value": "wanderlust"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.mc, "wanderlust")
+    },
+    on: {
+      "click": function($event) {
+        _vm.update('e')
+      },
+      "__c": function($event) {
+        _vm.mc = "wanderlust"
+      }
+    }
+  }), _vm._v("\n            Wanderlust Gym\n\t\t")]), _vm._v(" "), (this.address.address1 != undefined && this.address.address1.length > 0) ? [_vm._v("\n             · \n            "), _c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mc),
+      expression: "mc"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": ("location-" + _vm.id + "-" + _vm.index),
+      "value": "address1"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.mc, "address1")
+    },
+    on: {
+      "click": function($event) {
+        _vm.update('c')
+      },
+      "__c": function($event) {
+        _vm.mc = "address1"
+      }
+    }
+  }), _vm._v("\n                Address A\n            ")])] : _vm._e(), _vm._v(" "), (this.address.address2 != undefined && this.address.address2.length > 0) ? [_vm._v("\n             · \n            "), _c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mc),
+      expression: "mc"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": ("location-" + _vm.id + "-" + _vm.index),
+      "value": "address2"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.mc, "address2")
+    },
+    on: {
+      "click": function($event) {
+        _vm.update('d')
+      },
+      "__c": function($event) {
+        _vm.mc = "address2"
+      }
+    }
+  }), _vm._v("\n                Address B\n            ")])] : _vm._e()], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-35f12e55", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-43717f26\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/TimePicker.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53098,6 +54415,613 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-43717f26", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-49f134f8\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Checkout.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "checkout container"
+  }, [(_vm.loading) ? _c('div', {
+    staticClass: "comp-loading"
+  }, [_c('div', {
+    staticClass: "el-loading-spinner"
+  }, [_c('svg', {
+    staticClass: "circular",
+    attrs: {
+      "viewBox": "25 25 50 50"
+    }
+  }, [_c('circle', {
+    staticClass: "path",
+    attrs: {
+      "cx": "50",
+      "cy": "50",
+      "r": "20",
+      "fill": "none"
+    }
+  })]), _vm._v(" "), _c('p', {
+    staticClass: "el-loading-text"
+  }, [_vm._v("Loading...")])])]) : _vm._e(), _vm._v(" "), (_vm.finish) ? [_vm._m(0), _vm._v(" "), _c('p', [_vm._v("Your food order has been submitted successfully.")]), _vm._v(" "), _c('p', [_vm._v("Your Avocado Cafe Team")]), _vm._v(" "), _c('p', [_c('router-link', {
+    staticClass: "button primary",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-angle-left"
+  }), _vm._v(" back to home")])], 1), _vm._v(" "), _vm._m(1)] : [_vm._m(2), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('br'), _vm._v(" "), (_vm.error) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('strong', [_vm._v("Sorry")]), _vm._v(", but the confirmation email could not be delivered. Check/change your email address\n\t\t")]) : _vm._e(), _vm._v(" "), _c('form', {
+    attrs: {
+      "action": "/checkout",
+      "method": "post",
+      "id": "form"
+    }
+  }, [_c('h4', {
+    staticClass: "no-pad"
+  }, [_vm._v("PERSONAL DATA")]), _vm._v(" "), _c('div', {
+    staticClass: "row section"
+  }, [_vm._m(4), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 col-md-4"
+  }, [_c('fieldset', {
+    staticClass: "form-group"
+  }, [_vm._m(5), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate.initial",
+      value: (_vm.form.fname),
+      expression: "form.fname",
+      modifiers: {
+        "initial": true
+      }
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.fname),
+      expression: "form.fname"
+    }],
+    class: {
+      'form-control': true, 'is-danger': _vm.errors.has('form.fname')
+    },
+    attrs: {
+      "type": "text",
+      "data-vv-rules": "required",
+      "data-vv-as": "First name",
+      "name": "fname",
+      "placeholder": "First name"
+    },
+    domProps: {
+      "value": (_vm.form.fname)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.fname = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.errors.has('fname')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('fname')))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 col-md-4"
+  }, [_c('fieldset', {
+    staticClass: "form-group"
+  }, [_vm._m(6), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate.initial",
+      value: (_vm.form.lname),
+      expression: "form.lname",
+      modifiers: {
+        "initial": true
+      }
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.lname),
+      expression: "form.lname"
+    }],
+    class: {
+      'form-control': true, 'is-danger': _vm.errors.has('form.lname')
+    },
+    attrs: {
+      "type": "text",
+      "data-vv-rules": "required",
+      "data-vv-as": "Surname",
+      "name": "lname",
+      "placeholder": "Surname"
+    },
+    domProps: {
+      "value": (_vm.form.lname)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.lname = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.errors.has('lname')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('lname')))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 offset-md-4 col-md-4"
+  }, [_c('fieldset', {
+    staticClass: "form-group"
+  }, [_vm._m(7), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate.initial",
+      value: (_vm.form.email),
+      expression: "form.email",
+      modifiers: {
+        "initial": true
+      }
+    }, {
+      name: "model",
+      rawName: "v-model.trim",
+      value: (_vm.form.email),
+      expression: "form.email",
+      modifiers: {
+        "trim": true
+      }
+    }],
+    class: {
+      'form-control': true, 'is-danger': _vm.errors.has('form.email')
+    },
+    attrs: {
+      "type": "text",
+      "data-vv-rules": "required|email",
+      "data-vv-as": "Email",
+      "name": "email",
+      "placeholder": "Email"
+    },
+    domProps: {
+      "value": (_vm.form.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.email = $event.target.value.trim()
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  }), _vm._v(" "), (_vm.errors.has('email')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('email')))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 col-md-4"
+  }, [_c('fieldset', {
+    staticClass: "form-group"
+  }, [_vm._m(8), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate.initial",
+      value: (_vm.form.phone),
+      expression: "form.phone",
+      modifiers: {
+        "initial": true
+      }
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.phone),
+      expression: "form.phone"
+    }],
+    class: {
+      'form-control': true, 'is-danger': _vm.errors.has('form.phone')
+    },
+    attrs: {
+      "type": "text",
+      "data-vv-rules": "required",
+      "data-vv-as": "Phone number",
+      "name": "phone",
+      "placeholder": "Phone number"
+    },
+    domProps: {
+      "value": (_vm.form.phone)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.phone = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.errors.has('phone')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('phone')))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 offset-md-4 col-md-4"
+  }, [_c('fieldset', {
+    staticClass: "form-group radio-only"
+  }, [_vm._m(9), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "intolerances-yes"
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate"
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.intolerances),
+      expression: "form.intolerances"
+    }],
+    attrs: {
+      "id": "intolerances-yes",
+      "type": "radio",
+      "data-vv-rules": "required|in:Yes,No",
+      "name": "intolerances",
+      "data-vv-as": "selection",
+      "value": "Yes"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.form.intolerances, "Yes")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.form.intolerances = "Yes"
+      }
+    }
+  }), _vm._v("\n\t\t\t\t\t\t\t  Yes\n\t\t\t\t\t\t")]), _vm._v("\n\t\t\t\t\t\t  \n\t\t\t\t\t\t"), _c('label', {
+    attrs: {
+      "for": "intolerances-no"
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.intolerances),
+      expression: "form.intolerances"
+    }],
+    attrs: {
+      "id": "intolerances-no",
+      "type": "radio",
+      "name": "intolerances",
+      "value": "No"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.form.intolerances, "No")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.form.intolerances = "No"
+      }
+    }
+  }), _vm._v("  No\n\t\t\t\t\t\t")]), _vm._v(" "), (_vm.errors.has('intolerances')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('intolerances')))]) : _vm._e(), _vm._v(" "), (_vm.form.intolerances == 'Yes') ? _c('div', {
+    staticClass: "extra-field"
+  }, [_c('textarea', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate.initial",
+      value: (_vm.form.intolerancesText),
+      expression: "form.intolerancesText",
+      modifiers: {
+        "initial": true
+      }
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.intolerancesText),
+      expression: "form.intolerancesText"
+    }],
+    class: {
+      'form-control': true, 'is-danger': _vm.errors.has('form.intolerancesText')
+    },
+    attrs: {
+      "type": "text",
+      "data-vv-rules": "required",
+      "data-vv-as": "Field",
+      "placeholder": "Please enter",
+      "rows": "5"
+    },
+    domProps: {
+      "value": (_vm.form.intolerancesText)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.intolerancesText = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.errors.has('form.intolerancesText')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('form.intolerancesText')))]) : _vm._e()]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 col-md-4"
+  }, [_c('fieldset', {
+    staticClass: "form-group radio-only"
+  }, [_vm._m(10), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "allergies-yes"
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate"
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.allergies),
+      expression: "form.allergies"
+    }],
+    attrs: {
+      "id": "allergies-yes",
+      "type": "radio",
+      "data-vv-rules": "required|in:Yes,No",
+      "data-vv-as": "selection",
+      "name": "allergies",
+      "value": "Yes"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.form.allergies, "Yes")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.form.allergies = "Yes"
+      }
+    }
+  }), _vm._v("\n\t\t\t\t\t\t\t  Yes\n\t\t\t\t\t\t")]), _vm._v("\n\t\t\t\t\t\t  \n\t\t\t\t\t\t"), _c('label', {
+    attrs: {
+      "for": "allergies-no"
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.allergies),
+      expression: "form.allergies"
+    }],
+    attrs: {
+      "id": "allergies-no",
+      "type": "radio",
+      "name": "allergies",
+      "value": "No"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.form.allergies, "No")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.form.allergies = "No"
+      }
+    }
+  }), _vm._v("  No\n\t\t\t\t\t\t")]), _vm._v(" "), (_vm.errors.has('allergies')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('allergies')))]) : _vm._e(), _vm._v(" "), (_vm.form.allergies == 'Yes') ? _c('div', {
+    staticClass: "extra-field"
+  }, [_c('textarea', {
+    directives: [{
+      name: "validate",
+      rawName: "v-validate.initial",
+      value: (_vm.form.allergiesText),
+      expression: "form.allergiesText",
+      modifiers: {
+        "initial": true
+      }
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.allergiesText),
+      expression: "form.allergiesText"
+    }],
+    class: {
+      'form-control': true, 'is-danger': _vm.errors.has('form.allergiesText')
+    },
+    attrs: {
+      "type": "text",
+      "data-vv-rules": "required",
+      "data-vv-as": "Field",
+      "placeholder": "Please enter",
+      "rows": "5"
+    },
+    domProps: {
+      "value": (_vm.form.allergiesText)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.allergiesText = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.errors.has('form.allergiesText')) ? _c('p', {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('form.allergiesText')))]) : _vm._e()]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 offset-md-4 col-md-8"
+  }, [_c('fieldset', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "dislikefood"
+    }
+  }, [_vm._v("Food I don't like")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.dislikefood),
+      expression: "form.dislikefood"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "placeholder": "Please enter",
+      "rows": "5"
+    },
+    domProps: {
+      "value": (_vm.form.dislikefood)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.dislikefood = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('h4', {
+    staticClass: "no-pad"
+  }, [_vm._v("CART OVERVIEW")]), _vm._v(" "), _c('div', {
+    staticClass: "row section"
+  }, [_vm._m(11), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-8"
+  }, [_c('cart', {
+    attrs: {
+      "cart": _vm.cart,
+      "extradelivery": _vm.form.deliveryarea
+    }
+  })], 1)]), _vm._v(" "), _c('h4', {
+    staticClass: "no-pad"
+  }, [_vm._v("DELIVERY INFO")]), _vm._v(" "), _c('div', {
+    staticClass: "row section"
+  }, [_vm._m(12), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-8"
+  }, [_c('schedule', {
+    attrs: {
+      "cart": _vm.cart
+    }
+  })], 1)]), _vm._v(" "), _c('h4', {
+    staticClass: "no-pad"
+  }, [_vm._v("COMMENTS")]), _vm._v(" "), _c('div', {
+    staticClass: "row section"
+  }, [_vm._m(13), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-8"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.comments),
+      expression: "form.comments"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "comments",
+      "rows": "10"
+    },
+    domProps: {
+      "value": (_vm.form.comments)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.comments = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "text-xs-center"
+  }, [_c('router-link', {
+    staticClass: "button primary big",
+    attrs: {
+      "to": "/overview"
+    }
+  }, [_vm._v("\n\t\t\t\t\tback\n\t\t\t\t")]), _vm._v("\n\t\t\t\t \n\t\t\t\t"), (this.cartState.length > 0) ? _c('a', {
+    staticClass: "button yellow big",
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.checkout($event)
+      }
+    }
+  }, [_vm._v("\n\t\t\t\t\tsend order "), _c('i', {
+    staticClass: "fa fa-fw fa-angle-right"
+  })]) : _vm._e()], 1)])]], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-title"
+  }, [_c('h2', [_vm._v("thank you")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('figure', [_c('img', {
+    staticClass: "responsive",
+    attrs: {
+      "src": "/images/thankyou.jpg?v=1",
+      "alt": ""
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-title"
+  }, [_c('h2', [_vm._v("checkout")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "info"
+  }, [_vm._v("\n\t\t\tYou are almost done"), _c('br'), _vm._v("\n\t\t\tPlease check again all details and fill in your personal data below.\n\t\t")])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "hidden-md-down col-md-4"
+  }, [_c('p', {
+    staticClass: "lp"
+  }, [_vm._v("\n\t\t\t\t\t\tEnter your details here. Fields marked with "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")]), _vm._v(" are required.\n\t\t\t\t\t")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    attrs: {
+      "for": "fname"
+    }
+  }, [_vm._v("First name "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    attrs: {
+      "for": "surname"
+    }
+  }, [_vm._v("Surname "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    attrs: {
+      "for": "date"
+    }
+  }, [_vm._v("Email address "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    attrs: {
+      "for": "phone"
+    }
+  }, [_vm._v("Phone number "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "single"
+  }, [_vm._v("Food Intolerances "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "single"
+  }, [_vm._v("Food Allergies "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "hidden-md-down col-md-4"
+  }, [_c('p', {
+    staticClass: "lp"
+  }, [_vm._v("\n\t\t\t\t\t\tReview your selected items and press SEND ORDER to proceed.\n\t\t\t\t\t")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "hidden-md-down col-md-4"
+  }, [_c('p', {
+    staticClass: "lp"
+  }, [_vm._v("\n\t\t\t\t\t\tReview your food delivery schedule.\n\t\t\t\t\t")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "hidden-md-down col-md-4"
+  }, [_c('p', {
+    staticClass: "lp"
+  }, [_vm._v("\n\t\t\t\t\t\tAny special request we should be aware of?\n\t\t\t\t\t\tFeel free to write some comments here.\n\t\t\t\t\t")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-49f134f8", module.exports)
   }
 }
 
@@ -53273,6 +55197,157 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-602cc510\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Food.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "food-page container"
+  }, [(_vm.loading) ? _c('div', {
+    staticClass: "comp-loading"
+  }, [_c('div', {
+    staticClass: "el-loading-spinner"
+  }, [_c('svg', {
+    staticClass: "circular",
+    attrs: {
+      "viewBox": "25 25 50 50"
+    }
+  }, [_c('circle', {
+    staticClass: "path",
+    attrs: {
+      "cx": "50",
+      "cy": "50",
+      "r": "20",
+      "fill": "none"
+    }
+  })]), _vm._v(" "), _c('p', {
+    staticClass: "el-loading-text"
+  }, [_vm._v("Loading...")])])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "page-title"
+  }, [_c('h2', [_vm._v("Menu details")]), _vm._v(" "), _c('div', {
+    staticClass: "page-buttons"
+  }, [_c('router-link', {
+    staticClass: "button no-border",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-angle-left"
+  }), _vm._v(" back\n            ")]), _vm._v(" "), (!_vm.isAdded(this.id)) ? _c('button', {
+    staticClass: "button primary",
+    on: {
+      "click": function($event) {
+        _vm.showPopup(_vm.data)
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-plus"
+  }), _vm._v(" add to cart\n            ")]) : _c('button', {
+    staticClass: "button primary"
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-check"
+  }), _vm._v(" already in cart\n            ")])], 1)]), _vm._v(" "), (this.id != 3) ? [_c('div', {
+    staticClass: "food-wrap"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-12 col-md-8 flex"
+  }, [_c('div', {
+    staticClass: "food-description food-text"
+  }, [_c('h4', {
+    staticClass: "food-name"
+  }, [_vm._v(_vm._s(_vm.data.name))]), _vm._v(" "), _c('div', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.data.description)
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-4 flex"
+  }, [_c('div', {
+    staticClass: "food-price food-text"
+  }, [_vm._l((_vm.data.prices), function(price) {
+    return [_c('div', {
+      staticClass: "flex food-title"
+    }, [_c('h5', [_vm._v(_vm._s(price.name))]), _vm._v(" "), _c('p', {
+      staticClass: "price"
+    }, [_vm._v(_vm._s(_vm.formatPrice(price.price)) + " IDR")])]), _vm._v(" "), (price.description) ? [_c('p', {
+      staticClass: "desc"
+    }, [_vm._v(_vm._s(price.description))])] : _vm._e(), _vm._v(" "), _c('hr')]
+  }), _vm._v(" "), _c('p', [_vm._v("All prices include tax, service and delivery to Kuta/Seminyak/Canggu area.")]), _vm._v(" "), _c('p', [_vm._v("Delivery surcharge of 50,000 IDR/day applies for other areas (e.g. Sanur, Bukit, Ubud, Nusa Dua)")]), _vm._v(" "), _c('p', [_vm._v("All payments must be done on the first day of delivery.")]), _vm._v(" "), _c('p', [_vm._v("Payment options: cash to driver upon nota receipt, PayPal, bank transfer")])], 2)])]), _vm._v(" "), (_vm.data.id == 3) ? _c('div', {
+    staticClass: "row"
+  }, [_vm._m(0)]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [(_vm.data.id == 3) ? _vm._l((_vm.menus), function(menu) {
+    return _c('div', {
+      staticClass: "col-xs food-menus"
+    }, [_c('div', {
+      staticClass: "food-menu food-text"
+    }, [_c('h4', [_vm._v(_vm._s(menu.day))]), _vm._v(" "), _c('div', {
+      domProps: {
+        "innerHTML": _vm._s(menu.content)
+      }
+    })])])
+  }) : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), _vm._l((_vm.data.pictures), function(file) {
+    return [_c('div', {
+      staticClass: "col-xs food-menus"
+    }, [_c('figure', [_c('img', {
+      attrs: {
+        "src": ("/images/foods/" + file),
+        "alt": ""
+      }
+    })])])]
+  })], 2)])] : _vm._e(), _vm._v(" "), (this.id == 3) ? [_c('fit-slim', {
+    attrs: {
+      "data": _vm.data
+    }
+  })] : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "page-title"
+  }, [_c('router-link', {
+    staticClass: "button yellow big",
+    attrs: {
+      "to": "/overview"
+    }
+  }, [_vm._v("\n            checkout "), _c('i', {
+    staticClass: "fa fa-fw fa-angle-right"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "page-buttons"
+  }, [_c('router-link', {
+    staticClass: "button no-border",
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-angle-left"
+  }), _vm._v(" back\n            ")]), _vm._v(" "), (!_vm.isAdded(this.id)) ? _c('button', {
+    staticClass: "button primary",
+    on: {
+      "click": function($event) {
+        _vm.showPopup(_vm.data)
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-plus"
+  }), _vm._v(" add to cart\n            ")]) : _c('button', {
+    staticClass: "button primary"
+  }, [_c('i', {
+    staticClass: "fa fa-fw fa-check"
+  }), _vm._v(" already in cart\n            ")])], 1)], 1)], 2)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('div', {
+    staticClass: "page-subtitle"
+  }, [_c('h2', [_vm._v("fit&slim weekly menu")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-602cc510", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-64d83fba\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/App.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53323,6 +55398,418 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-64d83fba", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-66f94e0e\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Scheduler.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [(_vm.cartState.length > 0) ? _c('section', {
+    staticClass: "overview-cart"
+  }, [_c('div', {
+    staticClass: "row delivery-section"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_vm._m(1), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.address.address1),
+      expression: "address.address1"
+    }],
+    staticClass: "form-control form-control-sm",
+    attrs: {
+      "rows": "12"
+    },
+    domProps: {
+      "value": (_vm.address.address1)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.address.address1 = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "hidden"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.address.address1_outside),
+      expression: "address.address1_outside"
+    }],
+    attrs: {
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.address.address1_outside) ? _vm._i(_vm.address.address1_outside, null) > -1 : (_vm.address.address1_outside)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.address.address1_outside,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.address.address1_outside = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.address.address1_outside = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.address.address1_outside = $$c
+        }
+      }
+    }
+  }), _vm._v(" This address is outside of Canggu, Seminyak, and Kuta\n                    ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_vm._m(2), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.address.address2),
+      expression: "address.address2"
+    }],
+    staticClass: "form-control form-control-sm",
+    attrs: {
+      "rows": "12"
+    },
+    domProps: {
+      "value": (_vm.address.address2)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.address.address2 = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "hidden"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.address.address2_outside),
+      expression: "address.address2_outside"
+    }],
+    attrs: {
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.address.address2_outside) ? _vm._i(_vm.address.address2_outside, null) > -1 : (_vm.address.address2_outside)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.address.address2_outside,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.address.address2_outside = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.address.address2_outside = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.address.address2_outside = $$c
+        }
+      }
+    }
+  }), _vm._v(" This address is outside of Canggu, Seminyak, and Kuta\n                    ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_vm._m(3), _vm._v(" "), _c('div', {
+    staticClass: "map"
+  }, [_c('a', {
+    staticClass: "map-inner",
+    attrs: {
+      "href": "javascript:;"
+    },
+    on: {
+      "click": function($event) {
+        _vm.openMap()
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-2x fa-search"
+  }), _vm._v("\n                            click to enlarge\n                        ")]), _vm._v(" "), _c('img', {
+    staticClass: "responsive",
+    attrs: {
+      "src": "/images/map-thumbs.jpg?1"
+    }
+  })]), _vm._v(" "), _vm._m(4)])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._l((_vm.cart), function(product, i) {
+    return (product.qty > 0) ? [_c('div', {
+      staticClass: "delivery"
+    }, [_c('div', {
+      staticClass: "delivery-title"
+    }, [_c('h2', [_vm._v("\n                            " + _vm._s(product.name) + " " + _vm._s(product.subname) + "\n                            "), (product.typeraw == 'fullday' || product.typeraw == 'singlemeal') ? _c('span', [_vm._v("for " + _vm._s(product.totaldays) + " day(s)")]) : _vm._e()]), _vm._v(" "), _c('span', [_vm._v(_vm._s(product.type))])]), _vm._v(" "), _c('div', {
+      staticClass: "delivery-body"
+    }, [_vm._l((product.schedule), function(s, key) {
+      return (product.schedule) ? [_c('div', {
+        staticClass: "delivery-days"
+      }, [_c('span', [_vm._v(_vm._s(s.date))])]), _vm._v(" "), [_c('div', {
+        staticClass: "delivery-type"
+      }, [(_vm.isSpecialDetox(product)) ? _c('div', {
+        staticClass: "cell"
+      }, [_c('span', [_vm._v("Select your delivery time")]), _vm._v(" "), _c('span'), _vm._v(" "), _c('span', [_c('select', {
+        on: {
+          "input": function($event) {
+            _vm.updateAllowedTime(i, key, $event)
+          }
+        }
+      }, [_c('option', {
+        attrs: {
+          "value": "breakfast"
+        }
+      }, [_vm._v("Breakfast")]), _vm._v(" "), _c('option', {
+        attrs: {
+          "value": "lunch"
+        }
+      }, [_vm._v("Lunch")]), _vm._v(" "), _c('option', {
+        attrs: {
+          "value": "dinner"
+        }
+      }, [_vm._v("Dinner")])])])]) : _vm._e(), _vm._v(" "), (product.singlemeal.breakfast && product.id != 10 && s.allowed.breakfast) ? _c('div', {
+        staticClass: "cell"
+      }, [_c('span', [_vm._v("Breakfast :")]), _vm._v(" "), _c('time-picker', {
+        attrs: {
+          "product": product.id,
+          "index": key,
+          "type": "breakfast"
+        },
+        model: {
+          value: (s.breakfast),
+          callback: function($$v) {
+            s.breakfast = $$v
+          },
+          expression: "s.breakfast"
+        }
+      }), _vm._v(" "), _c('location-picker', {
+        attrs: {
+          "model": s.breakfastLocation,
+          "addressA": _vm.address.address1,
+          "addressB": _vm.address.address2,
+          "category": product.category_id,
+          "id": ("b-" + (product.id)),
+          "itemid": product.id,
+          "type": "breakfast",
+          "index": key
+        },
+        model: {
+          value: (s.breakfastLocation),
+          callback: function($$v) {
+            s.breakfastLocation = $$v
+          },
+          expression: "s.breakfastLocation"
+        }
+      })], 1) : _vm._e(), _vm._v(" "), (product.singlemeal.lunch && s.allowed.lunch) ? _c('div', {
+        staticClass: "cell"
+      }, [_c('span', [_vm._v("Lunch :")]), _vm._v(" "), _c('time-picker', {
+        attrs: {
+          "product": product.id,
+          "index": key,
+          "type": "lunch"
+        },
+        model: {
+          value: (s.lunch),
+          callback: function($$v) {
+            s.lunch = $$v
+          },
+          expression: "s.lunch"
+        }
+      }), _vm._v(" "), _c('location-picker', {
+        attrs: {
+          "model": s.lunchLocation,
+          "addressA": _vm.address.address1,
+          "addressB": _vm.address.address2,
+          "category": product.category_id,
+          "id": ("l-" + (product.id)),
+          "itemid": product.id,
+          "type": "lunch",
+          "index": key
+        },
+        model: {
+          value: (s.lunchLocation),
+          callback: function($$v) {
+            s.lunchLocation = $$v
+          },
+          expression: "s.lunchLocation"
+        }
+      })], 1) : _vm._e(), _vm._v(" "), (product.singlemeal.dinner && s.allowed.dinner) ? _c('div', {
+        staticClass: "cell"
+      }, [_c('span', [_vm._v("Dinner :")]), _vm._v(" "), _c('time-picker', {
+        attrs: {
+          "product": product.id,
+          "index": key,
+          "type": "dinner"
+        },
+        model: {
+          value: (s.dinner),
+          callback: function($$v) {
+            s.dinner = $$v
+          },
+          expression: "s.dinner"
+        }
+      }), _vm._v(" "), _c('location-picker', {
+        attrs: {
+          "model": s.dinnerLocation,
+          "addressA": _vm.address.address1,
+          "addressB": _vm.address.address2,
+          "category": product.category_id,
+          "id": ("d-" + (product.id)),
+          "itemid": product.id,
+          "type": "dinner",
+          "index": key
+        },
+        model: {
+          value: (s.dinnerLocation),
+          callback: function($$v) {
+            s.dinnerLocation = $$v
+          },
+          expression: "s.dinnerLocation"
+        }
+      })], 1) : _vm._e()])]] : _vm._e()
+    }), _vm._v(" "), (product.typeraw == 'weekly' && product.id == 3 && product.easysunday) ? [_vm._m(5, true), _vm._v(" "), _vm._m(6, true)] : _vm._e()], 2)])] : _vm._e()
+  })], 2) : _c('section', [_vm._v("\n            Your cart is empty\n        ")])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "page-title"
+  }, [_c('h3', [_vm._v("delivery info")])]), _vm._v(" "), _c('ul', [_c('li', [_vm._v("Please insert desired delivery address in the fields on the right. We give a choice of 2 different addresses")]), _vm._v(" "), _c('li', [_vm._v("get a discount of 100,000 IDR on your weekly menu if you solely choose our pick up stations at Avocado Cafe or Motion Studio (fix pick-up times)")]), _vm._v(" "), _c('li', [_vm._v("Delivery Times: 07:30 - 21:45, allow a margin of +/- 15 min.")]), _vm._v(" "), _c('li', [_vm._v("Delivery Days: Mondays to Saturdays. No delivery service on Sundays")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-title"
+  }, [_c('h3', [_vm._v("Address A")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-title"
+  }, [_c('h3', [_vm._v("Address B")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-title"
+  }, [_c('h3', [_vm._v("free delivery area")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "outside"
+  }, [_vm._v("\n                        Need to get your food delivered outside of this area? Please drop us a line to\n                        "), _c('a', {
+    attrs: {
+      "href": "mailto:foodorder@avocadocafebali.com"
+    }
+  }, [_vm._v("foodorder@avocadocafebali.com")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "delivery-days"
+  }, [_c('span', [_vm._v("Easy Sunday")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "delivery-type"
+  }, [_c('div', {
+    staticClass: "cell"
+  }, [_vm._v("\n                                    The Easy Sunday food items will be delivered on Saturday, together with your Fit & Slim dishes\n                                ")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-66f94e0e", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-679acadd\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Food/Detox.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "food-wrap"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-12 col-md-8 flex"
+  }, [_c('div', {
+    staticClass: "food-detox"
+  }, [_c('h4', {
+    staticClass: "food-name"
+  }, [_vm._v("Juice Detox")]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-6"
+  }, [_c('figure', [_c('img', {
+    attrs: {
+      "src": ("/images/foods/" + (_vm.data.id) + "_1.jpg"),
+      "alt": ""
+    }
+  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('h4', {
+    staticClass: "food-name"
+  }, [_vm._v("Soup Detox")]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-6"
+  }, [_c('figure', [_c('img', {
+    attrs: {
+      "src": ("/images/foods/" + (_vm.data.id) + "_3.jpg"),
+      "alt": ""
+    }
+  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('h4', {
+    staticClass: "food-name"
+  }, [_vm._v("VEGGIE & FRUIT DETOX")]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-6"
+  }, [_c('figure', [_c('img', {
+    attrs: {
+      "src": ("/images/foods/" + (_vm.data.id) + "_5.jpg"),
+      "alt": ""
+    }
+  })])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-4 flex"
+  }, [_c('div', {
+    staticClass: "food-price food-text",
+    staticStyle: {
+      "align-self": "flex-start"
+    }
+  }, [_vm._l((_vm.data.prices), function(price) {
+    return [_c('div', {
+      staticClass: "flex food-title"
+    }, [_c('h5', [_vm._v(_vm._s(price.name))]), _vm._v(" "), _c('p', {
+      staticClass: "price"
+    }, [_vm._v(_vm._s(_vm.formatPrice(price.price)) + " IDR")])]), _vm._v(" "), (price.description) ? [_c('p', {
+      staticClass: "desc"
+    }, [_vm._v(_vm._s(price.description))])] : _vm._e(), _vm._v(" "), _c('hr')]
+  }), _vm._v(" "), _c('p', [_vm._v("All prices include tax, service and delivery to Kuta/Seminyak/Canggu area.")]), _vm._v(" "), _c('p', [_vm._v("Delivery surcharge of 50,000 IDR/day applies for other areas (e.g. Sanur, Bukit, Ubud, Nusa Dua)")]), _vm._v(" "), _c('p', [_vm._v("All payments must be done on the first day of delivery.")]), _vm._v(" "), _c('p', [_vm._v("Payment options: cash to driver upon nota receipt, PayPal, bank transfer")])], 2)])]), _vm._v(" "), (_vm.data.id == 3) ? _c('div', {
+    staticClass: "row"
+  }, [_vm._m(3)]) : _vm._e()])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-xs-12 col-md-6"
+  }, [_c('p', [_vm._v("Our juice detox involves the short-term intake of raw vegetable and fruit juices, Coconut water, turmeric boost, herbal tea and water.")]), _vm._v(" "), _c('p', [_vm._v("A juice fast is considered an extreme form of detoxification because no solid food is consumed. There should be a gradual start into this detox and then a return to solid foods.")]), _vm._v(" "), _c('p', [_c('b', [_vm._v("CONTENT")])]), _vm._v(" "), _c('p', [_vm._v("2 bottles freshly blended raw veggie&fruit juices, 1 bottle Turmeric Boost, 1 bottle coconut water, 2 herbal tea bags, 1x Epsom salts."), _c('br'), _vm._v("You will receive your daily package every morning.")]), _vm._v(" "), _c('p', [_c('b', [_vm._v("TARGET")])]), _vm._v(" "), _c('p', [_vm._v("The benefit of juicing is that it gives your digestion system a break from working so hard to process a large meal therefore your body can work rapidly on detoxification. This leads to feeling joyful and light, and keeping slim and radiant.")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-xs-12 col-md-6"
+  }, [_c('p', [_vm._v("The Soup Detox is based only on vegetables. These two tasty soups are freshly cooked and rounded off with spices that support your digestion. They are rich in minerals and vitamins to keep you nourished and healthy.")]), _vm._v(" "), _c('p', [_c('b', [_vm._v("CONTENT")])]), _vm._v(" "), _c('p', [_vm._v("For one day: 1 coconut water for breakfast, 2 veggie soups for lunch and dinner, 2 blended vegetable soups as snacks between breakfast/lunch and lunch/dinner and1x Epsom salts. You will get the whole amount for 6 days on the beginning day of your detox.")]), _vm._v(" "), _c('p', [_c('b', [_vm._v("TARGET")])]), _vm._v(" "), _c('p', [_vm._v("The purpose of following a six-day Soup Detox is to affect a rapid weight-loss by consuming mainly vegetable soup on each day of your diet. This method detoxifies your body naturally and makes you feel lighter and balanced.")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-xs-12 col-md-6"
+  }, [_c('p', [_vm._v("The Veggie & Fruit Detox is our lightest version of all detox methods."), _c('br'), _vm._v("\nThis delicious plant-based menu will help you to get rid of the toxins in your body, feeling more energized and slim down.")]), _vm._v(" "), _c('p', [_c('b', [_vm._v("CONTENT")])]), _vm._v(" "), _c('p', [_vm._v("This 6-day menu includes breakfast, lunch and dinner as well as 2 snacks in form of a drink as an extra energy kick in between the meals plus 1x Epsom salts. All meals are freshly cooked right before delivery and contain only high-quality ingredients.")]), _vm._v(" "), _c('p', [_c('b', [_vm._v("TARGET")])]), _vm._v(" "), _c('p', [_vm._v("This diet with the high intake of veggies & fruits helps your body to detox naturally. At the same time, you resorb all the vitamins and minerals from the fresh veggies and fruits.")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('div', {
+    staticClass: "page-subtitle"
+  }, [_c('h2', [_vm._v("fit&slim weekly menu")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-679acadd", module.exports)
   }
 }
 
@@ -53532,6 +56019,65 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-6f2cf51d", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-73a6234f\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Food/FitSlim.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "food-wrap"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('div', {
+    staticClass: "page-subtitle first"
+  }, [_c('h2', [_vm._v(_vm._s(_vm.data.name) + " " + _vm._s(_vm.data.subname))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-12 col-md-6 col-lg-8"
+  }, [_c('div', {
+    staticClass: "row fit"
+  }, _vm._l((_vm.menus), function(menu) {
+    return _c('div', {
+      staticClass: "col-xs food-menus"
+    }, [_c('div', {
+      staticClass: "food-menu food-text"
+    }, [_c('h4', [_vm._v(_vm._s(menu.day))]), _vm._v(" "), _c('div', {
+      domProps: {
+        "innerHTML": _vm._s(_vm.markdown(menu.content))
+      }
+    })])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-6 col-lg-4"
+  }, [_c('div', {
+    staticClass: "food-price food-text"
+  }, [_vm._l((_vm.data.prices), function(price) {
+    return [_c('div', {
+      staticClass: "flex food-title"
+    }, [_c('h5', [_vm._v(_vm._s(price.name))]), _vm._v(" "), _c('p', {
+      staticClass: "price"
+    }, [_vm._v(_vm._s(_vm.formatPrice(price.price)) + " IDR")])]), _vm._v(" "), (price.description) ? [_c('p', {
+      staticClass: "desc"
+    }, [_vm._v(_vm._s(price.description))])] : _vm._e(), _vm._v(" "), _c('hr')]
+  }), _vm._v(" "), _c('p', [_vm._v("All prices include tax, service and delivery to Kuta/Seminyak/Canggu area.")]), _vm._v(" "), _c('p', [_vm._v("Delivery surcharge of 50,000 IDR/day applies for other areas (e.g. Sanur, Bukit, Ubud, Nusa Dua)")]), _vm._v(" "), _c('p', [_vm._v("All payments must be done on the first day of delivery.")]), _vm._v(" "), _c('p', [_vm._v("Payment options: cash to driver upon nota receipt, PayPal, bank transfer")])], 2), _vm._v(" "), _c('div', {
+    staticClass: "fitslim-pic"
+  }, [_c('figure', [_c('img', {
+    attrs: {
+      "src": ("/images/foods/" + (_vm.data.id) + "_1.jpg"),
+      "alt": ""
+    }
+  })])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-73a6234f", module.exports)
   }
 }
 
@@ -54000,6 +56546,49 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-b5b64f08", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ce24f8aa\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Overview.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "overview container"
+  }, [_vm._m(0), _vm._v(" "), _c('scheduler', {
+    attrs: {
+      "cart": _vm.cart
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "text-xs-center"
+  }, [_c('router-link', {
+    staticClass: "button primary big",
+    attrs: {
+      "to": "/"
+    }
+  }, [_vm._v("\n            back\n        ")]), _vm._v("\n         \n        "), (this.cartState.length > 0) ? _c('button', {
+    staticClass: "button yellow big",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.checkSchedule()
+      }
+    }
+  }, [_vm._v("\n            continue "), _c('i', {
+    staticClass: "fa fa-fw fa-angle-right"
+  })]) : _vm._e()], 1)], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "page-title"
+  }, [_c('h2', [_vm._v("your personalized delivery schedule")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-ce24f8aa", module.exports)
   }
 }
 
@@ -70160,6 +72749,170 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/Checkout.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Checkout.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-49f134f8\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Checkout.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/Checkout.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Checkout.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-49f134f8", Component.options)
+  } else {
+    hotAPI.reload("data-v-49f134f8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Food.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Food.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-602cc510\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Food.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/Food.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Food.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-602cc510", Component.options)
+  } else {
+    hotAPI.reload("data-v-602cc510", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Food/Detox.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Food/Detox.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-679acadd\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Food/Detox.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/Food/Detox.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Detox.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-679acadd", Component.options)
+  } else {
+    hotAPI.reload("data-v-679acadd", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Food/FitSlim.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Food/FitSlim.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-73a6234f\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Food/FitSlim.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/Food/FitSlim.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] FitSlim.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-73a6234f", Component.options)
+  } else {
+    hotAPI.reload("data-v-73a6234f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/FoodPrompt.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70369,6 +73122,47 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/LocationPicker.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/LocationPicker.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-35f12e55\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/LocationPicker.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/LocationPicker.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] LocationPicker.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-35f12e55", Component.options)
+  } else {
+    hotAPI.reload("data-v-35f12e55", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/MiniCart.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70455,6 +73249,47 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/Overview.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Overview.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ce24f8aa\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Overview.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/Overview.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Overview.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ce24f8aa", Component.options)
+  } else {
+    hotAPI.reload("data-v-ce24f8aa", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/Partials/Footer.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70526,6 +73361,88 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-09915488", Component.options)
   } else {
     hotAPI.reload("data-v-09915488", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ScheduleList.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ScheduleList.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-296dff07\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ScheduleList.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/ScheduleList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ScheduleList.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-296dff07", Component.options)
+  } else {
+    hotAPI.reload("data-v-296dff07", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Scheduler.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],\"es2015\"],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Scheduler.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-66f94e0e\",\"hasScoped\":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Scheduler.vue"),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/excalibur/Omega/food/resources/assets/js/components/Scheduler.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Scheduler.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-66f94e0e", Component.options)
+  } else {
+    hotAPI.reload("data-v-66f94e0e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -70828,6 +73745,128 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./resources/assets/js/helpers/scheduler.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _moment = __webpack_require__("./node_modules/moment/moment.js");
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _ = __webpack_require__("./node_modules/lodash/lodash.js");
+exports.default = {
+    name: 'Scheduler',
+    props: ['cart'],
+    watch: {
+        cart: {
+            handler: _.debounce(function (val, old) {
+                this.scheduledata = val;
+                this.$store.dispatch('syncSchedule', val);
+            }, 1000),
+            deep: true
+        },
+        'address.address1': {
+            handler: _.debounce(function (val, old) {
+                if (val == '') {
+                    this.removeAddress('address1');
+                }
+                this.$store.dispatch('syncAddress', {
+                    address1: val,
+                    address1_outside: this.address.address1_outside,
+                    address2: this.address.address2,
+                    address2_outside: this.address.address2_outside
+                });
+            }, 1000)
+        },
+        'address.address2': {
+            handler: _.debounce(function (val, old) {
+                if (val == '') {
+                    this.removeAddress('address2');
+                }
+                this.$store.dispatch('syncAddress', {
+                    address1: this.address.address1,
+                    address1_outside: this.address.address1_outside,
+                    address2: val,
+                    address2_outside: this.address.address2_outside
+                });
+            }, 1000)
+        },
+        'address.address1_outside': {
+            handler: function handler(val, old) {
+                this.$store.dispatch('syncAddress', {
+                    address1: this.address.address1,
+                    address1_outside: val,
+                    address2: this.address.address2,
+                    address2_outside: this.address.address2_outside
+                });
+            }
+        },
+        'address.address2_outside': {
+            handler: function handler(val, old) {
+                this.$store.dispatch('syncAddress', {
+                    address1: this.address.address1,
+                    address1_outside: this.address.address1_outside,
+                    address2: this.address.address2,
+                    address2_outside: val
+                });
+            }
+        }
+    },
+    created: function created() {
+        // we tell root that this comp is ready
+        bus.$emit('schedulerReady');
+        // load saved schedule
+        this.$store.dispatch('loadSchedule');
+        // load saved address
+        this.$store.dispatch('loadAddress');
+    },
+
+    methods: {
+        erase: function erase(model, i, key) {
+            this.cart[i].schedule[key].location = '';
+            return true;
+        },
+        openMap: function openMap() {
+            this.$parent.$parent.popupMap = true;
+        },
+        updateAllowedTime: function updateAllowedTime(cart, schedule, e) {
+            var val = e.target.value;
+            var pointer = this.cart[cart].schedule[schedule];
+            pointer.allowed.breakfast = false;
+            pointer.breakfastLocation = '';
+            pointer.allowed.lunch = false;
+            pointer.lunchLocation = '';
+            pointer.allowed.dinner = false;
+            pointer.dinnerLocation = '';
+            pointer.allowed[val] = true;
+        },
+        removeAddress: function removeAddress(type) {
+            var start = 1;
+            this.cart.forEach(function (data) {
+                var s = data.schedule;
+                s.forEach(function (day) {
+
+                    day.breakfastLocation = day.breakfastLocation != 'pickup1' && day.breakfastLocation != 'pickup2' && day.breakfastLocation == type ? '' : day.breakfastLocation;
+
+                    day.lunchLocation = day.lunchLocation != 'pickup1' && day.lunchLocation != 'pickup2' && day.lunchLocation == type ? '' : day.lunchLocation;
+
+                    day.dinnerLocation = day.dinnerLocation != 'pickup1' && day.dinnerLocation != 'pickup2' && day.dinnerLocation == type ? '' : day.dinnerLocation;
+                });
+            });
+        }
+    }
+};
+
+/***/ }),
+
 /***/ "./resources/assets/js/main.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70870,6 +73909,18 @@ var _vueRouter = __webpack_require__("./node_modules/vue-router/dist/vue-router.
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
+var _Overview = __webpack_require__("./resources/assets/js/components/Overview.vue");
+
+var _Overview2 = _interopRequireDefault(_Overview);
+
+var _Checkout = __webpack_require__("./resources/assets/js/components/Checkout.vue");
+
+var _Checkout2 = _interopRequireDefault(_Checkout);
+
+var _Food = __webpack_require__("./resources/assets/js/components/Food.vue");
+
+var _Food2 = _interopRequireDefault(_Food);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // require bootstrap
@@ -70877,21 +73928,7 @@ __webpack_require__("./resources/assets/js/bootstrap.js");
 
 Vue.use(_vueRouter2.default);
 
-var Overview = function Overview(resolve) {
-    __webpack_require__.e/* require.ensure */(0).then((function () {
-        resolve(__webpack_require__("./resources/assets/js/components/Overview.vue"));
-    }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-};
-var Checkout = function Checkout(resolve) {
-    __webpack_require__.e/* require.ensure */(2).then((function () {
-        resolve(__webpack_require__("./resources/assets/js/components/Checkout.vue"));
-    }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-};
-var Food = function Food(resolve) {
-    return __webpack_require__.e/* require.ensure */(1).then((function () {
-        return resolve(__webpack_require__("./resources/assets/js/components/Food.vue"));
-    }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-};
+//const Food = resolve => require.ensure(['./components/Food.vue'], () => resolve(require('./components/Food.vue')))
 
 Vue.http.headers.common['Authorization'] = _auth2.default.getJwtBearer();
 _auth2.default.checkAuth();
@@ -70924,7 +73961,7 @@ var router = new _vueRouter2.default({
     mode: 'history',
     routes: [{ path: '/admin', component: _Admin2.default, meta: { auth: true },
         children: [{ name: 'order page', path: 'orders', component: __webpack_require__("./resources/assets/js/components/Admin/Orders.vue") }, { name: 'order details page', path: 'orders/:id', component: __webpack_require__("./resources/assets/js/components/Admin/ViewOrders.vue") }, { name: 'fit&slim menu', path: 'fitslim', component: __webpack_require__("./resources/assets/js/components/Admin/FitSlim.vue") }, { name: 'admin home', path: '', component: __webpack_require__("./resources/assets/js/components/Admin/Home.vue") }]
-    }, { path: '/auth/:action', component: __webpack_require__("./resources/assets/js/components/Admin/Auth.vue"), name: 'auth' }, { path: '/:slug/:id', component: Food, name: 'food' }, { path: '/overview', component: Overview, name: 'overview' }, { path: '/checkout', component: Checkout, name: 'checkout' }, { path: '/', component: _Home2.default, name: 'home' }],
+    }, { path: '/auth/:action', component: __webpack_require__("./resources/assets/js/components/Admin/Auth.vue"), name: 'auth' }, { path: '/:slug/:id', component: _Food2.default, name: 'food' }, { path: '/overview', component: _Overview2.default, name: 'overview' }, { path: '/checkout', component: _Checkout2.default, name: 'checkout' }, { path: '/', component: _Home2.default, name: 'home' }],
     scrollBehavior: function scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition;

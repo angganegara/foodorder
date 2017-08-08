@@ -422,6 +422,10 @@ section.home {
 		border-radius: 4px;
 	}
 
+	a.figure.no-overlay:before {
+		background: none;
+	}
+
 	a.figure img, figure img {
 		display: block;
 		max-width: 100%;

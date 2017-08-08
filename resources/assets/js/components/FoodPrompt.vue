@@ -60,6 +60,11 @@
 							<td><label for="opt-singlemeal">Single Meal</label></td>
 							<td>110,000 IDR</td>
 						</tr>
+						<tr v-if="product.category_id == 6">
+							<td><input type="radio" name="meal-opt" v-model="form.mealOpt" value="singlemeal" id="opt-singlemeal"></td>
+							<td><label for="opt-singlemeal">Single Meal</label></td>
+							<td>{{ formatNumber(getSingleMealPrice(product.prices)) }} IDR</td>
+						</tr>
 						<template v-if="form.mealOpt == 'singlemeal'" v-for="price in product.prices">
 							<tr v-if="isSingleMeal(price)">
 								<td width="10%">
@@ -241,6 +246,13 @@ export default {
 		},
 		isSingleMeal(price) {
 			return price.type == 'breakfast' || price.type == 'lunch' || price.type == 'dinner'
+		},
+		getSingleMealPrice(price) {
+			const singlePrice = price.filter((val) => {
+				return val.type == 'lunch'
+			}).map((val) => val.price)
+
+			return singlePrice[0]
 		},
 		close () {
 			this.$store.state.popup = false

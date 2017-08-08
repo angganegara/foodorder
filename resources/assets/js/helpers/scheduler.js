@@ -1,3 +1,4 @@
+let _ = require('lodash')
 import moment from 'moment'
 export default {
     name: 'Scheduler',
