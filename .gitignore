@@ -2,4 +2,7 @@
 node_modules/
 dist/
 npm-debug.log
+.env.staging
+.env.prod
+.env
 .TODO

@@ -7,49 +7,101 @@ use Illuminate\Http\Request;
 use Srmklive\PayPal\Facades\PayPal;
 use Srmklive\PayPal\Services\ExpressCheckout;
 
+use App\Helpers\OrderHelper;
+
 class PaypalController extends Controller
 {
 	protected $provider;
+	protected $oh;
 
-	public function __construct()
+	public function __construct(OrderHelper $oh)
 	{
 		$this->provider = new ExpressCheckout();
+		$this->oh = $oh;
 	}
 
-	public function index()
+	public function setExpressCheckout(Request $request, $order_number)
 	{
-		// step 1
-		$data = [];
-		$data['items'] = [
-			[
-				'name' => 'Product 1',
-				'price' => 9.99,
-				'qty' => 1
-			],
-			[
-				'name' => 'Product 2',
-				'price' => 4.99,
-				'qty' => 2
-			]
-		];
-
-		$data['invoice_id'] = 1;
-		$data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
-		$data['return_url'] = url('/paypal/2');
-		$data['cancel_url'] = url('/');
-
-		$total = 0;
-		foreach($data['items'] as $item) {
-			$total += $item['price']*$item['qty'];
+		if (!$request->ajax()) {
+			// not from ajax, abort
+			return redirect()->to('/');
 		}
 
-		$data['total'] = $total;
+		$cart = $this->getCheckoutData($order_number);
 
-		try {
-            $response = $this->provider->setExpressCheckout($data, true);
-            return redirect($response['paypal_link']);
+        try {
+            $response = $this->provider->setExpressCheckout($cart);
+            return ['redirect' => $response['paypal_link']];
         } catch (\Exception $e) {
-            dd('Error processing PayPal payment');
+			return response("Error processing PayPal payment : ". $e->getMessage());
+        }
+	}
+
+	public function getCheckoutData($order_number)
+	{
+		$order = \App\Models\Order::where('order_number', $order_number)->with('ordercart')->first();
+		$data = [];
+		$data['items'] = [];
+
+		foreach($order->ordercart as $oc) {
+			array_push($data['items'], [
+				'name' => $oc->name,
+				'price' => $this->convertToUSD($oc->price),
+				'desc' => $oc->subname,
+				'qty' => $oc->qty
+			]);
+		}
+
+		if ($order->discount > 0) {
+			array_push($data['items'], [
+				'name' => 'Discount',
+				'price' => -$this->convertToUSD($order->discount),
+				'desc' => 'Discount',
+				'qty' => 1
+			]);
+		}
+
+		$data['return_url'] = url('/checkout/finish/'. $order_number);
+		$data['invoice_id'] = $order->order_number;
+		$data['invoice_description'] = "Order #$order_number Invoice";
+        $data['cancel_url'] = url('/checkout');
+
+		$data['total'] = 0;
+		$data['total'] = array_reduce(
+			array_map(function($val) { return $val['qty'] * $val['price']; }, $data['items']),
+			function ($current, $total) { return $current + $total; }
+		);
+		
+		return $data;
+	}
+
+	protected function convertToUSD($price)
+	{
+		return round($price / 13300, 2);
+	}
+
+	public function getExpressCheckout(Request $request, $order_number)
+	{
+		$token = $request->get('token');
+        $PayerID = $request->get('PayerID');
+		$cart = $this->getCheckoutData($order_number);
+
+		// Verify Express Checkout Token
+        $response = $this->provider->getExpressCheckoutDetails($token);
+        if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
+            // Perform transaction on PayPal
+            $payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
+            $status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
+			
+			if ($this->oh->updatePaypalStatus($order_number, $status)) {
+				// success
+				// send order
+				$this->oh->sendOrder($order_number);
+				// redirect to vue page?
+				return redirect()->to('/thank-you');
+			} else {
+				echo "There is an error processing your payment";
+			}
         }
 	}
 }

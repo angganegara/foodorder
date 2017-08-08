@@ -27,10 +27,13 @@ class OrderHelper
 
 	public function getLocation($code, $order)
 	{
-		if ($code != 'pickup1' && $code != 'pickup2') {
+		if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust') {
 			return nl2br($order->{$code});
 		} else {
-			return $code == 'pickup1' ? 'Avocado Cafe' : 'Motion Fitness';
+			return
+				$code == 'pickup1'    ? 'Avocado Cafe' :
+				$code == 'wanderlust' ? 'Wanderlust Gym'
+				                      : 'Motion Fitness';
 		}
 	}
 
@@ -125,6 +128,12 @@ class OrderHelper
 						$m
 							->bcc('roland@motionfitnessbali.com', 'Roland')
 							->bcc('balitrainingcamp@gmail.com', 'Bali MMA');
+					}
+
+					if ($order->referral == 'wanderlust') {
+						// wanderlust order - cc to ?
+						/*$m
+							->bcc('roland@motionfitnessbali.com', 'Roland');*/
 					}
 
 					$m->subject($email_subject);

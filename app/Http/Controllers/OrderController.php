@@ -18,10 +18,11 @@ class OrderController extends Controller
     {
         $this->oh = $oh;
         $this->delivery_type = [
-            'address1' => 'delivery',
-            'address2' => 'delivery',
-            'pickup1'  => 'pickup',
-            'pickup2'  => 'pickup'
+            'address1'   => 'delivery',
+            'address2'   => 'delivery',
+            'pickup1'    => 'pickup',
+            'pickup2'    => 'pickup',
+			'wanderlust' => 'wanderlust'
         ];
     }
 
@@ -33,6 +34,9 @@ class OrderController extends Controller
         if ($url === 'balimma.avocadocafebali.com') {
             $referral = 'balimma';
         }
+		if ($url === 'wanderlust.motionfitnessbali.com') {
+			$referral = 'wanderlust';
+		}
 
         $order = new Order;
 
