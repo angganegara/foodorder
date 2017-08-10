@@ -71,8 +71,6 @@ export default {
 								)
 							}).length
 
-							console.log( d.name +' total = '+ found)
-
 							if (found <= 0) {
 								// gak ada, semuanya pickup. add 1 total
 								total += 1

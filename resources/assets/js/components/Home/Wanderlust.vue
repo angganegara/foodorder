@@ -1,6 +1,6 @@
 <template>
 	<div class="wanderlust">
-		<div class="page-title"><h2>WANDERLUST CROSS FIT MENUS</h2></div>
+		<div class="page-title"><h2>WANDERLUST CROSSFIT MENUS</h2></div>
         <div class="row items fitslim">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 item-thumbs flex">
                 <a href="#" class="figure no-overlay diet-info"><img src="/images/wanderlust-logo.jpg" alt="Wanderlust Cross Fit Menus" class="product-picture"></a>
@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9">
                 <div class="fitslim-description">
                     <div>
-						<h4>WANDERLUST CROSS FIT MENUS</h4>
+						<h4>WANDERLUST CROSSFIT MENUS</h4>
 						<p>Crossfit Wanderlust Bali and Motion Café have designed meal plans specific for CrossFitters.</p>
 						<p>Depending on your training and general fitness goals, you can choose between 3 menus:</p>
 						<p>Gainer: 2500 – 3000cal per day / Balanced: 2000 – 2500 cal per day / Shredding: 1500 – 2000 cal per day.</p>
