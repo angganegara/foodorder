@@ -271,9 +271,11 @@
                                                     <br>Email Meal Plans: <a href="mailto:foodorder@motionfitnessbali.com">foodorder@motionfitnessbali.com</a>
                                                     <br><a href="http://cafe.motionfitnessbali.com" title="" target="_blank">http://cafe.motionfitnessbali.com</a>
                                                 </p>
-                                                <a style="background-color: #5bc0de; margin: 10px 0; padding: 10px 25px; display: inline-block; border: 1px solid #46a2bd;
-                                                color: #222; font-weight: bold; text-decoration: none; border-radius: 3px; font-size: 16px;"
-                                                href="{{ url('pdf/avocado-payment-details.pdf') }}">PAYMENT DETAILS</a>
+                                                @if ($order->payment != 'paypal')
+													<a style="background-color: #5bc0de; margin: 10px 0; padding: 10px 25px; display: inline-block; border: 1px solid #46a2bd;
+													color: #222; font-weight: bold; text-decoration: none; border-radius: 3px; font-size: 16px;"
+													href="{{ url('pdf/payment-details.pdf') }}">PAYMENT DETAILS</a>
+												@endif
                                             </td>
                                         </tr>
                                     </table>

@@ -38,8 +38,8 @@
                                 <td width="100%" colspan="2" valign="middle" style="padding: 20px;">
                                     <p><b>Dear {{ $order->fname }} {{ $order->lname }},</b></p>
                                     <p>
-                                        <b>Thank you for your food order. Please recheck your booking details below and click
-                                        the button below to see the payment details.</b>
+                                        <b>Thank you for your food order. Please recheck your booking details below {{ $order->payment != 'paypal' ? 'and click
+                                        the button below to see the payment details.' : '' }}</b>
                                     </p>
                                     <p>
                                         <b>Enjoy your food,<br>
@@ -279,9 +279,11 @@
                                                     <br>Email Meal Plans: <a href="mailto:foodorder@motionfitnessbali.com">foodorder@motionfitnessbali.com</a>
                                                     <br><a href="http://cafe.motionfitnessbali.com" title="" target="_blank">http://cafe.motionfitnessbali.com</a>
                                                 </p>
-                                                <a style="background-color: #5bc0de; margin: 10px 0; padding: 10px 25px; display: inline-block; border: 1px solid #46a2bd;
-                                                color: #222; font-weight: bold; text-decoration: none; border-radius: 3px; font-size: 16px;"
-                                                href="{{ url('pdf/avocado-payment-details.pdf') }}">PAYMENT DETAILS</a>
+												@if ($order->payment != 'paypal')
+													<a style="background-color: #5bc0de; margin: 10px 0; padding: 10px 25px; display: inline-block; border: 1px solid #46a2bd;
+													color: #222; font-weight: bold; text-decoration: none; border-radius: 3px; font-size: 16px;"
+													href="{{ url('pdf/payment-details.pdf') }}">PAYMENT DETAILS</a>
+												@endif
                                             </td>
                                         </tr>
                                     </table>

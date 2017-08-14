@@ -231,7 +231,6 @@ export default {
 						var ordernumber = res.data
 						var methods = this.payment
 						// ok
-						// clear everything
 						this.$http
 							.post('/checkout/start', { ordernumber, methods })
 							.then((res) => {
@@ -249,6 +248,7 @@ export default {
 
 									case 101:
 										// paypal
+										this.scroll('.comp-loading', 750)
 										if (message == 'StartPaypal' && redirect != '') {
 											this.clearCart()
 											window.location = redirect

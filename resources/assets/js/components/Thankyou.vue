@@ -4,7 +4,7 @@
 			<h2>thank you</h2>
 		</div>
 		<p>Your food order has been submitted successfully.</p>
-		<p>Your Avocado Cafe Team</p>
+		<p>Your Motion Cafe Team</p>
 		<p><router-link class="button primary" to="/"><i class="fa fa-fw fa-angle-left"></i> back to home</router-link></p>
 		<figure>
 			<img src="/images/thankyou.jpg?v=1" alt="" class="responsive">
