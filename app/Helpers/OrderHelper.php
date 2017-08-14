@@ -200,8 +200,8 @@ class OrderHelper
 		// include ayurveda diet?
 		$ay = $oc->where('item_id', 2)->count();
 		// parse cart
-		return view('emails.order', compact('order', 'that', 'extra'));
-		exit;
+		//return view('emails.order', compact('order', 'that', 'extra'));
+		
 		// pdfs
 		$pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
 		$pdf_hp = rtrim(app()->basePath('public/pdf/high-protein-diet.pdf'), '/');
