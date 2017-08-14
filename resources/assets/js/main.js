@@ -16,6 +16,7 @@ Vue.use(VueRouter);
 
 import Overview from './components/Overview.vue'
 import Checkout from './components/Checkout.vue'
+import ThankYou from './components/Thankyou.vue'
 import Food from './components/Food.vue'
 //const Food = resolve => require.ensure(['./components/Food.vue'], () => resolve(require('./components/Food.vue')))
 
@@ -60,7 +61,8 @@ const router = new VueRouter({
         { path: '/auth/:action', component: require('./components/Admin/Auth.vue'), name: 'auth' },
         { path: '/:slug/:id', component: Food, name: 'food' },
         { path: '/overview', component: Overview, name: 'overview' },
-        { path: '/checkout', component: Checkout, name: 'checkout' },
+		{ path: '/checkout', component: Checkout, name: 'checkout' },
+		{ path: '/thank-you', component: ThankYou, name: 'thankyou' },
         { path: '/', component: Home, name: 'home' }
     ],
     scrollBehavior(to, from, savedPosition) {
