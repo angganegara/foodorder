@@ -300,7 +300,7 @@ class OrderHelper
 		catch (\Exception $e) {
 			// delete order only if not resend!!!!
 			if (!$resend) {
-				$this->deleteOrder($orderid);
+				$this->deleteOrder($order_number);
 			}
 			// log in
 			return response()->json('CANNOT_SEND_MAIL', 422);
@@ -386,14 +386,15 @@ class OrderHelper
 		return $arr;
 	}
 
-	public function deleteOrder($id)
+	public function deleteOrder($order_number)
 	{
-		$order = Order::find($id);
-		$order->delete();
+		$order = Order::where('order_number', $order_number)->first();
 		// delete order cart
-		OrderCart::where('order_id', $id)->delete();
+		OrderCart::where('order_id', $order->id)->delete();
 		// delete order schedule
-		OrderSchedule::where('order_id', $id)->delete();
+		OrderSchedule::where('order_id', $order->id)->delete();
+		// delete order
+		$order->delete();
 
 		return 'OK';
 	}

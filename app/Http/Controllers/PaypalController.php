@@ -97,7 +97,7 @@ class PaypalController extends Controller
 		$data['return_url'] = url('/checkout/finish/'. $order_number);
 		$data['invoice_id'] = $order->order_number;
 		$data['invoice_description'] = "Order #$order_number Invoice";
-        $data['cancel_url'] = url('/checkout');
+        $data['cancel_url'] = url('/checkout/cancel/'. $order_number);
 
 		$data['total'] = 0;
 		$data['total'] = array_reduce(
@@ -111,6 +111,15 @@ class PaypalController extends Controller
 	protected function convertToUSD($price)
 	{
 		return round($price / 13300, 0);
+	}
+
+	public function cancelPaypal($order_number)
+	{
+		// delete order
+		$this->oh->deleteOrder($order_number);
+
+		// redirect
+		return redirect()->to('/checkout');
 	}
 
 	public function getExpressCheckout(Request $request, $order_number)

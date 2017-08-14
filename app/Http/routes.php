@@ -29,6 +29,7 @@ if (env('APP_ENV') === 'local') {
 }
 
 $app->post('/checkout/start', 'PaypalController@start');
+$app->get('/checkout/cancel/{ordernumber}', 'PaypalController@cancelPaypal');
 $app->get('/checkout/finish/{ordernumber}', 'PaypalController@getExpressCheckout');
 $app->get('/paypal-test/{ordernumber}', 'PaypalController@setData');
 
