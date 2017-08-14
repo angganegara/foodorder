@@ -130,6 +130,7 @@ class OrderHelper
         $order->address2 = $address['address2'];
         $order->address2_outside = 0;
 		$order->referral = $referral;
+		$order->payment = $request->methods;
 		$order->paypal_response = null;
 		$order->paid = 0;
     	$order->save();

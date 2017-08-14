@@ -1256,9 +1256,10 @@ exports.default = {
 			// sudah tidak ada masalah
 			if (window.confirm('You are about to send a binding food order. Do you want to submit?')) {
 				// create order
-				this.$http.post('/api/create-order', { cart: this.cart, form: this.form, schedule: this.schedule, address: this.address }).then(function (res) {
+				this.$http.post('/api/create-order', { cart: this.cart, form: this.form, schedule: this.schedule, address: this.address, methods: this.payment }).then(function (res) {
 					var ordernumber = res.data;
 					var methods = _this.payment;
+					// ok
 					// clear everything
 					_this.$http.post('/checkout/start', { ordernumber: ordernumber, methods: methods }).then(function (res) {
 						var _res$data = res.data,
@@ -1271,6 +1272,7 @@ exports.default = {
 							case 100:
 								if (message == 'SUCCESS') {
 									_this.finish = true;
+									_this.loading = false;
 									_this.clearCart();
 									_this.scroll('.checkout', 750);
 								}
@@ -1286,8 +1288,6 @@ exports.default = {
 								}
 								break;
 						}
-
-						_this.loading = false;
 					}).catch(function (err) {
 						console.log(err);
 						_this.loading = false;

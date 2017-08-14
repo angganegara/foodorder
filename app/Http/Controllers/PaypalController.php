@@ -88,7 +88,7 @@ class PaypalController extends Controller
 		if ($order->discount > 0) {
 			array_push($data['items'], [
 				'name' => 'Discount',
-				'price' => $this->convertToUSD($order->discount),
+				'price' => -$this->convertToUSD($order->discount),
 				'desc' => 'Discount',
 				'qty' => 1
 			]);
@@ -110,7 +110,7 @@ class PaypalController extends Controller
 
 	protected function convertToUSD($price)
 	{
-		return round($price / 13300, 2);
+		return round($price / 13300, 0);
 	}
 
 	public function getExpressCheckout(Request $request, $order_number)

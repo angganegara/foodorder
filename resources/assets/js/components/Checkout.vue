@@ -226,10 +226,11 @@ export default {
 			if (window.confirm('You are about to send a binding food order. Do you want to submit?')) {
 				// create order
 				this.$http
-					.post('/api/create-order', {cart: this.cart, form: this.form, schedule: this.schedule, address: this.address})
+					.post('/api/create-order', {cart: this.cart, form: this.form, schedule: this.schedule, address: this.address, methods: this.payment})
 					.then((res) => {
 						var ordernumber = res.data
 						var methods = this.payment
+						// ok
 						// clear everything
 						this.$http
 							.post('/checkout/start', { ordernumber, methods })
@@ -240,6 +241,7 @@ export default {
 									case 100:
 										if (message == 'SUCCESS') {
 											this.finish = true
+											this.loading = false
 											this.clearCart()
 											this.scroll('.checkout', 750)
 										}
@@ -255,8 +257,6 @@ export default {
 										}
 										break;
 								}
-								
-								this.loading = false
 							})
 							.catch((err) => {
 								console.log(err)
