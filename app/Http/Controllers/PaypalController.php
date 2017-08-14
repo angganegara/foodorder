@@ -59,7 +59,10 @@ class PaypalController extends Controller
 		$cart = $this->getCheckoutData($order_number);
 
         try {
-            $response = $this->provider->setExpressCheckout($cart);
+			$response = $this->provider->addOptions([
+				'BRANDNAME' => 'Motion Fitness',
+				'LOGOIMG'   => 'https://foodorder.motionfitnessbali.com/images/logo-email.jpg'
+			])->setExpressCheckout($cart);
             return [
 				'code'     => 101,
 				'message'  => 'StartPaypal',
@@ -110,7 +113,7 @@ class PaypalController extends Controller
 
 	protected function convertToUSD($price)
 	{
-		return round($price / 13300, 0);
+		return round($price / 13500, 0);
 	}
 
 	public function cancelPaypal($order_number)

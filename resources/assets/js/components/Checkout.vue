@@ -250,7 +250,6 @@ export default {
 										// paypal
 										this.scroll('.comp-loading', 750)
 										if (message == 'StartPaypal' && redirect != '') {
-											this.clearCart()
 											window.location = redirect
 										} else {
 											window.alert('There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com')
