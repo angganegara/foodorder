@@ -2,6 +2,7 @@
 node_modules/
 dist/
 npm-debug.log
+public/images/foods
 .env.staging
 .env.prod
 .env

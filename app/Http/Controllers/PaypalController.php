@@ -9,6 +9,11 @@ use Srmklive\PayPal\Services\ExpressCheckout;
 
 use App\Helpers\OrderHelper;
 
+/**
+ * TODO
+ * refactor the code and change it to PaymentController
+ */
+
 class PaypalController extends Controller
 {
 	protected $provider;
@@ -20,7 +25,31 @@ class PaypalController extends Controller
 		$this->oh = $oh;
 	}
 
-	public function setExpressCheckout(Request $request, $order_number)
+	public function start(Request $request)
+	{
+		$ordernumber = $request->ordernumber;
+		$methods = $request->methods;
+
+		if ($methods && $ordernumber) {
+			if ($methods == 'cash') {
+				// as usual ...
+				if ($this->oh->sendOrder($ordernumber) == 'OK') {
+					// return redirect to thank you?
+					return response()->json([
+						'code'     => 100,
+						'message'  => 'SUCCESS',
+						'redirect' => null
+					]);
+				}
+			} else if ($methods == 'paypal') {
+				return $this->setExpressCheckout($request, $ordernumber);
+			}
+		} else {
+			return response()->json('INVALID CALL', 500);
+		}
+	}
+
+	public function setExpressCheckout($request, $order_number)
 	{
 		if (!$request->ajax()) {
 			// not from ajax, abort
@@ -31,7 +60,11 @@ class PaypalController extends Controller
 
         try {
             $response = $this->provider->setExpressCheckout($cart);
-            return ['redirect' => $response['paypal_link']];
+            return [
+				'code'     => 101,
+				'message'  => 'StartPaypal',
+				'redirect' => $response['paypal_link']
+			];
         } catch (\Exception $e) {
 			return response("Error processing PayPal payment : ". $e->getMessage());
         }

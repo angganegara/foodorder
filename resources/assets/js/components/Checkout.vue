@@ -11,7 +11,7 @@
 				<h2>thank you</h2>
 			</div>
 			<p>Your food order has been submitted successfully.</p>
-			<p>Your Avocado Cafe Team</p>
+			<p>Your Motion Cafe Team</p>
 			<p><router-link class="button primary" to="/"><i class="fa fa-fw fa-angle-left"></i> back to home</router-link></p>
 			<figure>
 				<img src="/images/thankyou.jpg?v=1" alt="" class="responsive">
@@ -153,6 +153,22 @@
 						<textarea name="comments" class="form-control" rows="10" v-model="form.comments"></textarea>
 					</div>
 				</div>
+
+				<br>
+
+				<h4 class="no-pad">PAYMENT OPTION</h4>
+				<div class="row section">
+					<div class="hidden-md-down col-md-4">
+						<p class="lp">Select your payment option</p>
+					</div>
+					<div class="col-xs-12 col-md-8">
+						<div class="payment-selection">
+							<label><input type="radio" name="payment" v-model="payment" value="paypal"> <i class="fa fa-fw fa-paypal"></i> PayPal</label>
+							<label><input type="radio" name="payment" v-model="payment" value="cash"> <i class="fa fa-fw fa-motorcycle"></i> Cash to driver / the cafe</label>
+						</div>
+					</div>
+				</div>
+
 				<br><br>
 				<div class="text-xs-center">
 					<router-link to="/overview" class="button primary big">
@@ -182,6 +198,20 @@ export default {
 		this.$Progress.finish()
 	},
 	methods: {
+		clearCart() {
+			this.$store.state.cart = []
+			this.$store.state.schedule = []
+			this.$store.state.address = {
+				address1: '',
+				address1_outside: false,
+				address2: '',
+				address2_outside: false
+			}
+			localStorage.removeItem('cart', '')
+			localStorage.removeItem('schedule', '')
+			localStorage.setItem('address', JSON.stringify(this.$store.state.address))
+		},
+
 		checkout() {
 			this.loading = true
 			this.$validator.validateAll()
@@ -194,28 +224,50 @@ export default {
 
 			// sudah tidak ada masalah
 			if (window.confirm('You are about to send a binding food order. Do you want to submit?')) {
-				this.$http.post('/api/send-order', {cart: this.cart, form: this.form, schedule: this.schedule, address: this.address})
-				.then((res) => {
-					this.loading = false
-					this.finish = true
-					this.$store.state.cart = []
-					this.$store.state.schedule = []
-					this.$store.state.address = {
-						address1: '',
-						address1_outside: false,
-						address2: '',
-						address2_outside: false
-					}
-					localStorage.removeItem('cart', '')
-					localStorage.removeItem('schedule', '')
-					localStorage.setItem('address', JSON.stringify(this.$store.state.address))
-					this.scroll('.checkout', 750)
+				// create order
+				this.$http
+					.post('/api/create-order', {cart: this.cart, form: this.form, schedule: this.schedule, address: this.address})
+					.then((res) => {
+						var ordernumber = res.data
+						var methods = this.payment
+						// clear everything
+						this.$http
+							.post('/checkout/start', { ordernumber, methods })
+							.then((res) => {
+								const { code, message, redirect } = res.data
+								// cash payment complete
+								switch(code) {
+									case 100:
+										if (message == 'SUCCESS') {
+											this.finish = true
+											this.clearCart()
+											this.scroll('.checkout', 750)
+										}
+										break;
 
-				}).catch((err) => {
-					this.loading = false
-					this.error = true
-					this.scroll('.checkout', 750)
-				})
+									case 101:
+										// paypal
+										if (message == 'StartPaypal' && redirect != '') {
+											this.clearCart()
+											window.location = redirect
+										} else {
+											window.alert('There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com')
+										}
+										break;
+								}
+								
+								this.loading = false
+							})
+							.catch((err) => {
+								console.log(err)
+								this.loading = false
+							})
+					})
+					.catch((err) => {
+						this.loading = false
+						this.error = true
+						this.scroll('.checkout', 750)
+					})
 			} else {
 				this.loading = false
 			}
@@ -227,6 +279,7 @@ export default {
 			loading: false,
 			finish: false,
 			error: false,
+			payment: 'cash',
 			form: {
 				fname: '',
 				lname: '',

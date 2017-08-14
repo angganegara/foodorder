@@ -836,6 +836,17 @@ a.qty {
 	}
 }
 
+.payment-selection {
+	label {
+		display: block;
+		margin-bottom: .5rem;
+		.fa {
+			display: inline-block;
+			margin: 0 .35rem 0 .5rem;
+		}
+	}
+}
+
 .overview, .checkout {
 	padding-top: 120px;
 	min-height: 72vh;

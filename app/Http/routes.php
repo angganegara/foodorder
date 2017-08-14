@@ -28,12 +28,17 @@ if (env('APP_ENV') === 'local') {
 	});	
 }
 
+$app->post('/checkout/start', 'PaypalController@start');
+$app->get('/checkout/finish/{ordernumber}', 'PaypalController@getExpressCheckout');
+$app->get('/paypal-test/{ordernumber}', 'PaypalController@setData');
+
 $app->get('/api/foods/categorize', 'FoodController@categorize');
 $app->get('/api/foods', 'FoodController@index');
 $app->get('/api/foods/category/{id}', 'FoodController@getItems');
 $app->get('/api/foods/{id}', 'FoodController@show');
 $app->get('/api/foods/{id}/type/{type}', 'FoodController@price');
 
+$app->post('/api/create-order', 'OrderController@createOrder');
 $app->post('/api/send-order', 'OrderController@sendOrder');
 $app->post('/api/calculate-cart', 'CartController@calculateCart');
 

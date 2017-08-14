@@ -31,9 +31,9 @@ class OrderHelper
 			return nl2br($order->{$code});
 		} else {
 			return
-				$code == 'pickup1'    ? 'Avocado Cafe' :
-				$code == 'wanderlust' ? 'Wanderlust Gym'
-				                      : 'Motion Fitness';
+				$code == 'pickup1'      ? 'Motion Cafe' :
+				( $code == 'wanderlust' ? 'Wanderlust Gym'
+				                        : 'Motion Studio' );
 		}
 	}
 
@@ -76,11 +76,110 @@ class OrderHelper
 
 		return $found;
 	}
+	
+	public function updatePaypalStatus($order_number, $status)
+	{
+		$order = Order::where('order_number', $order_number)->first();
+		$order->paypal_response = $status;
+		
+		if (!strcasecmp($status, 'Completed') || !strcasecmp($status, 'Processed')) {
+			$order->paid = 1;
+		} else {
+			$order->paid = 0;
+		}
+		
+		$order->save();
+		
+		return $order->paid;
+	}
 
-	public function sendOrder($orderid, $resend=false)
+	public function createOrder($request)
+	{
+		// check referral
+        $url = $this->urlToDomain($request->url());
+		$referral = '';
+		
+        if ($url === 'balimma.avocadocafebali.com') {
+            $referral = 'balimma';
+        }
+		if ($url === 'wanderlust.motionfitnessbali.com') {
+			$referral = 'wanderlust';
+		}
+
+        $order = new Order;
+
+    	$form     = $request->form;
+    	$schedule = $request->schedule;
+		$address  = $request->address;
+		
+		$order->order_number = time();
+    	$order->fname = $form['fname'];
+    	$order->lname = $form['lname'];
+    	$order->email = $form['email'];
+    	$order->phone = $form['phone'];
+    	$order->intolerance = $form['intolerancesText'];
+    	$order->allergies = $form['allergiesText'];
+    	$order->dislikefood = $form['dislikefood'];
+    	$order->extraprice = $form['deliveryprice'];
+        $order->discount = $form['discount'];
+    	$order->confirmed = 0;
+    	$order->comments = $form['comments'];
+    	$order->ip_address = $request->ip();
+        $order->address1 = $address['address1'];
+        $order->address1_outside = 0;
+        $order->address2 = $address['address2'];
+        $order->address2_outside = 0;
+		$order->referral = $referral;
+		$order->paypal_response = null;
+		$order->paid = 0;
+    	$order->save();
+
+        // save cart content
+    	foreach ($request->cart as $cart) {
+
+    		$oc = new OrderCart;
+
+    		$oc->order_id = $order->id;
+    		$oc->item_id = $cart['id'];
+    		$oc->name = $cart['name'];
+    		$oc->subname = $cart['subname'];
+    		$oc->price = $cart['price'];
+    		$oc->type = $cart['type'];
+    		$oc->typeraw = $cart['typeraw'];
+    		$oc->qty = $cart['qty'];
+    		$oc->easysunday = $cart['easysunday'];
+    		$oc->totaldays = intVal($cart['totaldays']);
+
+    		$oc->save();
+
+    		foreach ($schedule[$cart['id']] as $sch) {
+    			// save schedule
+    			$sc = new OrderSchedule;
+
+    			$sc->order_id = $order->id;
+    			$sc->item_id = $cart['id'];
+    			$sc->order_carts_id = $oc->id;
+    			$sc->date = $sch['date'];
+    			$sc->breakfast_time = $sch['breakfast'];
+                $sc->breakfast_location = $sch['breakfastLocation'];
+    			$sc->lunch_time = $sch['lunch'];
+                $sc->lunch_location = $sch['lunchLocation'];
+                $sc->dinner_time = $sch['dinner'];
+                $sc->dinner_location = $sch['dinnerLocation'];
+
+    			$sc->save();
+    		}
+    	}
+
+		// send order
+		return $order->order_number;
+	}
+
+	public function sendOrder($order_number, $resend=false)
 	{
 		$that = $this;
-		$order = Order::where('id', $orderid)->with('ordercart.schedule')->first();
+		$order = Order::where('order_number', $order_number)->with('ordercart.schedule')->first();
+		$orderid = $order->id;
 		// extra delivery ?
 		$extra = $this->calculateExtraDelivery($order);
 		// get order
@@ -100,7 +199,8 @@ class OrderHelper
 		// include ayurveda diet?
 		$ay = $oc->where('item_id', 2)->count();
 		// parse cart
-		//return view('emails.order', compact('order', 'that', 'extra'));
+		return view('emails.order', compact('order', 'that', 'extra'));
+		exit;
 		// pdfs
 		$pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
 		$pdf_hp = rtrim(app()->basePath('public/pdf/high-protein-diet.pdf'), '/');
@@ -120,8 +220,8 @@ class OrderHelper
 					$m
 						->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
 						->to($order->email, $order->fname .' '. $order->lname)
-						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
-						//->cc('foodorder@avocadocafebali.com', 'Avocado Cafe Bali');
+						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
+						->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
 
 					if ($order->referral == 'balimma') {
 						// bali mma order - cc to roland and bali mma
@@ -132,8 +232,10 @@ class OrderHelper
 
 					if ($order->referral == 'wanderlust') {
 						// wanderlust order - cc to ?
-						/*$m
-							->bcc('roland@motionfitnessbali.com', 'Roland');*/
+						$m
+							//->bcc('jake.j.richards@gmail.com', 'Jake');
+							->bcc('dispedia@gmail.com', 'Jake');
+							//->bcc('roland@motionfitnessbali.com', 'Roland');
 					}
 
 					$m->subject($email_subject);

@@ -55,12 +55,7 @@
 								<td>+ {{ formatNumber(price.price) }} IDR</td>
 							</tr>
 						</template>
-						<tr v-if="product.id == 3">
-							<td><input type="radio" name="meal-opt" v-model="form.mealOpt" value="singlemeal" id="opt-singlemeal"></td>
-							<td><label for="opt-singlemeal">Single Meal</label></td>
-							<td>110,000 IDR</td>
-						</tr>
-						<tr v-if="product.category_id == 6">
+						<tr v-if="hasSingleMeals(product)">
 							<td><input type="radio" name="meal-opt" v-model="form.mealOpt" value="singlemeal" id="opt-singlemeal"></td>
 							<td><label for="opt-singlemeal">Single Meal</label></td>
 							<td>{{ formatNumber(getSingleMealPrice(product.prices)) }} IDR</td>
@@ -192,6 +187,14 @@ export default {
 		}
 	},
 	methods: {
+		hasSingleMeals(product) {
+			const prices = product.prices
+			if (prices) {
+				return prices.map((val) => {
+					return val.type == 'breakfast' || val.type == 'lunch' || val.type == 'dinner'
+				}).length
+			}
+		},
 		isNotDetox(product) {
 			return (product.id == 7 && this.selectDetox) || (product.id != 7)
 		},

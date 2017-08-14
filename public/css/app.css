@@ -8675,6 +8675,16 @@ a.qty:hover {
   max-width: 100%;
 }
 
+.payment-selection label {
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.payment-selection label .fa {
+  display: inline-block;
+  margin: 0 .35rem 0 .5rem;
+}
+
 .overview,
 .checkout {
   padding-top: 120px;

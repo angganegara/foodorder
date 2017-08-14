@@ -1228,6 +1228,19 @@ exports.default = {
 	},
 
 	methods: {
+		clearCart: function clearCart() {
+			this.$store.state.cart = [];
+			this.$store.state.schedule = [];
+			this.$store.state.address = {
+				address1: '',
+				address1_outside: false,
+				address2: '',
+				address2_outside: false
+			};
+			localStorage.removeItem('cart', '');
+			localStorage.removeItem('schedule', '');
+			localStorage.setItem('address', JSON.stringify(this.$store.state.address));
+		},
 		checkout: function checkout() {
 			var _this = this;
 
@@ -1242,21 +1255,43 @@ exports.default = {
 
 			// sudah tidak ada masalah
 			if (window.confirm('You are about to send a binding food order. Do you want to submit?')) {
-				this.$http.post('/api/send-order', { cart: this.cart, form: this.form, schedule: this.schedule, address: this.address }).then(function (res) {
-					_this.loading = false;
-					_this.finish = true;
-					_this.$store.state.cart = [];
-					_this.$store.state.schedule = [];
-					_this.$store.state.address = {
-						address1: '',
-						address1_outside: false,
-						address2: '',
-						address2_outside: false
-					};
-					localStorage.removeItem('cart', '');
-					localStorage.removeItem('schedule', '');
-					localStorage.setItem('address', JSON.stringify(_this.$store.state.address));
-					_this.scroll('.checkout', 750);
+				// create order
+				this.$http.post('/api/create-order', { cart: this.cart, form: this.form, schedule: this.schedule, address: this.address }).then(function (res) {
+					var ordernumber = res.data;
+					var methods = _this.payment;
+					// clear everything
+					_this.$http.post('/checkout/start', { ordernumber: ordernumber, methods: methods }).then(function (res) {
+						var _res$data = res.data,
+						    code = _res$data.code,
+						    message = _res$data.message,
+						    redirect = _res$data.redirect;
+						// cash payment complete
+
+						switch (code) {
+							case 100:
+								if (message == 'SUCCESS') {
+									_this.finish = true;
+									_this.clearCart();
+									_this.scroll('.checkout', 750);
+								}
+								break;
+
+							case 101:
+								// paypal
+								if (message == 'StartPaypal' && redirect != '') {
+									_this.clearCart();
+									window.location = redirect;
+								} else {
+									window.alert('There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com');
+								}
+								break;
+						}
+
+						_this.loading = false;
+					}).catch(function (err) {
+						console.log(err);
+						_this.loading = false;
+					});
 				}).catch(function (err) {
 					_this.loading = false;
 					_this.error = true;
@@ -1273,6 +1308,7 @@ exports.default = {
 			loading: false,
 			finish: false,
 			error: false,
+			payment: 'cash',
 			form: {
 				fname: '',
 				lname: '',
@@ -1292,6 +1328,22 @@ exports.default = {
 		};
 	}
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1945,11 +1997,6 @@ var $ = __webpack_require__("./node_modules/jquery/dist/jquery.js"); //
 //
 //
 //
-//
-//
-//
-//
-//
 
 exports.default = {
 	mixins: [_mixins2.default],
@@ -2022,6 +2069,14 @@ exports.default = {
 		}
 	},
 	methods: {
+		hasSingleMeals: function hasSingleMeals(product) {
+			var prices = product.prices;
+			if (prices) {
+				return prices.map(function (val) {
+					return val.type == 'breakfast' || val.type == 'lunch' || val.type == 'dinner';
+				}).length;
+			}
+		},
 		isNotDetox: function isNotDetox(product) {
 			return product.id == 7 && this.selectDetox || product.id != 7;
 		},
@@ -53427,7 +53482,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     })]), _vm._v(" "), _vm._m(6, true), _vm._v(" "), _c('td', [_vm._v("+ " + _vm._s(_vm.formatNumber(price.price)) + " IDR")])]) : _vm._e()]
-  }), _vm._v(" "), (_vm.product.id == 3) ? _c('tr', [_c('td', [_c('input', {
+  }), _vm._v(" "), (_vm.hasSingleMeals(_vm.product)) ? _c('tr', [_c('td', [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -53448,28 +53503,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.mealOpt = "singlemeal"
       }
     }
-  })]), _vm._v(" "), _vm._m(7), _vm._v(" "), _c('td', [_vm._v("110,000 IDR")])]) : _vm._e(), _vm._v(" "), (_vm.product.category_id == 6) ? _c('tr', [_c('td', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.mealOpt),
-      expression: "form.mealOpt"
-    }],
-    attrs: {
-      "type": "radio",
-      "name": "meal-opt",
-      "value": "singlemeal",
-      "id": "opt-singlemeal"
-    },
-    domProps: {
-      "checked": _vm._q(_vm.form.mealOpt, "singlemeal")
-    },
-    on: {
-      "__c": function($event) {
-        _vm.form.mealOpt = "singlemeal"
-      }
-    }
-  })]), _vm._v(" "), _vm._m(8), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatNumber(_vm.getSingleMealPrice(_vm.product.prices))) + " IDR")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.product.prices), function(price) {
+  })]), _vm._v(" "), _vm._m(7), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatNumber(_vm.getSingleMealPrice(_vm.product.prices))) + " IDR")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.product.prices), function(price) {
     return (_vm.form.mealOpt == 'singlemeal') ? [(_vm.isSingleMeal(price)) ? _c('tr', [_c('td', {
       attrs: {
         "width": "10%"
@@ -53523,7 +53557,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "width": "25%"
       }
     }, [_vm._v(_vm._s(_vm.formatNumber(price.price)) + " IDR")])]) : _vm._e()] : _vm._e()
-  })], 2), _vm._v(" "), (_vm.form.mealOpt.length > 0) ? _c('div', [_c('br'), _vm._v(" "), (_vm.form.mealOpt == 'fullday' || _vm.form.mealOpt == 'singlemeal') ? [_vm._m(9), _vm._v(" "), _c('select', {
+  })], 2), _vm._v(" "), (_vm.form.mealOpt.length > 0) ? _c('div', [_c('br'), _vm._v(" "), (_vm.form.mealOpt == 'fullday' || _vm.form.mealOpt == 'singlemeal') ? [_vm._m(8), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -53565,7 +53599,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "5"
     }
-  }, [_vm._v("5 days")])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(10), _vm._v(" "), _c('br')] : _vm._e(), _vm._v(" "), _vm._m(11), _vm._v(" "), (_vm.form.mealOpt == 'weekly' || _vm.form.mealOpt == 'sunday') ? [_c('select', {
+  }, [_vm._v("5 days")])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(9), _vm._v(" "), _c('br')] : _vm._e(), _vm._v(" "), _vm._m(10), _vm._v(" "), (_vm.form.mealOpt == 'weekly' || _vm.form.mealOpt == 'sunday') ? [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -53618,7 +53652,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.deliveryDates = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(12), _vm._v(" "), _c('br')], _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(11), _vm._v(" "), _c('br')], _vm._v(" "), _c('div', {
     staticStyle: {
       "display": "flex",
       "justify-content": "space-between"
@@ -53670,12 +53704,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "sundaypackage"
     }
   }, [_vm._v("Add Easy Sunday")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('td', [_c('label', {
-    attrs: {
-      "for": "opt-singlemeal"
-    }
-  }, [_vm._v("Single Meal")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('td', [_c('label', {
     attrs: {
@@ -54445,7 +54473,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('p', {
     staticClass: "el-loading-text"
-  }, [_vm._v("Loading...")])])]) : _vm._e(), _vm._v(" "), (_vm.finish) ? [_vm._m(0), _vm._v(" "), _c('p', [_vm._v("Your food order has been submitted successfully.")]), _vm._v(" "), _c('p', [_vm._v("Your Avocado Cafe Team")]), _vm._v(" "), _c('p', [_c('router-link', {
+  }, [_vm._v("Loading...")])])]) : _vm._e(), _vm._v(" "), (_vm.finish) ? [_vm._m(0), _vm._v(" "), _c('p', [_vm._v("Your food order has been submitted successfully.")]), _vm._v(" "), _c('p', [_vm._v("Your Motion Cafe Team")]), _vm._v(" "), _c('p', [_c('router-link', {
     staticClass: "button primary",
     attrs: {
       "to": "/"
@@ -54905,7 +54933,59 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.comments = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('h4', {
+    staticClass: "no-pad"
+  }, [_vm._v("PAYMENT OPTION")]), _vm._v(" "), _c('div', {
+    staticClass: "row section"
+  }, [_vm._m(14), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 col-md-8"
+  }, [_c('div', {
+    staticClass: "payment-selection"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.payment),
+      expression: "payment"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "payment",
+      "value": "paypal"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.payment, "paypal")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.payment = "paypal"
+      }
+    }
+  }), _vm._v(" "), _c('i', {
+    staticClass: "fa fa-fw fa-paypal"
+  }), _vm._v(" PayPal")]), _vm._v(" "), _c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.payment),
+      expression: "payment"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "payment",
+      "value": "cash"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.payment, "cash")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.payment = "cash"
+      }
+    }
+  }), _vm._v(" "), _c('i', {
+    staticClass: "fa fa-fw fa-motorcycle"
+  }), _vm._v(" Cash to driver / the cafe")])])])]), _vm._v(" "), _c('br'), _c('br'), _vm._v(" "), _c('div', {
     staticClass: "text-xs-center"
   }, [_c('router-link', {
     staticClass: "button primary big",
@@ -55016,6 +55096,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('p', {
     staticClass: "lp"
   }, [_vm._v("\n\t\t\t\t\t\tAny special request we should be aware of?\n\t\t\t\t\t\tFeel free to write some comments here.\n\t\t\t\t\t")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "hidden-md-down col-md-4"
+  }, [_c('p', {
+    staticClass: "lp"
+  }, [_vm._v("Select your payment option")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

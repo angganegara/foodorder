@@ -24,90 +24,24 @@ class OrderController extends Controller
             'pickup2'    => 'pickup',
 			'wanderlust' => 'wanderlust'
         ];
-    }
+	}
+	
+	public function createOrder(Request $request)
+	{
+		$order_number = $this->oh->createOrder($request);
+		
+		return $order_number;
+	}
 
-    public function sendOrder(Request $request)
+    public function sendOrder($order_number)
     {
-        // check referral
-        $url = $this->oh->urlToDomain($request->url());
-        $referral = '';
-        if ($url === 'balimma.avocadocafebali.com') {
-            $referral = 'balimma';
-        }
-		if ($url === 'wanderlust.motionfitnessbali.com') {
-			$referral = 'wanderlust';
-		}
-
-        $order = new Order;
-
-    	$form     = $request->form;
-    	$schedule = $request->schedule;
-        $address  = $request->address;
-
-    	$order->fname = $form['fname'];
-    	$order->lname = $form['lname'];
-    	$order->email = $form['email'];
-    	$order->phone = $form['phone'];
-    	$order->intolerance = $form['intolerancesText'];
-    	$order->allergies = $form['allergiesText'];
-    	$order->dislikefood = $form['dislikefood'];
-    	$order->extraprice = $form['deliveryprice'];
-        $order->discount = $form['discount'];
-    	$order->confirmed = 0;
-    	$order->comments = $form['comments'];
-    	$order->ip_address = $request->ip();
-        $order->address1 = $address['address1'];
-        $order->address1_outside = 0;
-        $order->address2 = $address['address2'];
-        $order->address2_outside = 0;
-        $order->referral = $referral;
-    	$order->save();
-
-        // save cart content
-    	foreach ($request->cart as $cart) {
-
-    		$oc = new OrderCart;
-
-    		$oc->order_id = $order->id;
-    		$oc->item_id = $cart['id'];
-    		$oc->name = $cart['name'];
-    		$oc->subname = $cart['subname'];
-    		$oc->price = $cart['price'];
-    		$oc->type = $cart['type'];
-    		$oc->typeraw = $cart['typeraw'];
-    		$oc->qty = $cart['qty'];
-    		$oc->easysunday = $cart['easysunday'];
-    		$oc->totaldays = intVal($cart['totaldays']);
-
-    		$oc->save();
-
-    		foreach ($schedule[$cart['id']] as $sch) {
-    			// save schedule
-    			$sc = new OrderSchedule;
-
-    			$sc->order_id = $order->id;
-    			$sc->item_id = $cart['id'];
-    			$sc->order_carts_id = $oc->id;
-    			$sc->date = $sch['date'];
-    			$sc->breakfast_time = $sch['breakfast'];
-                $sc->breakfast_location = $sch['breakfastLocation'];
-    			$sc->lunch_time = $sch['lunch'];
-                $sc->lunch_location = $sch['lunchLocation'];
-                $sc->dinner_time = $sch['dinner'];
-                $sc->dinner_location = $sch['dinnerLocation'];
-
-    			$sc->save();
-    		}
-    	}
-
-    	// send order
-    	return $this->oh->sendOrder($order->id);
+		return $this->oh->sendOrder($order_number);
     }
 
-    public function resendOrder($id)
+    public function resendOrder($order_number)
     {
         // call send order with param resend = true
-        return $this->oh->sendOrder($id, true);
+        return $this->oh->sendOrder($order_number, true);
     }
 
     public function index(Request $request)
