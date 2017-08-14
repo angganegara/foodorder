@@ -234,9 +234,8 @@ class OrderHelper
 					if ($order->referral == 'wanderlust') {
 						// wanderlust order - cc to ?
 						$m
-							//->bcc('jake.j.richards@gmail.com', 'Jake');
-							->bcc('dispedia@gmail.com', 'Jake');
-							//->bcc('roland@motionfitnessbali.com', 'Roland');
+							->bcc('jake.j.richards@gmail.com', 'Jake')
+							->bcc('roland@motionfitnessbali.com', 'Roland');
 					}
 
 					$m->subject($email_subject);

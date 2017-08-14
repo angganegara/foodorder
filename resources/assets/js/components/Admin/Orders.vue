@@ -11,7 +11,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<h2>Recent orders</h2>
-						<order-list limit="15" sort="id" order="desc" :auth="auth"></order-list>
+						<order-list limit="50" sort="id" order="desc" :auth="auth"></order-list>
 					</div>
 				</div>
 			</div>

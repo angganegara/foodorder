@@ -9,6 +9,7 @@
 				<th>Email</th>
 				<th>Phone</th>
 				<th>Referral</th>
+				<th>Payment methods</th>
 				<th></th>
 			</tr>
 			<tr v-for="item in items" :id="`menu-${item.id}`">
@@ -18,6 +19,7 @@
 				<td>{{ item.email }}</td>
 				<td>{{ item.phone }}</td>
 				<td style="text-transform: uppercase">{{ item.referral }}</td>
+				<td>{{ item.payment }}</td>
 				<td class="text-xs-right">
 					<router-link :to="`/admin/orders/${item.id}/`" class="button small">view</router-link>
 					&nbsp;
@@ -25,7 +27,7 @@
 						<a href="#" title="" @click.prevent="deleteMenu(item.id)" class="button small">Delete</a>
 						&nbsp;
 					</template>
-					<a href="#" title="" @click.prevent="resendOrder(item.id)" class="button small" :class="`resend-${item.id}`">Payment Reminder</a>
+					<a href="#" title="" @click.prevent="resendOrder(item.order_number)" class="button small" :class="`resend-${item.id}`">Payment Reminder</a>
 				</td>
 			</tr>
 		</table>
