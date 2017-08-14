@@ -88,7 +88,7 @@ class PaypalController extends Controller
 		if ($order->discount > 0) {
 			array_push($data['items'], [
 				'name' => 'Discount',
-				'price' => -$this->convertToUSD($order->discount),
+				'price' => $this->convertToUSD($order->discount),
 				'desc' => 'Discount',
 				'qty' => 1
 			]);
