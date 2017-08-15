@@ -235,6 +235,7 @@ class OrderHelper
 						// wanderlust order - cc to ?
 						$m
 							->bcc('jake.j.richards@gmail.com', 'Jake')
+							->bcc('contact@crossfitwanderlust.com', 'Wanderlust Gym')
 							->bcc('roland@motionfitnessbali.com', 'Roland');
 					}
 
