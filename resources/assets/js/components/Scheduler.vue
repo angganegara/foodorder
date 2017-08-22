@@ -9,7 +9,7 @@
                     </div>
                     <ul>
                         <li>Please insert desired delivery address in the fields on the right. We give a choice of 2 different addresses</li>
-                        <li>get a discount of 100,000 IDR on your weekly menu if you solely choose our pick up stations at Avocado Cafe or Motion Studio (fix pick-up times)</li>
+                        <li>get a discount of 100,000 IDR on your weekly menu if you solely choose our pick up stations at Motion Cafe or Motion Studio (fix pick-up times)</li>
                         <li>Delivery Times: 07:30 - 21:45, allow a margin of +/- 15 min.</li>
                         <li>Delivery Days: Mondays to Saturdays. No delivery service on Sundays</li>
                     </ul>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="outside">
                         Need to get your food delivered outside of this area? Please drop us a line to
-                        <a href="mailto:foodorder@avocadocafebali.com">foodorder@avocadocafebali.com</a>
+                        <a href="mailto:foodorder@motioncafebali.com">foodorder@motioncafebali.com</a>
                     </div>
                 </div>
             </div>
@@ -57,14 +57,37 @@
                     <div class="delivery-title">
                         <h2>
                             {{ product.name }} {{ product.subname }}
-                            <span v-if="product.typeraw == 'fullday' || product.typeraw == 'singlemeal'">for {{ product.totaldays }} day(s)</span>
+							{{ subtitle(product) }}
                         </h2>
                         <span>{{ product.type }}</span>
                     </div>
+					<br>
+					<div class="delivery-title">
+						<p>Set all pickup location to: </p>
+						<div>
+							<label><a @click.prevent="selectAll('pickup1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
+							&nbsp;&middot;&nbsp;
+							<label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
+							&nbsp;&middot;&nbsp;
+							<label><a @click.prevent="selectAll('address1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
+							&nbsp;&middot;&nbsp;
+							<label><a @click.prevent="selectAll('address2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address B</a></label>
+						</div>
+					</div>
                     <div class="delivery-body">
+						
                         <template v-if="product.schedule" v-for="(s, key) in product.schedule">
                             <div class="delivery-days">
                                 <span>{{ s.date }}</span>
+								<!--
+								<label><a @click.prevent="selectAll('pickup1', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
+								&nbsp;&middot;&nbsp;
+								<label><a @click.prevent="selectAll('pickup2', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
+								&nbsp;&middot;&nbsp;
+								<label><a @click.prevent="selectAll('address1', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
+								&nbsp;&middot;&nbsp;
+								<label><a @click.prevent="selectAll('address2', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Address B</a></label>
+								-->
                             </div>
                             <template>
                                 <div class="delivery-type">
@@ -106,7 +129,8 @@
                                             :id="`l-${product.id}`"
                                             :itemid="product.id"
                                             type="lunch"
-                                            :index="key">
+                                            :index="key"
+											:key="`l-${product.id}`">
                                         </location-picker>
                                     </div>
                                     <div class="cell" v-if="product.singlemeal.dinner && s.allowed.dinner">

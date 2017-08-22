@@ -1,6 +1,6 @@
 <template>
     <div class="item-wrap">
-        <weekly></weekly>
+        <weekly v-if="! isAugust()"></weekly>
 
 		<wanderlust></wanderlust>
 
@@ -56,9 +56,19 @@ export default {
         return {
             products: [],
             loading: true,
-            date: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString()
+            date: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
         }
     },
+
+	methods: {
+		isAugust() {
+			// the date we will remove weekly menu
+			const limitDate = 2017828
+			const todayDate = (date.getFullYear() +''+ parseInt(date.getMonth()+1) +''+ date.getDate())
+			return todayDate >= limitDate
+		}
+	},
+
     created () {
         this.$http.get('/api/foods/categorize').then(function (res) {
             this.products = (res.body)

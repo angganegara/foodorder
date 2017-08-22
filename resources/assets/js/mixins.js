@@ -2,6 +2,26 @@ import {mapState} from 'vuex'
 
 export default {
     methods: {
+		selectAll(location, id) {
+			bus.$emit('updateLocation', { location, id })
+		},
+		subtitle ({ typeraw, type, totaldays }) {
+			let text = type
+			if (typeraw == 'weekly') {
+				let week = Math.round(totaldays / 6)
+				let weekWord = week > 1 ? 'weeks' : 'week'
+				text += ` (${week} ${weekWord})`
+			}
+			if (typeraw == 'fullday') {
+				let daysWord = totaldays > 1 ? 'days' : 'day'
+				text += ` (${totaldays} ${daysWord})`
+			}
+			if (typeraw == 'singlemeal') {
+				let daysWord = totaldays > 1 ? 'days' : 'day'
+				text += ` (${totaldays} ${daysWord})`
+			}
+			return text
+		},
         decrement (object) {
             this.$store.dispatch('decreaseQty', object)
             object.qty--

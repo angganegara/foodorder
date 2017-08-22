@@ -6,6 +6,7 @@
                     <div class="item" v-for="product in cart" key="cart-item" v-if="product.qty">
                         <div class="col-1">
                             <h4>{{ product.name }}</h4>
+							<h5>{{ subtitle(product) }}</h5>
                             <div class="qty-number">
                                 <a href="#" @click.prevent="decrement(product)" class="qty left"><i class="fa fa-fw fa-minus"></i></a>
                                 <span>{{ qty(product) }}</span>

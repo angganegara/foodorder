@@ -278,9 +278,9 @@ section.home .inner .drop-down h1 {
 		}
 	}
 	a.main-site {
-		padding: 10px 20px;
-		top: 40px;
-		right: 140px;
+		padding: 10px 0;
+		top: 0;
+		right: 15px;
 		font-size: 12px;
 		text-transform: uppercase;
 		color: #fff;
@@ -480,6 +480,12 @@ section.home {
 				font-family: 'Montserrat';
 				font-weight: bold;
 				text-transform: uppercase;
+				margin-bottom: .5rem;
+			}
+			h5 {
+				font-size: 13px;
+				color: #777;
+				margin-bottom: 1rem;
 			}
 			p:last-child { margin-bottom: 0 }
 		}

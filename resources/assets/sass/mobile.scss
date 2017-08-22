@@ -15,21 +15,46 @@
 
 .header {
 	@include phone {
+		img.logo {
+			max-width: 200px;
+			margin: 40px 0 0 0;
+		}
 		.flex {
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: flex-start;
 		}
-		h1 {
+		h1.logo-title {
 			padding: 0;
-			font-size: 14px;
+			font-size: 12px;
 			border-left: 0;
 			margin-left: 0;
+			margin-bottom: .75rem;
+		}
+		a.main-site {
+			width: 100%;
+			top: 0;
+			left: 0;
+			text-align: center;
+			background-color: #111;
+			padding: .5rem 0;
 		}
 		a.cart-btn {
-			top: 55px;
+			top: 79px;
+			right: 0;
 			div.cart-title {
-				padding: 10px 15px;
+				padding: 10px;
+				border-bottom: 0;
+				border-right: 0;
+			}
+			&.hovered {
+				div.cart-title {
+					border-right: 0;
+				}
+				div.cart-menu {
+					border-top: 0;
+					border-right: 0;
+				}
 			}
 		}
 	}

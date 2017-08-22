@@ -81,6 +81,10 @@ class CartController extends Controller
 						$subname = " and Easy Sunday";
 						$price += $sp;
 					}
+
+					// calculate based on the total days / 6
+					$qty = round($item['totalDays'] / 6);
+					$price = $price * $qty;
 				}
 
 				if ($item['meal'] == 'fullday') {

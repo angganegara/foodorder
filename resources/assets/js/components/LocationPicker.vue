@@ -36,7 +36,15 @@ import mixin from '../mixins.js'
 export default {
     name: 'LocationPicker',
     props: ['id', 'index', 'addressA', 'addressB', 'value', 'model', 'itemid', 'type', 'category'],
-    mixins: [mixin],
+	mixins: [mixin],
+	created() {
+		bus.$on('updateLocation', ({location, id}) => {
+			if (this.itemid == id) {
+				this.mc = location
+				this.$emit('input', location)
+			}
+		})
+	},
     data() {
 		return {
 			mc: this.model

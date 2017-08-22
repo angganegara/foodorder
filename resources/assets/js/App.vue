@@ -98,9 +98,10 @@ export default {
 			cart.forEach((c, index) => {
 				let totaldays = 0
 				let skipday = null
+
 				if (c.typeraw == 'weekly') {
-					totaldays = 6
-					skipday = false
+					totaldays = c.totaldays
+					skipday = true
 				}
 				if (c.typeraw == 'fullday') {
 					totaldays = c.totaldays

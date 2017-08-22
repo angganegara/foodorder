@@ -91,6 +91,16 @@
 							<div class="food-info"><p>Please understand that we can deliver daily menus on consecutive days only</p></div>
 							<br>
 						</template>
+						<div class="page-title" v-if="form.mealOpt == 'weekly'"><h3>select how many week</h3></div>
+						<template v-if="form.mealOpt == 'weekly'">
+							<select v-model="form.numberOfDays" class="form-control-sm form-control block" :value="form.numberOfDays">
+								<option :value="6">1 week</option>
+								<option :value="12">2 weeks</option>
+								<option :value="18">3 weeks</option>
+								<option :value="24">4 weeks</option>
+							</select>
+							<br>
+						</template>
 						<div class="page-title"><h3>delivery starting date</h3></div>
 						<template v-if="form.mealOpt == 'weekly' || form.mealOpt == 'sunday'">
 							<select v-model="form.deliveryDates" class="form-control-sm form-control block">
@@ -146,6 +156,7 @@ export default {
 			this.form.deliveryDates = ''
 
 			if (this.form.mealOpt == 'fullday' || this.form.mealOpt == 'singlemeal') {
+				this.form.numberOfDays = 1
 				this.$nextTick(() => {
 					$(document).ready(($) => {
 						var disabledDays = [0];
@@ -174,6 +185,8 @@ export default {
 			if (this.form.mealOpt == 'weekly') {
 				// if sunday, generate 3 sundays dates
 				this.generateDate(1)
+				// set default days to 6 days aka 1 week
+				this.form.numberOfDays = 6
 			}
 		} // end watch form.mealopt
 	},
