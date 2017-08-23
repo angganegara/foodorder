@@ -38,6 +38,7 @@ $app->get('/api/foods', 'FoodController@index');
 $app->get('/api/foods/category/{id}', 'FoodController@getItems');
 $app->get('/api/foods/{id}', 'FoodController@show');
 $app->get('/api/foods/{id}/type/{type}', 'FoodController@price');
+$app->post('/api/apply-coupon', 'CartController@applyCoupon');
 
 $app->post('/api/create-order', 'OrderController@createOrder');
 $app->post('/api/send-order', 'OrderController@sendOrder');

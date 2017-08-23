@@ -115,4 +115,47 @@ class CartController extends Controller
 		}
 		return $arr;
 	}
+
+	public function applyCoupon(Request $request)
+	{
+		$coupon = $request->coupon;
+		$cart = $request->cart;
+
+		// we hard code everything for now
+		// discount only for Paleo Menu
+		if ($coupon == 'BACKONTRACK') {
+			$find = count(array_filter($cart, function($value) {
+				return $value['id'] == 13;
+			}));
+
+			if ( ! $find ) {
+				return response()->json([
+					'status' => 'ERROR',
+					'message' => 'This coupon only apply for Paleo Diet'
+				], 500);
+			}
+
+			// starting on 4th of September
+			$today = time();
+			$promo = strtotime('2017-09-04 00:00:01');
+			/*
+			if ($today < $promo) {
+				return response()->json([
+					'status' => 'ERROR',
+					'message' => 'This promo is not yet started'
+				], 500);
+			}*/
+
+			// no problem
+			return response()->json([
+				'status' => 'OK',
+				'message' => 'You get a free motion face mask.'
+			]);
+		} else {
+			return response()->json([
+				'status' => 'ERROR',
+				'message' => 'Coupon not found'
+			], 500);
+		}
+	}
 }

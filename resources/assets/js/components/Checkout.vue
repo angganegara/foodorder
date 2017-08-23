@@ -196,6 +196,14 @@ export default {
 	props: ['cart'],
 	created() {
 		this.$Progress.finish()
+
+		bus.$on('updateCoupon', ({ coupon }) => {
+			this.form.coupon = coupon
+		})
+
+		bus.$on('emptyCoupon', () => {
+			this.form.coupon = ''
+		})
 	},
 	methods: {
 		clearCart() {
@@ -293,7 +301,8 @@ export default {
 				dislikefood: '',
 				deliveryprice: 0,
 				totaldays: 0,
-				discount: 0
+				discount: 0,
+				coupon: ''
 			}
 		}
 	}

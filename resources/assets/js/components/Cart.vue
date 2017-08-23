@@ -43,12 +43,34 @@
 						<a href="#" @click.prevent="remove(product)" class="qty"><i class="fa fa-fw fa-times"></i></a>
 					</td>
 				</tr>
-				<tr v-if="totaldays > 0" class="total">
+				<tr class="total">
+					<td colspan="1">&nbsp;</td>
+					<td colspan="4">
+						<div class="input-group input-group-sm" v-if="$parent.form.coupon == ''">
+							<input type="text" class="form-control input-sm" placeholder="Enter coupon code" v-model="coupon">
+							<span class="input-group-btn">
+								<button class="btn btn-secondary btn-primary" type="button" @click.prevent="applyCoupon()">Apply</button>
+							</span>
+						</div>
+						<div v-else>
+							<p style="margin-bottom: 0; text-align: right;">You get free motion face mask. <a href="#" title="" @click.prevent="cancelCoupon()">Cancel</a></p>
+						</div>
+					</td>
+				</tr>
+				<tr v-if="totaldays > 0" class="total hidden-md-down">
 					<td colspan="3" class="text-xs-right">Extra delivery</td>
 					<td colspan="2">{{ extraprice }} IDR</td>
 				</tr>
-				<tr v-if="discount > 0" class="total">
+				<tr v-if="totaldays > 0" class="total hidden-md-up">
+					<td colspan="2" class="text-xs-right">Extra delivery</td>
+					<td colspan="2">{{ extraprice }} IDR</td>
+				</tr>
+				<tr v-if="discount > 0" class="total hidden-md-down">
 					<td colspan="3" class="text-xs-right">Delivery discount</td>
+					<td colspan="2">- {{ discountformat }} IDR</td>
+				</tr>
+				<tr v-if="discount > 0" class="total hidden-md-up">
+					<td colspan="2" class="text-xs-right">Delivery discount</td>
 					<td colspan="2">- {{ discountformat }} IDR</td>
 				</tr>
 				<tr class="total hidden-md-down">
@@ -72,7 +94,35 @@ import mixin from '../mixins'
 import cartHelper from '../helpers/cart'
 
 export default {
-	mixins: [mixin, cartHelper]
+	mixins: [mixin, cartHelper],
+
+	data() {
+		return {
+			coupon: ''
+		}
+	},
+
+	methods: {
+		applyCoupon() {
+			if (this.coupon != '') {
+				let data = { cart: this.cart, coupon: this.coupon }
+				this.$http
+					.post('/api/apply-coupon', data)
+					.then((res) => {
+						console.log(res.body)
+						bus.$emit('updateCoupon', { coupon: this.coupon })
+					})
+					.catch((err) => {
+						window.alert(err.body.message)
+						bus.$emit('emptyCoupon')
+					})
+			}
+		},
+		cancelCoupon() {
+			this.coupon = ''
+			bus.$emit('emptyCoupon');
+		}
+	}
 }
 </script>
 

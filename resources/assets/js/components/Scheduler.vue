@@ -57,21 +57,24 @@
                     <div class="delivery-title">
                         <h2>
                             {{ product.name }} {{ product.subname }}
-							{{ subtitle(product) }}
                         </h2>
-                        <span>{{ product.type }}</span>
+                        <span>{{ subtitle(product) }}</span>
                     </div>
 					<br>
 					<div class="delivery-title">
-						<p>Set all pickup location to: </p>
+						<p>Set all pickup location for this meal to: </p>
 						<div>
 							<label><a @click.prevent="selectAll('pickup1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
 							&nbsp;&middot;&nbsp;
 							<label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
-							&nbsp;&middot;&nbsp;
-							<label><a @click.prevent="selectAll('address1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
-							&nbsp;&middot;&nbsp;
-							<label><a @click.prevent="selectAll('address2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address B</a></label>
+							<template v-if="address.address1">
+								&nbsp;&middot;&nbsp;
+								<label><a @click.prevent="selectAll('address1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
+							</template>
+							<template v-if="address.address2">
+								&nbsp;&middot;&nbsp;
+								<label><a @click.prevent="selectAll('address2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address B</a></label>
+							</template>
 						</div>
 					</div>
                     <div class="delivery-body">
