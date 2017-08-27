@@ -1,8 +1,8 @@
 .DS_Store
-node_modules/
-dist/
-npm-debug.log
-public/images/foods
+/node_modules/
+/dist/
+/npm-debug.log
+/public/images/foods
 .env.staging
 .env.prod
 .env

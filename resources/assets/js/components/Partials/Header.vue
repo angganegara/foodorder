@@ -13,7 +13,7 @@
                         </h1>
                     </div>
                 </div>
-                <a href="http://cafe.motionfitnessbali.com" title="" class="cart-btn main-site"><i class="fa fa-fw fa-angle-left"></i> back to Motion Cafe's page</a>
+                <a :href="backToLink.href" title="" class="cart-btn main-site" v-html="backToLink.html"></a>
                 <a title="" class="cart-btn" v-show="this.$route.name == 'home' || this.$route.name == 'food'">
                     <div class="cart-title"><i class="fa fa-fw fa-shopping-cart"></i> Your Cart</div>
                     <div class="cart-menu">
@@ -32,5 +32,24 @@ export default {
     name: 'app-header',
     components: { MiniCart, FoodPrompt },
     props: ['popup', 'cart'],
+
+	data() {
+		return {
+			backToLink: {
+				href: 'http://cafe.motionfitnessbali.com',
+				html: `<i class="fa fa-fw fa-angle-left"></i> back to Motion Cafe's page`
+			}
+		}
+	},
+
+	created() {
+		const host = window.location.hostname
+		if (host == 'wanderlust.motionfitnessbali.com') {
+			this.backToLink = {
+				href: 'http://www.crossfitwanderlust.com/fit-foods/',
+				html: `<i class="fa fa-fw fa-angle-left"></i> back to Wanderlust page`
+			}
+		}
+	}
 }
 </script>

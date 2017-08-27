@@ -38,7 +38,7 @@
 <body>
 	<div id="app"></div>
 	<!-- built files will be auto injected -->
-	<script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/app.js?1') }}" type="text/javascript"></script>
 
 	<script src="/js/datepicker.min.js" type="text/javascript"></script>
 	<script src="/js/datepicker.en.js" type="text/javascript"></script>

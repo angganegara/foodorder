@@ -138,13 +138,13 @@ class CartController extends Controller
 			// starting on 4th of September
 			$today = time();
 			$promo = strtotime('2017-09-04 00:00:01');
-			/*
+			
 			if ($today < $promo) {
 				return response()->json([
 					'status' => 'ERROR',
 					'message' => 'This promo is not yet started'
 				], 500);
-			}*/
+			}
 
 			// no problem
 			return response()->json([

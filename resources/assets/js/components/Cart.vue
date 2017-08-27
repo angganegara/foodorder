@@ -43,7 +43,7 @@
 						<a href="#" @click.prevent="remove(product)" class="qty"><i class="fa fa-fw fa-times"></i></a>
 					</td>
 				</tr>
-				<tr class="total">
+				<tr class="total" style="display: none;">
 					<td colspan="1">&nbsp;</td>
 					<td colspan="4">
 						<div class="input-group input-group-sm" v-if="$parent.form.coupon == ''">

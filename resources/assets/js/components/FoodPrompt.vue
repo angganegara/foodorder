@@ -91,7 +91,7 @@
 							<div class="food-info"><p>Please understand that we can deliver daily menus on consecutive days only</p></div>
 							<br>
 						</template>
-						<div class="page-title" v-if="form.mealOpt == 'weekly'"><h3>select how many week</h3></div>
+						<div class="page-title" v-if="form.mealOpt == 'weekly'"><h3>select quantity</h3></div>
 						<template v-if="form.mealOpt == 'weekly'">
 							<select v-model="form.numberOfDays" class="form-control-sm form-control block" :value="form.numberOfDays">
 								<option :value="6">1 week</option>

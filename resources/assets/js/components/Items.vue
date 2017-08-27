@@ -1,7 +1,5 @@
 <template>
     <div class="item-wrap">
-        <weekly v-if="! isAugust()"></weekly>
-
 		<wanderlust></wanderlust>
 
         <template v-if="products" v-for="(c, i) in products">
@@ -59,15 +57,6 @@ export default {
             date: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
         }
     },
-
-	methods: {
-		isAugust() {
-			// the date we will remove weekly menu
-			const limitDate = 2017828
-			const todayDate = (date.getFullYear() +''+ parseInt(date.getMonth()+1) +''+ date.getDate())
-			return todayDate >= limitDate
-		}
-	},
 
     created () {
         this.$http.get('/api/foods/categorize').then(function (res) {

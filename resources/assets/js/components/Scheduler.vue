@@ -66,7 +66,12 @@
 						<div>
 							<label><a @click.prevent="selectAll('pickup1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
 							&nbsp;&middot;&nbsp;
-							<label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
+							<template v-if="product.category_id == 6">
+								<label><a @click.prevent="selectAll('wanderlust', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Wanderlust Gym</a></label>
+							</template>
+							<template v-else>
+								<label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
+							</template>
 							<template v-if="address.address1">
 								&nbsp;&middot;&nbsp;
 								<label><a @click.prevent="selectAll('address1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
