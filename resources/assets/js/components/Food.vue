@@ -115,7 +115,6 @@ export default {
     created () {
         this.$http.get('/api/foods/'+ this.id).then(function (res) {
             this.data = res.body
-            this.$Progress.finish()
             this.loading = false
 		})		
     },

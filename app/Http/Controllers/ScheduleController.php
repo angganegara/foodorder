@@ -30,11 +30,11 @@ class ScheduleController extends Controller
     public function index($date='')
     {
         if ($date == '') {
-            $date = date('Y-m-d');
+			$date = date('Y-m-d');
         }
         
         $carbon = new Carbon($date);
-        $orders = OrderSchedule::where('date', 'like', '%'. $carbon->format('l, d M Y') .'%')->get();
+		$orders = OrderSchedule::where('date', 'like', '%'. $carbon->format('l, d M Y') .'%')->get();
         $result = [];
 
         foreach ($orders as $order) {

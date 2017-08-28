@@ -26,10 +26,6 @@ export default {
     props: ['cart'],
     components: { scheduler },
     mixins: [mixin],
-    created() {
-        this.$Progress.finish()
-        // sync address here?
-    },
     methods: {
         checkSchedule() {
             var missing = 0

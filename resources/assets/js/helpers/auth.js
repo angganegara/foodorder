@@ -29,10 +29,12 @@ export default {
 		})
 	},
 
-	logout(context) {
+	logout(context = null) {
 		localStorage.removeItem('token')
 		this.authenticated = false
-		context.$router.push('/auth/login')
+		if (context != null) {
+			context.$router.push('/auth/login')
+		}
 	},
 
 	checkAuth() {

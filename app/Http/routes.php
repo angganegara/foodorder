@@ -66,6 +66,11 @@ $app->group(['prefix' => 'api/admin', 'middleware' => 'auth:api'], function () u
 	$app->post('fitslim/names', 'FitSlimController@saveNames');
 
 	$app->get('/user', 'UserController@index');
+	$app->get('/coupons', 'CouponController@index');
+	$app->get('/coupons/{id}', 'CouponController@show');
+	$app->post('/coupons/new', 'CouponController@insert');
+	$app->post('/coupons/{id}', 'CouponController@update');
+	$app->get('/coupons/{id}/delete', 'CouponController@delete');
 
 	$app->get('check', function () { return 'OK'; });
 });

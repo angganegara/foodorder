@@ -67,10 +67,9 @@ class OrderController extends Controller
     public function update($id, Request $request)
     {
         $form = $request->form;
-		$cart = $form['cart'];
+		$cart = $request->cart;
 		$order = Order::find($id);
 
-		$delivery = $form['extradelivery'] ? 1 : 0;
 		$order->fname = $form['fname'];
 		$order->lname = $form['lname'];
 		$order->email = $form['email'];
@@ -78,11 +77,17 @@ class OrderController extends Controller
 		$order->intolerance = $form['intolerance'];
 		$order->allergies = $form['allergies'];
 		$order->dislikefood = $form['dislikefood'];
-		$order->extradelivery = $delivery;
 		$order->extraprice = $form['extraprice'];
 		$order->comments = $form['comments'];
-		$order->cart = json_encode($cart);
 		$order->save();
+
+		// save carts ?
+		foreach ($cart as $item) {
+			$c = OrderCart::find($item['id']);
+			$c->price = $item['price'];
+			$c->save();
+		}
+		
 		return 'OK';
     }
 

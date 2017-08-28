@@ -24,11 +24,12 @@ Vue.http.headers.common['Authorization'] = auth.getJwtBearer();
 auth.checkAuth()
 
 Vue.http.interceptors.push((req, next) => {
-    next((res) => {
-        if (res.status == 401) {
-            router.push('/auth/login')
-        }
-    })
+	next((res) => {
+		if (res.status == 401) {
+			auth.logout()
+			router.push('/auth/login')
+		}
+	})
 })
 
 const config = {
@@ -50,11 +51,14 @@ Vue.component('notification', Notification)
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/admin', component: Admin, meta: { auth: true },
+        {
+			path: '/admin', component: Admin, meta: { auth: true },
             children: [
                 { name: 'order page', path: 'orders', component: require('./components/Admin/Orders.vue') },
                 { name: 'order details page', path: 'orders/:id', component: require('./components/Admin/ViewOrders.vue') },
-                { name: 'fit&slim menu', path: 'fitslim', component: require('./components/Admin/FitSlim.vue') },
+				{ name: 'fit&slim menu', path: 'fitslim', component: require('./components/Admin/FitSlim.vue') },
+				{ name: 'coupon page', path: 'coupon', component: require('./components/Admin/Coupon.vue') },
+				{ name: 'coupon details page', path: 'coupon/:id', component: require('./components/Admin/ViewCoupon.vue') },
                 { name: 'admin home', path: '', component: require('./components/Admin/Home.vue') },
             ]
         },
@@ -77,6 +81,16 @@ const router = new VueRouter({
 var bus = new Vue({})
 window.bus = bus
 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.auth)) {
+		(!auth.authenticated)
+			? next('/auth/login')
+			: next()
+    } else {
+        next()
+    }
+})
+
 var vm = new Vue({
     el: '#app',
     data () {
@@ -88,19 +102,6 @@ var vm = new Vue({
     store,
     router,
     render: h => h(App)
-})
-
-router.beforeEach((to, from, next) => {
-    vm.$Progress.start()
-    if (to.matched.some(record => record.meta.auth)) {
-        if (!auth.authenticated) {
-            next('/auth/login')
-        } else {
-            next()
-        }
-    } else {
-        next()
-    }
 })
 
 // other scripts

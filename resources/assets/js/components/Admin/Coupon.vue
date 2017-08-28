@@ -4,21 +4,20 @@
 			<div class="bread">
 				<ul>
 					<li><router-link to="/admin">Admin</router-link></li>
-					<li>Dashboard</li>
+					<li>Coupons</li>
 				</ul>
 			</div>
-			<schedule></schedule>
+			<coupon-list limit="50" sort="id" order="desc" :auth="auth"></coupon-list>
 		</div>
 	</section>
 </template>
 
 <script>
-import OrderList from './components/OrderList.vue'
-import Schedule from './components/Schedule.vue'
-
+import CouponList from './components/CouponList.vue'
 export default {
-	name: 'Dashboard',
-	components: { OrderList, Schedule },
+	name: 'Coupon',
+	props: ['auth'],
+	components: { CouponList },
 	created() {
 		this.$Progress.finish()
 	},
