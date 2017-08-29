@@ -116,6 +116,22 @@
                                     </p>
                                 </td>
                             </tr>
+							@if ($order->coupon != '' && $order->coupon_value <= 0)
+							<tr>
+                                <td width="50%" align="left" valign="top" style="padding: 10px 20px; border-bottom: 1px solid #eee">
+                                    <p style="font-size: 12px; margin-bottom: 0">
+                                        <span style="color: #222; text-transform: uppercase; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px">Coupon Code</span>
+										{{ $order->coupon }}
+                                    </p>
+                                </td>
+								<td width="50%" align="left" valign="top" style="padding: 10px 20px; border-bottom: 1px solid #eee">
+                                    <p style="font-size: 12px; margin-bottom: 0">
+                                        <span style="color: #222; text-transform: uppercase; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px">Free Item</span>
+										{{ $order->coupon_item }}
+                                    </p>
+                                </td>
+                            </tr>
+							@endif
                             <tr>
                                 <td valign="middle" colspan="2" style="
                                     background-color: #b5e1ed; color: #222;
@@ -255,6 +271,12 @@
                                                 <td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;">{{ number_format($order->extraprice, 0) }} IDR</td>
                                             </tr>
                                             @endif
+											@if ($order->coupon_value > 0)
+                                            <tr>
+                                                <td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;" colspan="3">Discount (coupon: {{ $order->coupon }})</td>
+                                                <td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;">- {{ number_format($order->coupon_value, 0) }} IDR</td>
+                                            </tr>
+                                            @endif
                                             @if ($order->discount > 0)
                                             <tr>
                                                 <td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;" colspan="3">Delivery discount</td>
@@ -263,7 +285,11 @@
                                             @endif
                                         	<tr>
                                         		<td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;" colspan="3">TOTAL</td>
-                                        		<td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;">{{ number_format($total + $order->extraprice - $order->discount, 0) }} IDR</td>
+                                        		<td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;">{{ number_format($total + $order->extraprice - $order->coupon_value - $order->discount, 0) }} IDR</td>
+                                        	</tr>
+											<tr>
+                                        		<td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;" colspan="3">PAYMENT METHOD</td>
+                                        		<td style="border-top: 1px solid #b5e1ed; color: #222; background-color: #f3f3f3; padding: 10px 20px 5px 20px; font-size: 14px; font-weight: bold; text-align: right; line-height: 150%;">{{ $order->payment }}</td>
                                         	</tr>
                                         </tfoot>
                                     </table>

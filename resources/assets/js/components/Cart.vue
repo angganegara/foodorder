@@ -43,7 +43,7 @@
 						<a href="#" @click.prevent="remove(product)" class="qty"><i class="fa fa-fw fa-times"></i></a>
 					</td>
 				</tr>
-				<tr class="total" style="display: none;">
+				<tr class="total">
 					<td colspan="1">&nbsp;</td>
 					<td colspan="4">
 						<div class="input-group input-group-sm" v-if="$parent.form.coupon == ''">
@@ -53,9 +53,21 @@
 							</span>
 						</div>
 						<div v-else>
-							<p style="margin-bottom: 0; text-align: right;">You get free motion face mask. <a href="#" title="" @click.prevent="cancelCoupon()">Cancel</a></p>
+							<p style="margin-bottom: 0; text-align: right;">
+								<span v-if="couponValue <= 0">
+									Congratulations, you get a free {{ couponItem }}.
+								</span>
+								<span v-else>
+									{{ couponItem }}.
+								</span>
+								<a href="#" title="" @click.prevent="cancelCoupon()">Cancel</a>
+							</p>
 						</div>
 					</td>
+				</tr>
+				<tr v-if="couponValue > 0" class="total hidden-md-down">
+					<td colspan="3" class="text-xs-right">Discount</td>
+					<td colspan="2">- {{ formatValue }} IDR</td>
 				</tr>
 				<tr v-if="totaldays > 0" class="total hidden-md-down">
 					<td colspan="3" class="text-xs-right">Extra delivery</td>
@@ -98,28 +110,40 @@ export default {
 
 	data() {
 		return {
-			coupon: ''
+			coupon: '',
+			couponValue: 0,
+			couponItem: ''
+		}
+	},
+
+	computed: {
+		formatValue() {
+			return numeral(this.couponValue).format('0,0')
 		}
 	},
 
 	methods: {
 		applyCoupon() {
 			if (this.coupon != '') {
-				let data = { cart: this.cart, coupon: this.coupon }
+				let data = { cart: this.cart, coupon: this.coupon, total: parseInt(this.cartTotal) }
 				this.$http
 					.post('/api/apply-coupon', data)
 					.then((res) => {
-						console.log(res.body)
-						bus.$emit('updateCoupon', { coupon: this.coupon })
+						this.couponValue = res.body.value
+						this.couponItem = res.body.message
+						bus.$emit('updateCoupon', { coupon: this.coupon, value: res.body.value, item: res.body.message })
 					})
 					.catch((err) => {
 						window.alert(err.body.message)
+						this.coupon = ''
 						bus.$emit('emptyCoupon')
 					})
 			}
 		},
 		cancelCoupon() {
 			this.coupon = ''
+			this.couponValue = 0
+			this.couponItem = ''
 			bus.$emit('emptyCoupon');
 		}
 	}

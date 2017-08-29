@@ -121,7 +121,10 @@ class OrderHelper
     	$order->allergies = $form['allergiesText'];
     	$order->dislikefood = $form['dislikefood'];
     	$order->extraprice = $form['deliveryprice'];
-        $order->discount = $form['discount'];
+		$order->discount = $form['discount'];
+		$order->coupon = $form['coupon'];
+		$order->coupon_value = $form['couponValue'];
+		$order->coupon_item = $form['couponItem'];
     	$order->confirmed = 0;
     	$order->comments = $form['comments'];
     	$order->ip_address = $request->ip();
@@ -180,6 +183,7 @@ class OrderHelper
 	{
 		$that = $this;
 		$order = Order::where('order_number', $order_number)->with('ordercart.schedule')->first();
+		
 		$orderid = $order->id;
 		// extra delivery ?
 		$extra = $this->calculateExtraDelivery($order);
@@ -211,7 +215,7 @@ class OrderHelper
 
 		$email_layout = $resend ? 'emails.resend' : 'emails.order';
 		$email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
-
+		
 		try {
 			Mail::send($email_layout, compact('order', 'items', 'that', 'extra'),
 				function ($m) use (
@@ -221,8 +225,8 @@ class OrderHelper
 					$m
 						->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
 						->to($order->email, $order->fname .' '. $order->lname)
-						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
-						->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
+						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+						//->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
 
 					if ($order->referral == 'balimma') {
 						// bali mma order - cc to roland and bali mma

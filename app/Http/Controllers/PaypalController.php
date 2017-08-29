@@ -33,7 +33,8 @@ class PaypalController extends Controller
 		if ($methods && $ordernumber) {
 			if ($methods == 'cash') {
 				// as usual ...
-				if ($this->oh->sendOrder($ordernumber) == 'OK') {
+				$send = $this->oh->sendOrder($ordernumber);
+				if ($send == 'OK') {
 					// return redirect to thank you?
 					return response()->json([
 						'code'     => 100,
@@ -88,11 +89,20 @@ class PaypalController extends Controller
 			]);
 		}
 
-		if ($order->discount > 0) {
+		if ($order->coupon_value > 0) {
 			array_push($data['items'], [
 				'name' => 'Discount',
+				'price' => -$this->convertToUSD($order->coupon_value),
+				'desc' => 'Coupon code '. $order->coupon,
+				'qty' => 1
+			]);
+		}
+
+		if ($order->discount > 0) {
+			array_push($data['items'], [
+				'name' => 'Delivery Discount',
 				'price' => -$this->convertToUSD($order->discount),
-				'desc' => 'Discount',
+				'desc' => 'Delivery Discount',
 				'qty' => 1
 			]);
 		}

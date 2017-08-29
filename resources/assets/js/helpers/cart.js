@@ -11,6 +11,13 @@ export default {
 		}
 	},
 	computed: {
+		cartTotal() {
+			var total = _.sumBy(this.cart, function(item) {
+				var price = item.price
+				return (price * item.qty)
+			});
+			return total
+		},
 		total () {
 			var total = _.sumBy(this.cart, function(item) {
 				var price = item.price
@@ -18,6 +25,9 @@ export default {
 			});
 			if (this.totaldays > 0) {
 				total = total + (this.totaldays * 50000)
+			}
+			if (this.couponValue > 0) {
+				total = total - this.couponValue
 			}
 			if (this.discount > 0) {
 				total = total - this.discount

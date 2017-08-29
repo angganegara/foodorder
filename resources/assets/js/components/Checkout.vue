@@ -197,12 +197,16 @@ export default {
 	created() {
 		this.$Progress.finish()
 
-		bus.$on('updateCoupon', ({ coupon }) => {
+		bus.$on('updateCoupon', ({ coupon, value, item }) => {
 			this.form.coupon = coupon
+			this.form.couponItem = item
+			this.form.couponValue = value
 		})
 
 		bus.$on('emptyCoupon', () => {
 			this.form.coupon = ''
+			this.form.couponItem = ''
+			this.form.couponValue = 0
 		})
 	},
 	methods: {
@@ -296,6 +300,9 @@ export default {
 				terms: false,
 				intolerances: '',
 				intolerancesText: '',
+				coupon: '',
+				couponValue: 0,
+				couponItem: '',
 				allergies: '',
 				allergiesText: '',
 				dislikefood: '',

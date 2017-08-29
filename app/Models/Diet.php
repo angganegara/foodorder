@@ -9,7 +9,7 @@ class Diet extends Model
     public $primarykey = 'id';
 
     protected $hidden = [
-        'updated_at', 'created_at', 'price_type', 'price'
+        'updated_at', 'created_at', 'price_type', 'price', 'slug'
     ];
 
     protected $appends = [
