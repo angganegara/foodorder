@@ -5,7 +5,7 @@
  */
 
 return [
-    'mode'    => 'sandbox', // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
+    'mode'    => 'live', // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
     'sandbox' => [
         'username'    => env('PAYPAL_SANDBOX_API_USERNAME', 'angga_api1.me.com'),
         'password'    => env('PAYPAL_SANDBOX_API_PASSWORD', '3U3KYN8NGPDEDCUH'),
