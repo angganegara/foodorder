@@ -104,7 +104,7 @@ class MidtransHelper
 	public function process(Request $request)
 	{
 		$json_result = file_get_contents('php://input');
-		$data = json_decode($json_result);
+		$data = json_decode($json_result, true);
 
 		var_dump($data);
 		echo $data->order_id;
