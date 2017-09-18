@@ -291,9 +291,7 @@ export default {
 										// midtrans
 										snap.pay(token, {
 											onSuccess: (result) => {
-												this.processOrder(ordernumber, result).then((res) => {
-													this.finish = true
-												})
+												this.finish = true
 											},
 											onPending: (result) => {
 												console.log('pending')
