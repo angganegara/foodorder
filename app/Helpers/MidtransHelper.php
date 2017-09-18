@@ -103,11 +103,12 @@ class MidtransHelper
 	// to do : rename to save ?
 	public function process(Request $request)
 	{
-		$json_result = file_get_contents('php://input');
-		$data = json_decode($json_result, true);
+		//$json_result = file_get_contents('php://input');
+		//$data = json_decode($json_result);
+		$data = json_decode($request->getContent(), true);
 
 		var_dump($data);
-		echo $data->order_id;
+		echo $data['order_id'];
 		exit;
 
 		$orderId = $data->order_id;
