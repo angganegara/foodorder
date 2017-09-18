@@ -106,7 +106,8 @@ class MidtransHelper
 		$json_result = file_get_contents('php://input');
 		$data = json_decode($json_result);
 
-		print_r($data);
+		var_dump($data);
+		echo $data->order_id;
 		exit;
 
 		$orderId = $data->order_id;
