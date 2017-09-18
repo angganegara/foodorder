@@ -106,6 +106,9 @@ class MidtransHelper
 		$json_result = file_get_contents('php://input');
 		$data = json_decode($json_result);
 
+		print_r($data);
+		exit;
+
 		$orderId = $data->order_id;
 		if ($orderId != '') {
 			$order = Order::where('order_number', $orderId)->first();
