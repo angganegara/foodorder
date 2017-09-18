@@ -108,8 +108,6 @@ class MidtransHelper
 		$data = json_decode($request->getContent(), true);
 
 		$orderId = $data['order_id'];
-		echo $orderId;
-		exit;
 		if ($orderId != '') {
 			$order = Order::where('order_number', $orderId)->first();
 			$order->trx_type = $data['payment_type'];
