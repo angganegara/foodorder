@@ -103,17 +103,20 @@ class MidtransHelper
 	// to do : rename to save ?
 	public function process(Request $request)
 	{
-		$orderId = $request->order_id;
+		$json_result = file_get_contents('php://input');
+		$data = json_decode($json_result);
+
+		$orderId = $data->order_id;
 		if ($orderId != '') {
 			$order = Order::where('order_number', $orderId)->first();
-			$order->trx_type = $request->payment_type;
-			$order->trx_approval_code = $request->approval_code;
-			$order->trx_fraud_status = $request->fraud_status;
-			$order->trx_status_code = $request->status_code;
-			$order->trx_status_msg  = $request->status_message;
-			$order->trx_status = $request->transaction_status;
-			$order->trx_time = $request->transaction_time;
-			$order->trx_raw  = json_encode($request->input());
+			$order->trx_type = $data->payment_type;
+			$order->trx_approval_code = $data->approval_code;
+			$order->trx_fraud_status = $data->fraud_status;
+			$order->trx_status_code = $data->status_code;
+			$order->trx_status_msg  = $data->status_message;
+			$order->trx_status = $data->transaction_status;
+			$order->trx_time = $data->transaction_time;
+			$order->trx_raw  = $json_result;
 			$order->save();
 		}
 
