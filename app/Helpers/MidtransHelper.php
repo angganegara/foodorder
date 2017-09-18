@@ -107,21 +107,17 @@ class MidtransHelper
 		//$data = json_decode($json_result);
 		$data = json_decode($request->getContent(), true);
 
-		var_dump($data);
-		echo $data['order_id'];
-		exit;
-
-		$orderId = $data->order_id;
+		$orderId = $data['order_id'];
 		if ($orderId != '') {
 			$order = Order::where('order_number', $orderId)->first();
-			$order->trx_type = $data->payment_type;
-			$order->trx_approval_code = $data->approval_code;
-			$order->trx_fraud_status = $data->fraud_status;
-			$order->trx_status_code = $data->status_code;
-			$order->trx_status_msg  = $data->status_message;
-			$order->trx_status = $data->transaction_status;
-			$order->trx_time = $data->transaction_time;
-			$order->trx_raw  = $json_result;
+			$order->trx_type = $data['payment_type'];
+			$order->trx_approval_code = $data['approval_code'];
+			$order->trx_fraud_status = $data['fraud_status'];
+			$order->trx_status_code = $data['status_code'];
+			$order->trx_status_msg  = $data['status_message'];
+			$order->trx_status = $data['transaction_status'];
+			$order->trx_time = $data['transaction_time'];
+			$order->trx_raw  = $request->getContent();
 			$order->save();
 		}
 

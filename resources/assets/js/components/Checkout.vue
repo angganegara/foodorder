@@ -292,7 +292,7 @@ export default {
 										snap.pay(token, {
 											onSuccess: (result) => {
 												this.processOrder(ordernumber, result).then((res) => {
-													console.log(res)
+													this.finish = true
 												})
 											},
 											onPending: (result) => {
