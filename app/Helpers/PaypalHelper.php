@@ -1,20 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Helpers;
 
 use Illuminate\Http\Request;
-
 use Srmklive\PayPal\Facades\PayPal;
 use Srmklive\PayPal\Services\ExpressCheckout;
 
 use App\Helpers\OrderHelper;
 
-/**
- * TODO
- * refactor the code and change it to PaymentController
- */
-
-class PaypalController extends Controller
+class PaypalHelper
 {
 	protected $provider;
 	protected $oh;
@@ -23,31 +17,6 @@ class PaypalController extends Controller
 	{
 		$this->provider = new ExpressCheckout();
 		$this->oh = $oh;
-	}
-
-	public function start(Request $request)
-	{
-		$ordernumber = $request->ordernumber;
-		$methods = $request->methods;
-
-		if ($methods && $ordernumber) {
-			if ($methods == 'cash') {
-				// as usual ...
-				$send = $this->oh->sendOrder($ordernumber);
-				if ($send == 'OK') {
-					// return redirect to thank you?
-					return response()->json([
-						'code'     => 100,
-						'message'  => 'SUCCESS',
-						'redirect' => null
-					]);
-				}
-			} else if ($methods == 'paypal') {
-				return $this->setExpressCheckout($request, $ordernumber);
-			}
-		} else {
-			return response()->json('INVALID CALL', 500);
-		}
 	}
 
 	public function setExpressCheckout($request, $order_number)
@@ -67,7 +36,8 @@ class PaypalController extends Controller
             return [
 				'code'     => 101,
 				'message'  => 'StartPaypal',
-				'redirect' => $response['paypal_link']
+				'redirect' => $response['paypal_link'],
+				'token'    => null
 			];
         } catch (\Exception $e) {
 			return response("Error processing PayPal payment : ". $e->getMessage());
@@ -158,5 +128,5 @@ class PaypalController extends Controller
 				echo "There is an error processing your payment";
 			}
         }
-	}
+	}	
 }

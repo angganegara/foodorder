@@ -27,11 +27,18 @@ if (env('APP_ENV') === 'local') {
 		return ($data->with('ordercart.schedule')->get());
 	});
 }
+$app->get('/test', 'PaymentController@test');
 
-$app->post('/checkout/start', 'PaypalController@start');
-$app->get('/checkout/cancel/{ordernumber}', 'PaypalController@cancelPaypal');
-$app->get('/checkout/finish/{ordernumber}', 'PaypalController@getExpressCheckout');
-$app->get('/paypal-test/{ordernumber}', 'PaypalController@setData');
+$app->get('/snap', 'SnapController@snap');
+$app->get('/snaptoken', 'SnapController@token');
+$app->post('/snapfinish', 'SnapController@finish');
+
+$app->post('/payment/notification', 'SnapController@notification');
+$app->post('/payment/process', 'PaymentController@process');
+$app->post('/payment/delete', 'PaymentController@deleteOrder');
+$app->post('/checkout/start', 'PaymentController@start');
+$app->get('/checkout/cancel/{order_number}', 'PaymentController@cancelPaypal');
+$app->get('/checkout/finish/{order_number}', 'PaymentController@getExpressCheckout');
 
 $app->get('/api/foods/categorize', 'FoodController@categorize');
 $app->get('/api/foods', 'FoodController@index');

@@ -8,6 +8,7 @@ class Order extends Model
 {
 	protected $hidden = ['ip_address', 'updated_at'];
 	protected $appends = ['name', 'date'];
+	protected $fillable = ['total'];
 
 	public function getNameAttribute()
 	{

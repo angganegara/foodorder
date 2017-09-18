@@ -163,6 +163,7 @@
 					</div>
 					<div class="col-xs-12 col-md-8">
 						<div class="payment-selection">
+							<label><input type="radio" name="payment" v-model="payment" value="creditcard"> <i class="fa fa-fw fa-credit-card"></i> Credit Card / Bank Transfer</label>
 							<label><input type="radio" name="payment" v-model="payment" value="paypal"> <i class="fa fa-fw fa-paypal"></i> PayPal</label>
 							<label><input type="radio" name="payment" v-model="payment" value="cash"> <i class="fa fa-fw fa-motorcycle"></i> Cash to driver / the cafe</label>
 						</div>
@@ -188,13 +189,15 @@
 import mixin from '../mixins'
 import cart from './Cart.vue'
 import schedule from './ScheduleList.vue'
+const API_KEY = '4f4jgz50259cgpt67snd8c01kx39fmc'
 
 export default {
 	name: 'Checkout',
 	mixins: [mixin],
 	components: { cart, schedule },
 	props: ['cart'],
-	created() {
+	created()
+	{
 		this.$Progress.finish()
 
 		bus.$on('updateCoupon', ({ coupon, value, item }) => {
@@ -209,8 +212,10 @@ export default {
 			this.form.couponValue = 0
 		})
 	},
-	methods: {
-		clearCart() {
+	methods:
+	{
+		clearCart()
+		{
 			this.$store.state.cart = []
 			this.$store.state.schedule = []
 			this.$store.state.address = {
@@ -224,13 +229,26 @@ export default {
 			localStorage.setItem('address', JSON.stringify(this.$store.state.address))
 		},
 
-		checkout() {
-			this.loading = true
+		processOrder(ordernumber, result)
+		{
+			let data = { key: API_KEY, order_number: ordernumber, result }
+			return this.$http.post('/payment/process', data)
+		},
+
+		deleteOrder(ordernumber)
+		{
+			let data = { key: API_KEY, order_number: ordernumber }
+			return this.$http.post('/payment/delete', data)
+		},
+
+		checkout()
+		{
+			this.payment == 'creditcard' ? snap.show() : this.loading = true
 			this.$validator.validateAll()
 
 			if (this.errors.any()) {
 				this.scroll('#form', 750, -140)
-				this.loading = false
+				this.payment == 'creditcard' ? snap.hide() : this.loading = false
 				return false
 			}
 
@@ -242,11 +260,12 @@ export default {
 					.then((res) => {
 						var ordernumber = res.data
 						var methods = this.payment
+						
 						// ok
 						this.$http
 							.post('/checkout/start', { ordernumber, methods })
 							.then((res) => {
-								const { code, message, redirect } = res.data
+								const { code, message, redirect, token } = res.data
 								// cash payment complete
 								switch(code) {
 									case 100:
@@ -267,6 +286,26 @@ export default {
 											window.alert('There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com')
 										}
 										break;
+
+									case 102:
+										// midtrans
+										snap.pay(token, {
+											onSuccess: (result) => {
+												this.processOrder(ordernumber, result).then((res) => {
+													console.log(res)
+												})
+											},
+											onPending: (result) => {
+												console.log('pending')
+												console.log(result)
+											},
+											onError: (result) => {
+												console.log('Error')
+												console.log(result)
+											},
+											onClose: () => this.deleteOrder(ordernumber).then(() => snap.hide())
+										})
+										break;
 								}
 							})
 							.catch((err) => {
@@ -280,7 +319,7 @@ export default {
 						this.scroll('.checkout', 750)
 					})
 			} else {
-				this.loading = false
+				this.payment == 'creditcard' ? snap.hide() : this.loading = false
 			}
 			return false
 		}

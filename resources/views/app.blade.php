@@ -39,7 +39,12 @@
 	<div id="app"></div>
 	<!-- built files will be auto injected -->
 	<script src="{{ asset('js/app.js?1') }}" type="text/javascript"></script>
-
+	@if (env('APP_ENV') == 'local')
+		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
+	@else
+		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
+	@endif
+	
 	<script src="/js/datepicker.min.js" type="text/javascript"></script>
 	<script src="/js/datepicker.en.js" type="text/javascript"></script>
 	<script>

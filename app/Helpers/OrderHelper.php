@@ -106,7 +106,8 @@ class OrderHelper
 			$referral = 'wanderlust';
 		}
 
-        $order = new Order;
+		$order = new Order;
+		$total = 0;
 
     	$form     = $request->form;
     	$schedule = $request->schedule;
@@ -125,7 +126,8 @@ class OrderHelper
 		$order->coupon = $form['coupon'];
 		$order->coupon_value = $form['couponValue'];
 		$order->coupon_item = $form['couponItem'];
-    	$order->confirmed = 0;
+		$order->total = 0;
+		$order->confirmed = 0;
     	$order->comments = $form['comments'];
     	$order->ip_address = $request->ip();
         $order->address1 = $address['address1'];
@@ -135,9 +137,10 @@ class OrderHelper
 		$order->referral = $referral;
 		$order->payment = $request->methods;
 		$order->paypal_response = null;
-		$order->paid = 0;
-    	$order->save();
+		$order->total = 0;
 
+		$order->save();
+    	
         // save cart content
     	foreach ($request->cart as $cart) {
 
@@ -154,7 +157,9 @@ class OrderHelper
     		$oc->easysunday = $cart['easysunday'];
     		$oc->totaldays = intVal($cart['totaldays']);
 
-    		$oc->save();
+			$oc->save();
+			
+			$total += $cart['price'] * $cart['qty'];
 
     		foreach ($schedule[$cart['id']] as $sch) {
     			// save schedule
@@ -173,7 +178,9 @@ class OrderHelper
 
     			$sc->save();
     		}
-    	}
+		}
+		
+		$order->update(['total' => $total]);
 
 		// send order
 		return $order->order_number;
@@ -217,6 +224,7 @@ class OrderHelper
 		$email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
 
 		try {
+			/*
 			Mail::send($email_layout, compact('order', 'items', 'that', 'extra'),
 				function ($m) use (
 					$order, $pdf, $pdf_hp, $hp, $pdf_dt, $ay, $pdf_ayu1, $pdf_ayu2,
@@ -300,7 +308,7 @@ class OrderHelper
 						}
 					}
 				}
-			);
+			);*/
 		}
 		catch (\Exception $e) {
 			// delete order only if not resend!!!!
