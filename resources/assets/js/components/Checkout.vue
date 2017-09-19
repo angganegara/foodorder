@@ -229,12 +229,6 @@ export default {
 			localStorage.setItem('address', JSON.stringify(this.$store.state.address))
 		},
 
-		processOrder(ordernumber, result)
-		{
-			let data = { key: API_KEY, order_number: ordernumber, result }
-			return this.$http.post('/payment/process', data)
-		},
-
 		deleteOrder(ordernumber)
 		{
 			let data = { key: API_KEY, order_number: ordernumber }
@@ -291,7 +285,7 @@ export default {
 										// midtrans
 										snap.pay(token, {
 											onSuccess: (result) => {
-												this.finish = true
+												this.$router.push('/thank-you?mt=' + ordernumber)
 											},
 											onPending: (result) => {
 												console.log('pending')
@@ -328,6 +322,7 @@ export default {
 			finish: false,
 			error: false,
 			payment: 'cash',
+			midtrans: false,
 			form: {
 				fname: '',
 				lname: '',

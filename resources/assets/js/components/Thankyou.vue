@@ -16,8 +16,21 @@
 export default {
 	name: 'ThankYou',
 
-	created() {
-		// remove cookie
+	methods:
+	{
+		isMidtransOrder: () => this.$route.query.mt != undefined
+	},
+
+	created()
+	{
+		if (this.isMidtransOrder()) {
+			// do a check again for the final result
+			// if it's still pending, then send a pending email
+			// later cronjob will check and if it's settled, it
+			// will send a new email
+		}
+		// remove cookie regardless
+		/*
 		this.$store.state.cart = []
 		this.$store.state.schedule = []
 		this.$store.state.address = {
@@ -28,7 +41,7 @@ export default {
 		}
 		localStorage.removeItem('cart', '')
 		localStorage.removeItem('schedule', '')
-		localStorage.setItem('address', JSON.stringify(this.$store.state.address))
+		localStorage.setItem('address', JSON.stringify(this.$store.state.address))*/
 	}
 }
 </script>

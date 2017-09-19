@@ -100,27 +100,63 @@ class MidtransHelper
 		}
 	}
 
+	private function checkSignature($req)
+	{
+		$base = $req['order_id'] . $req['status_code'] . $req['gross_amount'] . Midtrans::$serverKey;
+		return (openssl_digest($base, 'sha512') === $req['signature_key']);
+	}
+
 	// to do : rename to save ?
 	public function process(Request $request)
 	{
-		//$json_result = file_get_contents('php://input');
-		//$data = json_decode($json_result);
 		$data = json_decode($request->getContent(), true);
 
-		$orderId = $data['order_id'];
-		if ($orderId != '') {
-			$order = Order::where('order_number', $orderId)->first();
-			$order->trx_type = $data['payment_type'];
-			$order->trx_approval_code = $data['approval_code'];
-			$order->trx_fraud_status = $data['fraud_status'];
-			$order->trx_status_code = $data['status_code'];
-			$order->trx_status_msg  = $data['status_message'];
-			$order->trx_status = $data['transaction_status'];
-			$order->trx_time = $data['transaction_time'];
-			$order->trx_raw  = $request->getContent();
-			$order->save();
+		if (!array_key_exists('order_id', $data)) {
+			return response()->json('ID NOT FOUND', 500);
 		}
 
+		if ($data['order_id'] == '') {
+			return response()->json('ID CANNOT BE BLANK', 500);
+		}
+
+		$orderId = $data['order_id'];
+		$order = Order::where('order_number', $orderId)->firstOrFail();
+
+		// if status code 200, no need to update it again.
+		if ($order->trx_status_code == 200) {
+			exit;
+		}
+
+		// check the secret hash
+		if (!$this->checkSignature($data)) {
+			return response()->json('FORGED REQUEST', 500);
+		} else {
+			return 'OK';
+		}
+
+		$order->trx_type = $data['payment_type'];
+
+		if ($data['payment_type'] == 'credit_card') {
+			$order->trx_approval_code = $data['approval_code'];
+		}
+		
+		$order->trx_id           = $data['transaction_id'];
+		$order->trx_fraud_status = $data['fraud_status'];
+		$order->trx_status_code  = $data['status_code'];
+		$order->trx_status_msg   = $data['status_message'];
+		$order->trx_status       = $data['transaction_status'];
+		$order->trx_time         = $data['transaction_time'];
+		$order->trx_raw          = $request->getContent();
+
+		if (
+			intVal($data['status_code']) == 200
+			&& strtotupper($data['fraud_status']) == 'ACCEPT'
+			&& (strtoupper($data['transaction_status']) == 'CAPTURE' || strtoupper($data['transaction_status']) == 'SETTLEMENT')
+		) {
+			$order->paid = 1;
+		}
+
+		$order->save();
 		return 'OK';
 	}
 }
