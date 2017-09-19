@@ -148,7 +148,7 @@ class MidtransHelper
 
 		if (
 			intVal($data['status_code']) == 200
-			&& strtotupper($data['fraud_status']) == 'ACCEPT'
+			&& strtoupper($data['fraud_status']) == 'ACCEPT'
 			&& (strtoupper($data['transaction_status']) == 'CAPTURE' || strtoupper($data['transaction_status']) == 'SETTLEMENT')
 		) {
 			$order->paid = 1;
