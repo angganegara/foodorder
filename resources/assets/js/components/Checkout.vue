@@ -288,8 +288,7 @@ export default {
 												this.$router.push('/thank-you?mt=' + ordernumber)
 											},
 											onPending: (result) => {
-												console.log('pending')
-												console.log(result)
+												this.$router.push('/thank-you?mt=' + ordernumber)
 											},
 											onError: (result) => {
 												console.log('Error')
