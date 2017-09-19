@@ -130,8 +130,6 @@ class MidtransHelper
 		// check the secret hash
 		if (!$this->checkSignature($data)) {
 			return response()->json('FORGED REQUEST', 500);
-		} else {
-			return 'OK';
 		}
 
 		$order->trx_type = $data['payment_type'];
