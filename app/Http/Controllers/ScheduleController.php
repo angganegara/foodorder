@@ -34,7 +34,9 @@ class ScheduleController extends Controller
         }
         
         $carbon = new Carbon($date);
-		$orders = OrderSchedule::where('date', 'like', '%'. $carbon->format('l, d M Y') .'%')->get();
+		$orders = OrderSchedule::where('date', 'like', '%'. $carbon->format('l, d M Y') .'%')->with('order')->whereHas('order', function ($query) {
+			$query->where('paid', 1);
+		})->get();
         $result = [];
 
         foreach ($orders as $order) {

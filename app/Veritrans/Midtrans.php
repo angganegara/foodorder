@@ -146,59 +146,58 @@ class Midtrans {
 			Midtrans::$serverKey,
 			$params);
 			
-			return $result->token;
-		}
+		return $result->token;
+	}
 		
-		/**
-		* Retrieve transaction status
-		* @param string $id Order ID or transaction ID
-		* @return mixed[]
-		*/
-		public static function status($id)
-		{
-			return Midtrans::get(
-				Midtrans::getBaseUrl() . '/' . $id . '/status',
-				Midtrans::$serverKey,
-				false);
-			}
-			
-			/**
-			* Appove challenge transaction
-			* @param string $id Order ID or transaction ID
-			* @return string
-			*/
-			public static function approve($id)
-			{
-				return Midtrans::post(
-					Midtrans::getBaseUrl() . '/' . $id . '/approve',
-					Midtrans::$serverKey,
-					false)->status_code;
-				}
-				
-				/**
-				* Cancel transaction before it's setteled
-				* @param string $id Order ID or transaction ID
-				* @return string
-				*/
-				public static function cancel($id)
-				{
-					return Midtrans::post(
-						Midtrans::getBaseUrl() . '/' . $id . '/cancel',
-						Midtrans::$serverKey,
-						false)->status_code;
-					}
-					
-					/**
-					* Expire transaction before it's setteled
-					* @param string $id Order ID or transaction ID
-					* @return mixed[]
-					*/
-					public static function expire($id)
-					{
-						return Midtrans::post(
-							Midtrans::getBaseUrl() . '/' . $id . '/expire',
-							Midtrans::$serverKey,
-							false);
-						}
-						
-					}
+	/**
+	* Retrieve transaction status
+	* @param string $id Order ID or transaction ID
+	* @return mixed[]
+	*/
+	public static function status($id)
+	{
+		return Midtrans::get(
+			Midtrans::getBaseUrl() . '/' . $id . '/status',
+			Midtrans::$serverKey,
+			false);
+	}
+	
+	/**
+	* Appove challenge transaction
+	* @param string $id Order ID or transaction ID
+	* @return string
+	*/
+	public static function approve($id)
+	{
+		return Midtrans::post(
+			Midtrans::getBaseUrl() . '/' . $id . '/approve',
+			Midtrans::$serverKey,
+			false)->status_code;
+	}
+	
+	/**
+	* Cancel transaction before it's setteled
+	* @param string $id Order ID or transaction ID
+	* @return string
+	*/
+	public static function cancel($id)
+	{
+		return Midtrans::post(
+			Midtrans::getBaseUrl() . '/' . $id . '/cancel',
+			Midtrans::$serverKey,
+			false)->status_code;
+	}
+	
+	/**
+	* Expire transaction before it's setteled
+	* @param string $id Order ID or transaction ID
+	* @return mixed[]
+	*/
+	public static function expire($id)
+	{
+		return Midtrans::post(
+			Midtrans::getBaseUrl() . '/' . $id . '/expire',
+			Midtrans::$serverKey,
+			false);
+	}	
+}

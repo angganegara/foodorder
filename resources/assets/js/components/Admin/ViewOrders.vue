@@ -32,7 +32,7 @@
 					<tr><th colspan="2" class="th">Payment Information</th></tr>
 					<tr>
 						<td>Payment Method</td>
-						<td class="text-xs-left">{{ form.payment }}</td>
+						<td class="text-xs-left">{{ paymentStatus }}</td>
 					</tr>
 					<tr>
 						<td>Order status</td>
@@ -175,6 +175,12 @@ export default {
 	},
 	computed:
 	{
+		paymentStatus()
+		{
+			return this.form.payment == 'creditcard'
+				? this.form.trx_type
+				: this.form.payment
+		},
 		orderStatus()
 		{
 			let result

@@ -18,7 +18,14 @@ export default {
 
 	methods:
 	{
-		isMidtransOrder: () => this.$route.query.mt != undefined
+		isMidtransOrder()
+		{
+			return this.$route.query.mt != undefined
+		},
+		checkAndSendOrder(order_number)
+		{
+			return this.$http.post('/payment/confirm/'+ order_number)
+		}
 	},
 
 	created()
@@ -28,6 +35,10 @@ export default {
 			// if it's still pending, then send a pending email
 			// later cronjob will check and if it's settled, it
 			// will send a new email
+			let order_number = this.$route.query.mt
+			this.checkAndSendOrder(order_number).then((res) => {
+				console.log(res)
+			})
 		}
 		// remove cookie regardless
 		/*

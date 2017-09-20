@@ -18,13 +18,13 @@
                     <th width="45%">address</th>
 					<th width="10%"></th>
                 </tr>
-                <tr v-for="(s,i) in schedule" v-if="s[typeAddress] != ''" :key="i">
+                <tr v-for="(s,i) in schedule" v-if="s[typeAddress] != ''" :key="i" class="zebra">
 					<td>{{ s.id }}</td>
                     <td><router-link :to="`/admin/orders/${s.id}`">{{ s.name }}</router-link></td>
                     <td>{{ s[typeTime] }}</td>
                     <td>{{ s.menu }}</td>
                     <td v-html="s[typeAddress]"></td>
-					<td class="text-right"><router-link :to="`/admin/orders/${s.id}`"><i class="fa fa-fw fa-eye"></i> View</router-link></td>
+					<td class="text-right"><router-link :to="`/admin/orders/${s.id}`" class="pill"><i class="fa fa-fw fa-eye"></i> View</router-link></td>
                 </tr>
 				<tr v-if="schedule.length <= 0">
 					<td colspan="6">No schedule for today</td>

@@ -128,6 +128,7 @@ class OrderHelper
 		$order->coupon_item = $form['couponItem'];
 		$order->total = 0;
 		$order->confirmed = 0;
+		$order->email_sent = 0;
     	$order->comments = $form['comments'];
     	$order->ip_address = $request->ip();
         $order->address1 = $address['address1'];
@@ -224,7 +225,6 @@ class OrderHelper
 		$email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
 
 		try {
-			/*
 			Mail::send($email_layout, compact('order', 'items', 'that', 'extra'),
 				function ($m) use (
 					$order, $pdf, $pdf_hp, $hp, $pdf_dt, $ay, $pdf_ayu1, $pdf_ayu2,
@@ -233,8 +233,8 @@ class OrderHelper
 					$m
 						->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
 						->to($order->email, $order->fname .' '. $order->lname)
-						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
-						->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
+						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+						//->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
 
 					if ($order->referral == 'balimma') {
 						// bali mma order - cc to roland and bali mma
@@ -308,7 +308,7 @@ class OrderHelper
 						}
 					}
 				}
-			);*/
+			);
 		}
 		catch (\Exception $e) {
 			// delete order only if not resend!!!!
@@ -318,6 +318,10 @@ class OrderHelper
 			// log in
 			return response()->json('CANNOT_SEND_MAIL', 422);
 		}
+
+		// set email flag
+		$order->email_sent = 1;
+		$order->save();
 
 		return 'OK';
 	}

@@ -34,7 +34,7 @@ $app->get('/snaptoken', 'SnapController@token');
 $app->post('/snapfinish', 'SnapController@finish');
 
 $app->post('/payment/approve/{order_number}', 'PaymentController@approveChallenge');
-$app->post('/payment/notification', 'SnapController@notification');
+$app->post('/payment/confirm/{order_number}', 'PaymentController@confirm');
 $app->post('/payment/process', 'PaymentController@process');
 $app->post('/payment/delete', 'PaymentController@deleteOrder');
 $app->post('/checkout/start', 'PaymentController@start');

@@ -3,8 +3,10 @@
 namespace App\Helpers;
 
 use Illuminate\Http\Request;
+
 use App\Veritrans\Midtrans;
 use App\Models\Order;
+use App\Helpers\OrderHelper;
 
 class MidtransHelper
 {
@@ -105,6 +107,11 @@ class MidtransHelper
 		return Midtrans::approve($order_number);
 	}
 
+	public function confirmAndSend($order_number)
+	{
+		return json_encode(Midtrans::status($order_number));
+	}
+
 	private function checkSignature($req)
 	{
 		$base = $req['order_id'] . $req['status_code'] . $req['gross_amount'] . Midtrans::$serverKey;
@@ -112,7 +119,7 @@ class MidtransHelper
 	}
 
 	// to do : rename to save ?
-	public function process(Request $request)
+	public function process(Request $request, OrderHelper $oh)
 	{
 		$data = json_decode($request->getContent(), true);
 
@@ -157,6 +164,8 @@ class MidtransHelper
 			&& (strtoupper($data['transaction_status']) == 'CAPTURE' || strtoupper($data['transaction_status']) == 'SETTLEMENT')
 		) {
 			$order->paid = 1;
+			// send email
+			$this->oh->sendOrder($order->order_number);
 		}
 
 		$order->save();
