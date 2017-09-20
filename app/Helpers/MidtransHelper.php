@@ -100,6 +100,11 @@ class MidtransHelper
 		}
 	}
 
+	public function approveChallenge($order_number)
+	{
+		return Midtrans::approve($order_number);
+	}
+
 	private function checkSignature($req)
 	{
 		$base = $req['order_id'] . $req['status_code'] . $req['gross_amount'] . Midtrans::$serverKey;

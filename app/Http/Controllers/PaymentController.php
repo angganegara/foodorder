@@ -69,6 +69,11 @@ class PaymentController extends Controller
 		return $this->mt->process($request);
 	}
 
+	public function approveChallenge($order_number)
+	{
+		return $this->mt->approveChallenge($order_number);
+	}
+
 	public function deleteOrder(Request $request)
 	{
 		$order = \App\Models\Order::where('order_number', $request->order_number)->first();

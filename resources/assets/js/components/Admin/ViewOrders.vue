@@ -44,6 +44,9 @@
 							<span v-if="orderStatus == 'Challenge'">
 								You need to manually approve this transaction. <a href="#" @click.prevent="approve()">Click here</a> to approve this transaction.
 							</span>
+							<span v-if="orderStatus == 'Expired'">
+								Customer didn't pay the order within the time limit.
+							</span>
 						</td>
 					</tr>
 					<tr><th colspan="2" class="th">Food Preferences</th></tr>
@@ -192,18 +195,13 @@ export default {
 	{
 		approve()
 		{
-			let url = '/' + this.form.order_number + '/approve'
-			axios({
-				method: 'POST',
-				url: url,
-				baseURL: MIDTRANS_API_URL,
-				headers: {
-					'Authorization': 'Basic '+ SERVER_KEY,
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
-				}
-			})
-			.then((res) => this.form.trx_status_code = 200)
+			this.$http
+				.post('/payment/approve/' + this.form.order_number)
+				.then(res => {
+					this.form.trx_status_code = 200
+				}, err => {
+					window.alert('Cannot approve this transaction. Please check this transaction from your Midtrans dashboard.')
+				})
 		},
 		getLocation(type)
 		{
