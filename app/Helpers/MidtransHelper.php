@@ -10,8 +10,11 @@ use App\Helpers\OrderHelper;
 
 class MidtransHelper
 {
-	public function __construct()
+	protected $oh;
+
+	public function __construct(OrderHelper $oh)
 	{
+		$this->oh = $oh;
 		Midtrans::$serverKey = $this->isLocalEnv() ? 'VT-server-mjpwi3r7XlxCqtHHf61DcIy3' : 'live-key';
 		Midtrans::$isProduction = ! $this->isLocalEnv();
 	}
@@ -119,7 +122,7 @@ class MidtransHelper
 	}
 
 	// to do : rename to save ?
-	public function process(Request $request, OrderHelper $oh)
+	public function process(Request $request)
 	{
 		$data = json_decode($request->getContent(), true);
 
