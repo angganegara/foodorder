@@ -32,6 +32,8 @@
     "vuex": "^2.3.1"
   },
   "dependencies": {
+    "axios": "^0.16.2",
+    "jsonp": "^0.2.1",
     "laravel-elixir-browsersync-official": "^1.0.0",
     "moment": "^2.18.1",
     "numeral": "^1.5.6",

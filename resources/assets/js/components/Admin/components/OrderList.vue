@@ -10,28 +10,28 @@
 					<th>ID</th>
 					<th>Date</th>
 					<th>Name</th>
-					<th>Email</th>
 					<th>Phone</th>
 					<th>Referral</th>
 					<th>Payment methods</th>
+					<th>Status</th>
 					<th></th>
 				</tr>
-				<tr v-for="(item, i) in items" :id="`menu-${item.id}`" :key="i">
-					<td>{{ item.id }}</td>
+				<tr v-for="(item, i) in items" :id="`menu-${item.id}`" :key="i" :class="`status-${getOrderStatus(item)}`">
+					<td>{{ item.order_number }}</td>
 					<td>{{ item.date }}</td>
-					<td><b>{{ item.name }}</b></td>
-					<td>{{ item.email }}</td>
+					<td><a :href="`mailto:${item.email}`" target="_blank"><b>{{ item.name }}</b></a></td>
 					<td>{{ item.phone }}</td>
 					<td style="text-transform: uppercase">{{ item.referral }}</td>
-					<td>{{ item.payment }}</td>
+					<td>{{ formatPayment(item) }}</td>
+					<td><a title="" class="pill status">{{ getOrderStatus(item) }}</a></td>
 					<td class="text-xs-right">
 						<router-link :to="`/admin/orders/${item.id}/`" class="pill"><i class="fa fa-fw fa-eye"></i> View</router-link>
-						&nbsp;
 						<template v-if="auth.profile != null && auth.profile.id == 4">
+							&nbsp;
 							<a href="#" title="" @click.prevent="deleteMenu(item.id)" class="pill">Delete</a>
 							&nbsp;
 						</template>
-						<a href="#" title="" @click.prevent="resendOrder(item.order_number)" class="pill" :class="`resend-${item.id}`">
+						<a href="#" title="" @click.prevent="resendOrder(item.order_number)" class="pill" :class="`resend-${item.id}`" v-if="showReminder(item)">
 							<i class="fa fa-fw fa-calendar-check-o"></i> Reminder</a>
 					</td>
 				</tr>
@@ -54,8 +54,46 @@ export default {
 		this.itemLimit = parseInt(this.limit)
 		this.loadOrders()
 	},
-	methods: {
-		loadOrders() {
+	methods:
+	{
+		showReminder(item)
+		{
+			if (item.paid == 0) {
+				if (
+					item.trx_status_code == 202 ||
+					item.trx_status_code == null ||
+					item.trx_status_code == 201
+				) return false
+				return true
+			}
+			return false
+		},
+		getOrderStatus(item)
+		{
+			let result
+			if (item.payment == 'creditcard') {
+				switch (item.trx_status_code) {
+					case 200: result = 'Paid'; break
+					case 201: result = item.trx_type == 'credit_card' ? 'Challenge' : 'Pending'; break
+					case 202: result = 'Expired'; break
+					case '': case null: result ='Aborted'; break
+				}
+			} else {
+				result = 'Paid'
+			}
+			return result
+		},
+		formatPayment(item)
+		{
+			let payment = item.payment
+			let text = payment
+			if (payment == 'creditcard') {
+				text = item.trx_type
+			}
+			return text
+		},
+		loadOrders()
+		{
 			const params = 'limit='+ this.itemLimit +'&sort='+ this.sort +'&order='+ this.order +'pagination=no'
 			this.$http.get('/api/admin/orders?'+ params).then((res) => {
 				this.items = res.body

@@ -29,6 +29,23 @@
 						<td>Phone</td>
 						<td><input type="text" v-model="form.phone" class="form-control form-control-sm"></td>
 					</tr>
+					<tr><th colspan="2" class="th">Payment Information</th></tr>
+					<tr>
+						<td>Payment Method</td>
+						<td class="text-xs-left">{{ form.payment }}</td>
+					</tr>
+					<tr>
+						<td>Order status</td>
+						<td class="text-xs-left">
+							<b>{{ orderStatus }}</b>.
+							<span v-if="orderStatus == 'Paid'">
+								Order is paid and can be sent to customer
+							</span>
+							<span v-if="orderStatus == 'Challenge'">
+								You need to manually approve this transaction. <a href="#" @click.prevent="approve()">Click here</a> to approve this transaction.
+							</span>
+						</td>
+					</tr>
 					<tr><th colspan="2" class="th">Food Preferences</th></tr>
 					<tr>
 						<td>Food Intolerances</td>
@@ -125,6 +142,9 @@
 
 <script>
 var $ = require('jquery')
+var axios = require('axios')
+const MIDTRANS_API_URL = 'https://api.sandbox.midtrans.com/v2'
+const SERVER_KEY = 'VlQtc2VydmVyLW1qcHdpM3I3WGx4Q3F0SEhmNjFEY0l5Mw=='
 
 export default {
 	name: 'ViewOrders',
@@ -150,8 +170,43 @@ export default {
 			}
 		}
 	},
-	methods: {
-		getLocation(type) {
+	computed:
+	{
+		orderStatus()
+		{
+			let result
+			if (this.form.payment == 'creditcard') {
+				switch (this.form.trx_status_code) {
+					case 200: result = 'Paid'; break
+					case 201: result = this.form.trx_type == 'credit_card' ? 'Challenge' : 'Pending'; break
+					case 202: result = 'Expired'; break
+					case '': case null: result ='Aborted'; break
+				}
+			} else {
+				result = 'Paid'
+			}
+			return result
+		}
+	},
+	methods:
+	{
+		approve()
+		{
+			let url = '/' + this.form.order_number + '/approve'
+			axios({
+				method: 'POST',
+				url: url,
+				baseURL: MIDTRANS_API_URL,
+				headers: {
+					'Authorization': 'Basic '+ SERVER_KEY,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+			})
+			.then((res) => this.form.trx_status_code = 200)
+		},
+		getLocation(type)
+		{
             if (type != 'pickup1' && type != 'pickup2') {
                 var outside = `${type}_outside`
                 return this.form[type]
@@ -159,7 +214,8 @@ export default {
                 return type == 'pickup1' ? 'Avocado Cafe' : 'Motion Fitness'
             }
         },
-		saveOrder() {
+		saveOrder()
+		{
 			this.saving = true
 			this.$http
 				.post(`/api/admin/orders/${this.$route.params.id}`, { cart: this.form.ordercart, form: this.form })

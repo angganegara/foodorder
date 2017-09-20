@@ -81,7 +81,7 @@ class MidtransHelper
 		$custom_expiry = array(
 			'start_time' => date("Y-m-d H:i:s O",$time),
 			'unit'       => 'hour', 
-			'duration'   => 2
+			'duration'   => 24
 		);
 		
 		$transaction_data = array(

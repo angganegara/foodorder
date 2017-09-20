@@ -403,9 +403,48 @@ table.sch {
 		text-align: right;
 		padding-right: 1.5rem;
     }
-    tr:nth-child(odd) td {
-        background-color: #f9f9f9;
-    }
+	tr.status-Pending { background-color: lighten(#D8FFF6, 2%) }
+	tr.status-Pending a.pill.status {
+		background-color: darken(#D8FFF6, 20%);
+		border: 1px solid darken(#D8FFF6, 35%);
+	}
+	tr.status-Pending td:first-child { border-left: 5px solid darken(#D8FFF6, 20%); }
+
+	tr.status-Challenge { background-color: #ffface }
+	tr.status-Challenge a.pill.status {
+		background-color: #ffee38;
+		border: 1px solid darken(#ffee38, 15%);
+	}
+	tr.status-Challenge td:first-child { border-left: 5px solid #ffee38; }
+
+	tr.status-Paid { background-color: lighten(#1AA0E6, 42%) }
+	tr.status-Paid a.pill.status {
+		background-color: #1AA0E6;
+		border: 1px solid darken(#1AA0E6, 15%);
+		color: #fff;
+	}
+	tr.status-Paid td:first-child {
+		border-left: 5px solid #1AA0E6;
+	}
+
+	tr.status-Aborted { background-color: lighten(#d61111, 47%) }
+	tr.status-Aborted a.pill.status {
+		background-color: #d61111;
+		border: 1px solid darken(#d61111, 15%);
+		color: #fff;
+	}
+	tr.status-Aborted td:first-child {
+		border-left: 5px solid #d61111;
+	}
+
+	tr.status-Expired a.pill.status {
+		background-color: #eee;
+		border: 1px solid darken(#eee, 15%);
+		color: #BBB;
+	}
+	tr.status-Expired td:first-child {
+		border-left: 5px solid #eee;
+	}
 }
 .coupon-menu {
 	display: flex;
