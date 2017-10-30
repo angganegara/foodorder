@@ -325,7 +325,7 @@ trait PayPalRequest
             'SIGNATURE' => $this->config['signature'],
             'VERSION'   => 123,
             'METHOD'    => $method,
-        ], $this->options);
+		], $this->options);
 
         $this->post = $this->post->merge($config);
         if ($method === 'verifyipn') {

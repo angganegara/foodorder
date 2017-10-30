@@ -122,7 +122,11 @@ class ExpressCheckout
 
         $this->setExpressCheckoutRecurringPaymentConfig($data, $subscription);
 
-        $response = $this->doPayPalRequest('SetExpressCheckout');
+		$response = $this->doPayPalRequest('SetExpressCheckout');
+
+		if ($response['ACK'] == 'Failure') {
+			throw new \Exception($response['L_SHORTMESSAGE0']);
+		}
 
         $response['paypal_link'] = $this->config['gateway_url'].'/webscr?cmd=_express-checkout&token='.$response['TOKEN'];
 

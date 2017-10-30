@@ -164,7 +164,7 @@
 					<div class="col-xs-12 col-md-8">
 						<div class="payment-selection">
 							<label v-if="devmode"><input type="radio" name="payment" v-model="payment" value="creditcard"> <i class="fa fa-fw fa-credit-card"></i> Credit Card / Bank Transfer</label>
-							<label><input type="radio" name="payment" v-model="payment" value="paypal"> <i class="fa fa-fw fa-paypal"></i> PayPal</label>
+							<label style="display: none;"><input type="radio" name="payment" v-model="payment" value="paypal"> <i class="fa fa-fw fa-paypal"></i> PayPal</label>
 							<label><input type="radio" name="payment" v-model="payment" value="cash"> <i class="fa fa-fw fa-motorcycle"></i> Cash to driver / the cafe</label>
 						</div>
 					</div>
