@@ -163,10 +163,18 @@
 					</div>
 					<div class="col-xs-12 col-md-8">
 						<div class="payment-selection">
-							<label><input type="radio" name="payment" v-model="payment" value="creditcard"> <i class="fa fa-fw fa-credit-card"></i> Credit Card / Bank Transfer</label>
+							<label v-if="devmode"><input type="radio" name="payment" v-model="payment" value="creditcard"> <i class="fa fa-fw fa-credit-card"></i> Credit Card / Bank Transfer</label>
 							<label><input type="radio" name="payment" v-model="payment" value="paypal"> <i class="fa fa-fw fa-paypal"></i> PayPal</label>
 							<label><input type="radio" name="payment" v-model="payment" value="cash"> <i class="fa fa-fw fa-motorcycle"></i> Cash to driver / the cafe</label>
 						</div>
+					</div>
+				</div>
+
+				<br>
+				<div class="row section">
+					<div class="hidden-md-down col-md-4"></div>
+					<div class="col-xs-12 col-md-8">
+						<label for="agree"><input type="checkbox" v-model="agree" id="agree"> &nbsp; I agree to the <b><router-link to="/terms-and-conditions">terms and conditions</router-link></b></label>
 					</div>
 				</div>
 
@@ -196,6 +204,11 @@ export default {
 	mixins: [mixin],
 	components: { cart, schedule },
 	props: ['cart'],
+	computed: {
+		devmode() {
+			return window.localStorage.getItem('dev_mode')
+		}
+	},
 	created()
 	{
 		this.$Progress.finish()
@@ -237,6 +250,10 @@ export default {
 
 		checkout()
 		{
+			if (!this.agree) {
+				alert('You must agree to our terms and conditions')
+				return false
+			}
 			this.payment == 'creditcard' ? snap.show() : this.loading = true
 			this.$validator.validateAll()
 
@@ -254,7 +271,7 @@ export default {
 					.then((res) => {
 						var ordernumber = res.data
 						var methods = this.payment
-						
+
 						// ok
 						this.$http
 							.post('/checkout/start', { ordernumber, methods })
@@ -300,7 +317,6 @@ export default {
 								}
 							})
 							.catch((err) => {
-								console.log(err)
 								this.loading = false
 							})
 					})
@@ -322,6 +338,7 @@ export default {
 			error: false,
 			payment: 'cash',
 			midtrans: false,
+			agree: false,
 			form: {
 				fname: '',
 				lname: '',

@@ -15,28 +15,28 @@ class OrderHelper
 	public function urlToDomain($url)
 	{
 		$host = @parse_url($url, PHP_URL_HOST);
-
+		
 		if (!$host)
-			$host = $url;
-
+		$host = $url;
+		
 		if (substr($host, 0, 4) == "www.")
-			$host = substr($host, 4);
-
+		$host = substr($host, 4);
+		
 		return $host;
 	}
-
+	
 	public function getLocation($code, $order)
 	{
 		if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust') {
 			return nl2br($order->{$code});
 		} else {
 			return
-				$code == 'pickup1'      ? 'Motion Cafe' :
-				( $code == 'wanderlust' ? 'Wanderlust Gym'
-				                        : 'Motion Studio' );
+			$code == 'pickup1'      ? 'Motion Cafe' :
+			( $code == 'wanderlust' ? 'Wanderlust Gym'
+			: 'Motion Studio' );
 		}
 	}
-
+	
 	public function isExtraDelivery($code, $order)
 	{
 		if ($code != 'pickup1' && $code != 'pickup2') {
@@ -45,35 +45,35 @@ class OrderHelper
 				return '<br><span style="color: #aaa; font-size: 11px; font-style: italic;">extra delivery</span>';
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	public function calculateExtraDelivery($order)
 	{
 		$found = 0;
-
+		
 		foreach ($order->ordercart as $val) {
 			foreach ($val['schedule'] as $sc) {
 				if ($sc->breakfast_location != '' || $sc->lunch_location != '' || $sc->dinner_location != '') {
 					if ($order->address1_outside) {
 						if ($sc->breakfast_location == 'address1' ||
-							$sc->lunch_location == 'address1' ||
-							$sc->dinner_location == 'address1') {
+						$sc->lunch_location == 'address1' ||
+						$sc->dinner_location == 'address1') {
 							$found += 1;
 						}
 					}
 					if ($order->address2_outside) {
 						if ($sc->breakfast_location == 'address2' ||
-							$sc->lunch_location == 'address2' ||
-							$sc->dinner_location == 'address2') {
+						$sc->lunch_location == 'address2' ||
+						$sc->dinner_location == 'address2') {
 							$found += 1;
 						}
 					}
 				}
 			}
 		}
-
+		
 		return $found;
 	}
 	
@@ -92,36 +92,36 @@ class OrderHelper
 		
 		return $order->paid;
 	}
-
+	
 	public function createOrder($request)
 	{
 		// check referral
-        $url = $this->urlToDomain($request->url());
+		$url = $this->urlToDomain($request->url());
 		$referral = '';
 		
-        if ($url === 'balimma.avocadocafebali.com') {
-            $referral = 'balimma';
-        }
+		if ($url === 'balimma.avocadocafebali.com') {
+			$referral = 'balimma';
+		}
 		if ($url === 'wanderlust.motionfitnessbali.com') {
 			$referral = 'wanderlust';
 		}
-
+		
 		$order = new Order;
 		$total = 0;
-
-    	$form     = $request->form;
-    	$schedule = $request->schedule;
+		
+		$form     = $request->form;
+		$schedule = $request->schedule;
 		$address  = $request->address;
 		
 		$order->order_number = time();
-    	$order->fname = $form['fname'];
-    	$order->lname = $form['lname'];
-    	$order->email = $form['email'];
-    	$order->phone = $form['phone'];
-    	$order->intolerance = $form['intolerancesText'];
-    	$order->allergies = $form['allergiesText'];
-    	$order->dislikefood = $form['dislikefood'];
-    	$order->extraprice = $form['deliveryprice'];
+		$order->fname = $form['fname'];
+		$order->lname = $form['lname'];
+		$order->email = $form['email'];
+		$order->phone = $form['phone'];
+		$order->intolerance = $form['intolerancesText'];
+		$order->allergies = $form['allergiesText'];
+		$order->dislikefood = $form['dislikefood'];
+		$order->extraprice = $form['deliveryprice'];
 		$order->discount = $form['discount'];
 		$order->coupon = $form['coupon'];
 		$order->coupon_value = $form['couponValue'];
@@ -129,64 +129,64 @@ class OrderHelper
 		$order->total = 0;
 		$order->confirmed = 0;
 		$order->email_sent = 0;
-    	$order->comments = $form['comments'];
-    	$order->ip_address = $request->ip();
-        $order->address1 = $address['address1'];
-        $order->address1_outside = 0;
-        $order->address2 = $address['address2'];
-        $order->address2_outside = 0;
+		$order->comments = $form['comments'];
+		$order->ip_address = $request->ip();
+		$order->address1 = $address['address1'];
+		$order->address1_outside = 0;
+		$order->address2 = $address['address2'];
+		$order->address2_outside = 0;
 		$order->referral = $referral;
 		$order->payment = $request->methods;
 		$order->paypal_response = null;
 		$order->total = 0;
-
+		
 		$order->save();
-    	
-        // save cart content
-    	foreach ($request->cart as $cart) {
-
-    		$oc = new OrderCart;
-
-    		$oc->order_id = $order->id;
-    		$oc->item_id = $cart['id'];
-    		$oc->name = $cart['name'];
-    		$oc->subname = $cart['subname'];
-    		$oc->price = $cart['price'];
-    		$oc->type = $cart['type'];
-    		$oc->typeraw = $cart['typeraw'];
-    		$oc->qty = $cart['qty'];
-    		$oc->easysunday = $cart['easysunday'];
-    		$oc->totaldays = intVal($cart['totaldays']);
-
+		
+		// save cart content
+		foreach ($request->cart as $cart) {
+			
+			$oc = new OrderCart;
+			
+			$oc->order_id = $order->id;
+			$oc->item_id = $cart['id'];
+			$oc->name = $cart['name'];
+			$oc->subname = $cart['subname'];
+			$oc->price = $cart['price'];
+			$oc->type = $cart['type'];
+			$oc->typeraw = $cart['typeraw'];
+			$oc->qty = $cart['qty'];
+			$oc->easysunday = $cart['easysunday'];
+			$oc->totaldays = intVal($cart['totaldays']);
+			
 			$oc->save();
 			
 			$total += $cart['price'] * $cart['qty'];
-
-    		foreach ($schedule[$cart['id']] as $sch) {
-    			// save schedule
-    			$sc = new OrderSchedule;
-
-    			$sc->order_id = $order->id;
-    			$sc->item_id = $cart['id'];
-    			$sc->order_carts_id = $oc->id;
-    			$sc->date = $sch['date'];
-    			$sc->breakfast_time = $sch['breakfast'];
-                $sc->breakfast_location = $sch['breakfastLocation'];
-    			$sc->lunch_time = $sch['lunch'];
-                $sc->lunch_location = $sch['lunchLocation'];
-                $sc->dinner_time = $sch['dinner'];
-                $sc->dinner_location = $sch['dinnerLocation'];
-
-    			$sc->save();
-    		}
+			
+			foreach ($schedule[$cart['id']] as $sch) {
+				// save schedule
+				$sc = new OrderSchedule;
+				
+				$sc->order_id = $order->id;
+				$sc->item_id = $cart['id'];
+				$sc->order_carts_id = $oc->id;
+				$sc->date = $sch['date'];
+				$sc->breakfast_time = $sch['breakfast'];
+				$sc->breakfast_location = $sch['breakfastLocation'];
+				$sc->lunch_time = $sch['lunch'];
+				$sc->lunch_location = $sch['lunchLocation'];
+				$sc->dinner_time = $sch['dinner'];
+				$sc->dinner_location = $sch['dinnerLocation'];
+				
+				$sc->save();
+			}
 		}
 		
 		$order->update(['total' => $total]);
-
+		
 		// send order
 		return $order->order_number;
 	}
-
+	
 	public function sendOrder($order_number, $resend=false)
 	{
 		$that = $this;
@@ -220,39 +220,39 @@ class OrderHelper
 		$pdf_dt = rtrim(app()->basePath('public/pdf/detox-questionnaire.pdf'), '/');
 		$pdf_ayu1 = rtrim(app()->basePath('public/pdf/ayurveda-information.pdf'), '/');
 		$pdf_ayu2 = rtrim(app()->basePath('public/pdf/ayurveda-test.pdf'), '/');
-
+		
 		$email_layout = $resend ? 'emails.resend' : 'emails.order';
 		$email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
-
+		
 		try {
 			Mail::send($email_layout, compact('order', 'items', 'that', 'extra'),
-				function ($m) use (
-					$order, $pdf, $pdf_hp, $hp, $pdf_dt, $ay, $pdf_ayu1, $pdf_ayu2,
-					$dtv, $dts, $dtj, $sbd, $cd, $email_subject, $resend
+			function ($m) use (
+				$order, $pdf, $pdf_hp, $hp, $pdf_dt, $ay, $pdf_ayu1, $pdf_ayu2,
+				$dtv, $dts, $dtj, $sbd, $cd, $email_subject, $resend
 				) {
 					$m
-						->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
-						->to($order->email, $order->fname .' '. $order->lname)
-						->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
-						//->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
-
+					->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
+					->to($order->email, $order->fname .' '. $order->lname)
+					->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+					//->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
+					
 					if ($order->referral == 'balimma') {
 						// bali mma order - cc to roland and bali mma
 						$m
-							->bcc('roland@motionfitnessbali.com', 'Roland')
-							->bcc('balitrainingcamp@gmail.com', 'Bali MMA');
+						->bcc('roland@motionfitnessbali.com', 'Roland')
+						->bcc('balitrainingcamp@gmail.com', 'Bali MMA');
 					}
-
+					
 					if ($order->referral == 'wanderlust') {
 						// wanderlust order - cc to ?
 						$m
-							->bcc('jake.j.richards@gmail.com', 'Jake')
-							->bcc('contact@crossfitwanderlust.com', 'Wanderlust Gym')
-							->bcc('roland@motionfitnessbali.com', 'Roland');
+						->bcc('jake.j.richards@gmail.com', 'Jake')
+						->bcc('contact@crossfitwanderlust.com', 'Wanderlust Gym')
+						->bcc('roland@motionfitnessbali.com', 'Roland');
 					}
-
+					
 					$m->subject($email_subject);
-
+					
 					if ($hp > 0) {
 						if (!$resend) {
 							$m->attach($pdf_hp, ['as' => 'High Protein Diet I or II.pdf']);
@@ -318,14 +318,14 @@ class OrderHelper
 			// log in
 			return response()->json('CANNOT_SEND_MAIL', 422);
 		}
-
+		
 		// set email flag
 		$order->email_sent = 1;
 		$order->save();
-
+		
 		return 'OK';
 	}
-
+	
 	public function parseCart($order)
 	{
 		$data = json_decode($order->cart, true);
@@ -354,34 +354,34 @@ class OrderHelper
 				$mealOpt = $pricedata->name;
 				$price = $pricedata->price;
 				$subname = $pricedata->description;
-
+				
 				if ($item['meal'] == 'weekly') {
 					if ($item['easySunday']) {
 						$sundayprice = $food->prices->where('type', 'sunday')->first();
 						$sp = $sundayprice->price;
-
+						
 						$subname = " and Easy Sunday";
 						$price += $sp;
 					}
 				}
-
+				
 				if ($item['meal'] == 'fullday') {
 					// calculate by total days
 					$price = $price * intVal($item['totalDays']);
 				}
 			}
-
+			
 			// if detox
 			if ($food->id == 7) {
 				// detox
 				$food->name = $item['detox'];
 			}
-
+			
 			// if total days > 1
 			if ($item['totalDays'] != '' && $item['totalDays'] > 0) {
 				$item['deliverydates']['date'] = $this->generateDays($item['deliverydates']['date'], $item['totalDays']);
 			}
-
+			
 			$arr[] = [
 				'id'            => $food->id,
 				'name'          => $food->name,
@@ -398,11 +398,11 @@ class OrderHelper
 			];
 			$total += $price * $item['qty'];
 		}
-
+		
 		$arr['total'] = $total;
 		return $arr;
 	}
-
+	
 	public function deleteOrder($order_number)
 	{
 		$order = Order::where('order_number', $order_number)->first();
@@ -412,10 +412,10 @@ class OrderHelper
 		OrderSchedule::where('order_id', $order->id)->delete();
 		// delete order
 		$order->delete();
-
+		
 		return 'OK';
 	}
-
+	
 	public function generateDays($start, $total)
 	{
 		$carbon = new Carbon();
@@ -434,10 +434,10 @@ class OrderHelper
 				$dateCheck = $startdate->addDays($k);
 				$dates[$i] = $dateCheck->format('l, d M Y');
 			}
-
+			
 			return join('. ', $dates);
 		}
-
+		
 		return $carbon;
 	}
 }

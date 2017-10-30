@@ -15,7 +15,7 @@ class MidtransHelper
 	public function __construct(OrderHelper $oh)
 	{
 		$this->oh = $oh;
-		Midtrans::$serverKey = $this->isLocalEnv() ? 'VT-server-mjpwi3r7XlxCqtHHf61DcIy3' : 'live-key';
+		Midtrans::$serverKey = $this->isLocalEnv() ? 'VT-server-mjpwi3r7XlxCqtHHf61DcIy3' : 'VT-server-iP8EOExIbhS4iAHAY9-Z2AHe';
 		Midtrans::$isProduction = ! $this->isLocalEnv();
 	}
 
@@ -61,7 +61,7 @@ class MidtransHelper
 		// generate token by sending cart
 		$midtrans = new Midtrans;
 		$order = Order::where('order_number', $order_number)->with('ordercart')->first();
-		
+
 		$transaction_details = array(
 			'order_id'      => $order_number,
 			'gross_amount'  => $order->total - $order->discount - $order->coupon_value
@@ -85,10 +85,10 @@ class MidtransHelper
 		$time = time();
 		$custom_expiry = array(
 			'start_time' => date("Y-m-d H:i:s O",$time),
-			'unit'       => 'hour', 
+			'unit'       => 'hour',
 			'duration'   => 24
 		);
-		
+
 		$transaction_data = array(
 			'transaction_details'=> $transaction_details,
 			'item_details'       => $items,
@@ -96,11 +96,11 @@ class MidtransHelper
 			'credit_card'        => $credit_card,
 			'expiry'             => $custom_expiry
 		);
-	
+
 		try {
 			$snap_token = $midtrans->getSnapToken($transaction_data);
 			return $snap_token;
-		} catch (Exception $e) {   
+		} catch (Exception $e) {
 			return $e->getMessage;
 		}
 	}
@@ -152,7 +152,7 @@ class MidtransHelper
 		if ($data['payment_type'] == 'credit_card') {
 			$order->trx_approval_code = $data['approval_code'];
 		}
-		
+
 		$order->trx_id           = $data['transaction_id'];
 		$order->trx_fraud_status = $data['fraud_status'];
 		$order->trx_status_code  = $data['status_code'];

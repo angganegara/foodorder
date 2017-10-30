@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600');
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,400i,500');
 
 //$main-color: #a3b955;
 $main-color: #b5e1ed;
@@ -10,12 +10,22 @@ body, html {
 }
 
 body {
-	font-family: 'Source Sans Pro', 'Helvetica', 'Arial';
-	font-size: 14px;
+	font-family: 'Rubik', 'Helvetica', 'Arial';
+	font-size: 13px;
 	color: #333;
 }
 a, a:focus, a:hover { text-decoration: none }
 
+.noscript {
+	width: 100vw;
+	height: 100vh;
+	background-color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	img { display: block; }
+}
 .hidden { display: none }
 img.responsive {
 	max-width: 100%;
@@ -442,9 +452,9 @@ section.home {
 	.item-short-desc {
 		flex-grow: 1;
 		width: 100%;
-		font-size: 13px;
 		font-weight: 400;
 		padding: 0 0px;
+		p { font-size: 13px }
 	}
 
 	.item-buttons {
@@ -557,7 +567,7 @@ section.home {
 		color: #222;
 		display: inline-block;
 		padding: 3px;
-		font-size: 11px;
+		font-size: 13px;
 		background-color: $main-color;
 		&:hover {
 			background-color: #222;
@@ -569,6 +579,7 @@ section.home {
 	span {
 		display: inline-block;
 		padding: 0 6px;
+		font-size: 13px;
 	}
 }
 a.qty {
@@ -877,10 +888,30 @@ table.table-cart {
 	tr:last-child td { border-bottom: 0 }
 	tr.total td {
 		font-weight: bold;
-		font-size: 16px;
+		font-size: 14px;
 	}
 }
 .checkout { padding-top: 120px; }
+.container.terms {
+	padding-top: 140px;
+	padding-bottom: 40px;
+	max-width: 860px;
+
+	h3 {
+		font-family: 'Montserrat';
+		font-size: 14px;
+		margin-top: 1.5rem;
+		margin-bottom: 1rem;
+		display: block;
+		color: #5bc0de;
+		font-weight: normal;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+	p {
+		text-align: justify;
+	}
+}
 
 .table-schedule {
 	width: 100%;
@@ -1142,7 +1173,7 @@ table.table-cart {
 	p {
 		color: rgba(#fff, .7);
 	}
-	.text-md-left a {
+	a {
 		color: rgba(#fff, .5);
 		font-weight: bold;
 		border-bottom: 1px solid $alt-color;
@@ -1192,7 +1223,7 @@ table.table-cart {
 	.form-group label {
 		text-transform: uppercase;
 		font-weight: bold;
-		font-size: 14px;
+		font-size: 13px;
 	}
 	.form-group.radio-only {
 		label {

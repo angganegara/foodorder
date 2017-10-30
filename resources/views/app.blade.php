@@ -38,13 +38,21 @@
 <body>
 	<div id="app"></div>
 	<!-- built files will be auto injected -->
-	<script src="{{ asset('js/app.js?1') }}" type="text/javascript"></script>
+
+	<script src="{{ asset('js/app.js?3') }}" type="text/javascript"></script>
 	@if (env('APP_ENV') == 'local')
 		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
 	@else
-		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
+		<script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="VT-client-0_yAoB6Dgk_JND-Y"></script>
 	@endif
-	
+	<noscript>
+		<div class="noscript">
+			<img src="/images/logo-email.jpg" alt="Motion Cafe Bali">
+			<br>
+			<p>For the best viewing experience, please enable Javascript in your browser.</p>
+		</div>
+	</noscript>
+
 	<script src="/js/datepicker.min.js" type="text/javascript"></script>
 	<script src="/js/datepicker.en.js" type="text/javascript"></script>
 	<script>

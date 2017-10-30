@@ -16,9 +16,9 @@ class PaymentController extends Controller
 
 	public function __construct(MidtransHelper $mt, PaypalHelper $pp, OrderHelper $oh)
 	{
-		$this->mt  = $mt;
-		$this->pp  = $pp;
-		$this->oh  = $oh;
+		$this->mt = $mt;
+		$this->pp = $pp;
+		$this->oh = $oh;
 	}
 
 	public function start(Request $request)

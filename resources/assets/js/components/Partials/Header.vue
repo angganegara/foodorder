@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <a :href="backToLink.href" title="" class="cart-btn main-site" v-html="backToLink.html"></a>
-                <a title="" class="cart-btn" v-show="this.$route.name == 'home' || this.$route.name == 'food'">
+                <a title="" class="cart-btn" v-show="this.$route.name == 'home' || this.$route.name == 'food' || this.$route.name == 'terms'">
                     <div class="cart-title"><i class="fa fa-fw fa-shopping-cart"></i> Your Cart</div>
                     <div class="cart-menu">
                         <mini-cart :cart="cart"></mini-cart>

@@ -67,6 +67,7 @@ const router = new VueRouter({
         { path: '/overview', component: Overview, name: 'overview' },
 		{ path: '/checkout', component: Checkout, name: 'checkout' },
 		{ path: '/thank-you', component: ThankYou, name: 'thankyou' },
+		{ path: '/terms-and-conditions', component: require('./components/Terms.vue'), name: 'terms' },
         { path: '/', component: Home, name: 'home' }
     ],
     scrollBehavior(to, from, savedPosition) {
@@ -103,6 +104,11 @@ var vm = new Vue({
     router,
     render: h => h(App)
 })
+
+// set dev mode
+if (vm.$route.query.dev == 1) {
+	window.localStorage.setItem('dev_mode', true)
+}
 
 // other scripts
 require('./web')

@@ -27,8 +27,11 @@
                             All prices include tax, service and delivery to Kuta/Seminyak/Canggu area.<br>
                             Delivery surcharge of 50,000 IDR/day applies for other areas (e.g. Sanur, Bukit, Ubud, Nusa Dua)<br>
                             All payments must be done on the first day of delivery.<br>
-                            Payment options: cash to driver upon nota receipt, PayPal, bank transfer 
+                            Payment options: cash to driver upon nota receipt, PayPal, Visa, Mastercard, bank transfer
                         </p>
+						<br>
+						<router-link to="/terms-and-conditions#privacy">Privacy Policy</router-link> &middot;
+						<router-link to="/terms-and-conditions#terms">Terms and Conditions</router-link>
                     </div>
                 </div>
             </div>
@@ -38,6 +41,6 @@
 
 <script>
 export default {
-    name: 'app-footer'
-}
+  name: "app-footer"
+};
 </script>
