@@ -153,6 +153,10 @@ class MidtransHelper
 			$order->trx_approval_code = $data['approval_code'];
 		}
 
+		if ($data['payment_type'] == 'bank_transfer') {
+			$data['fraud_status'] = 'ACCEPT';
+		}
+
 		$order->trx_id           = $data['transaction_id'];
 		$order->trx_fraud_status = $data['fraud_status'];
 		$order->trx_status_code  = $data['status_code'];
