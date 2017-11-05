@@ -233,7 +233,7 @@ class OrderHelper
 					$m
 					->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
 					->to($order->email, $order->fname .' '. $order->lname)
-					->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+					->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
 					->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali');
 
 					if ($order->referral == 'balimma') {
