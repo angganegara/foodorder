@@ -7,7 +7,7 @@
 					<li>Orders</li>
 				</ul>
 			</div>
-			<order-list limit="50" sort="id" order="desc" :auth="auth"></order-list>
+			<order-list limit="1000" sort="id" order="desc" :auth="auth"></order-list>
 		</div>
 	</section>
 </template>

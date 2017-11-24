@@ -31,13 +31,14 @@
                     </div>
                     <div class="col-xs-12 col-md-4 flex">
                         <div class="food-price food-text">
-                            <template v-for="price in data.prices">
-                                <div class="flex food-title">
+                            <template v-for="(price, i) in data.prices">
+                                <div class="flex food-title" :key="i">
                                     <h5>{{ price.name }}</h5>
                                     <p class="price">{{ formatPrice(price.price) }} IDR</p>
                                 </div>
-                                <template v-if="price.description"><p class="desc">{{ price.description }}</p></template>
-                                <hr>
+                                <template v-if="price.description"><p class="desc" :key="`desc-${i}`">{{ price.description }}</p></template>
+								<div v-if="freePickupNotice(price)" :key="`w-${i}`" style="font-size: .9em; font-style: italic;">PICK UP YOUR MEALS AT THE MOTION CAFE AND SAVE 100.000 IDR</div>
+                                <hr :key="`hr-${i}`">
                             </template>
                             <p>All prices include tax, service and delivery to Kuta/Seminyak/Canggu area.</p>
                             <p>Delivery surcharge of 50,000 IDR/day applies for other areas (e.g. Sanur, Bukit, Ubud, Nusa Dua)</p>
@@ -55,7 +56,7 @@
                 </div>
                 <div class="row">
                     <template v-if="data.id == 3">
-                        <div class="col-xs food-menus" v-for="menu in menus">
+                        <div class="col-xs food-menus" v-for="(menu, i) in menus" :key="`menu-${i}`">
                             <div class="food-menu food-text">
                                 <h4>{{ menu.day }}</h4>
                                 <div v-html="menu.content"></div>
@@ -63,8 +64,8 @@
                         </div>
                     </template>
                     <br>
-                    <template v-for="file in data.pictures">
-                        <div class="col-xs food-menus">
+                    <template v-for="(file, i) in data.pictures">
+                        <div class="col-xs food-menus" :key="`food-${i}`">
                             <figure><img :src="`/images/foods/${file}`" alt=""></figure>
                         </div>
                     </template>
@@ -116,12 +117,15 @@ export default {
         this.$http.get('/api/foods/'+ this.id).then(function (res) {
             this.data = res.body
             this.loading = false
-		})		
+		})
     },
     methods: {
         formatPrice (price) {
             return numeral(price).format('0,0')
-        }
+		},
+		freePickupNotice(price) {
+			return price.type == 'weekly' && (price.category == 'fitslim' || price.category == 'other' || price.category == 'ketogenic')
+		}
     }
 }
 </script>

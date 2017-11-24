@@ -2,7 +2,7 @@
 	<section>
 		<notification></notification>
 		<div class="page-title">
-			<h2>Recent orders</h2>
+			<h2>All orders</h2>
 		</div>
 		<div class="orders">
 			<table width="100%" class="sch">
