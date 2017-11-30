@@ -37,11 +37,10 @@ export default {
 			// will send a new email
 			let order_number = this.$route.query.mt
 			this.checkAndSendOrder(order_number).then((res) => {
-				console.log(res)
+				//console.log(res)
 			})
 		}
 		// remove cookie regardless
-		/*
 		this.$store.state.cart = []
 		this.$store.state.schedule = []
 		this.$store.state.address = {
@@ -52,7 +51,7 @@ export default {
 		}
 		localStorage.removeItem('cart', '')
 		localStorage.removeItem('schedule', '')
-		localStorage.setItem('address', JSON.stringify(this.$store.state.address))*/
+		localStorage.setItem('address', JSON.stringify(this.$store.state.address))
 	}
 }
 </script>

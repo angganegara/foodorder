@@ -102,6 +102,7 @@ if (!class_exists('PayPal')) {
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
 $app->configure('mail');
 $app->configure('paypal');
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {

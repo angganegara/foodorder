@@ -146,8 +146,8 @@
 <script>
 var $ = require('jquery')
 var axios = require('axios')
-const MIDTRANS_API_URL = 'https://api.sandbox.midtrans.com/v2'
-const SERVER_KEY = 'VlQtc2VydmVyLW1qcHdpM3I3WGx4Q3F0SEhmNjFEY0l5Mw=='
+const MIDTRANS_API_URL = 'https://api.midtrans.com/v2'
+const SERVER_KEY = 'VT-server-iP8EOExIbhS4iAHAY9-Z2AHe'
 
 export default {
 	name: 'ViewOrders',

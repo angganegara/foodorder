@@ -420,13 +420,13 @@ table.sch {
 	}
 	tr.status-Challenge td:first-child { border-left: 5px solid #ffee38; }
 
-	tr.status-Paid { background-color: lighten(#1AA0E6, 42%) }
-	tr.status-Paid a.pill.status {
+	tr.status-Paid, tr.status-Cash { background-color: lighten(#1AA0E6, 42%) }
+	tr.status-Paid a.pill.status, tr.status-Cash a.pill.status {
 		background-color: #1AA0E6;
 		border: 1px solid darken(#1AA0E6, 15%);
 		color: #fff;
 	}
-	tr.status-Paid td:first-child {
+	tr.status-Paid td:first-child, tr.status-Cash td:first-child {
 		border-left: 5px solid #1AA0E6;
 	}
 
