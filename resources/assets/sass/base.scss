@@ -16,6 +16,12 @@ body {
 }
 a, a:focus, a:hover { text-decoration: none }
 
+.icon-7 { fill: red }
+.icon-7:hover, .icon-8:hover, .icon-9:hover,
+.icon-10:hover, .icon-11:hover, .icon-12:hover {
+    fill: #b6e3f0
+}
+
 .noscript {
 	width: 100vw;
 	height: 100vh;
@@ -639,6 +645,45 @@ a.qty {
 	}
 }
 
+.icon-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h2 {
+        font-size: 15px;
+        margin-top: 21px;
+    }
+    a {
+        text-align: center;
+        color: #444;
+        display: block;
+        padding: 16px;
+        border: 1px solid transparent;
+    }
+    a.active, a:hover {
+        background-color: #b6e3f0;
+        border: 1px solid darken(#b6e3f0, 10%)
+    }
+}
+
+a.detox-pdf {
+    margin-right: auto;
+    display: inline-block;
+    margin-bottom: 9px;
+    padding: 3px 10px;
+    border: 1px solid $main-color;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #222;
+    transition: .2s ease all;
+    &:hover {
+        background-color: $main-color;
+        color: #fff;
+    }
+}
 .page-title {
 	display: flex;
 	flex-wrap: wrap;
@@ -660,23 +705,6 @@ a.qty {
 	}
 	h3 {
 		font-size: 16px
-	}
-	a.detox-pdf {
-		margin-right: auto;
-		display: inline-block;
-		margin-left: 15px;
-		margin-bottom: 9px;
-		padding: 3px 10px;
-		border: 1px solid $main-color;
-		border-radius: 3px;
-		text-transform: uppercase;
-		font-size: 12px;
-		color: #222;
-		transition: .2s ease all;
-		&:hover {
-			background-color: $main-color;
-			color: #fff;
-		}
 	}
 }
 .page-subtitle.first {
@@ -707,6 +735,16 @@ a.qty {
 }
 
 
+.products {
+    margin-top: 18px;
+    h2 {
+        font-size: 18px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+    }
+}
 .food-page { padding-top: 120px }
 .food-page .page-title {
 	padding-top: 10px;
@@ -1300,4 +1338,43 @@ table.table-cart {
 	100% {
 		transform: rotate(1turn);
 	}
+}
+
+
+.agile {
+    position: relative;
+    margin-bottom: 16px;
+}
+.agile__arrow svg {
+    fill: #222!important;
+    height: 16px!important;
+}
+.agile__list {
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: 100%;
+}
+.agile__arrow--prev {
+    left: 0;
+}
+.agile__arrow--next {
+    right: 0;
+}
+
+.agile__arrow {
+    border: none;
+    bottom: -10px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    transition-duration: .3s;
+}
+.agile__arrow {
+    background-color: #b5e1ed;
+    padding: 18px!important;
+    bottom: 44%!important;
+    cursor: pointer;
 }

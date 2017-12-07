@@ -9,7 +9,7 @@
                     <div class="col-xs-12 col-md-12 flex">
                         <figure><router-link to="/"><img src="/images/logo.png" alt="Motion Fitness Bali" class="logo"></router-link></figure>
                         <h1 class="logo-title">
-                            HEALTHY MEAL PLANS FOR DELIVERY
+                            MEAL PLANS TO REACH YOUR GOALS
                         </h1>
                     </div>
                 </div>

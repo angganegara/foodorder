@@ -2,16 +2,15 @@
 	<section class="home">
 		<div class="container intro">
 			<div class="inner">
-				<figure><img src="/images/bg.jpg" alt=""></figure>
+                <agile :infinite="true" :autoplay="true" :speed="750" :dots="false" :fade="true">
+                    <div class="slide"><img src="/images/slide.jpg"></div>
+                    <div class="slide"><img src="/images/slide2.jpg"></div>
+                </agile>
+				<h1>FITNESS FOOD & MORE</h1>
 				<p>
-					The best solution for an overall healthy body is the combination of fitness and nutrition. We need to be
-					active and eat the right food. Preparing and cooking can be stressful and needs a lot of time. With our food
-					delivery service you not only save your valid time, but also get the best nutrition for your body.
-				</p>
-				<p>
-					Choose your preferred diet, our weekly changing menu or even get a customised diet, personally tailored for you.
-					All our dishes are rich in vitamins and minerals and balanced in their combination of ingredients. Fresh, organic,
-					high quality food, easy delivered wherever you are.
+					Clean eating, designed for optimal nutrition delivered to your home or office.<br>
+					100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.<br>
+					All Motion Meals are available as Vegan / Vegetarian / Gluten Free option upon request.
 				</p>
 				<div class="drop-down">
 					<a href="#" @click.prevent="openDropdown()" class="title">

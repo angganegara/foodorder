@@ -1,12 +1,18 @@
 <template>
-    <div class="item-wrap">
-		<wanderlust></wanderlust>
-
-        <template v-if="products" v-for="(c, i) in products">
-            <div class="page-title" :key="`title-${i}`">
-                <h2>{{ c.title }}</h2>
-                <a href="/pdf/FAQ-about-Detox.pdf" target="_blank" class="detox-pdf" v-if="c.id == 3"><i class="fa fa-file-pdf-o"></i> &nbsp; FAQ about Detox</a>
+    <div class="item-wrap" v-if="products">
+        <div class="row">
+            <div v-for="(c, i) in products" :key="i" class="col-xs-4 col-sm-4 col-lg-2">
+                <div class="icon-title" :key="`title-${i}`">
+                    <a href="javascript:" @click.prevent="setActive(c.id)" :class="isActive(c.id) ? 'active' : ''">
+                        <img :src="`/images/icons/${c.id}.svg`" style="height: 135px;">
+                        <h2>{{ c.title }}</h2>
+                    </a>
+                </div>
             </div>
+        </div>
+        <div v-for="(c, i) in products" :key="i" class="products" v-show="isActive(c.id)">
+            <h2>{{ c.title }}</h2>
+            <a href="/pdf/FAQ-about-Detox.pdf" target="_blank" class="detox-pdf" v-if="c.id == 10"><i class="fa fa-file-pdf-o"></i> &nbsp; FAQ about Detox</a>
             <div class="row items" v-if="! loading" :key="i">
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 item-thumbs" v-for="product in c.diets" :key="product.id">
                     <router-link :to="'/'+ product.slug +'/'+ product.id" class="figure diet-info">
@@ -35,26 +41,33 @@
                     </div>
                 </div>
             </div>
-        </template>
+        </div>
     </div>
 </template>
 
 <script>
 import mixin from '../mixins'
-import WeeklyMenu from './Home/WeeklyMenu.vue'
-import Wanderlust from './Home/Wanderlust.vue'
 
 let date = new Date()
 export default {
     name: 'Items',
     mixins: [mixin],
-	components: { 'weekly': WeeklyMenu, 'wanderlust' : Wanderlust },
 
     data () {
         return {
+            activeId: null,
             products: [],
             loading: true,
             date: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
+        }
+    },
+
+    methods: {
+        setActive(id) {
+            this.activeId === id ? this.activeId = null : this.activeId = id
+        },
+        isActive(id) {
+            return this.activeId === id
         }
     },
 

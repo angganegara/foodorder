@@ -10,8 +10,11 @@ import Home from './components/Home.vue'
 import Admin from './components/Admin/Admin.vue'
 import auth from './helpers/auth.js'
 import Notification from './components/Notification.vue'
+import VueAgile from 'vue-agile'
 
 import VueRouter from 'vue-router'
+
+Vue.use(VueAgile)
 Vue.use(VueRouter);
 
 import Overview from './components/Overview.vue'

@@ -89,7 +89,18 @@
 				height: 100%;
 			}
 		}
-	}
+    }
+    .icon-title {
+        a {
+            padding: 8px;
+        }
+        a img {
+            display: block;
+            height: 55px !important;
+            margin: 0 auto;
+        }
+        h2 { font-size: 14px; }
+    }
 	section.home {
 		padding-top: 135px;
 		.inner {
