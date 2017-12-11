@@ -70,53 +70,9 @@
 							<p class="text-danger" v-if="errors.has('phone')">{{ errors.first('phone') }}</p>
 						</fieldset>
 					</div>
-					<div class="col-xs-6 offset-md-4 col-md-4">
-						<fieldset class="form-group radio-only">
-							<label class="single">Food Intolerances <span class="required">*</span></label>
-							<label for="intolerances-yes">
-								<input id="intolerances-yes" type="radio" v-validate data-vv-rules="required|in:Yes,No" v-model="form.intolerances" name="intolerances" data-vv-as="selection" value="Yes">
-								&nbsp;&nbsp;Yes
-							</label>
-							&nbsp;&nbsp;
-							<label for="intolerances-no">
-								<input id="intolerances-no" type="radio" v-model="form.intolerances" name="intolerances" value="No">&nbsp;&nbsp;No
-							</label>
-							<p class="text-danger" v-if="errors.has('intolerances')">{{ errors.first('intolerances') }}</p>
-							<div v-if="form.intolerances == 'Yes'" class="extra-field">
-								<textarea type="text" v-validate.initial="form.intolerancesText" data-vv-rules="required" data-vv-as="Field"
-								:class="{'form-control': true, 'is-danger': errors.has('form.intolerancesText') }" placeholder="Please enter" v-model="form.intolerancesText" rows="5"></textarea>
-								<p class="text-danger" v-if="errors.has('form.intolerancesText')">{{ errors.first('form.intolerancesText') }}</p>
-							</div>
-						</fieldset>
-					</div>
-					<div class="col-xs-6 col-md-4">
-					   <fieldset class="form-group radio-only">
-							<label class="single">Food Allergies <span class="required">*</span></label>
-							<label for="allergies-yes">
-								<input id="allergies-yes" type="radio" v-validate data-vv-rules="required|in:Yes,No" v-model="form.allergies" data-vv-as="selection" name="allergies" value="Yes">
-								&nbsp;&nbsp;Yes
-							</label>
-							&nbsp;&nbsp;
-							<label for="allergies-no">
-								<input id="allergies-no" type="radio" v-model="form.allergies" name="allergies" value="No">&nbsp;&nbsp;No
-							</label>
-							<p class="text-danger" v-if="errors.has('allergies')">{{ errors.first('allergies') }}</p>
-							<div v-if="form.allergies == 'Yes'" class="extra-field">
-								<textarea type="text" v-validate.initial="form.allergiesText" data-vv-rules="required" data-vv-as="Field"
-								:class="{'form-control': true, 'is-danger': errors.has('form.allergiesText') }" placeholder="Please enter" v-model="form.allergiesText" rows="5"></textarea>
-								<p class="text-danger" v-if="errors.has('form.allergiesText')">{{ errors.first('form.allergiesText') }}</p>
-							</div>
-						</fieldset>
-					</div>
-					<div class="col-xs-12 offset-md-4 col-md-8">
-						<fieldset class="form-group">
-							<label for="dislikefood">Food I don't like</label>
-							<textarea class="form-control" placeholder="Please enter" v-model="form.dislikefood" rows="5"></textarea>
-						</fieldset>
-					</div>
 				</div>
 
-				<h4 class="no-pad">CART OVERVIEW</h4>
+				<h4 class="no-pad">ORDER OVERVIEW</h4>
 				<div class="row section">
 					<div class="hidden-md-down col-md-4">
 						<p class="lp">
@@ -145,12 +101,11 @@
 				<div class="row section">
 					<div class="hidden-md-down col-md-4">
 						<p class="lp">
-							Any special request we should be aware of?
-							Feel free to write some comments here.
+							Any special requests we should be aware of? Please let us know if you prefer your meal plan vegan/vegetarian/gluten-free/dairy-free. Any food you don’t like?
 						</p>
 					</div>
 					<div class="col-xs-12 col-md-8">
-						<textarea name="comments" class="form-control" rows="10" v-model="form.comments"></textarea>
+						<textarea name="comments" class="form-control" rows="10" v-model="form.comments" placeholder="feel free to write some comments here"></textarea>
 					</div>
 				</div>
 
@@ -185,7 +140,7 @@
 					</router-link>
 					&nbsp;
 					<a href="#" @click.prevent="checkout" class="button yellow big" v-if="this.cartState.length > 0">
-						send order <i class="fa fa-fw fa-angle-right"></i>
+						<b>send order <i class="fa fa-fw fa-angle-right"></i></b>
 					</a>
 				</div>
 			</form>
@@ -346,14 +301,9 @@ export default {
 				phone: '',
 				comments: '',
 				terms: false,
-				intolerances: '',
-				intolerancesText: '',
 				coupon: '',
 				couponValue: 0,
 				couponItem: '',
-				allergies: '',
-				allergiesText: '',
-				dislikefood: '',
 				deliveryprice: 0,
 				totaldays: 0,
 				discount: 0,

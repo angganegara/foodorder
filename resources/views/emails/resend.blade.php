@@ -79,28 +79,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td width="50%" align="left" valign="top" style="padding: 10px 20px; border-bottom: 1px solid #eee">
-                                    <p style="font-size: 12px; margin-bottom: 0">
-                                        <span style="color: #222; text-transform: uppercase; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px">Food intolerances</span>
-                                        {{ $order->intolerance == '' ? 'none' : $order->intolerance }}
-                                    </p>
-                                </td>
-                                <td width="50%" align="left" valign="top" style="padding: 10px 20px; border-bottom: 1px solid #eee">
-                                    <p style="font-size: 12px; margin-bottom: 0">
-                                        <span style="color: #222; text-transform: uppercase; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px">Food allergies</span>
-                                        {{ $order->allergies == '' ? 'none' : $order->allergies }}
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="100%" colspan="2" align="left" valign="top" style="padding: 10px 20px; border-bottom: 1px solid #eee">
-                                    <p style="font-size: 12px; margin-bottom: 0">
-                                        <span style="color: #222; text-transform: uppercase; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px">Foods I don't like</span>
-                                        {{ $order->dislikefood == '' ? 'none' : $order->dislikefood }}
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td width="100%" colspan="2" align="left" valign="top" style="padding: 10px 20px; border-bottom: 1px solid #eee">
                                     <p style="font-size: 12px; margin-bottom: 0">
                                         <span style="color: #222; text-transform: uppercase; font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px">Comments</span>

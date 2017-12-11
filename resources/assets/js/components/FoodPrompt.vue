@@ -61,7 +61,7 @@
                             <td>{{ formatNumber(getSingleMealPrice(product.prices)) }} IDR</td>
                         </tr>
                         <template v-if="form.mealOpt == 'singlemeal'" v-for="price in product.prices">
-                            <tr v-if="isSingleMeal(price)">
+                            <tr v-if="isSingleMeal(price)" :key="price.id">
                                 <td width="10%">
                                     <input
                                         v-model="form.singleMealOpt[price.type]"
@@ -112,11 +112,9 @@
                         <template v-else>
                             <input type="text" v-model="form.deliveryDates" class="date-ui form-control-sm form-control" data-language="en" placeholder="click to select date" readonly>
                             <br>
-                            <div class="food-info"><p>Please note that you need to order 24hrs in advance to ensure the best quality and service. The last possible order for the following week must be place before 17:00 on Saturdays.</p></div>
-                            <br>
                         </template>
                         <div style="display: flex; justify-content: space-between">
-                            <button class="button yellow" @click.prevent="addItem(product)">add to cart</button>
+                            <button class="button btn-cart" @click.prevent="addItem(product)">ORDER NOW</button>
                         </div>
                     </div>
                 </template>
@@ -202,7 +200,7 @@ export default {
         hasSingleMeals(product) {
             const prices = product.prices
             if (prices) {
-                return prices.map((val) => {
+                return prices.filter((val) => {
                     return val.type == 'breakfast' || val.type == 'lunch' || val.type == 'dinner'
                 }).length
             }

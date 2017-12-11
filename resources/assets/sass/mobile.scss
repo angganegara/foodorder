@@ -40,7 +40,7 @@
 			padding: .5rem 0;
 		}
 		a.cart-btn {
-			top: 79px;
+			top: 53px;
 			right: 0;
 			div.cart-title {
 				padding: 10px;
@@ -73,6 +73,7 @@
 }
 
 @include phone {
+    .mobile-hide { display: none }
 	a.main-site {
 		top: 0 !important;
 		width: 160px;
@@ -106,9 +107,26 @@
 		.inner {
 			padding-top: 0;
 			h1 { font-size: 18px }
-			p { font-size: 13px }
+            p { font-size: 13px }
+            .intro-subtitle {
+                font-size: 14px;
+                padding: .75rem;
+            }
 		}
-	}
+    }
+    .hiw {
+        padding: .75rem;
+        .box {
+            flex-basis: 100%;
+            margin-bottom: 1rem;
+        }
+    }
+    .popup-hiw {
+        overflow-y: scroll;
+    }
+    .popup-hiw-flex {
+        margin: 1em;
+    }
 	.overview { padding-top: 128px }
 	.food-page { padding-top: 128px; }
 	.page-title {

@@ -11,7 +11,7 @@
             </router-link>
             &nbsp;
             <button class="button yellow big" v-if="this.cartState.length > 0" @click.prevent="checkSchedule()">
-                continue <i class="fa fa-fw fa-angle-right"></i>
+                <b>continue <i class="fa fa-fw fa-angle-right"></i></b>
             </button>
         </div>
     </div>

@@ -13,7 +13,7 @@
                     <i class="fa fa-fw fa-angle-left"></i> back
                 </router-link>
                 <button class="button primary" v-if="! isAdded(this.id)" @click="showPopup(data)">
-                    <i class="fa fa-fw fa-plus"></i> add to cart
+                    <i class="fa fa-fw fa-plus"></i> order now
                 </button>
                 <button class="button primary" v-else>
                     <i class="fa fa-fw fa-check"></i> already in cart
@@ -37,13 +37,11 @@
                                     <p class="price">{{ formatPrice(price.price) }} IDR</p>
                                 </div>
                                 <template v-if="price.description"><p class="desc" :key="`desc-${i}`">{{ price.description }}</p></template>
-								<div v-if="freePickupNotice(price)" :key="`w-${i}`" style="font-size: .9em; font-style: italic;">PICK UP YOUR MEALS AT THE MOTION CAFE AND SAVE 100.000 IDR</div>
+								<div v-if="freePickupNotice(price) && 1 == 2" :key="`w-${i}`" style="font-size: .9em; font-style: italic;">PICK UP YOUR MEALS AT THE MOTION CAFE AND SAVE 100.000 IDR</div>
                                 <hr :key="`hr-${i}`">
                             </template>
-                            <p>All prices include tax, service and delivery to Kuta/Seminyak/Canggu area.</p>
-                            <p>Delivery surcharge of 50,000 IDR/day applies for other areas (e.g. Sanur, Bukit, Ubud, Nusa Dua)</p>
-                            <p>All payments must be done on the first day of delivery.</p>
-                            <p>Payment options: cash to driver upon nota receipt, PayPal, bank transfer</p>
+                            <br>
+                            <a href="#" class="button btn-cart" @click.prevent="openHIW()">HOW IT WORKS</a>
                         </div>
                     </div>
                 </div>
@@ -125,7 +123,10 @@ export default {
 		},
 		freePickupNotice(price) {
 			return price.type == 'weekly' && (price.category == 'fitslim' || price.category == 'other' || price.category == 'ketogenic')
-		}
+        },
+        openHIW() {
+            this.$parent.popupHIW = true
+        }
     }
 }
 </script>

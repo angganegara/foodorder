@@ -1,5 +1,6 @@
 <template>
     <div class="item-wrap" v-if="products">
+        <h1>CHOOSE YOUR MEAL PLAN</h1>
         <div class="row">
             <div v-for="(c, i) in products" :key="i" class="col-xs-4 col-sm-4 col-lg-2">
                 <div class="icon-title" :key="`title-${i}`">
@@ -32,8 +33,8 @@
                         <router-link :to="'/'+ product.slug +'/'+ product.id" class="btn diet-info btn-sm btn-motion">
                             <i class="fa fa-fw fa-eye"></i> <span>DETAILS</span>
                         </router-link>
-                        <a href="javascript:;" @click="showPopup(product)" v-if="! isAdded(product.id)" title="" class="btn-diet btn btn-sm btn-info pull-right">
-                            <i class="fa fa-fw fa-plus"></i> <span>ADD TO CART</span>
+                        <a href="javascript:;" @click="showPopup(product)" v-if="! isAdded(product.id)" title="" class="btn-diet btn btn-sm btn-cart pull-right">
+                            <i class="fa fa-fw fa-plus"></i> <span>ORDER NOW</span>
                         </a>
                         <a href="javascript:;" class="btn-diet btn btn-sm btn-success pull-right" @click="removeItem(product)" v-else>
                             <i class="fa fa-fw fa-check"></i> <span>ADDED</span>

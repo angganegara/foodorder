@@ -1,19 +1,20 @@
 <template>
     <span>
         <label>
+			<input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="wanderlust" @click="update('e')">
+            Wanderlust Gym
+		</label>
+        &nbsp;&middot;&nbsp;
+        <label>
             <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="pickup1" @click="update('a')">
             Motion Cafe
         </label>
         &nbsp;&middot;&nbsp;
-        <label v-if="this.category != 6">
+        <label>
             <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="pickup2" @click="update('b')">
             Motion Studio
         </label>
-		<label v-else>
-			<input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="wanderlust" @click="update('e')">
-            Wanderlust Gym
-		</label>
-        <template v-if="this.address.address1 != undefined && this.address.address1.length > 0">
+		<template v-if="this.address.address1 != undefined && this.address.address1.length > 0">
             &nbsp;&middot;&nbsp;
             <label>
                 <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="address1" @click="update('c')">

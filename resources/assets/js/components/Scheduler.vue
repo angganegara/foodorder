@@ -10,7 +10,7 @@
                     <ul>
                         <li>Please insert desired delivery address in the fields on the right. We give a choice of 2 different addresses</li>
                         <li>get a discount of 100,000 IDR on your weekly menu if you solely choose our pick up stations at Motion Cafe or Motion Studio (fix pick-up times)</li>
-                        <li>Delivery Times: 07:30 - 21:45, allow a margin of +/- 15 min.</li>
+                        <li>Delivery Times: 07:30 - 20:30, allow a margin of +/- 15 min.</li>
                         <li>Delivery Days: Mondays to Saturdays. No delivery service on Sundays</li>
                     </ul>
                 </div>
@@ -53,25 +53,23 @@
             <br>
 
             <template v-for="(product, i) in cart" v-if="product.qty > 0">
-                <div class="delivery">
+                <div class="delivery" :key="product.id">
                     <div class="delivery-title">
                         <h2>
                             {{ product.name }} {{ product.subname }}
                         </h2>
                         <span>{{ subtitle(product) }}</span>
                     </div>
-					<br>
-					<div class="delivery-title">
+					<br class="mobile-hide">
+					<div class="delivery-title delivery-station">
 						<p>Set all pickup location for this meal to: </p>
 						<div>
+                            <label><a @click.prevent="selectAll('wanderlust', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Wanderlust Gym</a></label>
+							&nbsp;&middot;&nbsp;
 							<label><a @click.prevent="selectAll('pickup1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
 							&nbsp;&middot;&nbsp;
-							<template v-if="product.category_id == 6">
-								<label><a @click.prevent="selectAll('wanderlust', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Wanderlust Gym</a></label>
-							</template>
-							<template v-else>
-								<label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
-							</template>
+							<label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
+
 							<template v-if="address.address1">
 								&nbsp;&middot;&nbsp;
 								<label><a @click.prevent="selectAll('address1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
@@ -83,22 +81,13 @@
 						</div>
 					</div>
                     <div class="delivery-body">
-						
+
                         <template v-if="product.schedule" v-for="(s, key) in product.schedule">
-                            <div class="delivery-days">
+                            <div class="delivery-days" :key="s.id">
                                 <span>{{ s.date }}</span>
-								<!--
-								<label><a @click.prevent="selectAll('pickup1', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
-								&nbsp;&middot;&nbsp;
-								<label><a @click.prevent="selectAll('pickup2', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>
-								&nbsp;&middot;&nbsp;
-								<label><a @click.prevent="selectAll('address1', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Address A</a></label>
-								&nbsp;&middot;&nbsp;
-								<label><a @click.prevent="selectAll('address2', product.id, key)" href="#"><i class="fa fa-fw fa-check"></i> Address B</a></label>
-								-->
                             </div>
                             <template>
-                                <div class="delivery-type">
+                                <div class="delivery-type" :key="s.id">
                                     <div class="cell" v-if="isSpecialDetox(product)">
                                         <span>Select your delivery time</span>
                                         <span></span>

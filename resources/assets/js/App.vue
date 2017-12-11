@@ -3,10 +3,16 @@
 		<app-header :popup="popup" :cart="cart"></app-header>
 		<div class="popup-map on" v-show="popupMap" @click="closePopupMap">
 			<div class="popup-map-close">
-				click anywhere to close the popup
+				click anywhere to close the map
 			</div>
 			<div class="popup-map-flex">
 				<img src="/images/map.jpg?1" alt="">
+			</div>
+		</div>
+
+        <div class="popup-hiw on" v-show="popupHIW">
+			<div class="popup-hiw-flex">
+				<how-it-works level="1" :popup="true"></how-it-works>
 			</div>
 		</div>
 
@@ -42,6 +48,7 @@
 <script>
 import AppHeader from './components/Partials/Header.vue'
 import AppFooter from './components/Partials/Footer.vue'
+import HowItWorks from './components/HowItWorks.vue'
 import mixin from './mixins'
 import moment from 'moment'
 var $ = require('jquery')
@@ -49,11 +56,12 @@ var $ = require('jquery')
 export default {
 	name: 'App',
 	mixins: [mixin],
-	components: { AppHeader, AppFooter },
+	components: { AppHeader, AppFooter, HowItWorks },
 	data() {
 		return {
 			cart: {},
-			popupMap: false
+            popupMap: false,
+            popupHIW: false
 		}
 	},
 	mounted() {
@@ -66,15 +74,15 @@ export default {
 				let meta = to.meta.progress
 				this.$Progress.parseMeta(meta)
 			}
-			
+
 			this.$Progress.start()
 			next()
 		})
-		
+
 		this.$router.afterEach((to, from) => {
 			this.$Progress.finish()
 		})
-		
+
 		this.$store.dispatch('loadCart').then((res) => {
 			this.calculateCart()
 		})
@@ -93,6 +101,9 @@ export default {
 	methods: {
 		closePopupMap() {
 			this.popupMap = false
+        },
+        closePopupHIW() {
+			this.popupHIW = false
 		},
 		calculateCart() {
 			this.$http.post('/api/calculate-cart', this.cartState).then((res) => {
