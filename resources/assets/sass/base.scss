@@ -234,7 +234,8 @@ section.home .inner .drop-down h1 {
 	position: relative;
 	position: fixed;
 	z-index: 5;
-	background-color: #000;
+    background-color: #000;
+    backface-visibility: hidden;
 }
 .header {
 	background-color: #000;
@@ -319,7 +320,6 @@ section.home .inner .drop-down h1 {
 			background-color: #fff;
 			width: 350px;
 			text-transform: none;
-			font-family: 'Source Sans Pro';
 			font-size: 12px;
 		}
 	}
@@ -349,20 +349,30 @@ section.home {
         }
         h1.intro-title {
             text-transform: uppercase;
-            font-size: 24px;
+            font-size: 32px;
+            letter-spacing: 1px;
+            margin: 1.5rem 0;
             font-weight: bold;
             text-align: center;
             color: darken(#b5e1ed, 5%);
         }
         .intro-subtitle {
-            padding: 1.5rem;
-            border: 1px solid #b5e1ed;
             text-align: center;
             font-weight: bold;
             font-size: 16px;
             //max-width: 680px;
             line-height: 1.8;
             margin: 1rem auto 0 auto;
+        }
+        .intro-big {
+            font-size: 20px;
+            text-align: center;
+        }
+        .intro-box {
+            display: inline-block;
+            padding: .75rem;
+            border: 1px solid #b5e1ed;
+            text-align: center;
         }
 		h1:not(.intro-title) {
 			text-transform: uppercase;
@@ -405,9 +415,9 @@ section.home {
         display: block;
         margin: 1rem 0;
         text-align: center;
+        color: #a0d9e8;
     }
 	h3 {
-
 		margin-bottom: 15px;
 		padding: 0;
 		font-size: 18px;
@@ -467,6 +477,7 @@ section.home {
         font-weight: bold;
         display: block;
         margin: 0 0 1.5rem 0;
+        color: #a0d9e8;
         text-align: center;
         flex-basis: 100%;
         flex-grow: 1;
@@ -654,7 +665,6 @@ section.home {
 			a.empty-cart {
 				text-transform: none;
 				font-weight: 400;
-				font-family: 'Source Sans Pro', Helvetica, sans-serif;
 				display: inline-block;
 				margin-top: 5px;
 				font-size: 12px;
@@ -774,6 +784,7 @@ a.qty {
     h2 {
         font-size: 15px;
         margin-top: 21px;
+        font-weight: bold;
     }
     a {
         text-align: center;
@@ -788,6 +799,9 @@ a.qty {
     }
 }
 
+.checkout-box {
+    margin-top: 1.5rem;
+}
 a.detox-pdf {
     margin-right: auto;
     display: inline-block;
@@ -864,6 +878,7 @@ a.detox-pdf {
         margin-bottom: 16px;
         padding-bottom: 8px;
         border-bottom: 1px solid #eee;
+        font-weight: bold;
     }
 }
 .food-page { padding-top: 120px }
