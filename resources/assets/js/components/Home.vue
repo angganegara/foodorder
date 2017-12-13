@@ -17,12 +17,12 @@
 		</div>
 		<div class="container">
 			<items/>
-            <how-it-works level="2" :popup="false"></how-it-works>
             <div class="text-xs-center checkout-box" v-if="cartState.length > 0">
 				<router-link to="/overview" class="button yellow big">
 					<b>checkout <i class="fa fa-fw fa-angle-right"></i></b>
 				</router-link>
 			</div>
+            <how-it-works level="2" :popup="false"></how-it-works>
 		</div>
 	</section>
 </template>
