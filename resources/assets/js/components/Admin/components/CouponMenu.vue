@@ -1,7 +1,7 @@
 <template>
 	<div class="coupon-menu">
-		<a href="#" title="" @click="toggle(0)" :class="isActive(0) ? 'active' : ''">All Menu</a>
-		<a href="#" title="" v-for="(item, i) in items" :key="i" @click="toggle(item.id)" :class="isActive(item.id) ? 'active' : ''">
+		<a href="javascript:" title="" @click="toggle(0)" :class="isActive(0) ? 'active' : ''">All Menu</a>
+		<a href="javascript:" title="" v-for="(item, i) in items" :key="i" @click="toggle(item.id)" :class="isActive(item.id) ? 'active' : ''">
 			{{ item.name }}
 		</a>
 	</div>

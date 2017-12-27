@@ -1,7 +1,5 @@
 'use strict'
 
-import { vm, router } from '../main.js'
-
 export default {
 
 	authenticated: false,

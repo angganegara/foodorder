@@ -36,76 +36,76 @@ Vue.http.interceptors.push((req, next) => {
 })
 
 const config = {
-    errorBagName: 'errors', // change if property conflicts.
-    delay: 0,
-    locale: 'en',
-    messages: null,
-    strict: true
+  errorBagName: 'errors', // change if property conflicts.
+  delay: 0,
+  locale: 'en',
+  messages: null,
+  strict: true
 };
 Vue.use(VeeValidate, config)
 Vue.use(VueProgressBar, {
-    color: 'rgb(181, 225, 237)',
-    failedColor: 'red',
-    height: '4px'
+  color: 'rgb(181, 225, 237)',
+  failedColor: 'red',
+  height: '4px'
 })
 
 Vue.component('notification', Notification)
 
 const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
+  mode: 'history',
+  routes: [
+    {
 			path: '/admin', component: Admin, meta: { auth: true },
-            children: [
-                { name: 'order page', path: 'orders', component: require('./components/Admin/Orders.vue') },
-                { name: 'order details page', path: 'orders/:id', component: require('./components/Admin/ViewOrders.vue') },
+      children: [
+        { name: 'order page', path: 'orders', component: require('./components/Admin/Orders.vue') },
+        { name: 'order details page', path: 'orders/:id', component: require('./components/Admin/ViewOrders.vue') },
 				{ name: 'fit&slim menu', path: 'fitslim', component: require('./components/Admin/FitSlim.vue') },
 				{ name: 'coupon page', path: 'coupon', component: require('./components/Admin/Coupon.vue') },
 				{ name: 'coupon details page', path: 'coupon/:id', component: require('./components/Admin/ViewCoupon.vue') },
-                { name: 'admin home', path: '', component: require('./components/Admin/Home.vue') },
-            ]
-        },
-        { path: '/auth/:action', component: require('./components/Admin/Auth.vue'), name: 'auth' },
-        { path: '/:slug/:id', component: Food, name: 'food' },
-        { path: '/overview', component: Overview, name: 'overview' },
+        { name: 'admin home', path: '', component: require('./components/Admin/Home.vue') },
+      ]
+    },
+    { path: '/auth/:action', component: require('./components/Admin/Auth.vue'), name: 'auth' },
+    { path: '/:slug/:id', component: Food, name: 'food' },
+    { path: '/overview', component: Overview, name: 'overview' },
 		{ path: '/checkout', component: Checkout, name: 'checkout' },
 		{ path: '/thank-you', component: ThankYou, name: 'thankyou' },
 		{ path: '/terms-and-conditions', component: require('./components/Terms.vue'), name: 'terms' },
-        { path: '/', component: Home, name: 'home' }
-    ],
-    scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition
-        } else {
-            return { x: 0, y: 0 }
-        }
+    { path: '/', component: Home, name: 'home' }
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
     }
+  }
 })
 
 var bus = new Vue({})
 window.bus = bus
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.auth)) {
+  if (to.matched.some(record => record.meta.auth)) {
 		(!auth.authenticated)
 			? next('/auth/login')
 			: next()
-    } else {
-        next()
-    }
+  } else {
+    next()
+  }
 })
 
 var vm = new Vue({
-    el: '#app',
-    data () {
-        return {
-            itemAdded: false,
-            isAdmin: false
-        }
-    },
-    store,
-    router,
-    render: h => h(App)
+  el: '#app',
+  data () {
+    return {
+      itemAdded: false,
+      sAdmin: false
+    }
+  },
+  store,
+  router,
+  render: h => h(App)
 })
 
 // set dev mode

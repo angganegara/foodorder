@@ -29,6 +29,10 @@
 						<td>Promo applies for</td>
 						<td><coupon-menu v-model="form.menu"></coupon-menu></td>
 					</tr>
+          <tr>
+            <td>Price type</td>
+            <td><coupon-price v-model="form.price_type"></coupon-price></td>
+          </tr>
 					<tr>
 						<td>Promo type</td>
 						<td>
@@ -64,11 +68,12 @@
 
 <script>
 var $ = require('jquery')
-import CouponMenu from './components/CouponMenu.vue'
+import CouponMenu from './components/CouponMenu.vue';
+import CouponPrice from './components/CouponPrice';
 
 export default {
 	name: 'ViewCoupon',
-	components: { CouponMenu },
+	components: { CouponMenu, CouponPrice },
 	data() {
 		return {
 			notification: {
@@ -83,6 +88,7 @@ export default {
 				promo_end: '',
 				menu: [],
 				discount_type: '',
+        price_type: [],
 				amount: '',
 				item: ''
 			}
@@ -112,8 +118,9 @@ export default {
 		},
 		loadCoupon() {
 			this.$http.get('/api/admin/coupons/'+ this.$route.params.id).then((res) => {
-				this.form = res.body
-				this.form.menu = JSON.parse(res.body.menu)
+				this.form = res.body;
+        this.form.menu = JSON.parse(res.body.menu);
+        this.form.price_type = JSON.parse(res.body.price_type);
 			})
 		}
 	},

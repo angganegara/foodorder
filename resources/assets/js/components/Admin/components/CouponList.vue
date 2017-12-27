@@ -6,7 +6,7 @@
 			<div class="links">
 				<router-link to="/admin/coupon/new" class="active"><i class="fa fa-fw fa-plus"></i> New Coupon</router-link>
 			</div>
-        </div>
+    </div>
 		<div class="orders">
 			<table width="100%" class="sch">
 				<tr>

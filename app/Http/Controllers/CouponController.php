@@ -22,7 +22,8 @@ class CouponController extends Controller
 		$coupon->code = $request->code;
 		$coupon->promo_start = $request->promo_start;
 		$coupon->promo_end = $request->promo_end;
-		$coupon->menu = json_encode($request->menu);
+    $coupon->menu = json_encode($request->menu);
+    $coupon->price_type = json_encode($request->price_type);
 		$coupon->discount_type = $request->discount_type;
 		$coupon->amount = $request->amount;
 		$coupon->item = $request->item;
@@ -33,11 +34,12 @@ class CouponController extends Controller
 
 	public function insert(Request $request) {
 		$coupon = new Coupon;
-		
+
 		$coupon->code = $request->code;
 		$coupon->promo_start = $request->promo_start;
 		$coupon->promo_end = $request->promo_end;
-		$coupon->menu = json_encode($request->menu);
+    $coupon->menu = json_encode($request->menu);
+    $coupon->price_type = json_encode($request->price_type);
 		$coupon->discount_type = $request->discount_type;
 		$coupon->amount = $request->amount;
 		$coupon->item = $request->item;
@@ -68,7 +70,10 @@ class CouponController extends Controller
 				'status' => 'ERROR',
 				'message' => 'Sorry, This discount code doesn’t exist… But nice try ;)'
 			], 500);
-		}
+    }
+
+    $menus = json_decode($data->menu, true);
+    $price = json_decode($data->price_type, true);
 
 		// has the promo started yet?
 		$today = time();
@@ -91,53 +96,84 @@ class CouponController extends Controller
 
 		if ($data->menu != '[0]') {
 			// not for all menu
-			$menu = json_decode($data->menu, true);
 			$ids = array_reduce($cart, function($res, $cart) {
 				$res[] = $cart['id'];
 				return $res;
 			}, []);
-			$diff = count(array_intersect($menu, $ids));
-			$menuName = $this->getMenuName($menu);
+			$diff = count(array_intersect($menus, $ids));
+			$menuName = $this->getMenuName($menus);
 
-			if ( ! $diff ) {
+			if (!$diff) {
 				return response()->json([
 					'status' => 'ERROR',
 					'message' => 'Sorry, This Promo only applies for '. $menuName
 				], 500);
 			}
-		}
+    }
 
-		// calculate
-		$arr = [];
-		switch ($data->discount_type) {
-			case 'item':
-				$arr = [
+    // calculate the discount only for affected items
+    $discount = 0;
+    $arr = [];
+    $priceName = $this->getPriceName($price);
+
+    foreach ($cart as $item) {
+      if (in_array($item['id'], $menus)) {
+        if ($data->price_type == '["all"]' || in_array($item['typeraw'], $price)) {
+          // discount can be applied to this item
+          switch ($data->discount_type) {
+            case 'percent':
+              $discount += ($item['price'] * ($data->amount / 100));
+            break;
+
+            case 'amount':
+              $discount += ($item['price'] - $data->amount);
+            break;
+          }
+        }
+      }
+    }
+
+    if ($discount > 0) {
+      $arr = [
+        'status' => 'OK',
+        'message' => 'Successfully applied discount',
+        'value' => $discount
+      ];
+    } else {
+      if ($data->discount_type != 'item') {
+        $priceError = $priceName ? ' with '. $priceName : '';
+        return response()->json([
+          'status' => 'ERROR',
+          'message' => 'Sorry, This Promo only applies for '. $menuName . $priceError
+        ], 500);
+      } else {
+        $arr = [
 					'status' => 'OK',
 					'message' => $data->item,
 					'value' => 0
 				];
-				break;
-			case 'percent':
-				$discount = ($total * ($data->amount / 100));
-				$arr = [
-					'status' => 'OK',
-					'message' => 'Successfully applied discount',
-					'value' => $discount
-				];
-				break;
-			case 'amount':
-				$discount = $data->amount;
-				$arr = [
-					'status' => 'OK',
-					'message' => 'Successfully applied discount',
-					'value' => $discount
-				];
-				break;
-		}
+      }
+    }
+
 		return response()->json($arr);
 	}
 
 	public function getMenuName($arr) {
 		return Diet::whereIn('id', $arr)->get(['name'])->implode('name', ', ');
-	}
+  }
+
+  public function getPriceName($arr) {
+    $names = array_map(function ($menu) {
+      return $menu != 'all' ? $this->getPriceRawName($menu) : false;
+    }, $arr);
+
+    return count($names) > 0 ? implode($names, ', ') : false;
+  }
+
+  public function getPriceRawName($name) {
+    switch ($name) {
+      case 'weekly': return 'Weekly Package'; break;
+      case 'daily': return 'Daily Package'; break;
+    }
+  }
 }
