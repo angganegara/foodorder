@@ -5,486 +5,490 @@ $primary-color: hsl(208, 100%, 50%);
 $box-border: #dbe5eb;
 
 @mixin box {
-	border: 1px solid $box-border;
-	background-color: #fff;
-	margin-bottom: 1rem;
+  border: 1px solid $box-border;
+  background-color: #fff;
+  margin-bottom: 1rem;
 }
 
 body, html {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-	background-color: #f3f6f8;
-	background-position: center;
-	background-attachment: fixed;
-	font-family: "Averta Std", 'Helvetica', 'Arial';
-    font-size: 14px;
-    color: #333;
+  background-color: #f3f6f8;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: "Averta Std", 'Helvetica', 'Arial';
+  font-size: 14px;
+  color: #333;
 }
 a, a:focus, a:hover { text-decoration: none }
 input, textarea { font-family: 'Lato', sans-serif; font-weight: 400 }
 .form-control:focus { border-color: $main-color }
 .app-wrapper {
-	height: 100%;
-	min-height: 100%;
+  height: 100%;
+  min-height: 100%;
 }
 .button {
-	font-weight: 700;
-	text-transform: uppercase;
-	border: 0;
-	background-color: $main-color;
-	color: #fff;
-	padding: 10px 30px;
-	letter-spacing: 2px;
-	font-size: 12px;
-	cursor: pointer;
-	transition: all .2s ease-in-out;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 0;
+  background-color: $main-color;
+  color: #fff;
+  padding: 10px 30px;
+  letter-spacing: 2px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
 }
 .button.sending { background-color: darken(#ffcc00, 10%); cursor: not-allowed; }
 .button:hover { background-color: darken($main-color, 15%) }
 .button:focus, .button:active { outline: none; color: #fff }
 .button.small {
-	padding: 8px 15px;
-	font-size: 10px;
-	font-weight: 300;
-	&:hover { color: #fff }
+  padding: 8px 15px;
+  font-size: 10px;
+  font-weight: 300;
+  &:hover { color: #fff }
 }
 section.login {
-	width: 100%;
-	height: 100%;
-	min-height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-	.login-bg {
-		position: relative;
-		width: 400px;
-		height: 350px;
-		background: transparent url('/images/admin/login.jpg') center center no-repeat;
-		background-size: cover;
-		border-radius: 3px;
-		box-shadow: 0 20px 50px 10px rgba(0,0,0,.2)
-	}
-	.login-form {
-		position: absolute;
-		width: 300px;
-		right: -150px;
-		top: 50px;
-		background-color: #fff;
-		padding: 50px 40px;
+  .login-bg {
+    position: relative;
+    width: 400px;
+    height: 350px;
+    background: transparent url('/images/admin/login.jpg') center center no-repeat;
+    background-size: cover;
+    border-radius: 3px;
+    box-shadow: 0 20px 50px 10px rgba(0,0,0,.2)
+  }
+  .login-form {
+    position: absolute;
+    width: 300px;
+    right: -150px;
+    top: 50px;
+    background-color: #fff;
+    padding: 50px 40px;
 
-		h2 {
-			position: absolute;
-			top: -50px;
-			left: 170px;
-			font-family: 'Old Standard TT', serif;
-			margin: 0;
-			padding: 0;
-			color: #111;
-			font-style: italic;
-		}
-	}
+    h2 {
+      position: absolute;
+      top: -50px;
+      left: 170px;
+      font-family: 'Old Standard TT', serif;
+      margin: 0;
+      padding: 0;
+      color: #111;
+      font-style: italic;
+    }
+  }
 }
 
 .admin {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	height: 100%;
-	h2 {
-		font-size: 16px;
-		color: #666;
-		margin-bottom: 15px;
-	}
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
+  h2 {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+  }
 }
 .app-body {
-	flex-grow: 1;
-	display: flex;
-	height: 100%;
+  flex-grow: 1;
+  display: flex;
+  height: 100%;
 }
 .sidebar {
-	width: 300px;
-	background-color: #e9eff3;
+  width: 300px;
+  background-color: #e9eff3;
 }
 .sidebar ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	li.topic {
-		font-weight: bold;
-		padding: .5rem 1rem;
-		color: $main-color;
-	}
-	li a {
-		color: #444;
-		font-size: 14px;
-		display: block;
-		padding: .5rem 1rem;
-		&:hover {
-			background-color: rgba(#fff, .6);
-			color: $main-color;
-			.fa {
-				opacity: 1;
-				color: $main-color;
-			}
-		}
-	}
-	li a.router-link-active {
-		background-color: $main-color;
-		color: #fff;
-		&:hover {
-			.fa {
-				opacity: .5;
-				color: #fff
-			}
-		}
-	}
-	li .fa {
-		display: inline-block;
-		margin-right: .5rem;
-		opacity: .5;
-	}
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li.topic {
+    font-weight: bold;
+    padding: .5rem 1rem;
+    color: $main-color;
+  }
+  li a {
+    color: #444;
+    font-size: 14px;
+    display: block;
+    padding: .5rem 1rem;
+    &:hover {
+      background-color: rgba(#fff, .6);
+      color: $main-color;
+      .fa {
+        opacity: 1;
+        color: $main-color;
+      }
+    }
+  }
+  li a.router-link-active {
+    background-color: $main-color;
+    color: #fff;
+    &:hover {
+      .fa {
+        opacity: .5;
+        color: #fff
+      }
+    }
+  }
+  li .fa {
+    display: inline-block;
+    margin-right: .5rem;
+    opacity: .5;
+  }
 }
 .switcher {
-	@include box;
+  @include box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h2 {
+    margin-bottom: 0;
+    margin-left: 1.5rem;
+    color: $primary-color;
+  }
+  .links {
     display: flex;
-    justify-content: space-between;
-	align-items: center;
-	h2 {
-		margin-bottom: 0;
-		margin-left: 1.5rem;
-		color: $primary-color;
-	}
-	.links {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-    a {
-        display: block;
-		color: #888;
-		border-bottom: 3px solid #fff;
-		padding: 1rem;
-    }
-    a.active {
-        border-bottom: 3px solid $main-color;
-        color: #444;
-    }
+    justify-content: center;
+    align-items: center;
+  }
+  a {
+    display: block;
+    color: #888;
+    border-bottom: 3px solid #fff;
+    padding: 1rem;
+  }
+  a.active {
+    border-bottom: 3px solid $main-color;
+    color: #444;
+  }
 }
 .container-fluid.no-padding { padding-left: 0; padding-right: 0 }
 .content {
-	flex-grow: 1;
-	margin: 0 auto;
-	width: 100%;
-	height: 100%;
-	overflow-y: scroll;
-	align-items: stretch;
-	padding: 1.5rem;
-	.bread {
-		@include box;
-		padding: 1rem 1.5rem;
-		font-size: 11px;
-		text-transform: uppercase;
-		color: #333;
-		ul {
-			display: flex;
-			padding: 0;
-			margin: 0;
-			width: 100%;
-			list-style: none;
-		}
-		ul li {
-			margin-right: 15px;
-			color: #777;
-		}
-		ul li a { color: #222 }
-		ul li:last-child:after {
-			content: "";
-			margin: 0;
-		}
-		ul li:after {
-			content: "/";
-			margin-left: 15px;
-			color: #777;
-		}
-	}
-	.inner {
-		padding: 30px
-	}
+  flex-grow: 1;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  align-items: stretch;
+  padding: 1.5rem;
+  .bread {
+    @include box;
+    padding: 1rem 1.5rem;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #333;
+    ul {
+      display: flex;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      list-style: none;
+    }
+    ul li {
+      margin-right: 15px;
+      color: #777;
+    }
+    ul li a { color: #222 }
+    ul li:last-child:after {
+      content: "";
+      margin: 0;
+    }
+    ul li:after {
+      content: "/";
+      margin-left: 15px;
+      color: #777;
+    }
+  }
+  .inner {
+    padding: 30px
+  }
 }
 
 .header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	background: linear-gradient(
-		hsl(193, 80%, 50%),
-		hsl(208, 80%, 50%)
-	);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(
+    hsl(193, 80%, 50%),
+    hsl(208, 80%, 50%)
+  );
 
-	nav {
-		//max-width: 1110px;
-		width: 100%;
-		margin: 0;
-	}
-	ul {
-		list-style: none;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		flex-wrap: wrap;
-		margin: 0;
-		padding: 0;
-		li a {
-			transition: all .2s ease-in-out;
-			display: block;
-			padding: 15px 15px;
-			color: #777;
-			font-size: 12px;
-			letter-spacing: 1px;
-			&:hover, { color: $main-color }
-		}
-		li a.router-link-active { color: $main-color }
-		li a.logo {
-			padding: 15px 30px;
-			color: #fff;
-		}
-		li:last-child {
-			margin-left: auto;
-			a {
-				color: #fff;
-				border-right: 0;
-				text-transform: uppercase;
-			}
-		}
-	}
+  nav {
+    //max-width: 1110px;
+    width: 100%;
+    margin: 0;
+  }
+  ul {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    li a {
+      transition: all .2s ease-in-out;
+      display: block;
+      padding: 15px 15px;
+      color: #777;
+      font-size: 12px;
+      letter-spacing: 1px;
+      &:hover, { color: $main-color }
+    }
+    li a.router-link-active { color: $main-color }
+    li a.logo {
+      padding: 15px 30px;
+      color: #fff;
+    }
+    li:last-child {
+      margin-left: auto;
+      a {
+        color: #fff;
+        border-right: 0;
+        text-transform: uppercase;
+      }
+    }
+  }
 }
 
 footer {
-	//max-width: 1110px;
-	width: 100%;
-	margin: 0 auto;
-	padding: 20px 30px;
-	text-align: center;
-	border-top: 1px solid #eee;
-	font-size: 11px;
-	text-transform: uppercase;
-	color: #888;
-	a { font-weight: bold; color: $main-color }
-	background-color: #fff;
+  //max-width: 1110px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 30px;
+  text-align: center;
+  border-top: 1px solid #eee;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  a { font-weight: bold; color: $main-color }
+  background-color: #fff;
 }
 
 table.table {
-	tr th {
-		background-color: $main-color;
-		color: #fff;
-		text-transform: uppercase;
-		letter-spacing: 2px;
-		font-size: 12px;
-	}
-	tr.sub th {
-		background-color: lighten($main-color, 10%)
-	}
-    tr.delivery td {
-        background-color: #f5f5f5;
-        text-transform: uppercase;
-        color: #333;
-        font-size: 13px;
-    }
-    tr.product td {
-        border-top: 2px solid $main-color;
-    }
-    span.type {
-        display: inline-block;
-        color: #999;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-size: 12px;
-        margin-bottom: 5px;
-    }
-    td.date {
-        vertical-align: middle;
-        color: #222;
-        font-size: 16px;
-    }
+  tr th {
+    background-color: $main-color;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+  }
+  tr.sub th {
+    background-color: lighten($main-color, 10%)
+  }
+  tr.delivery td {
+    background-color: #f5f5f5;
+    text-transform: uppercase;
+    color: #333;
+    font-size: 13px;
+  }
+  tr.product td {
+    border-top: 2px solid $main-color;
+  }
+  span.type {
+    display: inline-block;
+    color: #999;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  td.date {
+    vertical-align: middle;
+    color: #222;
+    font-size: 16px;
+  }
 }
 
 .notification {
-	position: fixed;
-	top: 20px;
-	right: -100%;
-	z-index: 10;
-	padding: 15px 30px;
-	background-color: #fff;
-	font-weight: 300;
-	font-size: 16px;
-	transition: all .5s ease-in-out;
+  position: fixed;
+  top: 20px;
+  right: -100%;
+  z-index: 10;
+  padding: 15px 30px;
+  background-color: #fff;
+  font-weight: 300;
+  font-size: 16px;
+  transition: all .5s ease-in-out;
 }
 .notification.success {
-	background-color: #87ceeb;
-	border: 1px solid #6cb3d0;
-	color: #fff;
+  background-color: #87ceeb;
+  border: 1px solid #6cb3d0;
+  color: #fff;
 }
 .notification.on {
-	right: 20px;
+  right: 20px;
 }
 
 .page-title {
-	@include box;
-	padding: 1rem 1.5rem;
-	h2 {
-		margin-bottom: 0;
-		color: $primary-color;
-	}
+  @include box;
+  padding: 1rem 1.5rem;
+  h2 {
+    margin-bottom: 0;
+    color: $primary-color;
+  }
 }
 h2.pad-title {
-	padding: 1rem 1.5rem;
-	margin: 0;
+  padding: 1rem 1.5rem;
+  margin: 0;
 }
 
 .schedule, .orders {
-	background-color: #fff;
-	border: 1px solid $box-border;
+  background-color: #fff;
+  border: 1px solid $box-border;
 }
 table.sch {
-    width: 100%;
-    th {
-        text-transform: uppercase;
-        padding: 1rem .5rem;
-        border-bottom: 1px solid $box-border;
-        font-size: 11px;
-        color: #777;
-	}
-	th.th {
-		border-bottom: 2px solid $primary-color;
-		border-top: 1px solid $box-border;
-	}
-	td.days {
-		background-color: $main-color;
-		color: #fff;
-		font-weight: bold;
-	}
-	th:first-child, td:first-child {
-		padding-left: 1.5rem;
-	}
-    td {
-        padding: .75rem .5rem;
-        vertical-align: top;
-        font-size: 13px;
-        color: #666;
+  width: 100%;
+  th {
+    text-transform: uppercase;
+    padding: 1rem .5rem;
+    border-bottom: 1px solid $box-border;
+    font-size: 11px;
+    color: #777;
+  }
+  th.th {
+    border-bottom: 2px solid $primary-color;
+    border-top: 1px solid $box-border;
+  }
+  td.days {
+    background-color: $main-color;
+    color: #fff;
+    font-weight: bold;
+  }
+  th:first-child, td:first-child {
+    padding-left: 1.5rem;
+  }
+  td {
+    padding: .75rem .5rem;
+    vertical-align: top;
+    font-size: 13px;
+    color: #666;
+  }
+  td a {
+    color: $main-color;
+    font-weight: bold;
+  }
+  td a.pill {
+    border: 1px solid $box-border;
+    border-radius: 3px;
+    padding: .25rem .5rem;
+    font-size: 12px;
+    background-color: #fff;
+    box-shadow: 0 3px 4px rgba(#000, .05);
+    position: relative;
+    transition: .1s ease all;
+    bottom: 0;
+    &:hover {
+      bottom: 1px;
+      border: 1px solid darken($box-border, 5%);
+      box-shadow: 0 3px 8px rgba(#000, .1);
     }
-    td a {
-		color: $main-color;
-		font-weight: bold;
-	}
-	td a.pill {
-		border: 1px solid $box-border;
-		border-radius: 3px;
-		padding: .25rem .5rem;
-		font-size: 12px;
-		background-color: #fff;
-		box-shadow: 0 3px 4px rgba(#000, .05);
-		position: relative;
-		transition: .1s ease all;
-		bottom: 0;
-		&:hover {
-			bottom: 1px;
-			border: 1px solid darken($box-border, 5%);
-			box-shadow: 0 3px 8px rgba(#000, .1);
-		}
-	}
-    td:last-child {
-		border-right: 0;
-		text-align: right;
-		padding-right: 1.5rem;
-	}
-	tr.zebra:nth-child(odd) {
-		background-color: #f4f4f4;
-	}
-	tr.status-Pending { background-color: lighten(#D8FFF6, 2%) }
-	tr.status-Pending a.pill.status {
-		background-color: darken(#D8FFF6, 20%);
-		border: 1px solid darken(#D8FFF6, 35%);
-	}
-	tr.status-Pending td:first-child { border-left: 5px solid darken(#D8FFF6, 20%); }
+  }
+  td:last-child {
+    border-right: 0;
+    text-align: right;
+    padding-right: 1.5rem;
+  }
+  tr.zebra:nth-child(odd) {
+    background-color: #f4f4f4;
+  }
+  tr.status-Pending, tr.status-pending { background-color: lighten(#D8FFF6, 2%) }
+  tr.status-Pending a.pill.status, tr.status-pending a.pill.status {
+    background-color: darken(#D8FFF6, 20%);
+    border: 1px solid darken(#D8FFF6, 35%);
+  }
+  tr.status-Pending td:first-child { border-left: 5px solid darken(#D8FFF6, 20%); }
 
-	tr.status-Challenge { background-color: #ffface }
-	tr.status-Challenge a.pill.status {
-		background-color: #ffee38;
-		border: 1px solid darken(#ffee38, 15%);
-	}
-	tr.status-Challenge td:first-child { border-left: 5px solid #ffee38; }
+  tr.status-Challenge { background-color: #ffface }
+  tr.status-Challenge a.pill.status {
+    background-color: #ffee38;
+    border: 1px solid darken(#ffee38, 15%);
+  }
+  tr.status-Challenge td:first-child { border-left: 5px solid #ffee38; }
 
-	tr.status-Paid, tr.status-Cash { background-color: lighten(#1AA0E6, 42%) }
-	tr.status-Paid a.pill.status, tr.status-Cash a.pill.status {
-		background-color: #1AA0E6;
-		border: 1px solid darken(#1AA0E6, 15%);
-		color: #fff;
-	}
-	tr.status-Paid td:first-child, tr.status-Cash td:first-child {
-		border-left: 5px solid #1AA0E6;
-	}
+  tr.status-Paid, tr.status-Cash, tr.status-settlement { background-color: lighten(#1AA0E6, 42%) }
+  tr.status-Paid a.pill.status, tr.status-Cash a.pill.status, tr.status-settlement a.pill.status {
+    background-color: #1AA0E6;
+    border: 1px solid darken(#1AA0E6, 15%);
+    color: #fff;
+  }
+  tr.status-Paid td:first-child, tr.status-Cash td:first-child {
+    border-left: 5px solid #1AA0E6;
+  }
 
-	tr.status-Aborted { background-color: lighten(#d61111, 47%) }
-	tr.status-Aborted a.pill.status {
-		background-color: #d61111;
-		border: 1px solid darken(#d61111, 15%);
-		color: #fff;
-	}
-	tr.status-Aborted td:first-child {
-		border-left: 5px solid #d61111;
-	}
+  tr.status-Aborted { background-color: lighten(#d61111, 47%) }
+  tr.status-Aborted a.pill.status {
+    background-color: #d61111;
+    border: 1px solid darken(#d61111, 15%);
+    color: #fff;
+  }
+  tr.status-Aborted td:first-child {
+    border-left: 5px solid #d61111;
+  }
 
-	tr.status-Expired a.pill.status {
-		background-color: #eee;
-		border: 1px solid darken(#eee, 15%);
-		color: #BBB;
-	}
-	tr.status-Expired td:first-child {
-		border-left: 5px solid #eee;
-	}
+  tr.status-expire {
+    background-color: #eee;
+    td { opacity: .5 }
+  }
+  tr.status-Expired a.pill.status, tr.status-expire a.pill.status {
+    background-color: #eee;
+    border: 1px solid darken(#eee, 15%);
+    color: #BBB;
+  }
+  tr.status-Expired td:first-child, tr.status-expire td:first-child {
+    border-left: 5px solid #eee;
+  }
 }
 .coupon-menu {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: stretch;
-	a {
-		font-size: 12px;
-		width: 24%;
-		text-align: center;
-		display: block;
-		padding: .25rem .5rem;
-		border: 1px solid $box-border;
-		border-radius: 2px;
-		margin: .5%;
-		opacity: .5;
-	}
-	a:nth-child(4n+1) {
-		margin-left: 0;
-	}
-	a.active {
-		opacity: 1;
-		border: 1px solid darken($box-border, 20%);
-	}
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  a {
+    font-size: 12px;
+    width: 24%;
+    text-align: center;
+    display: block;
+    padding: .25rem .5rem;
+    border: 1px solid $box-border;
+    border-radius: 2px;
+    margin: .5%;
+    opacity: .5;
+  }
+  a:nth-child(4n+1) {
+    margin-left: 0;
+  }
+  a.active {
+    opacity: 1;
+    border: 1px solid darken($box-border, 20%);
+  }
 }
 
 .fitslim {
-    h2 {
-        color: $main-color;
-    }
-    > div {
-        margin-bottom: 20px;
-    }
+  h2 {
+    color: $main-color;
+  }
+  > div {
+    margin-bottom: 20px;
+  }
 }
 .section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }

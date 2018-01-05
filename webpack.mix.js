@@ -34,7 +34,7 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
 		}
 	})
     .browserSync({
-    	proxy: 'food.dev'
+    	proxy: 'food.test'
     });
 
 // Full API

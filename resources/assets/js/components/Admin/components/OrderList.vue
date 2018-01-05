@@ -23,7 +23,7 @@
 					<td>{{ item.phone }}</td>
 					<td style="text-transform: uppercase">{{ item.referral }}</td>
 					<td>{{ formatPayment(item) }}</td>
-					<td><a title="" class="pill status" v-if="item.payment != 'cash'">{{ getOrderStatus(item) }}</a></td>
+					<td><a title="" class="pill status" :class="`status-${getOrderStatus(item)}`" v-if="item.payment != 'cash'">{{ getOrderStatus(item) }}</a></td>
 					<td class="text-xs-right">
 						<router-link :to="`/admin/orders/${item.id}/`" class="pill"><i class="fa fa-fw fa-eye"></i> View</router-link>
 						<template v-if="auth.profile != null && auth.profile.id == 4">
@@ -70,20 +70,15 @@ export default {
 		},
 		getOrderStatus(item)
 		{
-			let result
+			let result;
 			if (item.payment == 'creditcard') {
-				switch (item.trx_status_code) {
-					case 200: result = 'Paid'; break
-					case 201: result = item.trx_type == 'credit_card' ? 'Challenge' : 'Pending'; break
-					case 202: result = 'Expired'; break
-					case '': case null: result ='Aborted'; break
-				}
+				result = item.trx_status ? item.trx_status : 'Aborted';
 			} else if (item.payment == 'paypal') {
 				result = 'Paid'
 			} else {
 				result = ''
 			}
-			return result
+			return result;
 		},
 		formatPayment(item)
 		{
