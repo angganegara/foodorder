@@ -15,7 +15,7 @@
 					<th width="15%">Subtotal</th>
 					<th width="5%">&nbsp;</th>
 				</tr>
-				<tr v-for="product in cart" v-if="product.qty > 0">
+				<tr :key="product.id" v-for="product in cart" v-if="product.qty > 0">
 					<td>
 						<strong>
 							{{ product.name }}

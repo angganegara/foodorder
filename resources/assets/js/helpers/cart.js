@@ -51,7 +51,7 @@ export default {
 					this.checkDeliveryDiscount(this.cart).then((total) => {
 						bus.$emit('totaldisc', total)
 					})
-				}, 500)
+				}, 1000)
 			})
 		})
 		bus.$on('totaldisc', (total) => {

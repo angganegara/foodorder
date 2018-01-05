@@ -91,7 +91,7 @@ export default {
 		})
 		bus.$on('cartIsReady', () => {
 			this.calculateCart()
-			bus.$emit('mainCartIsReady')
+			setTimeout(() => bus.$emit('mainCartIsReady'), 500);
 		})
 		bus.$on('updateCartContent', () => {
 			this.calculateCart()
