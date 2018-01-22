@@ -18,7 +18,7 @@
     "cross-env": "^5.0.4",
     "expect": "^21.2.1",
     "gulp": "^3.9.1",
-    "jquery": "^2.2.4",
+    "jquery": "^3.3.1",
     "jsdom": "^11.5.1",
     "jsdom-global": "^3.0.2",
     "laravel-elixir": "^6.0.0-9",
