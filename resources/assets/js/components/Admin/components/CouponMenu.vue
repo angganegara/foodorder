@@ -19,22 +19,22 @@ export default {
 	},
 
 	created() {
-		this.loadItems()
+		this.loadItems();
 	},
 
 	computed: {
 		getItems() {
-			return this.value
+			return this.value;
 		}
 	},
 
 	methods: {
 		isActive(id) {
-			return (_.indexOf(this.getItems, id) !== -1)
+			return (_.indexOf(this.getItems, id) !== -1);
 		},
 
 		toggle(num) {
-			const index = _.indexOf(this.getItems, num)
+			const index = _.indexOf(this.getItems, num);
 			if (num == 0) {
 				this.getItems.splice(0)
 			} else {

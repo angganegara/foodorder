@@ -129,7 +129,7 @@
 				<div class="row section">
 					<div class="hidden-md-down col-md-4"></div>
 					<div class="col-xs-12 col-md-8">
-						<label for="agree"><input type="checkbox" v-model="agree" id="agree"> &nbsp; I agree to the <b><router-link to="/terms-and-conditions">terms and conditions</router-link></b></label>
+						<label for="agree"><input type="checkbox" v-model="agree" id="agree"> &nbsp; I agree to the <b><a href="/terms-and-conditions" target="_blank" rel="nofollow">terms and conditions</a></b></label>
 					</div>
 				</div>
 

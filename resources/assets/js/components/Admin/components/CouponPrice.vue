@@ -12,29 +12,29 @@ export default {
 	props: ['value'],
 
 	computed: {
-		getPrice() {
+		getValue() {
 			return this.value
 		}
 	},
 
 	methods: {
 		isActive(id) {
-			return (_.indexOf(this.getPrice, id) !== -1)
+			return (_.indexOf(this.getValue, id) !== -1);
 		},
 
 		toggle(num) {
-			const index = _.indexOf(this.getPrice, num)
-			if (num == 0) {
-				this.getPrice.splice(0)
+			const index = _.indexOf(this.getValue, num);
+      if (num == 'all') {
+				this.getValue.splice(0);
 			} else {
-				const zero = _.indexOf(this.getPrice, 0)
+				const zero = _.indexOf(this.getValue, 'all');
 				if (zero != -1) {
-					this.getPrice.splice(zero, 1)
+					this.getValue.splice(zero, 1);
 				}
 			}
 			index == -1
-				? this.getPrice.push(num)
-				: this.getPrice.splice(index, 1)
+				? this.getValue.push(num)
+				: this.getValue.splice(index, 1);
 		},
 
 	}

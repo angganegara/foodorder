@@ -15,15 +15,15 @@
 					<tr><th colspan="2" class="th">Coupon Details</th></tr>
 					<tr>
 						<td width="30%">Coupon code</td>
-						<td width="70%"><input type="text" v-model="form.code" class="form-control form-control-sm"></td>
+						<td width="70%"><input type="text" v-model="form.code" class="form-control form-control-sm" /></td>
 					</tr>
 					<tr>
-						<td>Promo start</td>
-						<td><input type="text" v-model="form.promo_start" class="form-control form-control-sm"></td>
+						<td>Promo start (y-m-d format e.g 2018-01-30)</td>
+						<td><input type="text" v-model="form.promo_start" class="form-control form-control-sm" /></td>
 					</tr>
 					<tr>
-						<td>Promo end</td>
-						<td><input type="text" v-model="form.promo_end" class="form-control form-control-sm"></td>
+						<td>Promo end (y-m-d format e.g 2018-01-30)</td>
+						<td><input type="text" v-model="form.promo_end" class="form-control form-control-sm" /></td>
 					</tr>
 					<tr>
 						<td>Promo applies for</td>
@@ -33,11 +33,19 @@
             <td>Price type</td>
             <td><coupon-price v-model="form.price_type"></coupon-price></td>
           </tr>
+          <tr>
+            <td>Minimum item order (enter 0 for no limit)</td>
+            <td><input type="text" v-model="form.min_order" class="form-control form-control-sm" /></td>
+          </tr>
+          <tr>
+            <td>Maximum item order (enter 0 for no limit)</td>
+            <td><input type="text" v-model="form.max_order" class="form-control form-control-sm" /></td>
+          </tr>
 					<tr>
-						<td>Promo type</td>
+						<td>Discount type</td>
 						<td>
 							<select class="form-control form-control-sm" v-model="form.discount_type" :value="form.discount_type">
-								<option value="">select promo type</option>
+								<option value="">select discount type</option>
 								<option value="amount">Amount</option>
 								<option value="percent">Percent</option>
 								<option value="item">Free item</option>
@@ -46,11 +54,11 @@
 					</tr>
 					<tr>
 						<td>Discount Amount (if Amount / Percent)</td>
-						<td><input type="text" v-model="form.amount" class="form-control form-control-sm"></td>
+						<td><input type="text" v-model="form.amount" class="form-control form-control-sm" /></td>
 					</tr>
 					<tr>
 						<td>Promo Item (if free item)</td>
-						<td><input type="text" v-model="form.item" class="form-control form-control-sm"></td>
+						<td><input type="text" v-model="form.item" class="form-control form-control-sm" /></td>
 					</tr>
 				</table>
 				<br>
@@ -89,6 +97,8 @@ export default {
 				menu: [],
 				discount_type: '',
         price_type: [],
+        min_order: 0,
+        max_order: 0,
 				amount: '',
 				item: ''
 			}

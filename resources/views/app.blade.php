@@ -19,11 +19,11 @@
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon.png">
 	<title>Motion Cafe Bali | Homemade &amp; Fresh, Vegan &amp; Paleo Friendly</title>
 	@if ($action != 'admin')
-	<link rel="stylesheet" href="/css/app.css?2.7">
+	<link rel="stylesheet" href="/css/app.css?2.8">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 	@else
-	<link rel="stylesheet" href="/css/backend.css?1.2">
-	<link rel="stylesheet" href="/css/redactor.css?1.2">
+	<link rel="stylesheet" href="/css/backend.css?1.3">
+	<link rel="stylesheet" href="/css/redactor.css?1.3">
 	@endif
 	<link rel="stylesheet" href="/css/plugins.css">
 	<link rel="stylesheet" href="/css/datepicker.min.css">
@@ -39,7 +39,7 @@
 	<div id="app"></div>
 	<!-- built files will be auto injected -->
 
-	<script src="{{ asset('js/app.js?7') }}" type="text/javascript"></script>
+  <script src="{{ env('APP_ENV') == 'local' ? asset('js/app.js?1') : asset('js/app.js.gz?1') }}"></script>
 	@if (env('APP_ENV') == 'local')
 		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
 	@else

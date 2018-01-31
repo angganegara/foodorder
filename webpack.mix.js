@@ -1,4 +1,5 @@
 let mix = require('laravel-mix');
+var ZopfliPlugin = require("zopfli-webpack-plugin");
 
 /*
  |--------------------------------------------------------------------------
@@ -31,7 +32,17 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
 		output: {
 			//chunkFilename: 'js/[name].[chunkhash].js',
 			chunkFilename: 'js/[name].js',
-		}
+    },
+    /*
+    plugins: [
+      new ZopfliPlugin({
+        asset: '[path].gz[query]',
+        algorithm: 'zopfli',
+        test: /\.(js)$/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]*/
 	})
     .browserSync({
     	proxy: 'food.test'

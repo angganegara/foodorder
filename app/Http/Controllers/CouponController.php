@@ -24,7 +24,9 @@ class CouponController extends Controller
 		$coupon->promo_end = $request->promo_end;
     $coupon->menu = json_encode($request->menu);
     $coupon->price_type = json_encode($request->price_type);
-		$coupon->discount_type = $request->discount_type;
+    $coupon->discount_type = $request->discount_type;
+    $coupon->min_order = $request->min_order;
+    $coupon->max_order = $request->max_order;
 		$coupon->amount = $request->amount;
 		$coupon->item = $request->item;
 
@@ -40,7 +42,9 @@ class CouponController extends Controller
 		$coupon->promo_end = $request->promo_end;
     $coupon->menu = json_encode($request->menu);
     $coupon->price_type = json_encode($request->price_type);
-		$coupon->discount_type = $request->discount_type;
+    $coupon->discount_type = $request->discount_type;
+    $coupon->min_order = $request->min_order;
+    $coupon->max_order = $request->max_order;
 		$coupon->amount = $request->amount;
 		$coupon->item = $request->item;
 
@@ -111,22 +115,55 @@ class CouponController extends Controller
 			}
     }
 
+    // do we have min and max order?
+    $minOrder = $data->min_order;
+    $maxOrder = $data->max_order;
+
+    if ($minOrder > 0 || $maxOrder > 0) {
+      // calculate total cart
+      $totalCart = array_reduce($cart, function($total, $item) use ($data, $price) {
+        // only include item with eligible price type
+        if ($data->price_type == '["all"]' || in_array($item['typeraw'], $price)) {
+          $total += $item['qty'];
+        }
+        return $total;
+      }, 0);
+
+      $priceError = $price[0] !== 'all' ? $price[0] : '';
+
+      if (($minOrder > 0) && ($totalCart < $minOrder)) {
+        return response()->json([
+					'status' => 'ERROR',
+					'message' => 'Sorry, this coupon is only valid when ordering '. $minOrder .' '. $priceError .' meal plans at once'
+				], 500);
+      }
+
+      if (($maxOrder > 0) && ($totalCart > $maxOrder)) {
+        return response()->json([
+					'status' => 'ERROR',
+					'message' => 'Sorry, this coupon is only valid when ordering '. $maxOrder .' '. $priceError .' meal plans at once'
+				], 500);
+      }
+    }
+
     // calculate the discount only for affected items
     $discount = 0;
     $arr = [];
     $priceName = $this->getPriceName($price);
 
     foreach ($cart as $item) {
-      if (in_array($item['id'], $menus)) {
+      // eligible for this menu ?
+      if (in_array($item['id'], $menus) || $data->menu == '[0]') {
+        // eligible for this type of package ?
         if ($data->price_type == '["all"]' || in_array($item['typeraw'], $price)) {
           // discount can be applied to this item
           switch ($data->discount_type) {
             case 'percent':
-              $discount += ($item['price'] * ($data->amount / 100));
+              $discount += (($item['price'] * $item['qty']) * ($data->amount / 100));
             break;
 
             case 'amount':
-              $discount += ($item['price'] - $data->amount);
+              $discount = ($data->amount);
             break;
           }
         }

@@ -33,14 +33,14 @@
 					<td class="hidden-md-down">{{ product.type }}</td>
 					<td class="text-xs-center">
 						<div class="qty-number">
-							<a href="#" @click.prevent="decrement(product)" class="qty left" v-show="product.qty > 1"><i class="fa fa-fw fa-minus"></i></a>
+							<a href="#" @click.prevent="decrement(product); cancelCoupon()" class="qty left" v-show="product.qty > 1"><i class="fa fa-fw fa-minus"></i></a>
 							<span>{{ qty(product) }}</span>
-							<a href="#" @click.prevent="increment(product)" class="qty right"><i class="fa fa-fw fa-plus"></i></a>
+							<a href="#" @click.prevent="increment(product); cancelCoupon()" class="qty right"><i class="fa fa-fw fa-plus"></i></a>
 						</div>
 					</td>
 					<td>{{ subtotal(product) }} IDR</td>
 					<td class="text-xs-center">
-						<a href="#" @click.prevent="remove(product)" class="qty"><i class="fa fa-fw fa-times"></i></a>
+						<a href="#" @click.prevent="remove(product); cancelCoupon()" class="qty"><i class="fa fa-fw fa-times"></i></a>
 					</td>
 				</tr>
 				<tr class="total">

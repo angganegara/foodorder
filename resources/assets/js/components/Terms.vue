@@ -5,18 +5,19 @@
 		</div>
 
 		<h3>DELIVERY POLICY</h3>
-		<p>All food orders must be prepaid and placed 24hrs in advance to ensure the best quality and service. The last possible order for the following week must be place before 17:00 on Saturdays.<br>Order times: Monday to Saturday 08:00 – 17:00 o’ clock. The delivery of the goods your food between 07:30 and 21:30 Mondays to Saturdays to the addresses provided by you. We try to deliver your food as close to your preferred delivery time as possible but please allow us a +/- 10 minute time margin. A surcharge of IDR 50,000 will be raised for each delivery outside of our free delivery zone (e.g. to Ubud, Sanur, Bukit area)</p>
+		<p>All food orders must be prepaid and placed 24hrs in advance to ensure the best quality and service. The last possible order for Monday the following week must be place until Friday midnight.<br>
+    The delivery of the your food will be between 07:30 and 20:30 Mondays to Saturdays to the addresses provided by you. No delivery on Sundays.<br>
+    We try to deliver your food as close to your preferred delivery time as possible but please allow us a +/- 10 minute time margin. A surcharge of IDR 50,000 will be raised for each delivery outside of our free delivery zone (e.g. to Ubud, Sanur, Bukit area)</p>
 
 		<h3>REFUND POLICY</h3>
-		<p>Motion Fitness Bali will provide a full refund or exchange on full priced items only where:</p>
-		<p>the goods are returned within 5 working days of purchase date; and the original invoice as proof of purchase is provided.
-			<br>Alternatively we will provide you with a refund at our discretion for items that:
-			<br>are faulty (unless caused by you);
-		</p>
-		<p>-have been wrongly described;</p>
-		<p>-are different to the goods that you ordered;</p>
-		<p>All returns must be returned to Motion Fitness Bali within 5 days to be eligible for a refund. Returns after this period will not be accepted. If a refund is approved, the refund will be applied to the original card of purchase. We do not refund original delivery charges.</p>
-		<p>Please note sale items/services are final sales and cannot be returned for a refund or exchange unless deemed faulty.</p>
+    <p>Motion Fitness Bali will provide a full refund or exchange on full priced items only where:</p>
+    <p>- the goods (food exempted) are returned within 5 working days of purchase date; and the original invoice as proof of purchase is provided.
+      Alternatively we will provide you with a refund at our discretion for items that:</p>
+    <p>- are faulty (unless caused by you);</p>
+    <p>- have been wrongly described;</p>
+    <p>- are different to the goods that you ordered;</p>
+    <p>All returns must be returned to Motion Fitness Bali within 5 days to be eligible for a refund. Returns after this period will not be accepted. If a refund is approved, the refund will be applied to the original card of purchase. We do not refund original delivery charges.</p>
+    <p>Please note sale items/services are final sales and cannot be returned for a refund or exchange unless deemed faulty.</p>
 
 		<h3>ORDER CANCELLATION</h3>
 		<p>Once an order has been processed, we cannot make any changes or cancel your order. In the event of unavailable stock situation, we will liaise with you by email to propose an agreeable alternative.</p>
