@@ -40,9 +40,9 @@
 	<!-- built files will be auto injected -->
 
   <script src="{{ env('APP_ENV') == 'local' ? asset('js/app.js?1') : asset('js/app.js.gz?1') }}"></script>
-	@if (env('APP_ENV') == 'local')
+  @if (env('APP_ENV') == 'local')
 		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
-	@else
+  @else
 		<script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="VT-client-0_yAoB6Dgk_JND-Y"></script>
 	@endif
 	<noscript>

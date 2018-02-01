@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Diet;
+use Carbon\Carbon;
 
 class CouponController extends Controller
 {
@@ -20,13 +21,15 @@ class CouponController extends Controller
 		$coupon = Coupon::find($id);
 
 		$coupon->code = $request->code;
-		$coupon->promo_start = $request->promo_start;
-		$coupon->promo_end = $request->promo_end;
+		$coupon->promo_start = $request->promo_start == '' ? null : $request->promo_start;
+		$coupon->promo_end = $request->promo_end == '' ? null : $request->promo_end;
     $coupon->menu = json_encode($request->menu);
     $coupon->price_type = json_encode($request->price_type);
     $coupon->discount_type = $request->discount_type;
     $coupon->min_order = $request->min_order;
     $coupon->max_order = $request->max_order;
+    $coupon->delivery_dates = $request->delivery_dates;
+    $coupon->delivery_start = $request->delivery_start == '' ? null : $request->delivery_start;
 		$coupon->amount = $request->amount;
 		$coupon->item = $request->item;
 
@@ -38,14 +41,16 @@ class CouponController extends Controller
 		$coupon = new Coupon;
 
 		$coupon->code = $request->code;
-		$coupon->promo_start = $request->promo_start;
-		$coupon->promo_end = $request->promo_end;
+		$coupon->promo_start = $request->promo_start == '' ? null : $request->promo_start;
+		$coupon->promo_end = $request->promo_end == '' ? null : $request->promo_end;
     $coupon->menu = json_encode($request->menu);
     $coupon->price_type = json_encode($request->price_type);
     $coupon->discount_type = $request->discount_type;
     $coupon->min_order = $request->min_order;
     $coupon->max_order = $request->max_order;
-		$coupon->amount = $request->amount;
+    $coupon->amount = $request->amount;
+    $coupon->delivery_dates = $request->delivery_dates;
+    $coupon->delivery_start = $request->delivery_start == '' ? null : $request->delivery_start;
 		$coupon->item = $request->item;
 
 		$coupon->save();
@@ -81,17 +86,17 @@ class CouponController extends Controller
 
 		// has the promo started yet?
 		$today = time();
-		$promo_start = strtotime($data->promo_start);
-		$promo_end = strtotime($data->promo_end);
+		$promo_start = $data->promo_start ? strtotime($data->promo_start) : null;
+		$promo_end = $data->promo_end ? strtotime($data->promo_end) : null;
 
-		if ($today < $promo_start) {
+		if ($promo_start && $today < $promo_start) {
 			return response()->json([
 				'status' => 'ERROR',
 				'message' => 'Sorry, This Promo will start on '. $data->start .', A little bit more patience!'
 			], 500);
 		}
 
-		if ($today > $promo_end) {
+		if ($promo_end && $today > $promo_end) {
 			return response()->json([
 				'status' => 'ERROR',
 				'message' => 'Sorry, This Promo is already over!'
@@ -134,14 +139,14 @@ class CouponController extends Controller
       if (($minOrder > 0) && ($totalCart < $minOrder)) {
         return response()->json([
 					'status' => 'ERROR',
-					'message' => 'Sorry, this coupon is only valid when ordering '. $minOrder .' '. $priceError .' meal plans at once'
+					'message' => 'Sorry, this coupon is only valid when ordering a minimum of '. $minOrder .' '. $priceError .' meal plans at once'
 				], 500);
       }
 
       if (($maxOrder > 0) && ($totalCart > $maxOrder)) {
         return response()->json([
 					'status' => 'ERROR',
-					'message' => 'Sorry, this coupon is only valid when ordering '. $maxOrder .' '. $priceError .' meal plans at once'
+					'message' => 'Sorry, this coupon is only valid when ordering a maximum of '. $maxOrder .' '. $priceError .' meal plans at once'
 				], 500);
       }
     }
@@ -156,6 +161,18 @@ class CouponController extends Controller
       if (in_array($item['id'], $menus) || $data->menu == '[0]') {
         // eligible for this type of package ?
         if ($data->price_type == '["all"]' || in_array($item['typeraw'], $price)) {
+          // do we have starting date restriction?
+          if ($data->delivery_dates === 1 && $data->delivery_start !== null) {
+            $delivery_start_limit = new Carbon($data->delivery_start);
+            $delivery_start_enter = new Carbon($item['deliverydate']);
+
+            if (!$delivery_start_enter->eq($delivery_start_limit)) {
+              return response()->json([
+                'status' => 'ERROR',
+                'message' => 'Sorry, your order must be starting on '. $delivery_start_limit->format('l, j F Y')
+              ], 500);
+            }
+          }
           // discount can be applied to this item
           switch ($data->discount_type) {
             case 'percent':

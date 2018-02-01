@@ -19,11 +19,11 @@
 					</tr>
 					<tr>
 						<td>Promo start (y-m-d format e.g 2018-01-30)</td>
-						<td><input type="text" v-model="form.promo_start" class="form-control form-control-sm" /></td>
+						<td><input type="text" v-model="form.promo_start" class="form-control form-control-sm" placeholder="Enter date (y-m-d format e.g 2018-01-30)" /></td>
 					</tr>
 					<tr>
 						<td>Promo end (y-m-d format e.g 2018-01-30)</td>
-						<td><input type="text" v-model="form.promo_end" class="form-control form-control-sm" /></td>
+						<td><input type="text" v-model="form.promo_end" class="form-control form-control-sm" placeholder="Enter date (y-m-d format e.g 2018-01-30)" /></td>
 					</tr>
 					<tr>
 						<td>Promo applies for</td>
@@ -32,6 +32,21 @@
           <tr>
             <td>Price type</td>
             <td><coupon-price v-model="form.price_type"></coupon-price></td>
+          </tr>
+          <tr>
+            <td>Delivery Starting date</td>
+            <td>
+              <select class="form-control form-control-sm" v-model="form.delivery_dates" :value="form.delivery_dates">
+                <option :value=0>Free</option>
+                <option :value=1>Limit starting date</option>
+              </select>
+            </td>
+          </tr>
+          <tr v-if="this.form.delivery_dates === 1">
+            <td>Date must be</td>
+            <td>
+              <input type="text" v-model="form.delivery_start" class="form-control form-control-sm" placeholder="Enter starting date (y-m-d format e.g 2018-01-30)" />
+            </td>
           </tr>
           <tr>
             <td>Minimum item order (enter 0 for no limit)</td>
@@ -100,7 +115,9 @@ export default {
         min_order: 0,
         max_order: 0,
 				amount: '',
-				item: ''
+        item: '',
+        delivery_dates: null,
+        delivery_start: null
 			}
 		}
 	},

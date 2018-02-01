@@ -3,6 +3,7 @@
 /dist/
 /npm-debug.log
 /public/images/foods
+/public/.htaccess
 .env.staging
 .env.prod
 .env
