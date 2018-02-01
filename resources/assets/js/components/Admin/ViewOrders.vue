@@ -126,8 +126,20 @@
             <td class="text-xs-right">{{ extraPrice(this.form.extraprice) }} IDR</td>
           </tr>
           <tr>
-            <td colspan="4" class="text-xs-right">TOTAL</td>
-            <td class="text-xs-right">{{ total(form.cart) }} IDR</td>
+            <td colspan="4" class="text-xs-right">SUBTOTAL</td>
+            <td class="text-xs-right">{{ total() }} IDR</td>
+          </tr>
+          <tr v-if="this.form.coupon_value">
+            <td colspan="4" class="text-xs-right">Coupon ({{ this.form.coupon }})</td>
+            <td class="text-xs-right">- {{ extraPrice(this.form.coupon_value) }} IDR</td>
+          </tr>
+          <tr v-if="this.form.discount">
+            <td colspan="4" class="text-xs-right">Delivery Discount</td>
+            <td class="text-xs-right">- {{ extraPrice(this.form.discount) }} IDR</td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-xs-right"><b>TOTAL</b></td>
+            <td class="text-xs-right"><b>{{ grandTotal(form.cart) }} IDR</b></td>
           </tr>
         </table>
         <br>
@@ -168,6 +180,9 @@ export default {
         dislikefood: '',
         extraprice: 0,
         comments: '',
+        discount: null,
+        coupon_value: null,
+        coupon: null,
         cart: {},
         confirmed: null
       }
@@ -237,12 +252,24 @@ export default {
     extraPrice(price) {
       return numeral(price).format('0,0')
     },
-    total(product) {
+    total() {
       var total = _.sumBy(this.form.ordercart, (item) => {
-        return item.qty * item.price
+        return item.qty * item.price;
+      });
+      return numeral(total).format('0,0');
+    },
+    grandTotal(product) {
+      var total = _.sumBy(this.form.ordercart, (item) => {
+        return item.qty * item.price;
       })
       if (this.form.extraprice > 0) {
-        total += this.form.extraprice
+        total += this.form.extraprice;
+      }
+      if (this.form.coupon_value) {
+        total -= this.form.coupon_value;
+      }
+      if (this.form.discount) {
+        total -= this.form.discount;
       }
       return numeral(total).format('0,0')
     }

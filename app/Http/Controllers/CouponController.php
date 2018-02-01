@@ -77,7 +77,7 @@ class CouponController extends Controller
 		if (!$data) {
 			return response()->json([
 				'status' => 'ERROR',
-				'message' => 'Sorry, This discount code doesn’t exist… But nice try ;)'
+				'message' => 'Sorry, This discount code doesn\'t exist... But nice try ;)'
 			], 500);
     }
 

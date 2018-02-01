@@ -15,25 +15,24 @@ var ZopfliPlugin = require("zopfli-webpack-plugin");
 mix.js('resources/assets/js/main.js', 'public/js/app.js')
 	//.copy('public/js/app.js', 'public/bundle.js')
 	.sass('resources/assets/sass/app.scss', 'public/css/app.css')
-    .sass('resources/assets/sass/backend.scss', 'public/css/backend.css')
-    .combine([
-        'resources/assets/css/font-awesome.min.css',
-        'resources/assets/css/tether.min.css',
-        'resources/assets/css/pickadate/themes/classic.css',
-        'resources/assets/css/pickadate/themes/classic.date.css',
-        'resources/assets/css/fancybox/jquery.fancybox.css',
-        'resources/assets/css/fancybox/helpers/jquery.fancybox-thumbs.css',
-        './node_modules/nprogress/nprogress.css'
-    ], 'public/css/plugins.css')
-    .version([
-    	'public/css/plugins.css'
-	])
+  .sass('resources/assets/sass/backend.scss', 'public/css/backend.css')
+  .combine([
+    'resources/assets/css/font-awesome.min.css',
+    'resources/assets/css/tether.min.css',
+    'resources/assets/css/pickadate/themes/classic.css',
+    'resources/assets/css/pickadate/themes/classic.date.css',
+    'resources/assets/css/fancybox/jquery.fancybox.css',
+    'resources/assets/css/fancybox/helpers/jquery.fancybox-thumbs.css',
+    './node_modules/nprogress/nprogress.css'
+  ], 'public/css/plugins.css')
+  .version([
+    'public/css/plugins.css'
+	])/*
 	.webpackConfig({
 		output: {
 			//chunkFilename: 'js/[name].[chunkhash].js',
 			chunkFilename: 'js/[name].js',
     },
-    /*
     plugins: [
       new ZopfliPlugin({
         asset: '[path].gz[query]',
@@ -42,11 +41,11 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
         threshold: 10240,
         minRatio: 0.8
       })
-    ]*/
-	})
-    .browserSync({
-    	proxy: 'food.test'
-    });
+    ]
+  })*/
+  .browserSync({
+    proxy: 'food.test'
+  });
 
 // Full API
 // mix.js(src, output);

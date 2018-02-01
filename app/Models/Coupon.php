@@ -10,10 +10,10 @@ class Coupon extends Model
 	protected $appends = ['start', 'end'];
 
 	public function getStartAttribute() {
-		return $this->promo_start->format('d F Y');
+		return $this->promo_start ? $this->promo_start->format('d F Y') : '-';
 	}
 
 	public function getEndAttribute() {
-		return $this->promo_end->format('d F Y');
+		return $this->promo_end ? $this->promo_end->format('d F Y') : '-';
 	}
 }
