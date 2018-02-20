@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Diet;
+use App\Models\Order;
 use Carbon\Carbon;
 
 class CouponController extends Controller
@@ -28,6 +29,7 @@ class CouponController extends Controller
     $coupon->discount_type = $request->discount_type;
     $coupon->min_order = $request->min_order;
     $coupon->max_order = $request->max_order;
+    $coupon->limit_usage = $request->limit_usage;
     $coupon->delivery_dates = $request->delivery_dates;
     $coupon->delivery_start = $request->delivery_start == '' ? null : $request->delivery_start;
 		$coupon->amount = $request->amount;
@@ -48,6 +50,7 @@ class CouponController extends Controller
     $coupon->discount_type = $request->discount_type;
     $coupon->min_order = $request->min_order;
     $coupon->max_order = $request->max_order;
+    $coupon->limit_usage = $request->limit_usage;
     $coupon->amount = $request->amount;
     $coupon->delivery_dates = $request->delivery_dates;
     $coupon->delivery_start = $request->delivery_start == '' ? null : $request->delivery_start;
@@ -79,6 +82,17 @@ class CouponController extends Controller
 				'status' => 'ERROR',
 				'message' => 'Sorry, This discount code doesn\'t exist... But nice try ;)'
 			], 500);
+    }
+
+    if ($data->limit_usage > 0) {
+      // if limit usage is not 0, count the total
+      $usage = Order::where('coupon', $coupon)->count();
+      if ($data->limit_usage <= $usage) {
+        return response()->json([
+          'status' => 'ERROR',
+          'message' => 'Sorry, This discount code has already been used'
+        ], 500);
+      }
     }
 
     $menus = json_decode($data->menu, true);
@@ -195,7 +209,9 @@ class CouponController extends Controller
       ];
     } else {
       if ($data->discount_type != 'item') {
-        $priceError = $priceName ? ' with '. $priceName : '';
+        $menuName = !isset($menuName) ? null : $menuName;
+        $with = $menuName ? 'with ' : '';
+        $priceError = $priceName ? $with . $priceName : '';
         return response()->json([
           'status' => 'ERROR',
           'message' => 'Sorry, This Promo only applies for '. $menuName . $priceError

@@ -1,49 +1,49 @@
 <template>
-    <div class="item-wrap" v-if="products">
-        <h1>CHOOSE YOUR MEAL PLAN</h1>
-        <div class="row">
-            <div v-for="(c, i) in products" :key="i" class="col-xs-4 col-sm-4 col-lg-2">
-                <div class="icon-title" :key="`title-${i}`">
-                    <a href="javascript:" @click.prevent="setActive(c.id)" :class="isActive(c.id) ? 'active' : ''">
-                        <img :src="`/images/icons/${c.id}.svg`" style="height: 135px;">
-                        <h2>{{ c.title }}</h2>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div v-for="(c, i) in products" :key="i" class="products" v-show="isActive(c.id)">
+  <div class="item-wrap" v-if="products">
+    <h1>CHOOSE YOUR MEAL PLAN</h1>
+    <div class="row">
+      <div v-for="(c, i) in products" :key="i" class="col-xs-4 col-sm-4 col-lg-2">
+        <div class="icon-title" :key="`title-${i}`">
+          <a href="javascript:" @click.prevent="setActive(c.id)" :class="isActive(c.id) ? 'active' : ''">
+            <img :src="`/images/icons/${c.id}.svg`" style="height: 135px;">
             <h2>{{ c.title }}</h2>
-            <a href="/pdf/FAQ-about-Detox.pdf" target="_blank" class="detox-pdf" v-if="c.id == 10"><i class="fa fa-file-pdf-o"></i> &nbsp; FAQ about Detox</a>
-            <div class="row items" v-if="! loading" :key="i">
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 item-thumbs" v-for="product in c.diets" :key="product.id">
-                    <router-link :to="'/'+ product.slug +'/'+ product.id" class="figure diet-info">
-                        <div class="item-meta">
-                            <span class="item-name">
-                                {{ product.name }}
-                            </span>
-                            <span class="item-price">
-                                {{ format(product.price) }} IDR / week
-                            </span>
-                        </div>
-                        <img :src="'/images/foods/thumb_'+ product.id +'.jpg?'+ date" :alt="product.name" class="product-picture">
-                    </router-link>
-
-                    <div class="item-short-desc" v-html="product.short_description"></div>
-                    <div class="item-buttons">
-                        <router-link :to="'/'+ product.slug +'/'+ product.id" class="btn diet-info btn-sm btn-motion">
-                            <i class="fa fa-fw fa-eye"></i> <span>DETAILS</span>
-                        </router-link>
-                        <a href="javascript:;" @click="showPopup(product)" v-if="! isAdded(product.id)" title="" class="btn-diet btn btn-sm btn-cart pull-right">
-                            <i class="fa fa-fw fa-plus"></i> <span>ORDER NOW</span>
-                        </a>
-                        <a href="javascript:;" class="btn-diet btn btn-sm btn-success pull-right" @click="removeItem(product)" v-else>
-                            <i class="fa fa-fw fa-check"></i> <span>ADDED</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+          </a>
         </div>
+      </div>
     </div>
+    <div v-for="(c, i) in products" :key="i" class="products" v-show="isActive(c.id)">
+      <h2>{{ c.title }}</h2>
+      <a href="/pdf/FAQ-about-Detox.pdf" target="_blank" class="detox-pdf" v-if="c.id == 10"><i class="fa fa-file-pdf-o"></i> &nbsp; FAQ about Detox</a>
+      <div class="row items" v-if="! loading" :key="i">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 item-thumbs" v-for="product in c.diets" :key="product.id">
+          <router-link :to="'/'+ product.slug +'/'+ product.id" class="figure diet-info">
+            <div class="item-meta">
+              <span class="item-name">
+                {{ product.name }}
+              </span>
+              <span class="item-price">
+                {{ format(product.price) }} IDR / week
+              </span>
+            </div>
+            <img :src="'/images/foods/thumb_'+ product.id +'.jpg?'+ date" :alt="product.name" class="product-picture">
+          </router-link>
+
+          <div class="item-short-desc" v-html="product.short_description"></div>
+          <div class="item-buttons">
+            <router-link :to="'/'+ product.slug +'/'+ product.id" class="btn diet-info btn-sm btn-motion">
+              <i class="fa fa-fw fa-eye"></i> <span>DETAILS</span>
+            </router-link>
+            <a href="javascript:;" @click="showPopup(product)" v-if="! isAdded(product.id)" title="" class="btn-diet btn btn-sm btn-cart pull-right">
+              <i class="fa fa-fw fa-plus"></i> <span>ORDER NOW</span>
+            </a>
+            <a href="javascript:;" class="btn-diet btn btn-sm btn-success pull-right" @click="removeItem(product)" v-else>
+              <i class="fa fa-fw fa-check"></i> <span>ADDED</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -51,34 +51,34 @@ import mixin from '../mixins'
 
 let date = new Date()
 export default {
-    name: 'Items',
-    mixins: [mixin],
+  name: 'Items',
+  mixins: [mixin],
 
-    data () {
-        return {
-            activeId: null,
-            products: [],
-            loading: true,
-            date: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
-        }
-    },
-
-    methods: {
-        setActive(id) {
-            this.activeId === id ? this.activeId = null : this.activeId = id
-        },
-        isActive(id) {
-            return this.activeId === id
-        }
-    },
-
-    created () {
-        this.$http.get('/api/foods/categorize').then(function (res) {
-            this.products = (res.body)
-        }).then(function () {
-            this.$Progress.finish()
-            this.loading = false
-        })
+  data () {
+    return {
+      activeId: null,
+      products: [],
+      loading: true,
+      date: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
     }
+  },
+
+  methods: {
+    setActive(id) {
+      this.activeId === id ? this.activeId = null : this.activeId = id
+    },
+    isActive(id) {
+      return this.activeId === id
+    }
+  },
+
+  created () {
+    this.$http.get('/api/foods/categorize').then(function (res) {
+      this.products = (res.body)
+    }).then(function () {
+      this.$Progress.finish()
+      this.loading = false
+    })
+  }
 }
 </script>

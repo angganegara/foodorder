@@ -41,19 +41,21 @@ $app->post('/checkout/start', 'PaymentController@start');
 $app->get('/checkout/cancel/{order_number}', 'PaymentController@cancelPaypal');
 $app->get('/checkout/finish/{order_number}', 'PaymentController@getExpressCheckout');
 
-$app->get('/api/foods/categorize', 'FoodController@categorize');
-$app->get('/api/foods', 'FoodController@index');
-$app->get('/api/foods/category/{id}', 'FoodController@getItems');
-$app->get('/api/foods/{id}', 'FoodController@show');
-$app->get('/api/foods/{id}/type/{type}', 'FoodController@price');
-$app->post('/api/apply-coupon', 'CouponController@applyCoupon');
+$app->group(['middleware' => 'cors'], function() use ($app) {
+  $app->get('/api/foods/categorize', 'FoodController@categorize');
+  $app->get('/api/foods', 'FoodController@index');
+  $app->get('/api/foods/category/{id}', 'FoodController@getItems');
+  $app->get('/api/foods/{id}', 'FoodController@show');
+  $app->get('/api/foods/{id}/type/{type}', 'FoodController@price');
+  $app->post('/api/apply-coupon', 'CouponController@applyCoupon');
 
-$app->post('/api/create-order', 'OrderController@createOrder');
-$app->post('/api/send-order', 'OrderController@sendOrder');
-$app->post('/api/calculate-cart', 'CartController@calculateCart');
+  $app->post('/api/create-order', 'OrderController@createOrder');
+  $app->post('/api/send-order', 'OrderController@sendOrder');
+  $app->post('/api/calculate-cart', 'CartController@calculateCart');
 
-$app->get('/api/menus', function () {
-	return \App\Models\Menu::orderBy('id', 'asc')->get();
+  $app->get('/api/menus', function () {
+    return \App\Models\Menu::orderBy('id', 'asc')->get();
+  });
 });
 
 $app->post('/api/auth/login', 'AuthController@postLogin');

@@ -60,7 +60,8 @@ $app->singleton(
 
 $app->routeMiddleware([
 	'auth' => App\Http\Middleware\Authenticate::class,
-	'payment' => App\Http\Middleware\Payment::class
+  'payment' => App\Http\Middleware\Payment::class,
+  'cors' => App\Http\Middleware\Cors::class
 ]);
 
 /*
@@ -79,6 +80,7 @@ $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Srmklive\PayPal\Providers\PayPalServiceProvider::class);
+$app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

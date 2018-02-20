@@ -56,6 +56,10 @@
             <td>Maximum item order (enter 0 for no limit)</td>
             <td><input type="text" v-model="form.max_order" class="form-control form-control-sm" /></td>
           </tr>
+          <tr>
+						<td>Usage limit (enter 0 for no limit)</td>
+						<td><input type="text" v-model="form.limit_usage" class="form-control form-control-sm" /></td>
+					</tr>
 					<tr>
 						<td>Discount type</td>
 						<td>
@@ -117,7 +121,8 @@ export default {
 				amount: '',
         item: '',
         delivery_dates: null,
-        delivery_start: null
+        delivery_start: null,
+        limit_usage: 0
 			}
 		}
 	},
