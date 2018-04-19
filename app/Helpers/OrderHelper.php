@@ -251,9 +251,8 @@ class OrderHelper
         if ($order->referral == 'nirvanagym') {
           // nirvana gym order - cc to roland and
           $m
-            ->bcc('dispedia@gmail.com', 'Angga');
-            //->bcc('roland@motionfitnessbali.com', 'Roland')
-            //->bcc('ian.mac@nirvanastrength.com', 'Nirvana Gym');
+            ->bcc('roland@motionfitnessbali.com', 'Roland')
+            ->bcc('ian.mac@nirvanastrength.com', 'Nirvana Gym');
         }
 
         if ($order->referral == 'wanderlust') {
