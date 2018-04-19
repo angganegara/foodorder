@@ -191,7 +191,7 @@ export default {
       return this.domain === 'wanderlust.motionfitnessbali.com';
     },
     isNirvanaGym() {
-      return this.domain === 'food.test';
+      return this.domain === 'nirvanagym.motionfitnessbali.com';
     }
   }
 }
