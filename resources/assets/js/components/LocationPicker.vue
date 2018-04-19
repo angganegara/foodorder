@@ -6,7 +6,7 @@
     </label>
     <label v-if="isNirvanaGym">
       <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="nirvana" @click="update('f')">
-      Nirvana Gym
+      Nirvana Strength
     </label>
     &nbsp;&middot;&nbsp;
     <label>

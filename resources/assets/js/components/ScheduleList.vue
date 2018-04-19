@@ -89,7 +89,7 @@ export default {
 			} else {
 				return type == 'pickup1' ? 'Motion Cafe'
           : type == 'wanderlust' ? 'Wanderlust Gym'
-          : type == 'nirvana' ? 'Nirvana Gym'
+          : type == 'nirvana' ? 'Nirvana Strength'
 					: 'Motion Studio'
 			}
 		}

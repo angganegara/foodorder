@@ -33,7 +33,7 @@ class OrderHelper
     } else {
       return $code == 'pickup1' ? 'Motion Cafe'
         : $code == 'wanderlust' ? 'Wanderlust Gym'
-        : $code == 'nirvana' ? 'Nirvana Gym'
+        : $code == 'nirvana' ? 'Nirvana Strength'
         : 'Motion Studio';
     }
   }

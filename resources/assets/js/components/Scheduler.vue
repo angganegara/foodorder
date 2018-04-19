@@ -65,7 +65,7 @@
             <p>Set all pickup location for this meal to: </p>
             <div>
               <label v-if="isWanderlust"><a @click.prevent="selectAll('wanderlust', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Wanderlust Gym</a></label>
-              <label v-if="isNirvanaGym"><a @click.prevent="selectAll('nirvana', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Nirvana Gym</a></label>
+              <label v-if="isNirvanaGym"><a @click.prevent="selectAll('nirvana', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Nirvana Strength</a></label>
               &nbsp;&middot;&nbsp;
               <label><a @click.prevent="selectAll('pickup1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
               &nbsp;&middot;&nbsp;
