@@ -66,6 +66,7 @@ export default {
   },
   mounted() {
     this.$Progress.finish()
+    this.getDomain();
   },
   created() {
     this.$Progress.start()
@@ -99,6 +100,9 @@ export default {
     this.$Progress.finish()
   },
   methods: {
+    getDomain() {
+      this.$http.get('/api/domain').then(res => this.$root.domain = res.body);
+    },
     closePopupMap() {
       this.popupMap = false
     },

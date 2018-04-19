@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<template v-for="(product, i) in cart" v-if="product">
-			<div class="delivery-compact">
+			<div class="delivery-compact" :key="i">
 				<div class="delivery-title">
 					<h2>
 						{{ product.name }} {{ product.subname }}
@@ -11,37 +11,39 @@
 				</div>
 				<div class="delivery-body">
 					<table class="table-schedule" width="100%">
-						<template v-for="s in schedule[product.id]">
-							<tr class="day">
-								<td colspan="2"><b>{{ s.date }}</b></td>
-							</tr>
-							<tr v-if="s.breakfastLocation != ''">
-								<td width="65%" class="type">
-									<div class="type">Breakfast</div>
-									<div v-html="getLocation(s.breakfastLocation)"></div>
-								</td>
-								<td width="10%" class="text-xs-right">
-									{{ s.breakfast }}
-								</td>
-							</tr>
-							<tr v-if="s.lunchLocation != ''">
-								<td width="65%" class="type">
-									<div class="type">Lunch</div>
-									<div v-html="getLocation(s.lunchLocation)"></div>
-								</td>
-								<td width="10%" class="text-xs-right">
-									{{ s.lunch }}
-								</td>
-							</tr>
-							<tr v-if="s.dinnerLocation != ''">
-								<td width="65%" class="type">
-									<div class="type">Dinner</div>
-									<div v-html="getLocation(s.dinnerLocation)"></div>
-								</td>
-								<td width="10%" class="text-xs-right">
-									{{ s.dinner }}
-								</td>
-							</tr>
+						<template v-for="(s, si) in schedule[product.id]">
+              <tbody :key="si">
+                <tr class="day">
+                  <td colspan="2"><b>{{ s.date }}</b></td>
+                </tr>
+                <tr v-if="s.breakfastLocation != ''">
+                  <td width="65%" class="type">
+                    <div class="type">Breakfast</div>
+                    <div v-html="getLocation(s.breakfastLocation)"></div>
+                  </td>
+                  <td width="10%" class="text-xs-right">
+                    {{ s.breakfast }}
+                  </td>
+                </tr>
+                <tr v-if="s.lunchLocation != ''">
+                  <td width="65%" class="type">
+                    <div class="type">Lunch</div>
+                    <div v-html="getLocation(s.lunchLocation)"></div>
+                  </td>
+                  <td width="10%" class="text-xs-right">
+                    {{ s.lunch }}
+                  </td>
+                </tr>
+                <tr v-if="s.dinnerLocation != ''">
+                  <td width="65%" class="type">
+                    <div class="type">Dinner</div>
+                    <div v-html="getLocation(s.dinnerLocation)"></div>
+                  </td>
+                  <td width="10%" class="text-xs-right">
+                    {{ s.dinner }}
+                  </td>
+                </tr>
+              </tbody>
 						</template>
 						<template v-if="product.typeraw == 'weekly' && product.id == 3 && product.easysunday">
 							<tr class="day">
@@ -77,7 +79,7 @@ export default {
 	},
 	methods: {
 		getLocation(type) {
-			if (type != 'pickup1' && type != 'pickup2' && type != 'wanderlust') {
+			if (type != 'pickup1' && type != 'pickup2' && type != 'wanderlust' && type != 'nirvana') {
 				var outside = `${type}_outside`
 				var extra = ''
 				if (this.address[outside]) {
@@ -86,7 +88,8 @@ export default {
 				return this.address[type] + extra
 			} else {
 				return type == 'pickup1' ? 'Motion Cafe'
-					: type == 'wanderlust' ? 'Wanderlust Gym'
+          : type == 'wanderlust' ? 'Wanderlust Gym'
+          : type == 'nirvana' ? 'Nirvana Gym'
 					: 'Motion Studio'
 			}
 		}

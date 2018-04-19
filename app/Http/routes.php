@@ -53,6 +53,8 @@ $app->group(['middleware' => 'cors'], function() use ($app) {
   $app->post('/api/send-order', 'OrderController@sendOrder');
   $app->post('/api/calculate-cart', 'CartController@calculateCart');
 
+  $app->get('/api/domain', 'FoodController@getDomain');
+
   $app->get('/api/menus', function () {
     return \App\Models\Menu::orderBy('id', 'asc')->get();
   });

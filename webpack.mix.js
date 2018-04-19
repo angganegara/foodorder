@@ -27,7 +27,8 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
   ], 'public/css/plugins.css')
   .version([
     'public/css/plugins.css'
-	])
+  ])
+  /*
 	.webpackConfig({
 		output: {
 			//chunkFilename: 'js/[name].[chunkhash].js',
@@ -42,7 +43,7 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
         minRatio: 0.8
       })
     ]
-  })
+  })*/
   .browserSync({
     proxy: 'food.test'
   });

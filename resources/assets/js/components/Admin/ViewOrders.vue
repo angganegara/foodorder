@@ -10,7 +10,7 @@
         </ul>
       </div>
       <div class="orders">
-        <h2 class="pad-title">Viewing order {{ this.form.name }} #{{ this.form.id }}</h2>
+        <h2 class="pad-title">Viewing order {{ this.form.name }} #{{ this.form.id }} <span v-if="form.referral" style="text-transform: uppercase;">({{ this.form.referral }})</span></h2>
         <table class="sch">
           <tr><th colspan="2" class="th">Personal Data</th></tr>
           <tr>
@@ -223,12 +223,16 @@ export default {
     },
     getLocation(type)
     {
-      if (type != 'pickup1' && type != 'pickup2') {
-        var outside = `${type}_outside`
-        return this.form[type]
-      } else {
-        return type == 'pickup1' ? 'Avocado Cafe' : 'Motion Fitness'
+      if (type != 'pickup1' && type != 'pickup2' && type != 'wanderlust' && type != 'nirvana') {
+				var outside = `${type}_outside`
+				return this.form[type]
+			} else {
+				return type == 'pickup1' ? 'Motion Cafe'
+          : type == 'wanderlust' ? 'Wanderlust Gym'
+          : type == 'nirvana' ? 'Nirvana Gym'
+					: 'Motion Studio'
       }
+
     },
     saveOrder()
     {

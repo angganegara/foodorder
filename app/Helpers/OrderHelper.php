@@ -28,19 +28,19 @@ class OrderHelper
 
   public function getLocation($code, $order)
   {
-    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust') {
+    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust' && $code != 'nirvana') {
       return nl2br($order->{$code});
     } else {
-      return
-      $code == 'pickup1' ? 'Motion Cafe' :
-      ($code == 'wanderlust' ? 'Wanderlust Gym'
-      : 'Motion Studio');
+      return $code == 'pickup1' ? 'Motion Cafe'
+        : $code == 'wanderlust' ? 'Wanderlust Gym'
+        : $code == 'nirvana' ? 'Nirvana Gym'
+        : 'Motion Studio';
     }
   }
 
   public function isExtraDelivery($code, $order)
   {
-    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust') {
+    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust' && $code != 'nirvana') {
       $name = $code . '_outside';
       if ($order->{$name}) {
         return '<br><span style="color: #aaa; font-size: 11px; font-style: italic;">extra delivery</span>';
@@ -105,6 +105,9 @@ class OrderHelper
     }
     if ($url === 'wanderlust.motionfitnessbali.com') {
       $referral = 'wanderlust';
+    }
+    if ($url === 'nirvanagym.motionfitnessbali.com') {
+      $referral = 'nirvanagym';
     }
 
     $order = new Order;
@@ -212,7 +215,8 @@ class OrderHelper
     // include ayurveda diet?
     $ay = $oc->where('item_id', 2)->count();
     // parse cart
-    //return view('emails.order', compact('order', 'that', 'extra'));
+    return view('emails.order', compact('order', 'that', 'extra'));
+    exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
@@ -236,7 +240,6 @@ class OrderHelper
           ->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
           ->to($order->email, $order->fname . ' ' . $order->lname)
           ->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
-          ->cc('foodorder@avocadocafebali.com', 'Motion Cafe Bali')
           ->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
 
         if ($order->referral == 'balimma') {
@@ -246,8 +249,15 @@ class OrderHelper
             ->bcc('balitrainingcamp@gmail.com', 'Bali MMA');
         }
 
+        if ($order->referral == 'nirvanagym') {
+          // nirvana gym order - cc to roland and
+          $m
+            ->bcc('dispedia@gmail.com', 'Angga');
+            //->bcc('roland@motionfitnessbali.com', 'Roland')
+            //->bcc('ian.mac@nirvanastrength.com', 'Nirvana Gym');
+        }
+
         if ($order->referral == 'wanderlust') {
-          // wanderlust order - cc to ?
           $m
             ->bcc('jake.j.richards@gmail.com', 'Jake')
             ->bcc('contact@crossfitwanderlust.com', 'Wanderlust Gym')

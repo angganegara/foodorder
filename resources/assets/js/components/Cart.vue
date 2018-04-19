@@ -114,7 +114,11 @@ export default {
 			couponValue: 0,
 			couponItem: ''
 		}
-	},
+  },
+
+  mounted() {
+    this.loading = false;
+  },
 
 	computed: {
 		formatValue() {

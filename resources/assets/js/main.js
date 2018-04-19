@@ -100,7 +100,8 @@ var vm = new Vue({
   data () {
     return {
       itemAdded: false,
-      sAdmin: false
+      sAdmin: false,
+      domain: false
     }
   },
   store,
