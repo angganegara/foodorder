@@ -31,10 +31,20 @@ class OrderHelper
     if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust' && $code != 'nirvana') {
       return nl2br($order->{$code});
     } else {
-      return $code == 'pickup1' ? 'Motion Cafe'
-        : $code == 'wanderlust' ? 'Wanderlust Gym'
-        : $code == 'nirvana' ? 'Nirvana Strength'
-        : 'Motion Studio';
+      switch ($code) {
+        case 'pickup1':
+          return 'Motion Cafe';
+          break;
+        case 'pickup2':
+          return 'Motion Studio';
+          break;
+        case 'wanderlust':
+          return 'Wanderlust Gym';
+          break;
+        case 'nirvana':
+          return 'Nirvana Strength';
+          break;
+      }
     }
   }
 
@@ -216,6 +226,7 @@ class OrderHelper
     $ay = $oc->where('item_id', 2)->count();
     // parse cart
     //return view('emails.order', compact('order', 'that', 'extra'));
+    //exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
