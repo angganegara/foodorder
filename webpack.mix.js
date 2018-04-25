@@ -32,7 +32,7 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
 		output: {
 			//chunkFilename: 'js/[name].[chunkhash].js',
 			chunkFilename: 'js/[name].js',
-    },
+    },/*
     plugins: [
       new ZopfliPlugin({
         asset: '[path].gz[query]',
@@ -41,7 +41,7 @@ mix.js('resources/assets/js/main.js', 'public/js/app.js')
         threshold: 10240,
         minRatio: 0.8
       })
-    ]
+    ]*/
   })
   .browserSync({
     proxy: 'food.test'
