@@ -79,7 +79,7 @@ export default {
 	},
 	methods: {
 		getLocation(type) {
-			if (type != 'pickup1' && type != 'pickup2' && type != 'wanderlust' && type != 'nirvana') {
+			if (type != 'pickup1' && type != 'pickup2' && type != 'f45' && type != 'wanderlust' && type != 'nirvana') {
 				var outside = `${type}_outside`
 				var extra = ''
 				if (this.address[outside]) {
@@ -90,6 +90,7 @@ export default {
 				return type == 'pickup1' ? 'Motion Cafe'
           : type == 'wanderlust' ? 'Wanderlust Gym'
           : type == 'nirvana' ? 'Nirvana Strength'
+          : type == 'f45' ? 'F45 Bali'
 					: 'Motion Studio'
 			}
 		}

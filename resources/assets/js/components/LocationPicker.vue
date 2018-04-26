@@ -9,6 +9,11 @@
       Nirvana Strength
     </label>
     &nbsp;&middot;&nbsp;
+    <label v-if="!isWanderlist && !isNirvanaGym">
+      <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="f45" @click="update('g')">
+      F45 Bali
+    </label>
+    &nbsp;&middot;&nbsp;
     <label>
       <input type="radio" :name="`location-${id}-${index}`" v-model="mc" value="pickup1" @click="update('a')">
       Motion Cafe
@@ -112,6 +117,9 @@ export default {
         break
         case 'f':
           value = 'nirvanagym';
+        break;
+        case 'g':
+          value = 'f45';
         break;
       }
       this.$emit('input', value)

@@ -67,6 +67,8 @@
               <label v-if="isWanderlust"><a @click.prevent="selectAll('wanderlust', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Wanderlust Gym</a></label>
               <label v-if="isNirvanaGym"><a @click.prevent="selectAll('nirvana', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Nirvana Strength</a></label>
               &nbsp;&middot;&nbsp;
+              <label v-if="!isWanderlust && !isNirvanaGym"><a @click.prevent="selectAll('f45', product.id)" href="#"><i class="fa fa-fw fa-check"></i> F45 Bali</a></label>
+              &nbsp;&middot;&nbsp;
               <label><a @click.prevent="selectAll('pickup1', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Cafe</a></label>
               &nbsp;&middot;&nbsp;
               <label><a @click.prevent="selectAll('pickup2', product.id)" href="#"><i class="fa fa-fw fa-check"></i> Motion Studio</a></label>

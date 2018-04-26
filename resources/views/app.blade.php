@@ -19,7 +19,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon.png">
 	<title>Motion Cafe Bali | Homemade &amp; Fresh, Vegan &amp; Paleo Friendly</title>
 	@if ($action != 'admin')
-	<link rel="stylesheet" href="/css/app.css?2.3">
+	<link rel="stylesheet" href="/css/app.css?2.4">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 	@else
 	<link rel="stylesheet" href="/css/backend.css?1.3">
@@ -39,7 +39,7 @@
 	<div id="app"></div>
 	<!-- built files will be auto injected -->
 
-  <script src="{{ env('APP_ENV') == 'local' ? asset('js/app.js?1') : asset('js/app.js.gz?2') }}"></script>
+  <script src="{{ env('APP_ENV') == 'local' ? asset('js/app.js?2') : asset('js/app.js.gz?3') }}"></script>
   @if (env('APP_ENV') == 'local')
 		<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
   @else

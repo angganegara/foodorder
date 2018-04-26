@@ -28,7 +28,7 @@ class OrderHelper
 
   public function getLocation($code, $order)
   {
-    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust' && $code != 'nirvana') {
+    if ($code != 'pickup1' && $code != 'f45' && $code != 'pickup2' && $code != 'wanderlust' && $code != 'nirvana') {
       return nl2br($order->{$code});
     } else {
       switch ($code) {
@@ -44,13 +44,16 @@ class OrderHelper
         case 'nirvana':
           return 'Nirvana Strength';
           break;
+        case 'f45':
+          return 'F45 Bali';
+          break;
       }
     }
   }
 
   public function isExtraDelivery($code, $order)
   {
-    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'wanderlust' && $code != 'nirvana') {
+    if ($code != 'pickup1' && $code != 'pickup2' && $code != 'f45' && $code != 'wanderlust' && $code != 'nirvana') {
       $name = $code . '_outside';
       if ($order->{$name}) {
         return '<br><span style="color: #aaa; font-size: 11px; font-style: italic;">extra delivery</span>';
@@ -249,8 +252,8 @@ class OrderHelper
         $m
           ->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
           ->to($order->email, $order->fname . ' ' . $order->lname)
-          ->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
-          ->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+          ->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
+          ->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
 
         if ($order->referral == 'balimma') {
           // bali mma order - cc to roland and bali mma
