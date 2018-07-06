@@ -9,9 +9,9 @@ class PartnerController extends Controller
 {
   protected $partners;
 
-  public function index()
+  public function index(Request $request)
   {
-    if (request()->ajax()) {
+    if ($request->ajax()) {
       return Partner::all();
     } else {
       $partners = Partner::all();
