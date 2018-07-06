@@ -1,0 +1,86 @@
+import React, { Component } from 'react';
+import { CSSTransition } from 'react-transition-group';
+
+class HowItWorks extends Component
+{
+  state = {
+    open: false
+  };
+
+  componentDidMount() {
+    if (this.props.autoOpen) {
+      this.setState({open: true});
+    }
+  }
+
+  handleClick = e => {
+    this.setState({
+      open: ! this.state.open
+    })
+  }
+
+  render() {
+    const icon = this.state.open ? `<i class="fal fa-fw fa-angle-up"></i>` : `<i class="fal fa-fw fa-angle-down"></i>`;
+
+    return (
+      <React.Fragment>
+        {this.props.closeButton && <a href="javascript:" className="hiw--close" title="" onClick={this.props.toggleOverlay}><i className="fal fa-times"></i></a>}
+        <a href="javascript:" title="" onClick={this.handleClick} className="hiw--title">
+          <div className="container">
+            <span><i dangerouslySetInnerHTML={{__html: icon}}></i> How it Works</span>
+            <span>Info about ordering/delivery/payment</span>
+            <span>&nbsp;</span>
+          </div>
+        </a>
+        <CSSTransition
+          in={this.state.open}
+          timeout={0}
+          classNames="hiw-"
+          unmountOnExit
+        >
+          {state => (
+            <div className="hiw--body">
+              <div className="bottle"></div>
+              <div className="container">
+                <div className="row">
+                  <div className="col-xs-12 col-md-4">
+                    <h3>order info</h3>
+                    <ul>
+                      <li>Order must be placed 24hrs in advance</li>
+                      <li>We are closed on Sundays</li>
+                      <li>Latest order for Monday until Friday midnight</li>
+                      <li>Use our pick-up stations and safe money</li>
+                      <li>Office times for possible queries: Mon. - Fri. 08:00 - 17:00</li>
+                    </ul>
+                  </div>
+                  <div className="col-xs-12 col-md-4">
+                    <h3>delivery info</h3>
+                    <ul>
+                      <li>Choose up to 2 different delivery addresses</li>
+                      <li>Change of delivery address: minimum 24hrs in advance</li>
+                      <li>Delivery days: Monday to Saturday</li>
+                      <li>Delivery times: 07:30 to 20:30</li>
+                      <li>Allow time margin +/- 15 min. (you know how Bali traffic is ;-)</li>
+                      <li>Green Bali: Please return all our re-usable glasses/bottles to our drivers</li>
+                    </ul>
+                  </div>
+                  <div className="col-xs-12 col-md-4">
+                    <h3>payment info</h3>
+                    <ul>
+                      <li>Free delivery to Kuta/Seminyak/Canggu area (see map)</li>
+                      <li>Delivery surcharge of 50,000 IDR/day for other areas (e.g. Sanur/Ubud/Bukit)</li>
+                      <li>Cash payment: on first day of delivery to driver upon acceptance</li>
+                      <li>Online payment: by bank transfer / credit card / Paypal</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </CSSTransition>
+      </React.Fragment>
+    );
+  }
+}
+
+export default HowItWorks;

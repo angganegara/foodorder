@@ -1,0 +1,29 @@
+import React from 'react';
+
+const Schedule = ({ indexKey, data, snacks, parseStation }) => (
+  <div className={`schedule schedule-${indexKey}`}>
+    <div className="review-wrap">
+      {data.map((day, index) => (
+        <div key={index} className="review-card">
+          <div className="review-card--day"><i className="fal fa-fw fa-angle-down"></i> {day.label}</div>
+          {day.snacks.length > 0 && (
+            <div className="review-card--body">
+              <span className="icon"><i className="fa fa-fw fa-coffee"></i> snacks</span>
+              <div className="review-card--body-snacks">
+                {day.snacks.length > 0 && day.snacks.map((s, index) => (
+                  <span key={index}>{snacks[s].name}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className="review-card--pickup">
+            <span className="icon"><i className="fa fa-fw fa-truck"></i> Pickup station</span>
+            <p>{parseStation(day.pickup, index, day.address)}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+export default Schedule;

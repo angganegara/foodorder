@@ -1,0 +1,195 @@
+$main-color: #03A9F4;
+$primary-color: hsl(208, 100%, 50%);
+$box-border: #dbe5eb;
+$heading: 'Realtimetext-semibold';
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-size: 14px;
+  color: #454545;
+}
+a, a:focus, a:hover { text-decoration: none }
+.pagination { margin-top: 1rem; }
+.pagination-previous, .pagination-next, .pagination-link, .pagination-ellipsis { margin: .25rem .1rem }
+.pagination-link.is-current {
+  background-color: $main-color;
+  border-color: $main-color;
+}
+section.login {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent url('/images/pat/stripes-light.png') left top repeat;
+
+  .login-wrap {
+    width: 300px;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 1px rgba(34, 25, 25, 0.4);
+  }
+}
+
+section.admin {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.sidebar {
+  background-color: #121212;
+  min-width: 250px;
+  a.logo {
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    margin-top: 1rem;
+    padding: 2rem 0;
+    display: block;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul li a {
+    display: block;
+    font-family: $heading;
+    text-transform: uppercase;
+    font-size: 17px;
+  }
+  ul li.parent {
+    display: block;
+    padding: .5rem 1rem;
+    color: $main-color;
+    font-family: $heading;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+  ul li.single a {
+    display: block;
+    padding: .5rem 1rem;
+    color: #fff;
+    font-size: 13px;
+  }
+  ul li.children a {
+    padding: .5rem 1rem .5rem 2rem;
+    font-size: 13px;
+    color: #fff;
+    opacity: .75;
+    transition: .2s ease-in-out all;
+    &:hover {
+      opacity: 1;
+      background-color: #101010;
+    }
+  }
+}
+
+.main-content {
+  flex-grow: 1;
+  height: 100vh;
+  overflow-y: scroll;
+  position: relative;
+  padding: 4rem 2rem 2rem 2rem;
+}
+.breadcrumb {
+  position: fixed;
+  left: -15px;
+  top: 0;
+  padding: .75rem 2rem;
+  border-left: 265px solid #121212;
+  width: 100%;
+  font-size: 14px;
+  background: transparent url('/images/pat/notebook.jpg') left top repeat;
+  a {
+    color: $main-color;
+    font-weight: bold;
+  }
+  li.is-active a { font-weight: normal }
+}
+.breadcrumb:not(:last-child) { margin-bottom: 0 }
+
+.tbl {
+  width: 100%;
+  border: 1px solid #eee;
+  border-top: 0;
+  border-bottom: 0;
+  tr th {
+    font-family: $heading;
+    text-transform: uppercase;
+    font-size: 15px;
+    padding: .5rem;
+    background-color: #252525;
+    color: #eee;
+  }
+  tr td {
+    font-size: 13px;
+    padding: .5rem;
+    border-bottom: 1px solid #eee;
+  }
+  tbody tr { transition: .2s ease-in-out all }
+  tbody tr:hover {
+    box-shadow: 0 0 9px 2px rgba(34, 25, 25, 0.1);
+    position: relative;
+    z-index: 4;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+  }
+  .tools-wrapper {
+    position: relative;
+    text-align: right;
+    &:hover {
+      .tools {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+  tr td a { color: $main-color; }
+  tr td a.tools-delete { color: red }
+  .tools {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 135px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s ease-in-out all;
+    z-index: 5;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .tools a:first-child { border-left: 1px solid #eee }
+  .tools a {
+    background-color: #fff;
+    font-family: $heading;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    padding: .5rem .5rem;
+    border-right: 1px solid #eee;
+  }
+}
+
+.body {
+  h1 {
+    font-family: $heading;
+    text-transform: uppercase;
+    font-size: 17px;
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
