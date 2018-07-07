@@ -5,7 +5,7 @@
     <li class="single"><a href="/admin" title="">Dashboard</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Order</li>
     <li class="children"><a href="/admin/orders" title="">View Orders</a></li>
-    <li class="children"><a href="/admin/orders/schedule" title="">Schedule</a></li>
+    <li class="children"><a href="/admin/orders/schedule" title="" target="_blank">Schedule</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Partner</li>
     <li class="children"><a href="/admin/partners" title="">View Partners</a></li>
     <li class="children"><a href="/admin/partners/new" title="">Add new Partner</a></li>

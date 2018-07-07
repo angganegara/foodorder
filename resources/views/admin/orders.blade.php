@@ -34,7 +34,7 @@
           <td class="tools-wrapper">
             <a href="javascript:"><i class="far fa-cog"></i></a>
             <div class="tools">
-              <a href="/admin/orders/{{ $order->id }}">View</a>
+              <a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}">View</a>
               <a href="#" title="" class="tools-delete">Delete</a>
             </div>
           </td>

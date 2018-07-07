@@ -105,6 +105,7 @@ class OrderHelper
 
     $order = new Order;
     $total = 0;
+    $slimSundayPrice = 300000;
 
     $form = $request->form;
 
@@ -127,6 +128,7 @@ class OrderHelper
     $order->paypal_response = null;
     $order->subtotal = $request->subTotal;
     $order->total = 0;
+    $order->paid = $request->methods == 'cash' ? 1 : 0;
 
     $order->save();
 
@@ -142,13 +144,14 @@ class OrderHelper
       $oc->slimsunday = $cart['slimSunday'];
       $oc->subtotal = intVal($cart['foodPrice']) * intVal($cart['qty']);
       $oc->snacks_price = $cart['snacksPrice'];
-      $oc->total_price = $cart['totalPrice'];
+      $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
+      $oc->total_price = $oc->subtotal + $oc->slimsunday_price;
       $oc->start_date = $cart['dateStart'];
       $oc->end_date = $cart['dateEnd'];
 
-      $oc->save();
+      $total += $oc->total_price;
 
-      $total += $cart['totalPrice'];
+      $oc->save();
 
       foreach ($cart['schedules'] as $sch) {
         // save schedule
@@ -167,7 +170,10 @@ class OrderHelper
       }
     }
 
-    $order->update(['subtotal' => $total]);
+    $order->update([
+      'subtotal' => $total,
+      'total' => $total - $oc->coupon_value
+    ]);
 
     // send order
     return $order->order_number;

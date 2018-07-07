@@ -45,6 +45,18 @@ section.admin {
   align-items: stretch;
 }
 
+.is-schedule {
+  .sidebar { display: none }
+  .main-content { padding: 1.5rem; }
+  .main-content nav.breadcrumb { display: none }
+  .body h1 { font-size: 32px; }
+  .tbl {
+    tr th, tr td {
+      font-size: 18px;
+      padding: .5rem 1rem;
+    }
+  }
+}
 .sidebar {
   background-color: #121212;
   min-width: 250px;
@@ -102,6 +114,7 @@ section.admin {
   overflow-y: scroll;
   position: relative;
   padding: 4rem 2rem 2rem 2rem;
+  background-color: #eee;
 }
 .breadcrumb {
   position: fixed;
@@ -191,5 +204,215 @@ section.admin {
     font-size: 17px;
     display: block;
     margin-bottom: 1rem;
+  }
+}
+
+.form-section {
+  background-color: #fff;
+  margin-bottom: 1rem;
+  border-top: 3px solid $main-color;
+
+  h2 {
+    font-family: $heading;
+    font-size: 17px;
+    text-transform: uppercase;
+    display: block;
+    padding: .5rem 1rem;
+    background: transparent url(/images/pat/notebook.jpg) left top repeat;
+    color: #252525;
+  }
+  &--info {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .form-row { margin-bottom: 0 }
+}
+.form-footer {
+  padding: 1rem 0;
+  .form-terms {
+    text-align: center;
+  }
+  .form-submit {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .form-submit .btn {
+    padding: 1.25rem 3rem;
+  }
+}
+.form-row {
+  label {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    display: block;
+    margin-bottom: .5rem;
+  }
+}
+.form-inner { padding: .75rem 1rem; }
+.cart-wrap {
+  display: flex;
+  justify-content: center;
+}
+.cart-subtotal {
+  width: 40%;
+  padding: 1rem;
+  label {
+    display: block;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: .5rem;
+    font-weight: bold;
+  }
+}
+.cart-body {
+  width: 60%;
+  padding: 1rem;
+  font-size: 13px;
+  .cart-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: .5rem;
+  }
+  .cart-package {
+    color: #9f9f9f;
+    font-style: italic;
+  }
+  .cart-dates {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+  }
+}
+.cart-schedule {
+  padding: .5rem 1rem;
+  background: transparent url('/images/pat/blizzard.png') left top repeat;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+}
+.schedule-body {
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid #eee;
+  .schedule-date {
+    display: block;
+    padding: .5rem 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    background-color: #fafafa;
+    color: #252525;
+    width: 120px;
+  }
+  .schedule-entry {
+    span:nth-child(1) {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      padding: .5rem 1.5rem 0 1.5rem;
+    }
+    span:nth-child(2) {
+      font-size: 13px;
+      padding: 0 1.5rem .5rem 1.5rem;
+      display: block;
+    }
+  }
+}
+.schedule-body:nth-child(odd) {
+  border-right: 1px solid #eee;
+}
+.schedule-wrap table {
+  width: 100%;
+  tr th {
+    padding: .5rem 1rem;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  tr th:nth-child(1) {
+    min-width: 100px;
+  }
+  tr th:nth-child(3) {
+    min-width: 150px;
+  }
+  tr td {
+    font-size: 13px;
+    padding: .5rem 1rem;
+  }
+  tr:nth-child(odd) td {
+    background-color: #f5f5f5;
+  }
+}
+table.total {
+  width: 100%;
+  tr td {
+    font-size: 13px;
+    padding: .5rem 1rem;
+    border-bottom: 1px dashed #eee;
+    text-align: right;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}
+.schedule-wrapper {
+  width: 100%;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+}
+.schedule {
+  font-family: 'Roboto';
+  &--card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+    border-radius: 3px;
+  }
+  &--name {
+    flex-grow: 1;
+    font-size: 22px;
+    margin-bottom: 1rem;
+    color: #757575;
+    padding: 1rem;
+  }
+  &--meals, &--snacks, &--station {
+    border-top: 1px dashed #ddd;
+    padding: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #252525;
+  }
+  &--meals {
+    font-size: 28px;
+    span {
+      display: block;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+  }
+  &--snacks {
+    font-size: 20px;
+    span { display: block; }
+    span:nth-child(1) {
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+  }
+  &--station {
+    font-size: 20px;
+    span { display: block; }
+    span:nth-child(1) {
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
   }
 }

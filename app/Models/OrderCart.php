@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class OrderCart extends Model
 {
 	//protected $table = 'order_carts';
+  protected $appends = ['package_name', 'date_period', 'parsed_price'];
 
 	public function order()
 	{
@@ -17,4 +19,21 @@ class OrderCart extends Model
 	{
 		return $this->hasMany('App\Models\OrderSchedule', 'order_carts_id');
 	}
+
+  public function getPackageNameAttribute()
+  {
+    return $this->package == "1" ? "6-day package" : "4-day package";
+  }
+
+  public function getDatePeriodAttribute()
+  {
+    $start = Carbon::parse($this->start_date)->format('d M y');
+    $end = Carbon::parse($this->end_date)->format('d M y');
+    return $start .' &mdash; '. $end;
+  }
+
+  public function getParsedPriceAttribute()
+  {
+    return number_format($this->total_price, 0);
+  }
 }
