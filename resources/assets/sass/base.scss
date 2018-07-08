@@ -1036,6 +1036,14 @@ section.top.customize {
   flex-grow: 1;
   background: transparent url('/images/pat/ep_naturalwhite.jpg') left top repeat;
 
+  a.customize--return {
+    color: $main-color-darker;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+
   h1 {
     text-transform: uppercase;
     color: #454545;

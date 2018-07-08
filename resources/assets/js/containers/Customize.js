@@ -343,8 +343,15 @@ class Customize extends Component
           )}
           {food && sitem && (
             <div className="container">
-              <h1>Customize your Order</h1>
-              <p>Select your pick-up station, snacks & drinks for each day</p>
+              <div className="row">
+                <div className="col-xs-12 col-md-2">
+                  <Link to="/" title="" className="customize--return"><i className="fa fa-fw fa-long-arrow-alt-left"></i> Meal Plan Overview</Link>
+                </div>
+                <div className="col-xs-12 col-md-6">
+                  <h1>Customize your Order</h1>
+                  <p>Select your pick-up station, snacks & drinks for each day</p>
+                </div>
+              </div>
               <br />
               {days.length && (
                 <React.Fragment>
@@ -413,7 +420,7 @@ class Customize extends Component
                             {day.pickup === 'address' && (
                               <textarea rows="7" placeholder="Enter your address here" onChange={(e) => this.updateAddress(e, day)} value={day.address ? day.address : address}></textarea>
                             )}
-                            {index === 0 && day.pickup && <Checkbox checked={saveStation} label="Save selection for the next day?" onClick={(e) => this.saveStation(e)} />}
+                            {index === 0 && day.pickup && <Checkbox checked={saveStation} label="Set selected pick-up station for all days" onClick={(e) => this.saveStation(e)} />}
                           </div>
                           <div className="customize--next">
                             {activeTab > 0 && <a href="javascript:" className="btn" onClick={this.prevTab}><i className="fal fa-angle-left"></i> PREVIOUS DAY</a>}

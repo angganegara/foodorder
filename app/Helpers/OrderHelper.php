@@ -145,7 +145,7 @@ class OrderHelper
       $oc->subtotal = intVal($cart['foodPrice']) * intVal($cart['qty']);
       $oc->snacks_price = $cart['snacksPrice'];
       $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
-      $oc->total_price = $oc->subtotal + $oc->slimsunday_price;
+      $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $cart['snacksPrice'];
       $oc->start_date = $cart['dateStart'];
       $oc->end_date = $cart['dateEnd'];
 
@@ -289,6 +289,7 @@ class OrderHelper
         $this->deleteOrder($order_number);
       }
       // log in
+      echo 'CANOT SEND EMAIL';
       return response()->json('CANNOT_SEND_MAIL', 422);
     }
 
