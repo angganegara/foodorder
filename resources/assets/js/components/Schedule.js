@@ -5,7 +5,9 @@ const Schedule = ({ indexKey, data, snacks, parseStation }) => (
     <div className="review-wrap">
       {data.map((day, index) => (
         <div key={index} className="review-card">
-          <div className="review-card--day"><i className="fal fa-fw fa-angle-down"></i> {day.label}</div>
+          <div className="review-card--day">
+            <span><i className="fal fa-fw fa-angle-down"></i> {day.label}</span>
+          </div>
           {day.snacks.length > 0 && (
             <div className="review-card--body">
               <span className="icon"><i className="fa fa-fw fa-coffee"></i> snacks</span>

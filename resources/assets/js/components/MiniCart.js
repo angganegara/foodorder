@@ -18,8 +18,7 @@ class MiniCart extends Component
     let item = cartState.added[index];
     const slimSunday = item.slimSunday ? 300000 : 0;
     item.qty = vnum;
-    item.totalPrice = (item.foodPrice * vnum) + item.snacksPrice + slimSunday;
-    this.cancelCoupon();
+    item.totalPrice = (item.foodPrice + item.snacksPrice + slimSunday) * vnum;
   }
 
   totalPrice = () => {

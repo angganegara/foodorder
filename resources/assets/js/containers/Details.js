@@ -15,7 +15,10 @@ import {
   PopoverInteractionKind
 } from '@blueprintjs/core';
 import { DatePicker } from '@blueprintjs/datetime';
-const moment = require('moment');
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+const moment = extendMoment(Moment);
+
 const $ = require('jquery');
 
 // helpers
@@ -27,10 +30,13 @@ import { guid, parsePrice } from '../helpers/cart';
 
 // store
 import cartState from '../store';
+import snackState from '../store/snacks';
 
 // components
 import HowItWorks from '../components/HowItWorks';
 import SlimSundayPopover from '../components/SlimSundayPopover';
+import ExampleMenu from '../components/ExampleMenu';
+import RecommendedSnacks from '../components/RecommendedSnacks';
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 const monToday = new Date();
@@ -41,12 +47,12 @@ const nextWed = checkPackage4DisabledDates(monToday);
 
 const package6 = date => {
   const disableNextMonday = nextMonday ? (date.getDay() === 1 && date.getDate() === nextMonday.getDate() && date.getMonth() === nextMonday.getMonth() && date.getFullYear() === nextMonday.getFullYear()) : null;
-  return disableNextMonday || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 3) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
+  return disableNextMonday || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
 }
 
 const package4 = date => {
   const disableNextWed = nextWed ? (date.getDay() === 3 && date.getDate() === nextWed.getDate() && date.getMonth() === nextWed.getMonth() && date.getFullYear() === nextWed.getFullYear()) : null;
-  return disableNextWed || (date.getDay() === 0) || (date.getDay() === 1) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
+  return disableNextWed || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
 }
 
 class Details extends Component
@@ -88,7 +94,7 @@ class Details extends Component
   }
 
   updatePackage = (e, id) => {
-    const pkg = id === 1 ? { package6 } : { package4 };
+    const pkg = id === 1 ? { package6 } : { package6 };
     if(this.state.form.startDate) {
       this.resetSelectedDate();
     }
@@ -116,7 +122,9 @@ class Details extends Component
     let { id } = this.props.match.params;
     const { skipAlert } = this.state;
     const { packageId, slimSunday, startDate } = this.state.form;
-    const duration = packageId === 1 ? 5 : 3;
+    const isWed = startDate.getDay() == 3 ? 1 : 0;
+    let duration = packageId === 1 ? 5 : 3;
+    duration = (isWed && duration == 5) ? 6 : duration;
     let item = this.getItem(id);
     let ls = window.sessionStorage;
 
@@ -134,13 +142,16 @@ class Details extends Component
     const key = guid();
     let daysData = [];
     for (let days of range.by('days')) {
-      daysData.push({
-        label: days.format('ddd, MMM DD'),
-        date: days.format('YYYY-MM-DD'),
-        pickup: null,
-        address: null,
-        snacks: []
-      });
+      // skip sunday if any
+      if (days.format('d') != '0') {
+        daysData.push({
+          label: days.format('ddd, MMM DD'),
+          date: days.format('YYYY-MM-DD'),
+          pickup: null,
+          address: null,
+          snacks: []
+        });
+      }
     }
 
     let data = {
@@ -169,17 +180,45 @@ class Details extends Component
   resetSelectedDate = () => {
     this.setState({ ...this.state, form: {...this.state.form, startDate: null} });
     setTimeout(() => {
-      $('[range="true"]').removeClass('dates-range dates-range-finish').attr('range', false);
+      $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
       $('.DayPicker-Day.DayPicker-Day--selected').removeClass('DayPicker--Day-selected')
     }, 50);
   }
 
   handleDayClick = day => {
     this.setState({ ...this.state, form: {...this.state.form, startDate: day} });
+    const { packageId } = this.state.form;
     setTimeout(() => {
-      $('[range="true"]').removeClass('dates-range dates-range-finish').attr('range', false);
-      $('.DayPicker-Day--selected').nextAll().addClass('dates-range').attr('range', 'true');
-      $('.DayPicker-Day--selected').parent().find('.DayPicker-Day:last-child').addClass('dates-range-finish');
+      $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
+      // is it wednesday ?
+      const isWed = day.getDay() == 3 ? 1 : 0;
+      let duration = packageId == 1 ? 5 : 3;
+      duration = (isWed && duration == 5) ? 6 : duration;
+      const startDate = moment(day);
+      const endDate = moment(day).add(duration, 'd');
+      let dateRange = moment().range(startDate, endDate);
+      let diff = dateRange.diff('days');
+      let dateArr = Array.from(dateRange.by('days'));
+      dateArr.map((date, i) => {
+        let d = moment(date);
+        let Day = d.format('D');
+        let day = d.format('d');
+        let ariaFormat = d.format('ddd MMM DD YYYY');
+        let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]')
+
+        if (i == 0) {
+          el.addClass('dates-range dates-range-start').attr('range', 'true');
+        }
+        if (day == '0') {
+          el.addClass('dates-range-sunday').attr('range', 'true');
+        }
+        if (day != '0') {
+          el.addClass('dates-range').attr('range', 'true');
+        }
+        if (i == diff) {
+          el.addClass('dates-range dates-range-finish').attr('range', 'true');
+        }
+      })
     }, 50);
   }
 
@@ -214,6 +253,8 @@ class Details extends Component
                   <h1>{food.name}</h1>
                   <div className="details--short-description" dangerouslySetInnerHTML={{__html: food.short_description}}></div>
                   <div className="details--description" dangerouslySetInnerHTML={{__html: food.description}}></div>
+                  {food.example_menu && <ExampleMenu menu={food.example_menu} />}
+                  {food.recommended_snack && snackState.items && <RecommendedSnacks snacks={JSON.parse(food.recommended_snack)} />}
                 </div>
                 <div className="col-xs-12 col-md-4">
                   <div className="details--price-box">
@@ -256,7 +297,6 @@ class Details extends Component
                   </Alert>
                   <div className="info">
                     <a href="javascript:" title="" className="btn-normal" onClick={this.toggleOverlay}><i className="fal fa-fw fa-question-circle"></i> How it works</a>
-                    <a href="javascript:" title="" className="btn-primary compact"><i className="fal fa-fw fa-arrow-right"></i> checkout</a>
                   </div>
                 </div>
               </div>

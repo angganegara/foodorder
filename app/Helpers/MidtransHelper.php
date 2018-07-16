@@ -29,10 +29,11 @@ class MidtransHelper
 		$data = [];
 
 		foreach ($order->ordercart as $oc) {
+      $slim_sunday = $oc->slimsunday == "1" ? "(with Slim Sunday)" : "";
 			array_push($data, [
 				'id' => $oc->id,
-				'price' => $oc->price,
-				'name' => $oc->name,
+				'price' => $oc->total_price,
+				'name' => $oc->meals . $slim_sunday,
 				'quantity' => $oc->qty
 			]);
 		}
@@ -40,15 +41,7 @@ class MidtransHelper
 		if ($order->coupon_value > 0) {
 			array_push($data, [
 				'price' => -($order->coupon_value),
-				'name' => 'Coupon code '. $order->coupon,
-				'quantity' => 1
-			]);
-		}
-
-		if ($order->discount > 0) {
-			array_push($data, [
-				'price' => -($order->discount),
-				'name' => 'Delivery Discount',
+				'name' => 'Coupon code '. $order->coupon_code,
 				'quantity' => 1
 			]);
 		}
@@ -64,7 +57,7 @@ class MidtransHelper
 
 		$transaction_details = array(
 			'order_id'      => $order_number,
-			'gross_amount'  => $order->total - $order->discount - $order->coupon_value
+			'gross_amount'  => $order->total
 		);
 
 		$items = $this->generateItems($order);

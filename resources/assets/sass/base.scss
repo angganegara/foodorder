@@ -377,7 +377,7 @@ header {
 }
 
 section.top {
-  padding-top: 100px;
+  padding-top: 25px;
 }
 
 .loading {
@@ -402,14 +402,14 @@ section.home.intro {
     background-color: #1c1c1c;
     position: absolute;
     left: 0;
-    top: 50px;
+    top: 0;
     z-index: 1;
     transform: skewY(-3deg);
   }
   .container {
     position: relative;
     z-index: 7;
-    padding-bottom: 5rem;
+    padding-bottom: 4rem;
   }
   h1 {
     color: $main-color;
@@ -423,16 +423,6 @@ section.home.intro {
     color: #fff;
     display: inline;
     text-shadow: 1px 1px 0 rgba(#000, .5);
-  }
-  .foods {
-    width: 567px;
-    height: 445px;
-    display: block;
-    position: absolute;
-    right: 0;
-    bottom: -66px;
-    background: transparent url('/images/home-foods.png') left top no-repeat;
-    z-index: 6;
   }
 }
 
@@ -669,7 +659,7 @@ section.top.details {
       list-style-type: decimal
     }
     ul li, ol li {
-      margin-bottom: .5rem;
+      margin-bottom: .25rem;
       font-size: 15px;
     }
   }
@@ -719,16 +709,16 @@ section.top.details {
       border-radius: 4px;
     }
     div:nth-child(1) {
-      grid-column: 1 / 3;
-      grid-row: 1 / 3;
+      grid-column: 1;
+      grid-row: 1;
     }
     div:nth-child(2) {
-      grid-column: 3;
+      grid-column: 2;
       grid-row: 1;
     }
     div:nth-child(3) {
       grid-column: 3;
-      grid-row: 2;
+      grid-row: 1;
     }
   }
   a.details--return {
@@ -747,6 +737,52 @@ section.top.details {
     display: flex;
     justify-content: space-between;
   }
+  &--example-menu {
+    margin-right: 5rem;
+    h3 {
+      text-transform: uppercase;
+      font-size: 16px;
+      color: #454545;
+      font-family: $heading;
+      padding: .75rem 0 .5rem 0;
+      border-top: 2px solid $main-color;
+    }
+    h4 {
+      text-transform: uppercase;
+      font-size: 15px;
+      color: #454545;
+    }
+    p { font-size: 15px; }
+    &--body p:last-child { margin: 0 }
+  }
+  .snack { margin-top: 1rem; }
+  .snack ul {
+    margin: .5rem 0 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .snack ul li {
+    margin-right: 1rem;
+    max-width: 150px;
+    text-align: center;
+    figure {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    figure img {
+      display: block;
+      width: 100%;
+      max-width: 150px;
+      border-radius: 50%;
+    }
+    .snack-thumbs--title {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
 }
 .pt-datepicker .DayPicker-Day.DayPicker-Day--selected:hover {
   background-color: $main-color-darker;
@@ -761,6 +797,19 @@ section.top.details {
   background-color: rgba($main-color, .5);
   border-radius: 0;
   color: #454545 !important;
+}
+.pt-datepicker .DayPicker-Day.dates-range-sunday {
+  background-color: #eee;
+  border-radius: 0;
+  color: #AAA !important;
+}
+.pt-datepicker .DayPicker-Day.dates-range-start {
+  background-color: $main-color;
+  color: #454545;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 .pt-datepicker .DayPicker-Day.dates-range-finish {
   background-color: $main-color;
@@ -925,6 +974,21 @@ a.snacks-close-button {
   box-shadow: 0 2px 10px rgba(#000, .15);
   position: relative;
 
+  .snacks-icons {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 7;
+    width: 100%;
+    padding: .5rem;
+    display: flex;
+    justify-content: flex-start;
+    img {
+      display: block;
+      margin-right: .5rem;
+    }
+  }
+
   figure {
     display: block;
     margin: 0;
@@ -1073,6 +1137,9 @@ section.top.customize {
       border-bottom: 5px solid $main-color;
       opacity: 1;
     }
+    li.tab-clickable {
+      opacity: 1;
+    }
     li a { display: block }
     .tab-title {
       font-family: $heading;
@@ -1116,6 +1183,20 @@ section.top.customize {
       font-weight: bold;
       text-transform: uppercase;
     }
+    .snacks-icons {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 7;
+      width: 100%;
+      padding: .5rem;
+      display: flex;
+      justify-content: flex-start;
+      img {
+        display: block;
+        margin-right: .5rem;
+      }
+    }
   }
   a.snacks-delete {
     position: absolute;
@@ -1127,6 +1208,7 @@ section.top.customize {
     border-radius: 3px;
     font-size: 1.5em;
     opacity: .75;
+    z-index: 9;
     transition: .1s ease-in-out all;
     &:hover { opacity: 1 }
   }
@@ -1273,6 +1355,13 @@ section.top.customize {
     font-weight: bold;
     font-size: 14px;
     letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+      font-size: 12px;
+      color: #454545;
+    }
   }
   &--body, &--pickup {
     display: flex;
@@ -1298,6 +1387,36 @@ section.top.customize {
   }
   &--body-snacks span:last-child:after {
     content: "";
+  }
+}
+.review-buttons {
+  text-align: right;
+  width: 500px;
+  table {
+    border: 1px dashed #dbdbdb;
+    width: 100%;
+    border-spacing: 0;
+    tbody tr { background-color: rgba(#fff, .9) }
+    thead tr { background-color: $main-color }
+    thead tr th {
+      padding: .5rem 1rem;
+      text-align: left;
+      font-size: 14px;
+    }
+    tbody tr td {
+      padding: .5rem 1rem;
+      border-bottom: 1px dashed #eee;
+      font-size: 14px;
+    }
+    tbody tr td:nth-child(odd) {
+      text-align: right;
+      width: 60%;
+    }
+    tbody tr td:nth-child(even) {
+      width: 40%;
+      text-align: left;
+      font-weight: bold;
+    }
   }
 }
 
@@ -1364,8 +1483,8 @@ section.top.checkout {
   .form-row:last-child { margin-bottom: .5rem }
   &--payment-button {
     display: inline-block;
-    padding: .75rem 1.25rem;
-    font-size: 16px;
+    padding: .35rem .65rem;
+    font-size: 13px;
     font-weight: bold;
     color: #858585;
     border: 1px solid #eee;

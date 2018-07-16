@@ -29,7 +29,7 @@ class CartOverview extends Component
     let item = cartState.added[index];
     const slimSunday = item.slimSunday ? 300000 : 0;
     item.qty = vnum;
-    item.totalPrice = (item.foodPrice * vnum) + item.snacksPrice + slimSunday;
+    item.totalPrice = (item.foodPrice + item.snacksPrice + slimSunday) * vnum;
     this.cancelCoupon();
   }
 
@@ -77,7 +77,9 @@ class CartOverview extends Component
           <React.Fragment key={index}>
             <div className="cart--row">
               <div className="cart--body">
-                <div className="cart--title"><Link className="edit-cart" to={`/customize-cart/${item.key}`} title="">{item.title} <i className="fa fa-pencil"></i></Link></div>
+                <div className="cart--title">
+                  <a className="edit-cart" href="javascript:" title="">{item.title}</a>
+                </div>
                 <div className="cart--package">{this.parsePackage(item.packageId)}</div>
                 <div className="cart--dates" dangerouslySetInnerHTML={{__html: this.parseDates(item)}}></div>
                 {item.slimSunday && <div className="cart--sunday">with Slim Sunday</div>}

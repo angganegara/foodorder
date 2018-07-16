@@ -103,12 +103,12 @@ class Checkout extends Component
 
   handlePayment = (e, payment) => this.setState({ payment })
   toggleTerms = () => this.setState({ errors: {...this.state.errors, terms: null}, form: {...this.state.form, terms: !this.state.form.terms} })
-  toggleTermsDialog = () => this.setState({ termsDialog: true })
+  toggleTermsDialog = () => this.setState({ termsDialog: ! this.state.termsDialog })
   agreeTerms = () => this.setState({ termsDialog: false, form: {...this.state.form, terms: true} })
   applyCoupon = ({ code, value, item }) => this.setState({ form: {...this.state.form, coupon: code, couponValue: value, couponItem: item} })
 
   handleCheckout = () => {
-    const { form } = this.state;
+    const { form, payment } = this.state;
     const required = ['fname', 'lname', 'email', 'phone'];
     let errors = null;
     let gotoTop = false;
@@ -130,7 +130,11 @@ class Checkout extends Component
     }
 
     const subTotal = cartState.added.reduce((accu, total) => accu + total.totalPrice, 0);
-    const data = { cart: cartState.added, form, methods: 'cash', subTotal};
+    const data = { cart: cartState.added, form, methods: payment, subTotal};
+    if (payment == 'creditcard') {
+      //snap.show();
+    }
+
     this.setState({ checkoutLoading: true });
 
     // for now we assume payment is cash
@@ -139,7 +143,7 @@ class Checkout extends Component
         .post('/api/create-order', data)
         .then(res => {
           let ordernumber = res.data;
-          let methods = 'cash';
+          let methods = payment;
 
           this.continueCheckout(ordernumber);
         });
@@ -149,7 +153,7 @@ class Checkout extends Component
   }
 
   continueCheckout = ordernumber => {
-    const methods = 'cash';
+    const methods = this.state.payment;
     axios
       .post('/checkout/start', { ordernumber, methods })
       .then(res => {
@@ -164,6 +168,30 @@ class Checkout extends Component
               })
               this.clearCart();
             }
+            break;
+          case 101:
+            if (message == 'StartPaypal' && redirect != '') {
+              window.location = redirect
+            } else {
+              window.alert('There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com')
+            }
+            break;
+          case 102:
+            snap.pay(token, {
+              onSuccess: (result) => {
+                // success
+                this.setState({ finish: true, checkoutLoading: false })
+              },
+              onPending: (result) => {
+                // pending
+                this.setState({ finish: true, checkoutLoading: false })
+              },
+              onError: (result) => {
+                console.log('Error')
+                console.log(result)
+              },
+              onClose: () => {snap.hide()}
+            })
             break;
         }
       })
@@ -269,16 +297,32 @@ class Checkout extends Component
                       <h2>Payment Option</h2>
                       <PaymentButton
                         active={payment == 'cash'}
-                        icon="fa-motorcycle"
+                        icon="fa fa-motorcycle"
                         handleChange={(e) => this.handlePayment(e, 'cash')}
                         label="Cash to driver / the cafe"
                       />
                       <PaymentButton
-                        active={payment == 'midtrans'}
-                        icon="fa-credit-card"
-                        handleChange={(e) => this.handlePayment(e, 'midtrans')}
+                        active={payment == 'creditcard'}
+                        icon="fa fa-credit-card"
+                        handleChange={(e) => this.handlePayment(e, 'creditcard')}
                         label="Credit Card / Bank Transfer"
                       />
+                      <PaymentButton
+                        active={payment == 'paypal'}
+                        icon="fab fa-paypal"
+                        handleChange={(e) => this.handlePayment(e, 'paypal')}
+                        label="PayPal"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+                <div className="col-xs-12 col-sm-12 col-md-5">
+
+                  <div className="form-section">
+                    <div className="form-inner no-padding">
+                      <h2>Order Overview</h2>
+                      <CartOverview snacks={snacks} applyCoupon={this.applyCoupon} />
                     </div>
                   </div>
 
@@ -294,16 +338,6 @@ class Checkout extends Component
                     </div>
                     <div className="form-submit">
                       <button type="submit" className="btn" onClick={this.handleCheckout}>SEND ORDER <i className="fal fa-angle-right"></i></button>
-                    </div>
-                  </div>
-
-                </div>
-                <div className="col-xs-12 col-sm-12 col-md-5">
-
-                  <div className="form-section">
-                    <div className="form-inner no-padding">
-                      <h2>Order Overview</h2>
-                      <CartOverview snacks={snacks} applyCoupon={this.applyCoupon} />
                     </div>
                   </div>
 

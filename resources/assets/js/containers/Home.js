@@ -20,7 +20,6 @@ class Home extends Component
             </p>
           </div>
           <div className="bg"></div>
-          <div className="foods"></div>
         </section>
         <section className="home hiw">
           <HowItWorks closeButton={false} />

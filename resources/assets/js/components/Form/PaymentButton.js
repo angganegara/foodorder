@@ -7,7 +7,7 @@ const PaymentButton = ({ active, icon, label, handleChange }) => (
     className={`form-section--payment-button ${active ? 'active' : ''}`}
     title=""
   >
-    <i className={`fa ${icon}`}></i> {label}
+    <i className={`${icon}`}></i> {label}
   </a>
 );
 

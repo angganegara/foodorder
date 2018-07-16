@@ -158,6 +158,7 @@ class Customize extends Component
     let selectedSnacks = [...activeItem.schedules];
     const snackIndex = selectedSnacks[activeTab].snacks.indexOf(snackId);
     selectedSnacks[activeTab].snacks.splice(snackIndex, 1);
+    this.generateSnacksData();
   }
 
   showSnacks = () => {
@@ -177,22 +178,35 @@ class Customize extends Component
 
   changeTab = (e, index) => {
     const { activeTab, activeItem, lastTab } = this.state;
-    if (lastTab) {
+    this.scrollTop();
+
+    if (index != 99) {
       this.setState({ activeTab: index, lastTab: false, activeDate: activeItem.schedules[index].date });
       this.showPageLoading();
-    }
-    if (index < activeTab) {
-      this.setState({ activeTab: index, activeDate: activeItem.schedules[index].date });
-      this.showPageLoading();
+    } else {
+      if (this.isAllStationSelected()) {
+        this.generateSnacksData();
+        this.setState({ lastTab: true });
+        this.showPageLoading();
+      } else {
+        appToaster.show({ message: 'To finish, please choose a pick-up station / delivery address for all days.', intent: Intent.WARNING });
+        return false;
+      }
     }
   }
 
   scrollTop = () => { $('html, body').animate({scrollTop: 0}, 500); }
+
+  isAllStationSelected = () => {
+    const { activeItem } = this.state;
+    return activeItem.schedules.filter(schedule => schedule.pickup != null).length;
+  }
+
   nextTab = (e) => {
     const { activeTab, activeItem } = this.state;
     const nextIndex = parseInt(activeTab) + 1;
     if (activeItem.schedules[activeTab].pickup === null) {
-      appToaster.show({ message: 'Please select your pickup station.', intent: Intent.WARNING });
+      appToaster.show({ message: 'To finish, please choose a pick-up station / delivery address for all days.', intent: Intent.WARNING });
       return false;
     }
     if (activeItem.schedules[nextIndex]) {
@@ -201,7 +215,6 @@ class Customize extends Component
       this.showPageLoading();
       this.scrollTop();
     } else {
-      // we're at the last tab
       this.setState({ lastTab: true });
       this.showPageLoading();
     }
@@ -228,18 +241,28 @@ class Customize extends Component
     }
   }
 
-  handleAddToCart = () => {
-    let { id } = this.props.match.params;
+  calculateDetails = () => {
     const { activeItem, snacks, food } = this.state;
-    const index = getIndex(id);
 
-    this.setState({ cartLoading: true });
+    const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
+    const foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
+    const snacksPrice = activeItem.schedules
+      .filter(s => s.snacksData.length > 0)
+      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += snack.price, 0), 0);
 
-    const dateStart = activeItem.schedules[0].date;
-    const dateEnd = activeItem.schedules[activeItem.schedules.length-1].date;
-    const title = food.name;
-    const slug = food.slug;
-    const schedules = activeItem.schedules.map((schedule, index) => {
+    const totalPrice = foodPrice + snacksPrice + slimSundayPrice;
+
+    return {
+      slimSundayPrice,
+      foodPrice,
+      snacksPrice,
+      totalPrice
+    };
+  }
+
+  generateSnacksData = () => {
+    const { activeItem, snacks, food } = this.state;
+    activeItem.schedules = activeItem.schedules.map((schedule, index) => {
       return {
         ...schedule,
         snacksData: schedule.snacks.length && schedule.snacks.map(snack => {
@@ -254,6 +277,21 @@ class Customize extends Component
         })
       }
     });
+  }
+
+  handleAddToCart = () => {
+    let { id } = this.props.match.params;
+    const { activeItem, snacks, food } = this.state;
+    const index = getIndex(id);
+
+    this.setState({ cartLoading: true });
+
+    const dateStart = activeItem.schedules[0].date;
+    const dateEnd = activeItem.schedules[activeItem.schedules.length-1].date;
+    const title = food.name;
+    const slug = food.slug;
+    this.generateSnacksData();
+    const schedules = activeItem.schedules;
 
     const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
     const foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
@@ -343,29 +381,28 @@ class Customize extends Component
           )}
           {food && sitem && (
             <div className="container">
-              <div className="row">
-                <div className="col-xs-12 col-md-2">
-                  <Link to="/" title="" className="customize--return"><i className="fa fa-fw fa-long-arrow-alt-left"></i> Meal Plan Overview</Link>
-                </div>
-                <div className="col-xs-12 col-md-6">
-                  <h1>Customize your Order</h1>
-                  <p>Select your pick-up station, snacks & drinks for each day</p>
-                </div>
-              </div>
+              <h1>Customize your Order</h1>
+              <p>Select your pick-up station, snacks & drinks for each day</p>
               <br />
               {days.length && (
                 <React.Fragment>
                   <ul className="customize--tabs-wrapper">
                     {days.map((day, index) => (
-                      <li className={(index === activeTab) && !lastTab ? 'tab-active' : ''} key={index}>
+                      <li
+                        className={`
+                          ${activeItem.schedules[index].pickup ? 'tab-clickable' : ''}
+                          ${(index === activeTab) && !lastTab ? 'tab-active' : ''}
+                        `}
+                        key={index}
+                      >
                         <a href="javascript:" title="" onClick={(e) => this.changeTab(e, index)}>
                           <div className="tab-title">Day {index+1}</div>
                           <div className="tab-date">{day.label}</div>
                         </a>
                       </li>
                     ))}
-                    <li className={lastTab ? 'tab-active' : ''}>
-                      <a href="javascript:" title="">
+                    <li className={`tab-clickable ${lastTab ? 'tab-active' : ''}`}>
+                      <a href="javascript:" title="" onClick={(e) => this.changeTab(e, 99)}>
                         <div className="tab-title">Finish</div>
                         <div className="tab-date">Review</div>
                       </a>
@@ -380,6 +417,8 @@ class Customize extends Component
                       addToCart={this.handleAddToCart}
                       parseStation={this.parseStation}
                       cartLoading={cartLoading}
+                      changeTab={this.changeTab}
+                      prices={this.calculateDetails()}
                     />
                   )}
                   <div className={lastTab ? 'customize--tabs-body last-tab' : 'customize--tabs-body'}>
@@ -400,6 +439,12 @@ class Customize extends Component
                           </div>
                           {selectedSnacks && selectedSnacks.length > 0 && selectedSnacks.map((snack, index) => (
                             <div className="customize--item" key={index}>
+                              <div className="snacks-icons">
+                                {(sitem[snack].gf == 1) && (<img src="/images/icons/gf.png" alt="Gluten Free" title="Gluten Free" />)}
+                                {(sitem[snack].vegan == 1) && (<img src="/images/icons/vegan.png" alt="Vegan" title="Vegan" />)}
+                                {(sitem[snack].raw == 1) && (<img src="/images/icons/raw.png" alt="RAW" title="RAW" />)}
+                                {(sitem[snack].natural == 1) && (<img src="/images/icons/natural.png" alt="100% Natural" title="100% Natural" />)}
+                              </div>
                               <a href="javascript:" title="" className="snacks-delete" onClick={(e) => this.removeSnack(e, snack)}><i className="fal fa-times"></i></a>
                               <figure><img src={`/images/snacks/${snack}.jpg`} alt="" /></figure>
                               <span>{sitem && sitem[snack] && (sitem[snack].name)}</span>

@@ -28,20 +28,20 @@ class PaypalHelper
 
 		$cart = $this->getCheckoutData($order_number);
 
-        try {
+    try {
 			$response = $this->provider->addOptions([
 				'BRANDNAME' => 'Motion Fitness',
-				'LOGOIMG'   => 'https://foodorder.motionfitnessbali.com/images/logo-email.jpg'
+				'LOGOIMG'   => 'http://foodorder.helloangga.com/images/logo-email.jpg'
 			])->setExpressCheckout($cart);
-            return [
+      return [
 				'code'     => 101,
 				'message'  => 'StartPaypal',
 				'redirect' => $response['paypal_link'],
 				'token'    => null
 			];
-        } catch (\Exception $e) {
-			return response("Error processing PayPal payment : ". $e->getMessage());
-        }
+    } catch (\Exception $e) {
+      return response("Error processing PayPal payment : ". $e->getMessage());
+    }
 	}
 
 	public function getCheckoutData($order_number)
@@ -51,10 +51,11 @@ class PaypalHelper
 		$data['items'] = [];
 
 		foreach($order->ordercart as $oc) {
+      $slim_sunday = $oc->slimsunday == "1" ? "(with Slim Sunday)" : "";
 			array_push($data['items'], [
-				'name' => $oc->name,
-				'price' => $this->convertToUSD($oc->price),
-				'desc' => $oc->subname,
+				'name' => $oc->meals . $slim_sunday,
+				'price' => $this->convertToUSD($oc->total_price),
+				'desc' => '',
 				'qty' => $oc->qty
 			]);
 		}
@@ -63,16 +64,7 @@ class PaypalHelper
 			array_push($data['items'], [
 				'name' => 'Discount',
 				'price' => -$this->convertToUSD($order->coupon_value),
-				'desc' => 'Coupon code '. $order->coupon,
-				'qty' => 1
-			]);
-		}
-
-		if ($order->discount > 0) {
-			array_push($data['items'], [
-				'name' => 'Delivery Discount',
-				'price' => -$this->convertToUSD($order->discount),
-				'desc' => 'Delivery Discount',
+				'desc' => 'Coupon code '. $order->coupon_code,
 				'qty' => 1
 			]);
 		}
@@ -80,14 +72,14 @@ class PaypalHelper
 		$data['return_url'] = url('/checkout/finish/'. $order_number);
 		$data['invoice_id'] = $order->order_number;
 		$data['invoice_description'] = "Order #$order_number Invoice";
-        $data['cancel_url'] = url('/checkout/cancel/'. $order_number);
+    $data['cancel_url'] = url('/checkout/cancel/'. $order_number);
 
 		$data['total'] = 0;
 		$data['total'] = array_reduce(
 			array_map(function($val) { return $val['qty'] * $val['price']; }, $data['items']),
 			function ($current, $total) { return $current + $total; }
 		);
-		
+
 		return $data;
 	}
 
@@ -108,25 +100,25 @@ class PaypalHelper
 	public function getExpressCheckout(Request $request, $order_number)
 	{
 		$token = $request->get('token');
-        $PayerID = $request->get('PayerID');
+    $PayerID = $request->get('PayerID');
 		$cart = $this->getCheckoutData($order_number);
 
 		// Verify Express Checkout Token
-        $response = $this->provider->getExpressCheckoutDetails($token);
-        if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
-            // Perform transaction on PayPal
-            $payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
-            $status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
-			
-			if ($this->oh->updatePaypalStatus($order_number, $status)) {
-				// success
-				// send order
-				$this->oh->sendOrder($order_number);
-				// redirect to vue page?
-				return redirect()->to('/thank-you');
-			} else {
-				echo "There is an error processing your payment";
-			}
-        }
-	}	
+    $response = $this->provider->getExpressCheckoutDetails($token);
+    if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
+      // Perform transaction on PayPal
+      $payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
+      $status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
+
+      if ($this->oh->updatePaypalStatus($order_number, $status)) {
+        // success
+        $this->oh->sendOrder($order_number);
+
+        // redirect to vue page?
+        return redirect()->to('/thank-you');
+      } else {
+        echo "There is an error processing your payment";
+      }
+    }
+	}
 }

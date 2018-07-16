@@ -46,31 +46,29 @@ class HowItWorks extends Component
                   <div className="col-xs-12 col-md-4">
                     <h3>order info</h3>
                     <ul>
-                      <li>Order must be placed 24hrs in advance</li>
-                      <li>We are closed on Sundays</li>
+                      <li>Starting days for your diet: Monday and Wednesday only</li>
                       <li>Latest order for Monday until Friday midnight</li>
-                      <li>Use our pick-up stations and safe money</li>
+                      <li>Latest order for Wednesday until Monday midnight</li>
                       <li>Office times for possible queries: Mon. - Fri. 08:00 - 17:00</li>
                     </ul>
                   </div>
                   <div className="col-xs-12 col-md-4">
                     <h3>delivery info</h3>
                     <ul>
-                      <li>Choose up to 2 different delivery addresses</li>
+                      <li>One delivery per day with all meals/drinks</li>
+                      <li>Delivery days: Monday to Saturday (Slim Sunday will be delivered Saturday)</li>
+                      <li>Delivery times: between 07:30 am. and 09:00 am</li>
                       <li>Change of delivery address: minimum 24hrs in advance</li>
-                      <li>Delivery days: Monday to Saturday</li>
-                      <li>Delivery times: 07:30 to 20:30</li>
-                      <li>Allow time margin +/- 15 min. (you know how Bali traffic is ;-)</li>
-                      <li>Green Bali: Please return all our re-usable glasses/bottles to our drivers</li>
+                      <li>Eco Effort: please return all our re-usable glasses/bottles to our drivers</li>
                     </ul>
                   </div>
                   <div className="col-xs-12 col-md-4">
                     <h3>payment info</h3>
                     <ul>
-                      <li>Free delivery to Kuta/Seminyak/Canggu area (see map)</li>
+                      <li>Free delivery to Kuta/Seminyak/Canggu area</li>
                       <li>Delivery surcharge of 50,000 IDR/day for other areas (e.g. Sanur/Ubud/Bukit)</li>
-                      <li>Cash payment: on first day of delivery to driver upon acceptance</li>
-                      <li>Online payment: by bank transfer / credit card / Paypal</li>
+                      <li>Cash payment: on first day of delivery to driver upon receipt</li>
+                      <li>Online payment: by bank transfer / Paypal</li>
                     </ul>
                   </div>
                 </div>

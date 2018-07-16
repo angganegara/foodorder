@@ -5,6 +5,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { store, view } from 'react-easy-state';
 
 import station from '../store/station';
+import snackState from '../store/snacks';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -21,6 +22,9 @@ class App extends Component
     axios
       .post('/api/partners')
       .then(res => station.stations = res.data);
+    axios
+      .get('/api/items')
+      .then(res => snackState.items = res.data);
   }
 
   render() {

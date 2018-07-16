@@ -210,7 +210,7 @@ class OrderHelper
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
-
+/*
     try {
       Mail::send(
         $email_layout,
@@ -292,7 +292,7 @@ class OrderHelper
       echo 'CANOT SEND EMAIL';
       return response()->json('CANNOT_SEND_MAIL', 422);
     }
-
+*/
     // set email flag
     $order->email_sent = 1;
     $order->save();

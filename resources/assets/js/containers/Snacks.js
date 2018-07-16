@@ -92,6 +92,12 @@ class Snacks extends Component
               <div className="snacks-cards">
                 {category.items.map((item, index) => (
                   <div className="snacks-card" key={index}>
+                    <div className="snacks-icons">
+                      {(item.gf == 1) && (<img src="/images/icons/gf.png" alt="Gluten Free" title="Gluten Free" />)}
+                      {(item.vegan == 1) && (<img src="/images/icons/vegan.png" alt="Vegan" title="Vegan" />)}
+                      {(item.raw == 1) && (<img src="/images/icons/raw.png" alt="RAW" title="RAW" />)}
+                      {(item.natural == 1) && (<img src="/images/icons/natural.png" alt="100% Natural" title="100% Natural" />)}
+                    </div>
                     <SnackDescription
                       className={`snack-${item.id}`}
                       title={item.name}

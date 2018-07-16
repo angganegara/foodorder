@@ -4,6 +4,13 @@ export const checkPackage6DisabledDates = (date) => {
   let day = date.getDay();
   let hours = date.getHours();
 
+  if (day === 1) {
+    const today = new Date();
+    if ((date.getMonth() == today.getMonth()) && date.getFullYear() == today.getFullYear()) {
+      limit = today;
+    }
+  }
+
   if (day === 5 && hours > 22) {
     // friday, past 10pm, set limit to 3 days
     limit = new Date(date.setHours(24 * 3));

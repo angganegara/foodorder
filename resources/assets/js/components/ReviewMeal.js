@@ -1,13 +1,18 @@
 import React from 'react';
 
-const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartLoading}) => (
+import { parsePrice } from '../helpers/cart';
+
+const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartLoading, changeTab, activeItem, prices}) => (
   <div className="customize--tabs-body">
     <h2>Review</h2>
     <div className="review">
       <div className="review-wrap">
         {days.map((day, index) => (
           <div key={index} className="review-card">
-            <div className="review-card--day"><i className="fal fa-fw fa-angle-down"></i> {day.label}</div>
+            <div className="review-card--day">
+              <span><i className="fal fa-fw fa-angle-down"></i> {day.label}</span>
+              <a href="javascript:" onClick={(e) => changeTab(e, index)}><i className="fa fa-fw fa-pencil"></i> edit</a>
+            </div>
             <div className="review-card--body">
               <span className="icon"><i className="fa fa-fw fa-utensils"></i> meal</span>
               <p>{food.name}</p>
@@ -30,6 +35,36 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
         ))}
       </div>
       <div className="review-buttons">
+        <table className="review-table">
+          <thead>
+            <tr>
+              <th colSpan="2">ORDER SUMMARY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>MEAL</td>
+              <td>{parsePrice(prices.foodPrice)} IDR</td>
+            </tr>
+            {prices.snacksPrice > 0 && (
+              <tr>
+                <td>SNACKS</td>
+                <td>{parsePrice(prices.snacksPrice)} IDR</td>
+              </tr>
+            )}
+            {prices.slimSundayPrice > 0 && (
+              <tr>
+                <td>SLIM SUNDAY</td>
+                <td>{parsePrice(prices.slimSundayPrice)} IDR</td>
+              </tr>
+            )}
+            <tr>
+              <td>TOTAL PRICE</td>
+              <td>{parsePrice(prices.totalPrice)} IDR</td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
         <p>
           <a href="javascript:" className={`btn ${cartLoading ? 'btn-disabled' : ''}`} onClick={addToCart}>
             {!cartLoading && <span><i className="fal fa-fw fa-plus"></i> Add to Cart</span>}
