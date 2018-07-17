@@ -206,8 +206,8 @@ class OrderHelper
     // slim booster diet
     $sbd = $oc->where('item_id', 12)->count();
     // parse cart
-    #return view('emails.order', compact('order', 'that', 'extra'));
-    #exit();
+    return view('emails.order', compact('order', 'that', 'extra'));
+    exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
@@ -294,10 +294,9 @@ class OrderHelper
     } catch (\Exception $e) {
       // delete order only if not resend!!!!
       if (!$resend) {
-        $this->deleteOrder($order_number);
+        //$this->deleteOrder($order_number);
       }
       // log in
-      echo 'CANOT SEND EMAIL';
       return response()->json('CANNOT_SEND_MAIL', 422);
     }
 

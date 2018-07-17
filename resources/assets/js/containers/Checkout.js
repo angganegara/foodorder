@@ -155,7 +155,6 @@ class Checkout extends Component
       .post('/checkout/start', { ordernumber, methods })
       .then(res => {
         const { code, message, redirect, token } = res.data;
-        console.log(res.data)
 
         switch(code) {
           case 100:
