@@ -23,7 +23,10 @@ class CartOverview extends Component
   parsePackage = (id) => id === 1 ? '6-Day Package' : '4-Day Package';
   parseDates = (dates) => moment(dates.dateStart).format('ddd, MMM Do') + ' &ndash; ' + moment(dates.dateEnd).format('ddd, MMM Do');
   handleEmptyCart = () => cartState.added = [];
-  handleDelete = (e, index) => cartState.added.splice(index, 1);
+  handleDelete = (e, index) => {
+    cartState.added.splice(index, 1);
+    this.cancelCoupon();
+  }
 
   handleQty = (vnum, vstring, index) => {
     let item = cartState.added[index];
