@@ -122,9 +122,6 @@
               <tr>
                 <td colspan="2">
                   <table width="100%" cellpadding="0" cellspacing="0">
-                    <thead>
-
-                    </thead>
                     <tbody>
                       <?php $total = 0; ?>
                       @foreach ($order->ordercart as $key => $item) @if ($key !== 'total')
