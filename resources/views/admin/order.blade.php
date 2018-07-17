@@ -45,7 +45,7 @@
           <div class="form-inner">
             <div class="form-row">
               <label>Comments</label>
-              {{ $order->comments != '' && $order->comments != NULL ? $order->comments : '<em>Guest did not put a comments</em>' }}
+              {!! $order->comments != '' && $order->comments != NULL ? $order->comments : '<em>Guest did not put a comments</em>' !!}
             </div>
           </div>
         </div>

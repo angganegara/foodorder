@@ -131,9 +131,6 @@ class Checkout extends Component
 
     const subTotal = cartState.added.reduce((accu, total) => accu + total.totalPrice, 0);
     const data = { cart: cartState.added, form, methods: payment, subTotal};
-    if (payment == 'creditcard') {
-      //snap.show();
-    }
 
     this.setState({ checkoutLoading: true });
 

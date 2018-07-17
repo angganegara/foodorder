@@ -47,7 +47,8 @@ const nextWed = checkPackage4DisabledDates(monToday);
 
 const package6 = date => {
   const disableNextMonday = nextMonday ? (date.getDay() === 1 && date.getDate() === nextMonday.getDate() && date.getMonth() === nextMonday.getMonth() && date.getFullYear() === nextMonday.getFullYear()) : null;
-  return disableNextMonday || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
+  const disableNextWed = nextWed ? (date.getDay() === 3 && date.getDate() === nextWed.getDate() && date.getMonth() === nextWed.getMonth() && date.getFullYear() === nextWed.getFullYear()) : null;
+  return disableNextMonday || disableNextWed || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
 }
 
 const package4 = date => {
@@ -122,16 +123,17 @@ class Details extends Component
     let { id } = this.props.match.params;
     const { skipAlert } = this.state;
     const { packageId, slimSunday, startDate } = this.state.form;
-    const isWed = startDate.getDay() == 3 ? 1 : 0;
-    let duration = packageId === 1 ? 5 : 3;
-    duration = (isWed && duration == 5) ? 6 : duration;
-    let item = this.getItem(id);
-    let ls = window.sessionStorage;
 
     if (!startDate) {
       appToaster.show({ message: 'Please select the delivery starting date', intent: Intent.DANGER })
       return false;
     }
+
+    const isWed = startDate.getDay() == 3 ? 1 : 0;
+    let duration = packageId === 1 ? 5 : 3;
+    duration = (isWed && duration == 5) ? 6 : duration;
+    let item = this.getItem(id);
+    let ls = window.sessionStorage;
 
     if (this.isExist(id) && !skipAlert) {
       this.setState({ alertOpen: true });

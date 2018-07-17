@@ -81,11 +81,19 @@ class OrderHelper
     return $order->paid;
   }
 
-  public function listSnacks($array, $snacks)
+  public function listSnacks($sch, $snacks)
   {
+    $array = $sch['snacks'];
+
     if (count($array) > 0) {
-      $map = array_map(function($snack) use ($snacks) {
-        return $snacks[$snack]->name;
+      $map = array_map(function($snack) use ($sch, $snacks) {
+        $options = [];
+        if (array_key_exists('snackOptions', $sch) && array_key_exists($snack, $sch['snackOptions'])) {
+          $snacks[$snack]->protein !== null ? array_push($options, $sch['snackOptions'][$snack]['protein']) : '';
+          $snacks[$snack]->flavour !== null ? array_push($options, $sch['snackOptions'][$snack]['flavour']) : '';
+        }
+        $options = count($options) > 0 ? ' ('. implode(', ', $options) .')' : '';
+        return $snacks[$snack]->name . $options;
       }, $array);
       return implode(', ', $map);
     }
@@ -100,7 +108,7 @@ class OrderHelper
     $referral = '';
 
     $partner = Partner::where('domain', $url);
-    $snacks = Item::all(['id', 'name', 'price'])->keyBy('id');
+    $snacks = Item::all(['id', 'name', 'price', 'flavour', 'protein'])->keyBy('id');
     $stations = Partner::all(['id', 'station'])->keyBy('id');
 
     $order = new Order;
@@ -162,7 +170,7 @@ class OrderHelper
         $sc->name = $form['fname'] .' '. $form['lname'];
         $sc->date = $sch['date'];
         $sc->meals = $cart['title'];
-        $sc->snacks = $this->listSnacks($sch['snacks'], $snacks);
+        $sc->snacks = $this->listSnacks($sch, $snacks);
         $sc->station = $sch['pickup'] != 'address' ? $stations[$sch['pickup']]->station : $sch['address'];
         $sc->station_id = $sch['pickup'] != 'address' ? $sch['pickup'] : null;
 
@@ -210,7 +218,7 @@ class OrderHelper
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
-/*
+
     try {
       Mail::send(
         $email_layout,
@@ -292,7 +300,7 @@ class OrderHelper
       echo 'CANOT SEND EMAIL';
       return response()->json('CANNOT_SEND_MAIL', 422);
     }
-*/
+
     // set email flag
     $order->email_sent = 1;
     $order->save();

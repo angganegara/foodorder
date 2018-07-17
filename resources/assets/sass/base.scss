@@ -39,6 +39,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
   margin: 0;
 }
+.ml-overlay-open { overflow: hidden }
 .req {
   font-weight: bold;
   color: red;
@@ -996,7 +997,7 @@ a.snacks-close-button {
 
   &--details {
     position: relative;
-    a.quick-add {
+    .quick-add {
       width: 40px;
       height: 40px;
       display: flex;
@@ -1011,7 +1012,21 @@ a.snacks-close-button {
       color: #454545;
       box-shadow: 0 2px 6px rgba(#000, .15);
     }
-    a.quick-add.delete {
+    .quick-add a {
+      color: #454545;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      position: absolute;
+      z-index: 16;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+    }
+    .quick-add.delete {
       background-color: $main-color;
       color: $main-color-darker;
     }
@@ -1034,6 +1049,40 @@ a.snacks-close-button {
 }
 .snacks-card:nth-child(3n) {
   margin-right: 0;
+}
+.snack-option {
+  min-width: 200px;
+  &--section {
+    label.pt-label {
+      text-transform: uppercase;
+      font-size: 14px;
+      margin-bottom: .75rem;
+      font-weight: bold;
+    }
+    label.pt-control {
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+    padding-bottom: .5rem;
+    border-bottom: 1px solid #eee;
+    margin-bottom: .5rem;
+  }
+  &--section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  a.snack-option--add {
+    display: block;
+    text-align: center;
+    background-color: $main-color;
+    padding: .5rem 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #454545;
+  }
 }
 .snack-description.active {
   transform: translateX(0);
@@ -1183,6 +1232,12 @@ section.top.customize {
       font-weight: bold;
       text-transform: uppercase;
     }
+    span.opt {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: normal;
+    }
+    span.opt { margin-right: 3px }
     .snacks-icons {
       position: absolute;
       left: 0;
@@ -1382,11 +1437,27 @@ section.top.customize {
       margin-bottom: 0;
     }
   }
+  &--body-snacks {
+    width: 100%;
+  }
   &--body-snacks span:after {
     content: ", ";
   }
   &--body-snacks span:last-child:after {
     content: "";
+  }
+  .snacks--opt {
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: normal;
+    p {
+      display: inline-block;
+      font-weight: normal;
+    }
+    p:after { content: ", "; }
+    p:last-child:after { content: "" }
+    &:before { content: "(" }
+    &:after { content: ")" }
   }
 }
 .review-buttons {

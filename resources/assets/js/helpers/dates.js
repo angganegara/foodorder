@@ -1,15 +1,18 @@
-// disable next monday for 6 day package. limit : friday after 10 pm
+// disable monday. limit : friday after 10 pm
+// disable wednesday. limit : monday after 10 pm
 export const checkPackage6DisabledDates = (date) => {
   let limit = false;
   let day = date.getDay();
   let hours = date.getHours();
 
   if (day === 1) {
+    // if monday and same date
     const today = new Date();
     if ((date.getMonth() == today.getMonth()) && date.getFullYear() == today.getFullYear()) {
       limit = today;
     }
   }
+
 
   if (day === 5 && hours > 22) {
     // friday, past 10pm, set limit to 3 days
@@ -40,7 +43,7 @@ export const checkPackage4DisabledDates = (date) => {
   }
 
   if (day === 2) {
-    // tuesday, disable next monday
+    // tuesday, disable next wednesday
     limit = new Date(date.setHours(24));
   }
 

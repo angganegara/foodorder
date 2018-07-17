@@ -152,9 +152,29 @@ class Customize extends Component
     }
   }
 
+  isSnackOptionExist = (id, type=null) => {
+    const { activeItem, activeTab } = this.state;
+    const data = activeItem.schedules[activeTab];
+    if (
+      data.hasOwnProperty('snackOptions') &&
+      data.snackOptions.hasOwnProperty(id)
+    ) {
+      if (type) {
+        if (!data.snackOptions[id][type]) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
   removeSnack = (e, snackId) => {
     const { activeItem, activeTab } = this.state;
     // copy the whole arrays rather than directly update the array
+    if (this.isSnackOptionExist(snackId)) {
+      delete activeItem.schedules[activeTab].snackOptions[snackId];
+    }
     let selectedSnacks = [...activeItem.schedules];
     const snackIndex = selectedSnacks[activeTab].snacks.indexOf(snackId);
     selectedSnacks[activeTab].snacks.splice(snackIndex, 1);
@@ -165,7 +185,7 @@ class Customize extends Component
     const { activeItem } = this.state;
     // set active date & toggle overlay
     this.setState({ snackOverlay: true });
-    $('body').addClass('pt-overlay-open');
+    $('body').addClass('ml-overlay-open');
   }
 
   toggleSnackOverlay = () => this.setState({ snackOverlay: false })
@@ -386,28 +406,30 @@ class Customize extends Component
               <br />
               {days.length && (
                 <React.Fragment>
-                  <ul className="customize--tabs-wrapper">
-                    {days.map((day, index) => (
-                      <li
-                        className={`
-                          ${activeItem.schedules[index].pickup ? 'tab-clickable' : ''}
-                          ${(index === activeTab) && !lastTab ? 'tab-active' : ''}
-                        `}
-                        key={index}
-                      >
-                        <a href="javascript:" title="" onClick={(e) => this.changeTab(e, index)}>
-                          <div className="tab-title">Day {index+1}</div>
-                          <div className="tab-date">{day.label}</div>
+                  <div className="mobile-overflow">
+                    <ul className="customize--tabs-wrapper">
+                      {days.map((day, index) => (
+                        <li
+                          className={`
+                            ${activeItem.schedules[index].pickup ? 'tab-clickable' : ''}
+                            ${(index === activeTab) && !lastTab ? 'tab-active' : ''}
+                          `}
+                          key={index}
+                        >
+                          <a href="javascript:" title="" onClick={(e) => this.changeTab(e, index)}>
+                            <div className="tab-title">Day {index+1}</div>
+                            <div className="tab-date">{day.label}</div>
+                          </a>
+                        </li>
+                      ))}
+                      <li className={`tab-clickable ${lastTab ? 'tab-active' : ''}`}>
+                        <a href="javascript:" title="" onClick={(e) => this.changeTab(e, 99)}>
+                          <div className="tab-title">Finish</div>
+                          <div className="tab-date">Review</div>
                         </a>
                       </li>
-                    ))}
-                    <li className={`tab-clickable ${lastTab ? 'tab-active' : ''}`}>
-                      <a href="javascript:" title="" onClick={(e) => this.changeTab(e, 99)}>
-                        <div className="tab-title">Finish</div>
-                        <div className="tab-date">Review</div>
-                      </a>
-                    </li>
-                  </ul>
+                    </ul>
+                  </div>
                   {lastTab && (
                     <ReviewMeal
                       {...this.props}
@@ -448,6 +470,8 @@ class Customize extends Component
                               <a href="javascript:" title="" className="snacks-delete" onClick={(e) => this.removeSnack(e, snack)}><i className="fal fa-times"></i></a>
                               <figure><img src={`/images/snacks/${snack}.jpg`} alt="" /></figure>
                               <span>{sitem && sitem[snack] && (sitem[snack].name)}</span>
+                              {sitem[snack].protein && <span className="opt">{days[activeTab].snackOptions[snack].protein}</span>}
+                              {sitem[snack].flavour && <span className="opt">/ {days[activeTab].snackOptions[snack].flavour}</span>}
                             </div>
                           ))}
                           <a href="javascript:" title="" className="customize--add-snacks" onClick={this.showSnacks}>

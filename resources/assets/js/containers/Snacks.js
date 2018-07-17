@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { store, view } from 'react-easy-state';
 import { CSSTransition } from 'react-transition-group';
 import {
-  Spinner
+  Toaster,
+  Popover,
+  PopoverInteractionKind,
+  Position,
+  Intent,
+  Spinner,
+  Button
 } from '@blueprintjs/core';
 
 const $ = require('jquery');
@@ -17,35 +23,114 @@ import cartState from '../store';
 import snacks from '../store/snacks';
 
 import SnackDescription from '../components/SnackDescription';
+import SnackOption from '../components/SnackOption';
+
+const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 
 class Snacks extends Component
 {
   state = {
     items: null,
     activeIndex: 0,
-    selected: []
+    selected: [],
+    index: null,
+    scheduleIndex: null
   }
 
   componentDidMount() {
+    const index = getIndex(this.props.itemKey);
+    const scheduleIndex = getScheduleIndex(index, this.props.date);
     axios
       .get('/api/items/categorize')
-      .then(res => this.setState({ items: res.data }))
+      .then(res => {
+        this.setState({
+          items: res.data,
+          index: index,
+          scheduleIndex: scheduleIndex
+        })
+      })
+  }
+
+  componentDidUpdate(props) {
+    if (this.props.date != props.date) {
+      const index = getIndex(this.props.itemKey);
+      const scheduleIndex = getScheduleIndex(index, this.props.date);
+      this.setState({
+        index: index,
+        scheduleIndex: scheduleIndex
+      })
+    }
   }
 
   closeWindow = () => {
     this.props.toggleWindow();
-    $('body').removeClass('pt-overlay-open');
+    $('body').removeClass('ml-overlay-open');
   }
 
   handleClick = (e, id) => {
-    const index = getIndex(this.props.itemKey);
-    const scheduleIndex = getScheduleIndex(index, this.props.date);
+    const { index, scheduleIndex, items } = this.state;
+    const category = items.filter(category => category.items.filter(item => item.id == id)[0])[0];
+    const item = category.items.filter(item => item.id == id)[0]
+
+    if (item.protein && !this.isSnackOptionExist(id, 'protein')) {
+      // must select one of the options
+      appToaster.show({message: 'Please select your preferred protein', intent: Intent.WARNING });
+      return false;
+    }
+
+    if (item.flavour && !this.isSnackOptionExist(id, 'flavour')) {
+      // must select one of the options
+      appToaster.show({message: 'Please select your preferred flavour', intent: Intent.WARNING });
+      return false;
+    }
+
     cartState.added[index].schedules[scheduleIndex].snacks.push(id);
   }
 
+  updateSnackOption = (e, id, type) => {
+    const { index, scheduleIndex } = this.state;
+    let data = cartState.added[index].schedules[scheduleIndex];
+
+    if (!data.hasOwnProperty('snackOptions')) {
+      cartState.added[index].schedules[scheduleIndex].snackOptions = {};
+    }
+
+    cartState.added[index].schedules[scheduleIndex] = {
+      ...cartState.added[index].schedules[scheduleIndex],
+      snackOptions: {
+        ...cartState.added[index].schedules[scheduleIndex].snackOptions,
+        [id]: {
+          ...cartState.added[index].schedules[scheduleIndex].snackOptions[id],
+          [type]: e.target.value
+        }
+      }
+    }
+  }
+
+  isSnackOptionExist = (id, type=null) => {
+    const { index, scheduleIndex } = this.state;
+    const data = cartState.added[index].schedules[scheduleIndex];
+    if (
+      data.hasOwnProperty('snackOptions') &&
+      data.snackOptions.hasOwnProperty(id)
+    ) {
+      if (type) {
+        if (!data.snackOptions[id][type]) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
   removeSnack = (e, id) => {
-    const index = getIndex(this.props.itemKey);
-    const scheduleIndex = getScheduleIndex(index, this.props.date);
+    const { index, scheduleIndex } = this.state;
+
+    if (this.isSnackOptionExist(id)) {
+      delete cartState.added[index].schedules[scheduleIndex].snackOptions[id];
+    }
+
     let selectedSnacks = [...cartState.added[index].schedules[scheduleIndex].snacks];
     const snackIndex = selectedSnacks.indexOf(id);
     selectedSnacks.splice(snackIndex, 1);
@@ -53,8 +138,7 @@ class Snacks extends Component
   }
 
   snackIsAdded = id => {
-    const index = getIndex(this.props.itemKey);
-    const scheduleIndex = getScheduleIndex(index, this.props.date);
+    const { index, scheduleIndex } = this.state;
 
     if (cartState.added[index].schedules[scheduleIndex]) {
       return cartState.added[index].schedules[scheduleIndex].snacks.filter(snackId => snackId === id).length;
@@ -73,25 +157,25 @@ class Snacks extends Component
 
   render() {
     const { open, date } = this.props;
-    const { items, activeIndex } = this.state;
+    const { items, activeIndex, index, scheduleIndex } = this.state;
 
     return (
       <div className={`${open ? 'active' : ''} snacks-overlay`}>
         <a href="javascript:" title="" className="snacks-close-button" onClick={this.closeWindow}><i className="fal fa-times"></i></a>
         <div className="snacks-menu">
           <ul>
-            {items && items.map((category, index) => (
-              <li key={index}><a href="javascript:" className={index === activeIndex ? 'active' : ''} title="" onClick={(e) => this.gotoHeading(e, category.id, index)}>{category.title}</a></li>
+            {items && items.map((category, i) => (
+              <li key={i}><a href="javascript:" className={i === activeIndex ? 'active' : ''} title="" onClick={(e) => this.gotoHeading(e, category.id, i)}>{category.title}</a></li>
             ))}
           </ul>
         </div>
         <div className="snacks-inner">
-          {items && items.map((category, index) => (
-            <div className="snacks-category" key={index}>
+          {items && items.map((category, i) => (
+            <div className="snacks-category" key={i}>
               <h2 id={`snack-${category.id}`}>{category.title}</h2>
               <div className="snacks-cards">
-                {category.items.map((item, index) => (
-                  <div className="snacks-card" key={index}>
+                {category.items.map((item, i) => (
+                  <div className="snacks-card" key={i}>
                     <div className="snacks-icons">
                       {(item.gf == 1) && (<img src="/images/icons/gf.png" alt="Gluten Free" title="Gluten Free" />)}
                       {(item.vegan == 1) && (<img src="/images/icons/vegan.png" alt="Vegan" title="Vegan" />)}
@@ -106,14 +190,43 @@ class Snacks extends Component
                     />
                     <figure><a href="javascript:" title="" onClick={(e) => this.toggleCard(e, item.id)}><img src={`/images/snacks/${item.id}.jpg`} alt="" /></a></figure>
                     <div className="snacks-card--details">
-                      <CSSTransition
-                        in={this.snackIsAdded(item.id) <= 0}
-                        timeout={200}
-                        classNames="fade-"
-                        unmountOnExit
-                      >
-                        {state => (<a href="javascript:" title="" className="quick-add" onClick={(e) => this.handleClick(e, item.id)}><i className="fal fa-plus"></i></a>)}
-                      </CSSTransition>
+                      {(item.protein || item.flavour) && (
+                        <CSSTransition
+                          in={this.snackIsAdded(item.id) <= 0}
+                          timeout={200}
+                          classNames="fade-"
+                          unmountOnExit
+                        >
+                          {state => (
+                            <Popover
+                              interactionKind={PopoverInteractionKind.CLICK}
+                              position={Position.TOP}
+                              content={
+                                <SnackOption
+                                  id={item.id}
+                                  item={item}
+                                  handleClick={this.handleClick}
+                                  updateSnackOption={this.updateSnackOption}
+                                  index={index}
+                                  scheduleIndex={scheduleIndex}
+                                />}
+                              className="quick-add"
+                            >
+                              <a href="javascript:" title=""><i className="fal fa-plus"></i></a>
+                            </Popover>
+                          )}
+                        </CSSTransition>
+                      )}
+                      {(!item.protein && !item.flavour) && (
+                        <CSSTransition
+                          in={this.snackIsAdded(item.id) <= 0}
+                          timeout={200}
+                          classNames="fade-"
+                          unmountOnExit
+                        >
+                          {state => (<a href="javascript:" title="" className="quick-add" onClick={(e) => this.handleClick(e, item.id)}><i className="fal fa-plus"></i></a>)}
+                        </CSSTransition>
+                      )}
                       <CSSTransition
                         in={this.snackIsAdded(item.id) > 0}
                         timeout={200}
@@ -123,7 +236,9 @@ class Snacks extends Component
                         {state => (<a href="javascript:" title="" className="quick-add delete" onClick={(e) => this.removeSnack(e, item.id)}><i className="fal fa-times"></i></a>)}
                       </CSSTransition>
                       <div className="snacks-card--price">IDR {parsePrice(item.price)}</div>
-                      <div className="snacks-card--name"><a href="javascript:" title="" onClick={(e) => this.toggleCard(e, item.id)}>{item.name} <i className="far fa-exclamation-circle"></i></a></div>
+                      <div className="snacks-card--name">
+                        <a href="javascript:" title="" onClick={(e) => this.toggleCard(e, item.id)}>{item.name} <i className="far fa-exclamation-circle"></i></a>
+                      </div>
                     </div>
                   </div>
                 ))}
