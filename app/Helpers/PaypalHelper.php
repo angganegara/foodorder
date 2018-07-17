@@ -115,7 +115,7 @@ class PaypalHelper
         $this->oh->sendOrder($order_number);
 
         // redirect to vue page?
-        return redirect()->to('/thank-you');
+        return redirect()->to('/checkout/thank-you');
       } else {
         echo "There is an error processing your payment";
       }

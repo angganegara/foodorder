@@ -72,6 +72,12 @@ class Checkout extends Component
       .get('/api/foods')
       .then(res => this.setState({ foods: res.data, progress: this.state.progress + 50 }))
       .then(this.loadSnacks())
+
+    // hol up - is this thank you page?
+    if (this.props.location.pathname == '/checkout/thank-you') {
+      this.setState({ finish: true, checkoutLoading: false })
+      this.clearCart();
+    }
   }
 
   loadSnacks = () => {
@@ -177,10 +183,12 @@ class Checkout extends Component
               onSuccess: (result) => {
                 // success
                 this.setState({ finish: true, checkoutLoading: false })
+                this.clearCart();
               },
               onPending: (result) => {
                 // pending
                 this.setState({ finish: true, checkoutLoading: false })
+                this.clearCart();
               },
               onError: (result) => {
                 console.log('Error')
