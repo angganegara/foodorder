@@ -13,6 +13,12 @@ export const checkPackage6DisabledDates = (date) => {
     }
   }
 
+  if (day === 3) {
+    const today = new Date();
+    if ((date.getMonth() == today.getMonth()) && date.getFullYear() == today.getFullYear()) {
+      limit = today;
+    }
+  }
 
   if (day === 5 && hours > 22) {
     // friday, past 10pm, set limit to 3 days
@@ -45,6 +51,11 @@ export const checkPackage4DisabledDates = (date) => {
   if (day === 2) {
     // tuesday, disable next wednesday
     limit = new Date(date.setHours(24));
+  }
+
+  if (day === 3) {
+    // tuesday, disable next wednesday
+    limit = new Date();
   }
 
   return limit;
