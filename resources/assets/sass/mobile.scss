@@ -218,3 +218,14 @@
     }
   }
 }
+
+@include desktop-small {
+  .hiw--body .container {
+    position: relative;
+    z-index: 5;
+  }
+  .hiw .bottle {
+    opacity: .4;
+    z-index: 1;
+  }
+}

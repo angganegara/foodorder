@@ -26,6 +26,7 @@ import {
   checkPackage6DisabledDates,
   checkPackage4DisabledDates
 } from '../helpers/dates';
+import { scrollTop } from '../helpers/utils';
 import { guid, parsePrice } from '../helpers/cart';
 
 // store
@@ -75,7 +76,7 @@ class Details extends Component
   componentDidMount() {
     const { id } = this.props.match.params;
     this.loadFood(id);
-
+    scrollTop();
     $(document).on('click', '.DayPicker-NavButton--next, .DayPicker-NavButton--prev', this.resetSelectedDate);
   }
 

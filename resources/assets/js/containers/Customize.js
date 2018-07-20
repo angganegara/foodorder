@@ -34,6 +34,7 @@ import station from '../store/station';
 
 import Snacks from './Snacks';
 import ReviewMeal from '../components/ReviewMeal';
+import StationLabel from '../components/StationLabel';
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 const moment = extendMoment(Moment);
@@ -63,12 +64,12 @@ class Customize extends Component
 
     if (!id) {
       appToaster.show({ message: 'Error loading this page. Redirecting you back to home page.', intent: Intent.DANGER });
-      setTimeout(() => this.props.history.push('/'), 2000);
+      setTimeout(() => window.location.href = '/', 2000);
     }
 
     if (!this.isExist(id)) {
       appToaster.show({ message: 'Item is not in your cart. Redirecting you back to home page.', intent: Intent.DANGER });
-      setTimeout(() => this.props.history.push('/'), 2000);
+      setTimeout(() => window.location.href = '/', 2000);
     }
 
     const index = getIndex(id);
@@ -148,7 +149,14 @@ class Customize extends Component
         activeItem: {...activeItem, schedules: newStation}
       }, () => this.syncCartState())
     } else {
-      this.setState({ saveStation })
+      // reset all station?
+      const newStation = activeItem.schedules.map(schedule => {
+        return { ...schedule, address: null, pickup: null }
+      });
+      this.setState({
+        saveStation,
+        activeItem: {...activeItem, schedules: newStation}
+      }, () => this.syncCartState())
     }
   }
 
@@ -483,18 +491,13 @@ class Customize extends Component
                           <div className="customize--pickup-body-left">
                             <h2>pickup station</h2>
                             {station.stations.length > 0 && station.availableStations().map((s, index) => (
-                              <Radio key={index} className="radio" label={s.station} checked={day.pickup === s.id} onChange={(e) => this.updateStation(e, day, s.id)} value={s.id} />
+                              <Radio key={index} className="radio" label={<StationLabel station={s}/>} checked={day.pickup === s.id} onChange={(e) => this.updateStation(e, day, s.id)} value={s.id} />
                             ))}
                             <Radio className="radio" label="Your address of choice" checked={day.pickup === 'address'} onChange={(e) => this.updateStation(e, day, 'address')} value="address" />
                             {day.pickup === 'address' && (
                               <textarea rows="7" placeholder="Enter your address here" onChange={(e) => this.updateAddress(e, day)} value={day.address ? day.address : address}></textarea>
                             )}
                             {index === 0 && day.pickup && <Checkbox checked={saveStation} label="Set selected pick-up station for all days" onClick={(e) => this.saveStation(e)} />}
-                          </div>
-                          <div className="customize--next">
-                            {activeTab > 0 && <a href="javascript:" className="btn" onClick={this.prevTab}><i className="fal fa-angle-left"></i> PREVIOUS DAY</a>}
-                            &nbsp;
-                            <a href="javascript:" className="btn" onClick={this.nextTab}>NEXT DAY<i className="fa fa-fw fa-angle-right"></i></a>
                           </div>
                         </div>
                       </div>

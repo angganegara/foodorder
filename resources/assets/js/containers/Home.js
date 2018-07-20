@@ -5,8 +5,18 @@ import { view, store } from 'react-easy-state';
 import HowItWorks from '../components/HowItWorks';
 import HomeFoods from './HomeFoods';
 
+import { scrollTop } from '../helpers/utils';
+
 class Home extends Component
 {
+  componentDidMount() {
+    scrollTop();
+  }
+
+  componentDidUpdate() {
+    scrollTop();
+  }
+
   render() {
     return (
       <React.Fragment>

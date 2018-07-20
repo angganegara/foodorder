@@ -2,21 +2,28 @@ $phone: 460px;
 $container: 1120px;
 $tablet-portrait: 768px;
 $tablet-landscape: 1024px;
+$desktop-lg: 1420px;
 
 @mixin phone {
-    @media (max-width: #{$tablet-portrait - 1px}) {
-        @content
-    }
+  @media (max-width: #{$tablet-portrait - 1px}) {
+    @content
+  }
 }
 
 @mixin tablet {
-    @media (min-width: #{$tablet-portrait}) and (max-width: #{$tablet-landscape - 1px}) {
-        @content
-    }
+  @media (min-width: #{$tablet-portrait}) and (max-width: #{$tablet-landscape - 1px}) {
+    @content
+  }
 }
 
-@mixin desktop {
-    @media (min-width: #{$container}) {
-        @content
-    }
+@mixin desktop-big {
+  @media (min-width: #{$desktop-lg}) {
+    @content
+  }
+}
+
+@mixin desktop-small {
+  @media (max-width: #{$desktop-lg - 1px}) {
+    @content
+  }
 }

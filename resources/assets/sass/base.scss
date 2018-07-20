@@ -1319,6 +1319,14 @@ section.top.customize {
       opacity: 1;
     }
   }
+  .station-map {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    a { color: $main-color-darker; }
+  }
   &--pickup-body {
     padding: 2rem 0;
     border-bottom: 1px dashed #ddd;
@@ -1638,10 +1646,16 @@ section.top.checkout {
 }
 .terms {
   h3 {
-    font-family: $heading;
-    font-size: 18px;
+    font-size: 15px;
     color: #454545;
     margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  ul {
+    padding-left: 20px;
+    font-size: 15px;
+    li { margin-bottom: .5rem }
+    li:last-child { margin-bottom: 1.5rem }
   }
   p {
     line-height: 150%;

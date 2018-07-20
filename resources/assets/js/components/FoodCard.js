@@ -11,7 +11,6 @@ const FoodCard = ({ food, index, scrollTop }) => {
             <img src={`/images/foods/thumb_${food.id}.jpg`} alt={food.name} />
           </Link>
           <div className="food-card--desc" dangerouslySetInnerHTML={{__html: food.short_description}}></div>
-          <Link to={`/${food.slug}/${food.id}`} className="food-card--button">select meal plan</Link>
         </div>
       </div>
     );
@@ -26,7 +25,6 @@ const FoodCard = ({ food, index, scrollTop }) => {
           <div className="food-card--desc">
             <p>Individually created diet to meet your special needs with the help of our professional nutritionists</p>
           </div>
-          <Link to="/custom-specialized" className="food-card--button" onClick={scrollTop}>select meal plan</Link>
         </div>
       </div>
     );

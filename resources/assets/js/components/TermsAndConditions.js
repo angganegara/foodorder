@@ -2,40 +2,52 @@ import React from 'react';
 
 const TermsAndConditions = () => (
   <div className="pt-dialog-body terms">
+    <h3>ORDER REGULATIONS</h3>
+
+    <ul>
+      <li>Order must be placed min. 48hrs in advanced to ensure timely delivery</li>
+      <li>Starting days of each meal plan: Mondays and Wednesdays only</li>
+      <li>Latest order for Monday until Friday midnight</li>
+      <li>Latest order for Wednesday until Monday midnight</li>
+      <li>Office times for possible queries: Mon &ndash; Fri from 8:00 &ndash; 17:00 per what&rsquo;s app/email</li>
+      <li>Office is closed on Saturday and Sunday</li>
+    </ul>
+
+    <h3>PAYMENT INFORMATION</h3>
+
+    <ul>
+      <li>Cash payment: on first day of delivery to driver upon receipt of the food / at Motion Caf&eacute; or Motion Fitness Studio before the first day of delivery</li>
+      <li>Online payment: by bank transfer / PayPal</li>
+      <li>Card payment: at Motion Fitness Studio</li>
+    </ul>
+
     <h3>DELIVERY POLICY</h3>
-    <p>All food orders must be prepaid and placed 24hrs in advance to ensure the best quality and service. The last possible order for Monday the following week must be place until Friday midnight.</p>
-    <p>The delivery of the your food will be between 07:30 and 20:30 Mondays to Saturdays to the addresses provided by you. No delivery on Sundays.</p>
-    <p>We try to deliver your food as close to your preferred delivery time as possible but please allow us a +/- 10 minute time margin. A surcharge of IDR 50,000 will be raised for each
-    delivery outside of our free delivery zone (e.g. to Ubud, Sanur, Bukit area)</p>
 
-    <br />
-    <h3>REFUND POLICY</h3>
-    <p>Motion Fitness Bali will provide a full refund or exchange on full priced items only where:</p>
-    <p>- the goods (food exempted) are returned within 5 working days of purchase date; and the original invoice as proof of purchase is provided.
-    Alternatively we will provide you with a refund at our discretion for items that:<br />
-    - are faulty (unless caused by you);<br />
-    - have been wrongly described;<br />
-    - are different to the goods that you ordered;</p>
-    <p>All returns must be returned to Motion Fitness Bali within 5 days to be eligible for a refund. Returns after this period will not be accepted.
-    If a refund is approved, the refund will be applied to the original card of purchase. We do not refund original delivery charges.</p>
-    <p>Please note sale items/services are final sales and cannot be returned for a refund or exchange unless deemed faulty.</p>
+    <p>Motion Food accepts no liability for the loss or deterioration of any goods once they have been delivered in accordance with our terms and conditions. Motion Food will not be held liable for any financial or physical damages of any kind caused.&nbsp;Motion Food will not replace or provide a refund for any meals ordered by the customer by mistake. Customers must notify Motion Food if they have received an incorrect meal or are missing a meal within 24 hours of delivery by phone.</p>
 
-    <br />
-    <h3>ORDER CANCELLATION</h3>
-    <p>Once an order has been processed, we cannot make any changes or cancel your order. In the event of unavailable stock situation, we will liaise with you by email to propose an agreeable alternative.</p>
+    <p>Missing meal items will be refunded to the customer with a coupon worth the price of the missing item. The coupon can be used during the current / following order.</p>
 
-    <br />
-    <h3>PRICES</h3>
-    <p>Prices are stated in IDR. Price and availability of these products/services sold on this site are subject to change without notice.</p>
+    <h3>General Delivery Information </h3>
 
-    <br />
-    <h3>PAYMENT METHODS</h3>
-    <p>Full payment is required before delivery; it is only effective when the funds are received net of charges in Motion Fitness Bali’s bank account. You can pay your order via PayPal and Credit cards.</p>
+    <ul>
+      <li>Customers will receive one delivery per day with all the meals/snacks for that day</li>
+      <li>Change of delivery address min. 24hrs in advance</li>
+      <li>Delivery time will be between 7:00am &ndash; 9:00am. A preferred time can be requested but without any guarantee of compliance&nbsp;</li>
+      <li>A request to eat your meal at Motion Caf&eacute; can be done with a 24 hrs notice.</li>
+      <li>Delivery days: Monday to Saturday (Slim Sunday food will be delivered on Saturday)</li>
+      <li>Free delivery for Kuta/Seminyak/Canggu&nbsp;</li>
+      <li>Delivery surcharge of 50,000 IDR/day for other area (e.g. Sanur/Ubud/Bukit)</li>
+    </ul>
 
-    <br />
-    <h3>PRIVACY POLICY</h3>
-    <p>Personal data are mainly processed using automated tools and exclusively for the purposes indicated and the time strictly necessary for achieving the purposes for which they were collected.
-    Customer email addresses can be used for sending newsletters and updates with valuable information.</p>
+    <h3>WEATHER &amp; TRAFFIC RESERVATIONS</h3>
+
+    <p>Our amazing delivery team does their best to get your food to you on time. Still, they run into delays due to weather, traffic and other factors that are outside of our control. In such cases Motion Food cannot issue any cash refunds for affected orders. However we will try our best that you will receive your food as soon as possible.</p>
+
+    <h3>CANCELLATION POLICY</h3>
+
+    <p>Due to the nature of our business Motion Food requires a minimum notice of 48 hours prior, by email or phone call. If cancelled in time, the customer will get a refund of 200k for each canceled day of any meal plan.</p>
+
+    <p>When an order get refused or returned at the delivery address, we will keep it at the Motion Kitchen for 24 hrs. for self pick-up.</p>
   </div>
 );
 

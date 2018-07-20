@@ -81,7 +81,7 @@ class CartOverview extends Component
             <div className="cart--row">
               <div className="cart--body">
                 <div className="cart--title">
-                  <a className="edit-cart" href="javascript:" title="">{item.title}</a>
+                  <b>{item.title}</b>
                 </div>
                 <div className="cart--package">{this.parsePackage(item.packageId)}</div>
                 <div className="cart--dates" dangerouslySetInnerHTML={{__html: this.parseDates(item)}}></div>

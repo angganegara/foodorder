@@ -46,7 +46,7 @@ class HowItWorks extends Component
                   <div className="col-xs-12 col-md-4">
                     <h3>order info</h3>
                     <ul>
-                      <li>Starting days for your diet: Monday and Wednesday only</li>
+                      <li>Starting days for your diet: Mondays and Wednesdays only</li>
                       <li>Latest order for Monday until Friday midnight</li>
                       <li>Latest order for Wednesday until Monday midnight</li>
                       <li>Office times for possible queries: Mon. - Fri. 08:00 - 17:00</li>
