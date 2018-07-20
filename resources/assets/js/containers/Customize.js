@@ -155,7 +155,8 @@ class Customize extends Component
       });
       this.setState({
         saveStation,
-        activeItem: {...activeItem, schedules: newStation}
+        activeItem: {...activeItem, schedules: newStation},
+        address: null
       }, () => this.syncCartState())
     }
   }
