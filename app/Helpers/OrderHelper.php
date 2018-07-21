@@ -206,8 +206,6 @@ class OrderHelper
     // slim booster diet
     $sbd = $oc->where('item_id', 12)->count();
     // parse cart
-    return view('emails.order', compact('order', 'that', 'extra'));
-    exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
