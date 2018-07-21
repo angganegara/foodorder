@@ -15,12 +15,13 @@
               font-family: Arial, sans-serif; font-size: 12px;
               line-height: 140%; color: #222;">
               <tr>
-                <td valign="middle" colspan="2" style="
+                <td style="width: 36px;"><img src="{{ url('images/email-logo-small.jpg') }}" alt="" style="display: block;"/></td>
+                <td valign="middle" style="
                   background-color: #b5e1ed; color: #222;
                   text-transform: uppercase; font-weight: bold;
                   padding: 15px 20px;
                   letter-spacing: 1px; font-size: 12px">
-                  MOTION CAFE - Confirmation Food Delivery
+                  Motion - meal plan order confirmation
                 </td>
               </tr>
             </table>
@@ -35,18 +36,11 @@
               font-family: Arial, sans-serif; font-size: 12px;
               line-height: 140%; color: #222;">
               <tr>
-                <td width="100%" colspan="2" valign="middle" style="padding: 20px;">
-                  <p><b>Dear {{ $order->fname }} {{ $order->lname }},</b></p>
-                  <p>
-                    <b>Thank you for your food order. Please recheck your booking details below {{ $order->payment != 'paypal' ? 'and click
-                    the button below to see the payment details.' : '' }}</b>
-                  </p>
-                  <p>
-                    <b>Enjoy your food,<br>
-                    Your Motion Cafe Team</b>
-                  </p>
-                  <p>PS: In case you have booked a Special Diet such as Ayurveda Diet, Detox, High
-                    Protein Diet, or Customized Menu, please <b>check the attachment for important information</b> on those diets.</p>
+                <td width="100%" colspan="2" valign="middle" style="padding: 20px; font-weight: bold;">
+                  <p>Dear {{ $order->fname }} {{ $order->lname }}</p>
+                  <p>Thank you for ordering with Motion. Please review the details of your personal data and order below.<br />
+                    Don’t hesitate to contact us in case anything went wrong with your order.</p>
+                  <p>Enjoy smart eating!<br />Your Motion Team</p>
                 </td>
               </tr>
               <tr>
@@ -116,7 +110,7 @@
                   text-transform: uppercase; font-weight: bold;
                   padding: 15px 20px;
                   letter-spacing: 1px; font-size: 12px">
-                  cart overview
+                  order details
                 </td>
               </tr>
               <tr>
@@ -229,19 +223,21 @@
                     <tr>
                       <td width="100%" style="padding: 15px; font-size: 12px; color: #444; line-height: 160%; text-align: center">
                         <p>
-                          <img src="{{ url('images/logo-email.jpg') }}" alt="Motion Fitness" style="display: block; margin: 0 auto;">
-                          <strong>MOTION CAFE</strong><br>
-                          Jl. Raya Batu Bolong 69B, Canggu, Bali
-                          <br>Phone Cafe: <a href="tel:+628113999411">+62 811 3999 411</a>
-                          <br>Phone Meal Plans: <a href="tel:+6281337629983">+62 813 3762 9983</a> (Mon - Sat 08:00 - 17:00)
-                          <br>Email Meal Plans: <a href="mailto:foodorder@motionfitnessbali.com">foodorder@motionfitnessbali.com</a>
-                          <br><a href="http://cafe.motionfitnessbali.com" title="" target="_blank">http://cafe.motionfitnessbali.com</a>
+                          <img src="{{ url('images/logo-email.jpg') }}" alt="Motion Fitness" style="display: block; margin: 0 auto; border-radius: 4px;">
+                          <p><strong>CONTACT MOTION MEAL PLANS</strong></p>
+                          <p>
+                            Phone/WA: <strong>+62 821 4425 2606</strong> (Mon. - Fri. 08:00 - 17:00)<br />
+                            Email: <a href="mailto:foodorder@motionfitnessbali.com" title="">foodorder@motionfitnessbali.com</a><br />
+                          </p>
+                          <p>
+                            <a href="{{ url('terms-and-conditions#privacy') }}" title="">Privacy Policy</a> &middot; <a href="{{ url('terms-and-conditions#top') }}" title="">Terms and Conditions</a>
+                          </p>
+                          <p className="social">
+                            <a href="https://www.facebook.com/motioncafebali" title=""><img src="{{ url('images/email-fb.jpg') }}" alt="Facebook" style="border-radius: 4px;"/></a>
+                            <a href="http://instagram.com/avocadocafebali" title=""><img src="{{ url('images/email-in.jpg') }}" alt="Instagram" style="border-radius: 4px;" /></i></a>
+                            <a href="http://www.tripadvisor.com/Restaurant_Review-g311298-d6903656-Reviews-Avocado_Cafe-Canggu_Bali.html" title=""><img src="{{ url('images/email-trip.jpg') }}" alt="Trip Advisor" style="border-radius: 4px;" /></a>
+                          </p>
                         </p>
-                        @if ($order->payment != 'paypal')
-                          <a style="background-color: #5bc0de; margin: 10px 0; padding: 10px 25px; display: inline-block; border: 1px solid #46a2bd;
-                          color: #222; font-weight: bold; text-decoration: none; border-radius: 3px; font-size: 16px;"
-                          href="{{ url('pdf/payment-details.pdf') }}">PAYMENT DETAILS</a>
-                        @endif
                       </td>
                     </tr>
                   </table>

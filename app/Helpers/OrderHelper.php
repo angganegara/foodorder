@@ -206,8 +206,8 @@ class OrderHelper
     // slim booster diet
     $sbd = $oc->where('item_id', 12)->count();
     // parse cart
-    #return view('emails.order', compact('order', 'that', 'extra'));
-    #exit();
+    return view('emails.order', compact('order', 'that', 'extra'));
+    exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
@@ -217,7 +217,7 @@ class OrderHelper
     $pdf_ayu2 = rtrim(app()->basePath('public/pdf/ayurveda-test.pdf'), '/');
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
-    $email_subject = $resend ? 'Payment Reminder' : 'Motion Cafe - Food order';
+    $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
 
     try {
       Mail::send(
@@ -228,10 +228,10 @@ class OrderHelper
           $dts, $dtj, $sbd, $email_subject, $resend
         ) {
           $m
-            ->from('no-reply@motionfitnessbali.com', 'Motion Cafe Bali')
+            ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
             ->to($order->email, $order->fname . ' ' . $order->lname)
             //->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
-            ->replyTo('foodorder@motionfitnessbali.com', 'Motion Cafe Bali');
+            ->replyTo('foodorder@motionfitnessbali.com', 'Motion - Meal Plans');
 
           // get bcc we need
           $bcc = [];

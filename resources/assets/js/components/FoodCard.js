@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const FoodCard = ({ food, index, scrollTop }) => {
   if (food) {
     return (
-      <div className="col-xs-12 col-md-4">
+      <div className="col-xs-12 col-md-4 blue-line">
         <div className="food-card">
           <Link to={`/${food.slug}/${food.id}`} className="figure">
             <div className="food-card--title">{food.name}</div>
@@ -16,7 +16,7 @@ const FoodCard = ({ food, index, scrollTop }) => {
     );
   } else {
     return (
-      <div className="col-xs-12 col-md-4">
+      <div className="col-xs-12 col-md-4 blue-line">
         <div className="food-card">
           <Link to="/custom-specialized" className="figure no-overlay" onClick={scrollTop}>
             <div className="food-card--title">Custom / Specialized</div>

@@ -4,7 +4,6 @@ import { parsePrice } from '../helpers/cart';
 
 const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartLoading, changeTab, activeItem, prices}) => (
   <div className="customize--tabs-body">
-    <h2>Review</h2>
     <div className="review">
       <div className="review-wrap">
         {days.map((day, index) => (
@@ -67,7 +66,7 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
         <br />
         <p>
           <a href="javascript:" className={`btn ${cartLoading ? 'btn-disabled' : ''}`} onClick={addToCart}>
-            {!cartLoading && <span><i className="fal fa-fw fa-plus"></i> Add to Cart</span>}
+            {!cartLoading && <span>Continue <i className="fal fa-fw fa-arrow-right"></i></span>}
             {cartLoading && <span><i className="fal fa-fw fa-spinner-third fa-spin"></i> Processing</span>}
           </a>
         </p>

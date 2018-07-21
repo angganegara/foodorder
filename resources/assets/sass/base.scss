@@ -61,13 +61,9 @@ h1, h2, h3, h4, h5, h6 {
     background-color: $main-color-darker;
     color: #fff;
   }
-  &:focus {
-    outline: none;
-  }
+  &:focus { outline: none; }
 }
-a.btn {
-  color: #454545;
-}
+a.btn { color: #454545; }
 a.btn-disabled {
   background-color: #ddd;
   color: #888;
@@ -123,6 +119,10 @@ a.btn-primary { color: #fff }
   font-weight: bold;
   color: #454545;
   border: 1px solid darken($main-color, 10%);
+}
+.blue-line {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid $main-color;
 }
 .pt-popover-content {
   padding: .75rem 1rem;
@@ -558,7 +558,7 @@ section.home.foods {
 
 .food-card {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   a.figure {
     display: block;
     margin: 0 0 1rem 0;
@@ -1103,6 +1103,7 @@ a.snacks-close-button {
   opacity: 0;
   transition: .35s ease-in-out all;
   z-index: 18;
+  display: block;
   a.snack-description--close {
     text-transform: uppercase;
     font-size: 13px;
@@ -1117,14 +1118,19 @@ a.snacks-close-button {
     border-bottom: 1px solid #eee;
     margin-bottom: .75rem;
     padding-bottom: .75rem;
+    color: #454545;
   }
-  &--body { font-size: 14px }
+  &--body {
+    font-size: 14px;
+    p { color: #454545 }
+  }
   &--body ul {
     list-style: none;
     padding: 0;
     margin: 0 0 10px 25px;
     li {
       position: relative;
+      color: #454545;
       &:before {
         content: "\F00C";
         font-family: Font Awesome\ 5 Pro;
@@ -1644,12 +1650,31 @@ section.top.checkout {
     padding-bottom: 0;
   }
 }
+
+section.top.terms {
+  padding-top: 10rem;
+}
 .terms {
+  padding-bottom: 5rem;
+  h1 {
+    text-transform: uppercase;
+    color: #454545;
+    font-family: $heading;
+    letter-spacing: 5px;
+    font-size: 36px;
+    padding-top: .8rem;
+    line-height: 23px;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
   h3 {
     font-size: 15px;
     color: #454545;
     margin-bottom: 1rem;
     text-transform: uppercase;
+  }
+  h3:not(:first-child) {
+    margin-top: 2rem;
   }
   ul {
     padding-left: 20px;
@@ -1837,19 +1862,17 @@ section.top.checkout {
 /**
  * DETOX
  */
-.detox-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
 .detox-card {
   padding: 1rem;
+  position: relative;
   a.figure {
     display: block;
+    margin: 0 0 1rem 0;
+    padding: 0;
     position: relative;
-    border-radius: 5px;
+    border-radius: 4px;
     overflow: hidden;
-    &:before {
+    &:not(.no-overlay):before {
       content: "";
       width: 100%;
       height: 100%;
@@ -1860,21 +1883,17 @@ section.top.checkout {
       opacity: .75;
       z-index: 2;
     }
-  }
-  figure {
-    display: block;
-    margin-bottom: 0;
-  }
-  figure img {
-    display: block;
-    max-width: 100%;
-    width: 100%;
-    border-radius: 5px;
-    transition: .2s ease-in-out all;
-  }
-  &:hover {
-    figure img {
-      transform: scale(1.1);
+    img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      transition: .2s ease-in-out transform;
+      backface-visibility: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    &:hover {
+      img { transform: scale(1.1, 1.1) }
     }
   }
   &--title {
@@ -1887,6 +1906,10 @@ section.top.checkout {
     bottom: 1rem;
     left: 1rem;
     text-shadow: 0 0 2px rgba(#000, .4);
+  }
+  &--desc {
+    font-size: 15px;
+    min-height: 68px;
   }
   &--button {
     margin-top: 1rem;

@@ -1,18 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
 
 const Footer = () => (
   <footer>
     <div className="container">
       <div className="row">
         <div className="col-xs-12 col-md-6 footer-left">
-          <h5>contact motion meals</h5>
+          <h5>contact motion meal plans</h5>
           <p>
             Phone/WA: <strong>+62 821 4425 2606</strong> (Mon. - Fri. 08:00 - 17:00)<br />
             Email: <a href="mailto:foodorder@motionfitnessbali.com" title="">foodorder@motionfitnessbali.com</a><br />
           </p>
           <p>
-            <Link to="/terms-and-conditions#privacy">Privacy Policy</Link> &middot; <Link to="/terms-and-conditions#top">Terms and Conditions</Link>
+            <Link smooth to="/terms-and-conditions#privacy">Privacy Policy</Link> &middot; <Link smooth to="/terms-and-conditions#top">Terms and Conditions</Link>
           </p>
         </div>
         <div className="col-xs-12 col-md-6 footer-right">

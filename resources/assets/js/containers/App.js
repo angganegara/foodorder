@@ -15,6 +15,7 @@ import Customize from './Customize';
 import Detox from './Detox';
 import CustomSpecialized from '../components/CustomSpecialized';
 import Checkout from './Checkout';
+import Terms from '../components/Terms';
 
 class App extends Component
 {
@@ -37,6 +38,7 @@ class App extends Component
           <Route path="/checkout/thank-you" component={Checkout} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/customize-cart/:id" component={Customize} />
+          <Route path="/terms-and-conditions" component={Terms} />
           <Route path="/detox/8" component={Detox} />
           <Route path="/:slug/:id" component={Details} />
         </Switch>

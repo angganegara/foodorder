@@ -45,7 +45,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('orders/schedule', 'OrderController@schedule');
 
   Route::get('partners', 'PartnerController@index');
-
 });
 
 Route::get('auth/login', 'AuthController@index')->name('login');

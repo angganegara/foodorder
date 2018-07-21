@@ -191,7 +191,6 @@ class Customize extends Component
   }
 
   showSnacks = () => {
-    const { activeItem } = this.state;
     // set active date & toggle overlay
     this.setState({ snackOverlay: true });
     $('body').addClass('ml-overlay-open');
@@ -206,10 +205,15 @@ class Customize extends Component
   }
 
   changeTab = (e, index) => {
-    const { activeTab, activeItem, lastTab } = this.state;
+    const { activeTab, activeItem } = this.state;
     this.scrollTop();
 
     if (index != 99) {
+      if (activeTab === 0 && activeItem.schedules[activeTab].pickup === null) {
+        appToaster.show({ message: 'Please choose a pick-up station / delivery address.', intent: Intent.WARNING });
+        return false;
+      }
+
       this.setState({ activeTab: index, lastTab: false, activeDate: activeItem.schedules[index].date });
       this.showPageLoading();
     } else {
@@ -218,7 +222,7 @@ class Customize extends Component
         this.setState({ lastTab: true });
         this.showPageLoading();
       } else {
-        appToaster.show({ message: 'To finish, please choose a pick-up station / delivery address for all days.', intent: Intent.WARNING });
+        appToaster.show({ message: 'To finish, please choose a pick-up station / delivery address for ALL days.', intent: Intent.WARNING });
         return false;
       }
     }
@@ -228,7 +232,10 @@ class Customize extends Component
 
   isAllStationSelected = () => {
     const { activeItem } = this.state;
-    return activeItem.schedules.filter(schedule => schedule.pickup != null).length;
+    const totalDays = activeItem.schedules.length;
+    const selectedDays = activeItem.schedules.filter(schedule => schedule.pickup != null).length;
+
+    return totalDays === selectedDays;
   }
 
   nextTab = (e) => {
@@ -410,35 +417,42 @@ class Customize extends Component
           )}
           {food && sitem && (
             <div className="container">
-              <h1>Customize your Order</h1>
-              <p>Select your pick-up station, snacks & drinks for each day</p>
+              {!lastTab && (
+                <React.Fragment>
+                  <h1>Customize your Order</h1>
+                  <p>Select your pick-up station, snacks & drinks for each day</p>
+                </React.Fragment>
+              )}
+              {lastTab && <h1>Review your Order</h1>}
               <br />
               {days.length && (
                 <React.Fragment>
-                  <div className="mobile-overflow">
-                    <ul className="customize--tabs-wrapper">
-                      {days.map((day, index) => (
-                        <li
-                          className={`
-                            ${activeItem.schedules[index].pickup ? 'tab-clickable' : ''}
-                            ${(index === activeTab) && !lastTab ? 'tab-active' : ''}
-                          `}
-                          key={index}
-                        >
-                          <a href="javascript:" title="" onClick={(e) => this.changeTab(e, index)}>
-                            <div className="tab-title">Day {index+1}</div>
-                            <div className="tab-date">{day.label}</div>
+                  {!lastTab && (
+                    <div className="mobile-overflow">
+                      <ul className="customize--tabs-wrapper">
+                        {days.map((day, index) => (
+                          <li
+                            className={`
+                              ${activeItem.schedules[index].pickup ? 'tab-clickable' : ''}
+                              ${(index === activeTab) && !lastTab ? 'tab-active' : ''}
+                            `}
+                            key={index}
+                          >
+                            <a href="javascript:" title="" onClick={(e) => this.changeTab(e, index)}>
+                              <div className="tab-title">Day {index+1}</div>
+                              <div className="tab-date">{day.label}</div>
+                            </a>
+                          </li>
+                        ))}
+                        <li className={`tab-clickable ${lastTab ? 'tab-active' : ''}`}>
+                          <a href="javascript:" title="" onClick={(e) => this.changeTab(e, 99)}>
+                            <div className="tab-title">Finish</div>
+                            <div className="tab-date">Review</div>
                           </a>
                         </li>
-                      ))}
-                      <li className={`tab-clickable ${lastTab ? 'tab-active' : ''}`}>
-                        <a href="javascript:" title="" onClick={(e) => this.changeTab(e, 99)}>
-                          <div className="tab-title">Finish</div>
-                          <div className="tab-date">Review</div>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                      </ul>
+                    </div>
+                  )}
                   {lastTab && (
                     <ReviewMeal
                       {...this.props}

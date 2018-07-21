@@ -241,7 +241,7 @@ class Checkout extends Component
                     <br />
                     <p><Link to="/" title=""><i className="fa fa-fw fa-long-arrow-alt-left"></i> Back to home</Link></p>
                     <br />
-                    <Link to="/" title=""><img src="/images/thankyou.jpg?v=1" alt="" style={{ width: '100%', display: 'block' }} /></Link>
+                    <Link to="/" title=""><img src="/images/thankyou.jpg?v=1" alt="" style={{ width: '25%', display: 'block', margin: '0 auto' }} /></Link>
                   </div>
                 </div>
               </div>
