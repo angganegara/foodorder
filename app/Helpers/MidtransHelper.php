@@ -150,11 +150,11 @@ class MidtransHelper
 			$data['fraud_status'] = 'ACCEPT';
     }
 
-    if (array_key_exist('approval_code', $data)) {
+    if (array_key_exists('approval_code', $data)) {
       $order->trx_approval_code = $data['approval_code'];
     }
 
-    if (array_key_exist('fraud_status', $data)) {
+    if (array_key_exists('fraud_status', $data)) {
       $order->trx_fraud_status = $data['fraud_status'];
     }
 
@@ -167,7 +167,7 @@ class MidtransHelper
 
 		if (
 			intVal($data['status_code']) == 200
-			&& (array_key_exist('fraud_status', $data) && strtoupper($data['fraud_status']) == 'ACCEPT')
+			&& (array_key_exists('fraud_status', $data) && strtoupper($data['fraud_status']) == 'ACCEPT')
 			&& (strtoupper($data['transaction_status']) == 'CAPTURE' || strtoupper($data['transaction_status']) == 'SETTLEMENT')
 		) {
 			$order->paid = 1;
