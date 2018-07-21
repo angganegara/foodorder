@@ -148,10 +148,17 @@ class MidtransHelper
 
 		if ($data['payment_type'] == 'bank_transfer') {
 			$data['fraud_status'] = 'ACCEPT';
-		}
+    }
+
+    if (array_key_exist('approval_code', $data)) {
+      $order->trx_approval_code = $data['approval_code'];
+    }
+
+    if (array_key_exist('fraud_status', $data)) {
+      $order->trx_fraud_status = $data['fraud_status'];
+    }
 
 		$order->trx_id           = $data['transaction_id'];
-		$order->trx_fraud_status = $data['fraud_status'];
 		$order->trx_status_code  = $data['status_code'];
 		$order->trx_status_msg   = $data['status_message'];
 		$order->trx_status       = $data['transaction_status'];
@@ -160,7 +167,7 @@ class MidtransHelper
 
 		if (
 			intVal($data['status_code']) == 200
-			&& strtoupper($data['fraud_status']) == 'ACCEPT'
+			&& (array_key_exist('fraud_status', $data) && strtoupper($data['fraud_status']) == 'ACCEPT')
 			&& (strtoupper($data['transaction_status']) == 'CAPTURE' || strtoupper($data['transaction_status']) == 'SETTLEMENT')
 		) {
 			$order->paid = 1;
