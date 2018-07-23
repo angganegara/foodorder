@@ -287,7 +287,11 @@ class Customize extends Component
       .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += snack.price, 0), 0);
 
     const totalPrice = foodPrice + snacksPrice + slimSundayPrice;
-
+    console.log(totalPrice);
+    console.log(slimSundayPrice,
+      foodPrice,
+      snacksPrice,
+      totalPrice);
     return {
       slimSundayPrice,
       foodPrice,

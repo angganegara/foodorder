@@ -4,7 +4,6 @@
 
 const numeral = require('numeral');
 import cartState from '../store';
-import snacks from '../store/snacks';
 
 const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 export const parsePrice = price => numeral(price).format('0,0');

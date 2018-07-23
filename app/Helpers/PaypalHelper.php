@@ -31,7 +31,7 @@ class PaypalHelper
     try {
 			$response = $this->provider->addOptions([
 				'BRANDNAME' => 'Motion Fitness',
-				'LOGOIMG'   => 'http://foodorder.helloangga.com/images/logo-email.jpg'
+				'LOGOIMG'   => url('images/logo-email.jpg')
 			])->setExpressCheckout($cart);
       return [
 				'code'     => 101,
@@ -69,10 +69,10 @@ class PaypalHelper
 			]);
 		}
 
-		$data['return_url'] = url('/checkout/finish/'. $order_number);
+		$data['return_url'] = url('checkout/finish/'. $order_number);
 		$data['invoice_id'] = $order->order_number;
 		$data['invoice_description'] = "Order #$order_number Invoice";
-    $data['cancel_url'] = url('/checkout/cancel/'. $order_number);
+    $data['cancel_url'] = url('checkout/cancel/'. $order_number);
 
 		$data['total'] = 0;
 		$data['total'] = array_reduce(
@@ -85,7 +85,7 @@ class PaypalHelper
 
 	protected function convertToUSD($price)
 	{
-		return round($price / 13500, 0);
+		return round($price / 14500, 0);
 	}
 
 	public function cancelPaypal($order_number)
@@ -94,7 +94,7 @@ class PaypalHelper
 		$this->oh->deleteOrder($order_number);
 
 		// redirect
-		return redirect()->to('/checkout');
+		return redirect()->to('checkout');
 	}
 
 	public function getExpressCheckout(Request $request, $order_number)
@@ -115,7 +115,7 @@ class PaypalHelper
         $this->oh->sendOrder($order_number);
 
         // redirect to vue page?
-        return redirect()->to('/checkout/thank-you');
+        return redirect()->to('checkout/thank-you');
       } else {
         echo "There is an error processing your payment";
       }
