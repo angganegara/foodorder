@@ -5,14 +5,32 @@
   }
   .header {
     padding: 0;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     figure {
-      margin-top: .25rem;
+      margin-top: .75rem;
+      margin-bottom: .75rem;
+      margin-left: 1rem;
+      width: 75%;
     }
-    h1 {
-      line-height: 1;
-      margin-left: 0;
-      padding-bottom: 1rem;
+    img.logo { width: 164px; }
+    a.mobile-menu {
+      margin-left: auto;
+      margin-right: 1rem;
+      display: block;
+      color: #fff;
+      font-size: 1.2em;
+    }
+    .header-links {
+      width: 100%;
+      display: block;
+      padding: .5rem 0;
+      display: none;
+    }
+    .header-links a {
+      display: block;
+      width: 100%;
+      padding: .5rem 0;
     }
     a.main-site { display: none }
     .mini-cart {
@@ -42,7 +60,7 @@
     .container { padding: 0 1rem 1rem 1rem; }
     h1 {
       font-size: 36px;
-      padding: 3.5rem 0 .5rem 0;
+      padding: 1rem 0 .5rem 0;
     }
     p { font-size: 16px; }
     .bg { display: none }

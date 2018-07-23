@@ -27,6 +27,10 @@ class Header extends Component
         }
       })
     }
+
+    $('a.mobile-menu').on('click', function() {
+      $('.header-links').slideToggle();
+    })
   }
 
   render() {
@@ -34,10 +38,15 @@ class Header extends Component
 
     return (
       <header>
-        <div className="container header">
+        <div className="header">
           <figure><Link to="/" title=""><img src="/images/logo.png" alt="Motion Fitness Bali" className="logo" /></Link></figure>
-          <h1 className="logo-title">MEAL PLANS TO REACH YOUR GOALS</h1>
-          <a href={backToLink.href} title="" className="main-site"><span dangerouslySetInnerHTML={{__html: backToLink.html}}></span></a>
+          <a href="javascript:" title="" className="mobile-menu"><i className="fal fa-bars"></i></a>
+          <div className="header-links">
+            <Link to="/" title="" className="active">Meal Plans</Link>
+            <a href="http://cafe.motionfitnessbali.com/detox" title="">Detox</a>
+            <a href="http://cafe.motionfitnessbali.com/retreat-catering" title="">Catering</a>
+            <a href="http://cafe.motionfitnessbali.com/nutrition-consultation" title="">Nutrition Consultation</a>
+          </div>
           {this.props.location.pathname != '/checkout' && <MiniCart />}
         </div>
       </header>
