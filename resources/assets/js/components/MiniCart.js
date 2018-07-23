@@ -18,16 +18,16 @@ class MiniCart extends Component
     let item = cartState.added[index];
     const slimSunday = item.slimSunday ? 300000 : 0;
     item.qty = vnum;
-    item.totalPrice = (item.foodPrice + item.snacksPrice + slimSunday) * vnum;
+    item.totalPrice = (parseInt(item.foodPrice) + parseInt(item.snacksPrice) + slimSunday) * vnum;
   }
 
   totalPrice = () => {
     const totalCartPrice = this.cartTotalPrice();
     // later - delivery discount
-    return parsePrice(totalCartPrice);
+    return parsePrice(parseInt(totalCartPrice));
   }
 
-  cartTotalPrice = () => cartState.added.reduce((accu, total) => accu + total.totalPrice, 0)
+  cartTotalPrice = () => cartState.added.reduce((accu, total) => accu + parseInt(total.totalPrice), 0)
   handleEmptyCart = () => cartState.added = [];
   handleDelete = (e, index) => cartState.added.splice(index, 1);
 
