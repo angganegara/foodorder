@@ -32,7 +32,7 @@ class CartOverview extends Component
     let item = cartState.added[index];
     const slimSunday = item.slimSunday ? 300000 : 0;
     item.qty = vnum;
-    item.totalPrice = (item.foodPrice + item.snacksPrice + slimSunday) * vnum;
+    item.totalPrice = (parseInt(item.foodPrice) + parseInt(item.snacksPrice) + parseInt(slimSunday)) * vnum;
     this.cancelCoupon();
   }
 
@@ -40,7 +40,7 @@ class CartOverview extends Component
     const totalCartPrice = this.cartTotalPrice();
     const discount = this.state.coupon.value;
     // later - delivery discount
-    return parsePrice(totalCartPrice - discount);
+    return parsePrice(parseInt(totalCartPrice) - parseInt(discount));
   }
 
   parseStation = (type, index, address) => {
@@ -57,7 +57,7 @@ class CartOverview extends Component
   toggleSchedule = (e, index) => { $(`.schedule-${index}`).slideToggle(); }
   toggleCoupon = () => { $('.coupon--body').slideToggle(); }
   enterCoupon = e => this.setState({ coupon: {...this.state.coupon, code: e.target.value} })
-  cartTotalPrice = () => cartState.added.reduce((accu, total) => accu + total.totalPrice, 0)
+  cartTotalPrice = () => cartState.added.reduce((accu, total) => accu + parseInt(total.totalPrice), 0)
   cancelCoupon = () => this.setState({ coupon: { value: 0, code: '', item: ''} }, () => this.props.applyCoupon(this.state.coupon))
   applyCoupon = () => {
     const data = { cart: cartState.added, coupon: this.state.coupon.code, total: parseInt(this.cartTotalPrice()) }

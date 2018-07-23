@@ -287,7 +287,7 @@ class Customize extends Component
       .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.price), 0), 0);
 
     const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice);
-    console.log(totalPrice);
+
     return {
       slimSundayPrice,
       foodPrice,
