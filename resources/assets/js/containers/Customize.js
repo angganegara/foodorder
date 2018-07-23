@@ -284,14 +284,10 @@ class Customize extends Component
     const foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
     const snacksPrice = activeItem.schedules
       .filter(s => s.snacksData.length > 0)
-      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += snack.price, 0), 0);
+      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.price), 0), 0);
 
-    const totalPrice = foodPrice + snacksPrice + slimSundayPrice;
+    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice);
     console.log(totalPrice);
-    console.log(slimSundayPrice,
-      foodPrice,
-      snacksPrice,
-      totalPrice);
     return {
       slimSundayPrice,
       foodPrice,
