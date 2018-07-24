@@ -1,8 +1,8 @@
 <?php
 
 // put to maintenance mode
-header("Location: index.html");
-exit;
+#header("Location: index.html");
+#exit;
 
 /**
  * Laravel - A PHP Framework For Web Artisans
