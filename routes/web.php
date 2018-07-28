@@ -45,6 +45,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('orders/schedule', 'OrderController@schedule');
 
   Route::get('partners', 'PartnerController@index');
+  Route::get('partners/report', 'PartnerController@report');
+  Route::post('partners/report', 'PartnerController@showReport');
+  Route::post('partners/export', 'PartnerController@exportExcel');
 });
 
 Route::get('auth/login', 'AuthController@index')->name('login');

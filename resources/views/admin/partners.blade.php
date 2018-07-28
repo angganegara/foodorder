@@ -16,6 +16,7 @@
         <th>Name</th>
         <th>Domain</th>
         <th>Station</th>
+        <th>Profit</th>
         <th></th>
       </tr>
       @foreach ($partners as $index => $partner)
@@ -23,6 +24,7 @@
           <td><b>{{ $partner->name }}</b></td>
           <td><a href="//{{ $partner->domain }}" target="_blank">{{ $partner->domain }}</a></td>
           <td>{{ $partner->station }}</td>
+          <td>{{ $partner->profit > 0 ? $partner->profit .'%' : '-' }}</td>
           <td class="tools-wrapper">
             <a href="javascript:"><i class="far fa-cog"></i></a>
             <div class="tools">
