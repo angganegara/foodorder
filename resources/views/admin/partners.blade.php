@@ -25,12 +25,9 @@
           <td><a href="//{{ $partner->domain }}" target="_blank">{{ $partner->domain }}</a></td>
           <td>{{ $partner->station }}</td>
           <td>{{ $partner->profit > 0 ? $partner->profit .'%' : '-' }}</td>
-          <td class="tools-wrapper">
-            <a href="javascript:"><i class="far fa-cog"></i></a>
-            <div class="tools">
-              <a href="/admin/partners/{{ $partner->id }}">View</a>
-              <a href="#" title="" class="tools-delete">Delete</a>
-            </div>
+          <td class="actions">
+            <a href="/admin/partners/{{ $partner->id }}"><i class="far fa-edit"></i></a>
+            <a href="/admin/partners/{{ $partner->id }}/delete" onClick="return window.confirm('Are you sure?')" title=""><i class="far fa-trash-alt"></i></a>
           </td>
         </tr>
       @endforeach

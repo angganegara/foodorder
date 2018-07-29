@@ -11,8 +11,8 @@
     <li class="children"><a href="/admin/partners" title="">View Partners</a></li>
     <li class="children"><a href="/admin/partners/new" title="">Add new Partner</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Coupon</li>
-    <li class="children"><a href="/admin/coupons" title="">View Coupons</a></li>
-    <li class="children"><a href="/admin/coupons/new" title="">Add new Coupon</a></li>
+    <li class="children"><a href="/admin/coupons" title="" {!! Request::is('admin/coupons*') ? 'class="active"' : '' !!}>View Coupons</a></li>
+    <li class="children"><a href="/admin/coupons/new" title="" {!! Request::is('admin/coupons/new') ? 'class="active"' : '' !!}>Add new Coupon</a></li>
     <li class="single"><a href="/auth/logout" title="">Logout</a></li>
   </ul>
 </sidebar>

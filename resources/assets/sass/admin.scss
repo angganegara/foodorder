@@ -155,14 +155,9 @@ section.admin {
     padding: .5rem;
     border-bottom: 1px solid #eee;
   }
-  tbody tr { transition: .2s ease-in-out all }
-  tbody tr:hover {
-    box-shadow: 0 0 9px 2px rgba(34, 25, 25, 0.1);
-    position: relative;
-    z-index: 4;
-  }
-  tbody tr:nth-child(odd) {
-    background-color: #fafafa;
+  tbody tr {
+    transition: .2s ease-in-out all;
+    background-color: #fff;
   }
   tr.row-total td {
     background-color: #fff;
@@ -207,6 +202,15 @@ section.admin {
     display: block;
     padding: .5rem .5rem;
     border-right: 1px solid #eee;
+  }
+  .actions {
+    text-align: right;
+    a {
+      color: #888;
+      font-size: 14px;
+      margin-left: .25rem;
+    }
+    a:hover { color: $main-color }
   }
 }
 
@@ -263,6 +267,7 @@ section.admin {
     margin-bottom: .5rem;
   }
 }
+.form-inputs .pt-label { margin-bottom: 0 }
 .form-inner { padding: .75rem 1rem; }
 .cart-wrap {
   display: flex;
@@ -433,12 +438,11 @@ table.total {
   }
 }
 
-#report-app .inner {
+.inner {
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 0 15px rgba(#000, .1);
-  min-height: 350px;
   position: relative;
   h2 {
     margin-top: .5rem;
@@ -484,4 +488,49 @@ table.total {
 .export-button {
   margin-top: 1rem;
   text-align: right;
+}
+.save-button {
+  margin-top: 1rem;
+  text-align: center;
+}
+.help {
+  font-size: 12px;
+  font-style: italic;
+}
+.pt-callout.mb { margin-bottom: 1rem }
+.discount-type {
+  display: block;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.cal-full { width: 100% }
+
+.diet-selector {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: .5rem;
+
+  a {
+    display: block;
+    padding: .35rem .75rem;
+    color: #888;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-family: Monospace;
+    font-size: 13px;
+    margin-right: 10px;
+  }
+  a.active {
+    border-color: $main-color;
+    color: #454545;
+    &:before {
+      content: "\f00c";
+      font-family: 'Font Awesome 5 Pro';
+      color: green;
+      padding-right: 5px;
+    }
+  }
 }

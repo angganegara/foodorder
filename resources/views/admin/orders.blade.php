@@ -31,12 +31,9 @@
           <td style="text-transform: uppercase">{{ $order->partner->name }}</td>
           <td>{{ $order->payment_formatted }}</td>
           <td><a title="" class="pill status">{{ $order->order_status }}</a></td>
-          <td class="tools-wrapper">
-            <a href="javascript:"><i class="far fa-cog"></i></a>
-            <div class="tools">
-              <a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}">View</a>
-              <a href="#" title="" class="tools-delete">Delete</a>
-            </div>
+          <td class="actions">
+            <a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}"><i class="far fa-eye"></i></a>
+            <a href="/admin/orders/{{ $order->id }}/delete" onClick="return window.confirm('Are you sure?')" title=""><i class="far fa-trash-alt"></i></a>
           </td>
         </tr>
       @endforeach

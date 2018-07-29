@@ -46,8 +46,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('partners', 'PartnerController@index');
   Route::get('partners/report', 'PartnerController@report');
+  Route::get('partners/new', 'PartnerController@create');
+  Route::post('partners/new', 'PartnerController@insert');
   Route::post('partners/report', 'PartnerController@showReport');
   Route::post('partners/export', 'PartnerController@exportExcel');
+  Route::get('partners/{id}', 'PartnerController@show');
+  Route::post('partners/{id}', 'PartnerController@update');
+  Route::get('partners/{id}/delete', 'PartnerController@delete');
+
+  Route::get('coupons', 'CouponController@index');
+  Route::get('coupons/new', 'CouponController@create');
+  Route::post('coupons/new', 'CouponController@insert');
+  Route::get('coupons/{id}', 'CouponController@show');
+  Route::post('coupons/{id}', 'CouponController@update');
+  Route::get('coupons/{id}/delete', 'CouponController@delete');
 });
 
 Route::get('auth/login', 'AuthController@index')->name('login');

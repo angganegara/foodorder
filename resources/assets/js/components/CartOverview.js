@@ -67,6 +67,7 @@ class CartOverview extends Component
         this.setState({ coupon: {...this.state.coupon, value: res.data.value, item: res.data.item} })
       })
       .then(() => this.props.applyCoupon(this.state.coupon))
+      .catch(err => window.alert(err.response.data.message))
   }
 
   render() {

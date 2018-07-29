@@ -20454,17 +20454,7 @@ section.admin {
 .tbl tbody tr {
   -webkit-transition: .2s ease-in-out all;
   transition: .2s ease-in-out all;
-}
-
-.tbl tbody tr:hover {
-  -webkit-box-shadow: 0 0 9px 2px rgba(34, 25, 25, 0.1);
-          box-shadow: 0 0 9px 2px rgba(34, 25, 25, 0.1);
-  position: relative;
-  z-index: 4;
-}
-
-.tbl tbody tr:nth-child(odd) {
-  background-color: #fafafa;
+  background-color: #fff;
 }
 
 .tbl tr.row-total td {
@@ -20531,6 +20521,20 @@ section.admin {
   border-right: 1px solid #eee;
 }
 
+.tbl .actions {
+  text-align: right;
+}
+
+.tbl .actions a {
+  color: #888;
+  font-size: 14px;
+  margin-left: .25rem;
+}
+
+.tbl .actions a:hover {
+  color: #03A9F4;
+}
+
 .body h1 {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   text-transform: uppercase;
@@ -20588,6 +20592,10 @@ section.admin {
   font-size: 12px;
   display: block;
   margin-bottom: .5rem;
+}
+
+.form-inputs .pt-label {
+  margin-bottom: 0;
 }
 
 .form-inner {
@@ -20816,17 +20824,16 @@ table.total tr td {
   letter-spacing: 1px;
 }
 
-#report-app .inner {
+.inner {
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 4px;
   -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  min-height: 350px;
   position: relative;
 }
 
-#report-app .inner h2 {
+.inner h2 {
   margin-top: .5rem;
   padding-top: 0.5rem;
   border-top: 1px solid #eee;
@@ -20886,5 +20893,67 @@ table.total tr td {
 .export-button {
   margin-top: 1rem;
   text-align: right;
+}
+
+.save-button {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.help {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.pt-callout.mb {
+  margin-bottom: 1rem;
+}
+
+.discount-type {
+  display: block;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cal-full {
+  width: 100%;
+}
+
+.diet-selector {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: .5rem;
+}
+
+.diet-selector a {
+  display: block;
+  padding: .35rem .75rem;
+  color: #888;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-family: Monospace;
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.diet-selector a.active {
+  border-color: #03A9F4;
+  color: #454545;
+}
+
+.diet-selector a.active:before {
+  content: "\F00C";
+  font-family: 'Font Awesome 5 Pro';
+  color: green;
+  padding-right: 5px;
 }
 

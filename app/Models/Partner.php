@@ -8,6 +8,10 @@ class Partner extends Model
 {
   public $primarykey = 'id';
 
+  protected $fillable = [
+    'name', 'domain', 'station', 'always_visible', 'bcc', 'profit', 'google_map'
+  ];
+
   protected $hidden = [
     'updated_at', 'created_at', 'bcc'
   ];

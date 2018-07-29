@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -34214,1030 +34214,6 @@ webpackContext.id = "./node_modules/moment/locale recursive ^\\.\\/.*$";
 
 /***/ }),
 
-/***/ "./node_modules/numeral/numeral.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
- * numeral.js
- * version : 2.0.6
- * author : Adam Draper
- * license : MIT
- * http://adamwdraper.github.com/Numeral-js/
- */
-
-(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory();
-    } else {
-        global.numeral = factory();
-    }
-}(this, function () {
-    /************************************
-        Variables
-    ************************************/
-
-    var numeral,
-        _,
-        VERSION = '2.0.6',
-        formats = {},
-        locales = {},
-        defaults = {
-            currentLocale: 'en',
-            zeroFormat: null,
-            nullFormat: null,
-            defaultFormat: '0,0',
-            scalePercentBy100: true
-        },
-        options = {
-            currentLocale: defaults.currentLocale,
-            zeroFormat: defaults.zeroFormat,
-            nullFormat: defaults.nullFormat,
-            defaultFormat: defaults.defaultFormat,
-            scalePercentBy100: defaults.scalePercentBy100
-        };
-
-
-    /************************************
-        Constructors
-    ************************************/
-
-    // Numeral prototype object
-    function Numeral(input, number) {
-        this._input = input;
-
-        this._value = number;
-    }
-
-    numeral = function(input) {
-        var value,
-            kind,
-            unformatFunction,
-            regexp;
-
-        if (numeral.isNumeral(input)) {
-            value = input.value();
-        } else if (input === 0 || typeof input === 'undefined') {
-            value = 0;
-        } else if (input === null || _.isNaN(input)) {
-            value = null;
-        } else if (typeof input === 'string') {
-            if (options.zeroFormat && input === options.zeroFormat) {
-                value = 0;
-            } else if (options.nullFormat && input === options.nullFormat || !input.replace(/[^0-9]+/g, '').length) {
-                value = null;
-            } else {
-                for (kind in formats) {
-                    regexp = typeof formats[kind].regexps.unformat === 'function' ? formats[kind].regexps.unformat() : formats[kind].regexps.unformat;
-
-                    if (regexp && input.match(regexp)) {
-                        unformatFunction = formats[kind].unformat;
-
-                        break;
-                    }
-                }
-
-                unformatFunction = unformatFunction || numeral._.stringToNumber;
-
-                value = unformatFunction(input);
-            }
-        } else {
-            value = Number(input)|| null;
-        }
-
-        return new Numeral(input, value);
-    };
-
-    // version number
-    numeral.version = VERSION;
-
-    // compare numeral object
-    numeral.isNumeral = function(obj) {
-        return obj instanceof Numeral;
-    };
-
-    // helper functions
-    numeral._ = _ = {
-        // formats numbers separators, decimals places, signs, abbreviations
-        numberToFormat: function(value, format, roundingFunction) {
-            var locale = locales[numeral.options.currentLocale],
-                negP = false,
-                optDec = false,
-                leadingCount = 0,
-                abbr = '',
-                trillion = 1000000000000,
-                billion = 1000000000,
-                million = 1000000,
-                thousand = 1000,
-                decimal = '',
-                neg = false,
-                abbrForce, // force abbreviation
-                abs,
-                min,
-                max,
-                power,
-                int,
-                precision,
-                signed,
-                thousands,
-                output;
-
-            // make sure we never format a null value
-            value = value || 0;
-
-            abs = Math.abs(value);
-
-            // see if we should use parentheses for negative number or if we should prefix with a sign
-            // if both are present we default to parentheses
-            if (numeral._.includes(format, '(')) {
-                negP = true;
-                format = format.replace(/[\(|\)]/g, '');
-            } else if (numeral._.includes(format, '+') || numeral._.includes(format, '-')) {
-                signed = numeral._.includes(format, '+') ? format.indexOf('+') : value < 0 ? format.indexOf('-') : -1;
-                format = format.replace(/[\+|\-]/g, '');
-            }
-
-            // see if abbreviation is wanted
-            if (numeral._.includes(format, 'a')) {
-                abbrForce = format.match(/a(k|m|b|t)?/);
-
-                abbrForce = abbrForce ? abbrForce[1] : false;
-
-                // check for space before abbreviation
-                if (numeral._.includes(format, ' a')) {
-                    abbr = ' ';
-                }
-
-                format = format.replace(new RegExp(abbr + 'a[kmbt]?'), '');
-
-                if (abs >= trillion && !abbrForce || abbrForce === 't') {
-                    // trillion
-                    abbr += locale.abbreviations.trillion;
-                    value = value / trillion;
-                } else if (abs < trillion && abs >= billion && !abbrForce || abbrForce === 'b') {
-                    // billion
-                    abbr += locale.abbreviations.billion;
-                    value = value / billion;
-                } else if (abs < billion && abs >= million && !abbrForce || abbrForce === 'm') {
-                    // million
-                    abbr += locale.abbreviations.million;
-                    value = value / million;
-                } else if (abs < million && abs >= thousand && !abbrForce || abbrForce === 'k') {
-                    // thousand
-                    abbr += locale.abbreviations.thousand;
-                    value = value / thousand;
-                }
-            }
-
-            // check for optional decimals
-            if (numeral._.includes(format, '[.]')) {
-                optDec = true;
-                format = format.replace('[.]', '.');
-            }
-
-            // break number and format
-            int = value.toString().split('.')[0];
-            precision = format.split('.')[1];
-            thousands = format.indexOf(',');
-            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
-
-            if (precision) {
-                if (numeral._.includes(precision, '[')) {
-                    precision = precision.replace(']', '');
-                    precision = precision.split('[');
-                    decimal = numeral._.toFixed(value, (precision[0].length + precision[1].length), roundingFunction, precision[1].length);
-                } else {
-                    decimal = numeral._.toFixed(value, precision.length, roundingFunction);
-                }
-
-                int = decimal.split('.')[0];
-
-                if (numeral._.includes(decimal, '.')) {
-                    decimal = locale.delimiters.decimal + decimal.split('.')[1];
-                } else {
-                    decimal = '';
-                }
-
-                if (optDec && Number(decimal.slice(1)) === 0) {
-                    decimal = '';
-                }
-            } else {
-                int = numeral._.toFixed(value, 0, roundingFunction);
-            }
-
-            // check abbreviation again after rounding
-            if (abbr && !abbrForce && Number(int) >= 1000 && abbr !== locale.abbreviations.trillion) {
-                int = String(Number(int) / 1000);
-
-                switch (abbr) {
-                    case locale.abbreviations.thousand:
-                        abbr = locale.abbreviations.million;
-                        break;
-                    case locale.abbreviations.million:
-                        abbr = locale.abbreviations.billion;
-                        break;
-                    case locale.abbreviations.billion:
-                        abbr = locale.abbreviations.trillion;
-                        break;
-                }
-            }
-
-
-            // format number
-            if (numeral._.includes(int, '-')) {
-                int = int.slice(1);
-                neg = true;
-            }
-
-            if (int.length < leadingCount) {
-                for (var i = leadingCount - int.length; i > 0; i--) {
-                    int = '0' + int;
-                }
-            }
-
-            if (thousands > -1) {
-                int = int.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + locale.delimiters.thousands);
-            }
-
-            if (format.indexOf('.') === 0) {
-                int = '';
-            }
-
-            output = int + decimal + (abbr ? abbr : '');
-
-            if (negP) {
-                output = (negP && neg ? '(' : '') + output + (negP && neg ? ')' : '');
-            } else {
-                if (signed >= 0) {
-                    output = signed === 0 ? (neg ? '-' : '+') + output : output + (neg ? '-' : '+');
-                } else if (neg) {
-                    output = '-' + output;
-                }
-            }
-
-            return output;
-        },
-        // unformats numbers separators, decimals places, signs, abbreviations
-        stringToNumber: function(string) {
-            var locale = locales[options.currentLocale],
-                stringOriginal = string,
-                abbreviations = {
-                    thousand: 3,
-                    million: 6,
-                    billion: 9,
-                    trillion: 12
-                },
-                abbreviation,
-                value,
-                i,
-                regexp;
-
-            if (options.zeroFormat && string === options.zeroFormat) {
-                value = 0;
-            } else if (options.nullFormat && string === options.nullFormat || !string.replace(/[^0-9]+/g, '').length) {
-                value = null;
-            } else {
-                value = 1;
-
-                if (locale.delimiters.decimal !== '.') {
-                    string = string.replace(/\./g, '').replace(locale.delimiters.decimal, '.');
-                }
-
-                for (abbreviation in abbreviations) {
-                    regexp = new RegExp('[^a-zA-Z]' + locale.abbreviations[abbreviation] + '(?:\\)|(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
-
-                    if (stringOriginal.match(regexp)) {
-                        value *= Math.pow(10, abbreviations[abbreviation]);
-                        break;
-                    }
-                }
-
-                // check for negative number
-                value *= (string.split('-').length + Math.min(string.split('(').length - 1, string.split(')').length - 1)) % 2 ? 1 : -1;
-
-                // remove non numbers
-                string = string.replace(/[^0-9\.]+/g, '');
-
-                value *= Number(string);
-            }
-
-            return value;
-        },
-        isNaN: function(value) {
-            return typeof value === 'number' && isNaN(value);
-        },
-        includes: function(string, search) {
-            return string.indexOf(search) !== -1;
-        },
-        insert: function(string, subString, start) {
-            return string.slice(0, start) + subString + string.slice(start);
-        },
-        reduce: function(array, callback /*, initialValue*/) {
-            if (this === null) {
-                throw new TypeError('Array.prototype.reduce called on null or undefined');
-            }
-
-            if (typeof callback !== 'function') {
-                throw new TypeError(callback + ' is not a function');
-            }
-
-            var t = Object(array),
-                len = t.length >>> 0,
-                k = 0,
-                value;
-
-            if (arguments.length === 3) {
-                value = arguments[2];
-            } else {
-                while (k < len && !(k in t)) {
-                    k++;
-                }
-
-                if (k >= len) {
-                    throw new TypeError('Reduce of empty array with no initial value');
-                }
-
-                value = t[k++];
-            }
-            for (; k < len; k++) {
-                if (k in t) {
-                    value = callback(value, t[k], k, t);
-                }
-            }
-            return value;
-        },
-        /**
-         * Computes the multiplier necessary to make x >= 1,
-         * effectively eliminating miscalculations caused by
-         * finite precision.
-         */
-        multiplier: function (x) {
-            var parts = x.toString().split('.');
-
-            return parts.length < 2 ? 1 : Math.pow(10, parts[1].length);
-        },
-        /**
-         * Given a variable number of arguments, returns the maximum
-         * multiplier that must be used to normalize an operation involving
-         * all of them.
-         */
-        correctionFactor: function () {
-            var args = Array.prototype.slice.call(arguments);
-
-            return args.reduce(function(accum, next) {
-                var mn = _.multiplier(next);
-                return accum > mn ? accum : mn;
-            }, 1);
-        },
-        /**
-         * Implementation of toFixed() that treats floats more like decimals
-         *
-         * Fixes binary rounding issues (eg. (0.615).toFixed(2) === '0.61') that present
-         * problems for accounting- and finance-related software.
-         */
-        toFixed: function(value, maxDecimals, roundingFunction, optionals) {
-            var splitValue = value.toString().split('.'),
-                minDecimals = maxDecimals - (optionals || 0),
-                boundedPrecision,
-                optionalsRegExp,
-                power,
-                output;
-
-            // Use the smallest precision value possible to avoid errors from floating point representation
-            if (splitValue.length === 2) {
-              boundedPrecision = Math.min(Math.max(splitValue[1].length, minDecimals), maxDecimals);
-            } else {
-              boundedPrecision = minDecimals;
-            }
-
-            power = Math.pow(10, boundedPrecision);
-
-            // Multiply up by precision, round accurately, then divide and use native toFixed():
-            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
-
-            if (optionals > maxDecimals - boundedPrecision) {
-                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
-                output = output.replace(optionalsRegExp, '');
-            }
-
-            return output;
-        }
-    };
-
-    // avaliable options
-    numeral.options = options;
-
-    // avaliable formats
-    numeral.formats = formats;
-
-    // avaliable formats
-    numeral.locales = locales;
-
-    // This function sets the current locale.  If
-    // no arguments are passed in, it will simply return the current global
-    // locale key.
-    numeral.locale = function(key) {
-        if (key) {
-            options.currentLocale = key.toLowerCase();
-        }
-
-        return options.currentLocale;
-    };
-
-    // This function provides access to the loaded locale data.  If
-    // no arguments are passed in, it will simply return the current
-    // global locale object.
-    numeral.localeData = function(key) {
-        if (!key) {
-            return locales[options.currentLocale];
-        }
-
-        key = key.toLowerCase();
-
-        if (!locales[key]) {
-            throw new Error('Unknown locale : ' + key);
-        }
-
-        return locales[key];
-    };
-
-    numeral.reset = function() {
-        for (var property in defaults) {
-            options[property] = defaults[property];
-        }
-    };
-
-    numeral.zeroFormat = function(format) {
-        options.zeroFormat = typeof(format) === 'string' ? format : null;
-    };
-
-    numeral.nullFormat = function (format) {
-        options.nullFormat = typeof(format) === 'string' ? format : null;
-    };
-
-    numeral.defaultFormat = function(format) {
-        options.defaultFormat = typeof(format) === 'string' ? format : '0.0';
-    };
-
-    numeral.register = function(type, name, format) {
-        name = name.toLowerCase();
-
-        if (this[type + 's'][name]) {
-            throw new TypeError(name + ' ' + type + ' already registered.');
-        }
-
-        this[type + 's'][name] = format;
-
-        return format;
-    };
-
-
-    numeral.validate = function(val, culture) {
-        var _decimalSep,
-            _thousandSep,
-            _currSymbol,
-            _valArray,
-            _abbrObj,
-            _thousandRegEx,
-            localeData,
-            temp;
-
-        //coerce val to string
-        if (typeof val !== 'string') {
-            val += '';
-
-            if (console.warn) {
-                console.warn('Numeral.js: Value is not string. It has been co-erced to: ', val);
-            }
-        }
-
-        //trim whitespaces from either sides
-        val = val.trim();
-
-        //if val is just digits return true
-        if (!!val.match(/^\d+$/)) {
-            return true;
-        }
-
-        //if val is empty return false
-        if (val === '') {
-            return false;
-        }
-
-        //get the decimal and thousands separator from numeral.localeData
-        try {
-            //check if the culture is understood by numeral. if not, default it to current locale
-            localeData = numeral.localeData(culture);
-        } catch (e) {
-            localeData = numeral.localeData(numeral.locale());
-        }
-
-        //setup the delimiters and currency symbol based on culture/locale
-        _currSymbol = localeData.currency.symbol;
-        _abbrObj = localeData.abbreviations;
-        _decimalSep = localeData.delimiters.decimal;
-        if (localeData.delimiters.thousands === '.') {
-            _thousandSep = '\\.';
-        } else {
-            _thousandSep = localeData.delimiters.thousands;
-        }
-
-        // validating currency symbol
-        temp = val.match(/^[^\d]+/);
-        if (temp !== null) {
-            val = val.substr(1);
-            if (temp[0] !== _currSymbol) {
-                return false;
-            }
-        }
-
-        //validating abbreviation symbol
-        temp = val.match(/[^\d]+$/);
-        if (temp !== null) {
-            val = val.slice(0, -1);
-            if (temp[0] !== _abbrObj.thousand && temp[0] !== _abbrObj.million && temp[0] !== _abbrObj.billion && temp[0] !== _abbrObj.trillion) {
-                return false;
-            }
-        }
-
-        _thousandRegEx = new RegExp(_thousandSep + '{2}');
-
-        if (!val.match(/[^\d.,]/g)) {
-            _valArray = val.split(_decimalSep);
-            if (_valArray.length > 2) {
-                return false;
-            } else {
-                if (_valArray.length < 2) {
-                    return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx));
-                } else {
-                    if (_valArray[0].length === 1) {
-                        return ( !! _valArray[0].match(/^\d+$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
-                    } else {
-                        return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
-                    }
-                }
-            }
-        }
-
-        return false;
-    };
-
-
-    /************************************
-        Numeral Prototype
-    ************************************/
-
-    numeral.fn = Numeral.prototype = {
-        clone: function() {
-            return numeral(this);
-        },
-        format: function(inputString, roundingFunction) {
-            var value = this._value,
-                format = inputString || options.defaultFormat,
-                kind,
-                output,
-                formatFunction;
-
-            // make sure we have a roundingFunction
-            roundingFunction = roundingFunction || Math.round;
-
-            // format based on value
-            if (value === 0 && options.zeroFormat !== null) {
-                output = options.zeroFormat;
-            } else if (value === null && options.nullFormat !== null) {
-                output = options.nullFormat;
-            } else {
-                for (kind in formats) {
-                    if (format.match(formats[kind].regexps.format)) {
-                        formatFunction = formats[kind].format;
-
-                        break;
-                    }
-                }
-
-                formatFunction = formatFunction || numeral._.numberToFormat;
-
-                output = formatFunction(value, format, roundingFunction);
-            }
-
-            return output;
-        },
-        value: function() {
-            return this._value;
-        },
-        input: function() {
-            return this._input;
-        },
-        set: function(value) {
-            this._value = Number(value);
-
-            return this;
-        },
-        add: function(value) {
-            var corrFactor = _.correctionFactor.call(null, this._value, value);
-
-            function cback(accum, curr, currI, O) {
-                return accum + Math.round(corrFactor * curr);
-            }
-
-            this._value = _.reduce([this._value, value], cback, 0) / corrFactor;
-
-            return this;
-        },
-        subtract: function(value) {
-            var corrFactor = _.correctionFactor.call(null, this._value, value);
-
-            function cback(accum, curr, currI, O) {
-                return accum - Math.round(corrFactor * curr);
-            }
-
-            this._value = _.reduce([value], cback, Math.round(this._value * corrFactor)) / corrFactor;
-
-            return this;
-        },
-        multiply: function(value) {
-            function cback(accum, curr, currI, O) {
-                var corrFactor = _.correctionFactor(accum, curr);
-                return Math.round(accum * corrFactor) * Math.round(curr * corrFactor) / Math.round(corrFactor * corrFactor);
-            }
-
-            this._value = _.reduce([this._value, value], cback, 1);
-
-            return this;
-        },
-        divide: function(value) {
-            function cback(accum, curr, currI, O) {
-                var corrFactor = _.correctionFactor(accum, curr);
-                return Math.round(accum * corrFactor) / Math.round(curr * corrFactor);
-            }
-
-            this._value = _.reduce([this._value, value], cback);
-
-            return this;
-        },
-        difference: function(value) {
-            return Math.abs(numeral(this._value).subtract(value).value());
-        }
-    };
-
-    /************************************
-        Default Locale && Format
-    ************************************/
-
-    numeral.register('locale', 'en', {
-        delimiters: {
-            thousands: ',',
-            decimal: '.'
-        },
-        abbreviations: {
-            thousand: 'k',
-            million: 'm',
-            billion: 'b',
-            trillion: 't'
-        },
-        ordinal: function(number) {
-            var b = number % 10;
-            return (~~(number % 100 / 10) === 1) ? 'th' :
-                (b === 1) ? 'st' :
-                (b === 2) ? 'nd' :
-                (b === 3) ? 'rd' : 'th';
-        },
-        currency: {
-            symbol: '$'
-        }
-    });
-
-    
-
-(function() {
-        numeral.register('format', 'bps', {
-            regexps: {
-                format: /(BPS)/,
-                unformat: /(BPS)/
-            },
-            format: function(value, format, roundingFunction) {
-                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
-                    output;
-
-                value = value * 10000;
-
-                // check for space before BPS
-                format = format.replace(/\s?BPS/, '');
-
-                output = numeral._.numberToFormat(value, format, roundingFunction);
-
-                if (numeral._.includes(output, ')')) {
-                    output = output.split('');
-
-                    output.splice(-1, 0, space + 'BPS');
-
-                    output = output.join('');
-                } else {
-                    output = output + space + 'BPS';
-                }
-
-                return output;
-            },
-            unformat: function(string) {
-                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
-            }
-        });
-})();
-
-
-(function() {
-        var decimal = {
-            base: 1000,
-            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-        },
-        binary = {
-            base: 1024,
-            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-        };
-
-    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
-            return decimal.suffixes.indexOf(item) < 0;
-        }));
-        var unformatRegex = allSuffixes.join('|');
-        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
-        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
-
-    numeral.register('format', 'bytes', {
-        regexps: {
-            format: /([0\s]i?b)/,
-            unformat: new RegExp(unformatRegex)
-        },
-        format: function(value, format, roundingFunction) {
-            var output,
-                bytes = numeral._.includes(format, 'ib') ? binary : decimal,
-                suffix = numeral._.includes(format, ' b') || numeral._.includes(format, ' ib') ? ' ' : '',
-                power,
-                min,
-                max;
-
-            // check for space before
-            format = format.replace(/\s?i?b/, '');
-
-            for (power = 0; power <= bytes.suffixes.length; power++) {
-                min = Math.pow(bytes.base, power);
-                max = Math.pow(bytes.base, power + 1);
-
-                if (value === null || value === 0 || value >= min && value < max) {
-                    suffix += bytes.suffixes[power];
-
-                    if (min > 0) {
-                        value = value / min;
-                    }
-
-                    break;
-                }
-            }
-
-            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-            return output + suffix;
-        },
-        unformat: function(string) {
-            var value = numeral._.stringToNumber(string),
-                power,
-                bytesMultiplier;
-
-            if (value) {
-                for (power = decimal.suffixes.length - 1; power >= 0; power--) {
-                    if (numeral._.includes(string, decimal.suffixes[power])) {
-                        bytesMultiplier = Math.pow(decimal.base, power);
-
-                        break;
-                    }
-
-                    if (numeral._.includes(string, binary.suffixes[power])) {
-                        bytesMultiplier = Math.pow(binary.base, power);
-
-                        break;
-                    }
-                }
-
-                value *= (bytesMultiplier || 1);
-            }
-
-            return value;
-        }
-    });
-})();
-
-
-(function() {
-        numeral.register('format', 'currency', {
-        regexps: {
-            format: /(\$)/
-        },
-        format: function(value, format, roundingFunction) {
-            var locale = numeral.locales[numeral.options.currentLocale],
-                symbols = {
-                    before: format.match(/^([\+|\-|\(|\s|\$]*)/)[0],
-                    after: format.match(/([\+|\-|\)|\s|\$]*)$/)[0]
-                },
-                output,
-                symbol,
-                i;
-
-            // strip format of spaces and $
-            format = format.replace(/\s?\$\s?/, '');
-
-            // format the number
-            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-            // update the before and after based on value
-            if (value >= 0) {
-                symbols.before = symbols.before.replace(/[\-\(]/, '');
-                symbols.after = symbols.after.replace(/[\-\)]/, '');
-            } else if (value < 0 && (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '('))) {
-                symbols.before = '-' + symbols.before;
-            }
-
-            // loop through each before symbol
-            for (i = 0; i < symbols.before.length; i++) {
-                symbol = symbols.before[i];
-
-                switch (symbol) {
-                    case '$':
-                        output = numeral._.insert(output, locale.currency.symbol, i);
-                        break;
-                    case ' ':
-                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
-                        break;
-                }
-            }
-
-            // loop through each after symbol
-            for (i = symbols.after.length - 1; i >= 0; i--) {
-                symbol = symbols.after[i];
-
-                switch (symbol) {
-                    case '$':
-                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
-                        break;
-                    case ' ':
-                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
-                        break;
-                }
-            }
-
-
-            return output;
-        }
-    });
-})();
-
-
-(function() {
-        numeral.register('format', 'exponential', {
-        regexps: {
-            format: /(e\+|e-)/,
-            unformat: /(e\+|e-)/
-        },
-        format: function(value, format, roundingFunction) {
-            var output,
-                exponential = typeof value === 'number' && !numeral._.isNaN(value) ? value.toExponential() : '0e+0',
-                parts = exponential.split('e');
-
-            format = format.replace(/e[\+|\-]{1}0/, '');
-
-            output = numeral._.numberToFormat(Number(parts[0]), format, roundingFunction);
-
-            return output + 'e' + parts[1];
-        },
-        unformat: function(string) {
-            var parts = numeral._.includes(string, 'e+') ? string.split('e+') : string.split('e-'),
-                value = Number(parts[0]),
-                power = Number(parts[1]);
-
-            power = numeral._.includes(string, 'e-') ? power *= -1 : power;
-
-            function cback(accum, curr, currI, O) {
-                var corrFactor = numeral._.correctionFactor(accum, curr),
-                    num = (accum * corrFactor) * (curr * corrFactor) / (corrFactor * corrFactor);
-                return num;
-            }
-
-            return numeral._.reduce([value, Math.pow(10, power)], cback, 1);
-        }
-    });
-})();
-
-
-(function() {
-        numeral.register('format', 'ordinal', {
-        regexps: {
-            format: /(o)/
-        },
-        format: function(value, format, roundingFunction) {
-            var locale = numeral.locales[numeral.options.currentLocale],
-                output,
-                ordinal = numeral._.includes(format, ' o') ? ' ' : '';
-
-            // check for space before
-            format = format.replace(/\s?o/, '');
-
-            ordinal += locale.ordinal(value);
-
-            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-            return output + ordinal;
-        }
-    });
-})();
-
-
-(function() {
-        numeral.register('format', 'percentage', {
-        regexps: {
-            format: /(%)/,
-            unformat: /(%)/
-        },
-        format: function(value, format, roundingFunction) {
-            var space = numeral._.includes(format, ' %') ? ' ' : '',
-                output;
-
-            if (numeral.options.scalePercentBy100) {
-                value = value * 100;
-            }
-
-            // check for space before %
-            format = format.replace(/\s?\%/, '');
-
-            output = numeral._.numberToFormat(value, format, roundingFunction);
-
-            if (numeral._.includes(output, ')')) {
-                output = output.split('');
-
-                output.splice(-1, 0, space + '%');
-
-                output = output.join('');
-            } else {
-                output = output + space + '%';
-            }
-
-            return output;
-        },
-        unformat: function(string) {
-            var number = numeral._.stringToNumber(string);
-            if (numeral.options.scalePercentBy100) {
-                return number * 0.01;
-            }
-            return number;
-        }
-    });
-})();
-
-
-(function() {
-        numeral.register('format', 'time', {
-        regexps: {
-            format: /(:)/,
-            unformat: /(:)/
-        },
-        format: function(value, format, roundingFunction) {
-            var hours = Math.floor(value / 60 / 60),
-                minutes = Math.floor((value - (hours * 60 * 60)) / 60),
-                seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
-
-            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-        },
-        unformat: function(string) {
-            var timeArray = string.split(':'),
-                seconds = 0;
-
-            // turn hours and minutes into seconds and add them all up
-            if (timeArray.length === 3) {
-                // hours
-                seconds = seconds + (Number(timeArray[0]) * 60 * 60);
-                // minutes
-                seconds = seconds + (Number(timeArray[1]) * 60);
-                // seconds
-                seconds = seconds + Number(timeArray[2]);
-            } else if (timeArray.length === 2) {
-                // minutes
-                seconds = seconds + (Number(timeArray[0]) * 60);
-                // seconds
-                seconds = seconds + Number(timeArray[1]);
-            }
-            return Number(seconds);
-        }
-    });
-})();
-
-return numeral;
-}));
-
-
-/***/ }),
-
 /***/ "./node_modules/object-assign/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -63342,15 +62318,11 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/backend/Reports.js":
+/***/ "./resources/assets/js/backend/coupon.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _regenerator = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
 
@@ -63364,21 +62336,23 @@ var _react = __webpack_require__("./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _core = __webpack_require__("./node_modules/@blueprintjs/core/lib/esm/index.js");
-
-var _datetime = __webpack_require__("./node_modules/@blueprintjs/datetime/lib/esm/index.js");
+var _reactDom = __webpack_require__("./node_modules/react-dom/index.js");
 
 var _moment = __webpack_require__("./node_modules/moment/moment.js");
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _numeral = __webpack_require__("./node_modules/numeral/numeral.js");
+var _core = __webpack_require__("./node_modules/@blueprintjs/core/lib/esm/index.js");
 
-var _numeral2 = _interopRequireDefault(_numeral);
+var _datetime = __webpack_require__("./node_modules/@blueprintjs/datetime/lib/esm/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63386,423 +62360,496 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var parsePrice = function parsePrice(price) {
-  price = parseInt(price);
-  return (0, _numeral2.default)(price).format('0,0');
-};
+var axios = window.axios = __webpack_require__("./node_modules/axios/index.js");
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+var couponId = window.location.pathname.replace(/.*\//g, '');
+var appToaster = _core.Toaster.create({ position: _core.Position.TOP_RIGHT });
 
 var jsDateFormatter = {
   formatDate: function formatDate(date) {
-    return date.toLocaleDateString();
+    return (0, _moment2.default)(date).format('YYYY-MM-DD HH:mm:ss');
   },
   parseDate: function parseDate(str) {
-    return new Date(str);
+    return (0, _moment2.default)(str).format('YYYY-MM-DD HH:mm:ss');
   },
-  placeholder: "MM/DD/YYYY"
+  placeholder: "YYYY-MM-DD",
+  className: 'cal-full'
 };
 
-var appToaster = _core.Toaster.create({ position: _core.Position.TOP_RIGHT });
+var Coupon = function (_Component) {
+  _inherits(Coupon, _Component);
 
-var Reports = function (_Component) {
-  _inherits(Reports, _Component);
-
-  function Reports() {
-    var _ref,
-        _this2 = this;
+  function Coupon() {
+    var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, Reports);
+    _classCallCheck(this, Coupon);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Reports.__proto__ || Object.getPrototypeOf(Reports)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      partners: JSON.parse(partners),
-      partner: null,
-      dates: null,
-      loading: false,
-      orders: null
-    }, _this.changePartner = function (e) {
-      return _this.setState({ partner: parseInt(e.target.value) });
-    }, _this.changeDate = function (range) {
-      return _this.setState({ dates: range });
-    }, _this.selectedPartner = function () {
-      return _this.state.partners.filter(function (p) {
-        return p.id == _this.state.partner;
-      })[0];
-    }, _this.handleSubmit = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-      var res, err;
-      return _regenerator2.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _this.setState({ loading: true });
-              _context.prev = 1;
-              _context.next = 4;
-              return _this.getReport();
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Coupon.__proto__ || Object.getPrototypeOf(Coupon)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      coupon: null,
+      loading: true,
+      diets: null
+    }, _this.getCoupon = function (id) {
+      return axios.get('/admin/coupons/' + couponId);
+    }, _this.getDiets = function () {
+      return axios.get('/api/foods');
+    }, _this.changeDiscountType = function (e) {
+      return _this.setState({ coupon: _extends({}, _this.state.coupon, { discount_type: e.target.value }) });
+    }, _this.changeDate = function (date, type) {
+      return _this.setState({ coupon: _extends({}, _this.state.coupon, _defineProperty({}, type, date)) });
+    }, _this.handleChange = function (e, type) {
+      _this.setState({
+        coupon: _extends({}, _this.state.coupon, _defineProperty({}, type, e.target.value))
+      });
+    }, _this.hasMenu = function (id) {
+      var coupon = _this.state.coupon;
 
-            case 4:
-              res = _context.sent;
+      return coupon.menu && coupon.menu.filter(function (dietId) {
+        return dietId == id;
+      }).length;
+    }, _this.forAllMenu = function () {
+      var coupon = _this.state.coupon;
 
-              _this.setState({
-                loading: false,
-                orders: res.data
-              });
-              _context.next = 13;
-              break;
+      return coupon.menu && coupon.menu[0] == 0;
+    }, _this.toggleMenu = function (e, id) {
+      var coupon = _this.state.coupon;
 
-            case 8:
-              _context.prev = 8;
-              _context.t0 = _context['catch'](1);
-              err = _context.t0.response.data;
+      var newCoupon = coupon.menu;
+      if (_this.hasMenu(id)) {
+        var idx = coupon.menu.indexOf(id);
+        if (idx != -1) newCoupon.splice(idx, 1);
+      } else {
+        newCoupon = [].concat(_toConsumableArray(coupon.menu), [id]);
+      }
 
-              appToaster.show({ message: err, intent: _core.Intent.DANGER });
-              _this.setState({ loading: false });
+      // remove element 0
+      var zero = coupon.menu.indexOf(0);
+      if (zero != -1) newCoupon.splice(zero, 1);
 
-            case 13:
-            case 'end':
-              return _context.stop();
-          }
+      _this.setState({ coupon: _extends({}, _this.state.coupon, { menu: newCoupon }) });
+    }, _this.toggleAllMenu = function (e) {
+      var coupon = _this.state.coupon;
+
+      var zero = coupon.menu.indexOf(0);
+      var newCoupon = zero == -1 ? [0] : [];
+      _this.setState({ coupon: _extends({}, _this.state.coupon, { menu: newCoupon }) });
+    }, _this.hasPackage = function (id) {
+      var coupon = _this.state.coupon;
+
+      return coupon.package_type.filter(function (packageId) {
+        return packageId == id;
+      }).length;
+    }, _this.forAllPackage = function () {
+      var coupon = _this.state.coupon;
+
+      return coupon.package_type && coupon.package_type[0] == 'all';
+    }, _this.togglePackage = function (e, id) {
+      var coupon = _this.state.coupon;
+
+      var newPackage = coupon.package_type;
+      if (_this.hasPackage(id)) {
+        var idx = newPackage.indexOf(id);
+        if (idx != -1) newPackage.splice(idx, 1);
+      } else {
+        newPackage = [].concat(_toConsumableArray(coupon.package_type), [id]);
+      }
+
+      // remove element 0
+      var zero = newPackage.indexOf('all');
+      if (zero != -1) newPackage.splice(zero, 1);
+
+      _this.setState({ coupon: _extends({}, _this.state.coupon, { package_type: newPackage }) });
+    }, _this.toggleAllPackage = function (e) {
+      var coupon = _this.state.coupon;
+
+      var zero = coupon.package_type.indexOf('all');
+      var newPackage = zero == -1 ? ['all'] : [];
+      _this.setState({ coupon: _extends({}, _this.state.coupon, { package_type: newPackage }) });
+    }, _this.handleSubmit = function (e) {
+      var coupon = _this.state.coupon;
+
+
+      if (coupon.code == '') {
+        appToaster.show({ message: 'Please enter coupon code', intent: _core.Intent.DANGER });
+        return false;
+      }
+
+      var data = Object.assign({}, coupon);
+      data.promo_start = (0, _moment2.default)(data.promo_start).format('YYYY-MM-DD HH:mm:ss');
+      data.promo_end = (0, _moment2.default)(data.promo_end).format('YYYY-MM-DD HH:mm:ss');
+
+      _this.setState({ loading: true });
+
+      axios.post('/admin/coupons/' + couponId, data).then(function (res) {
+        if (couponId == 'new') {
+          window.location.href = '/admin/coupons/' + res.data;
+        } else {
+          appToaster.show({ message: 'Coupon Updated', intent: _core.Intent.SUCCESS });
+          _this.setState({ loading: false });
         }
-      }, _callee, _this2, [[1, 8]]);
-    })), _this.getReport = function () {
-      var _this$state = _this.state,
-          dates = _this$state.dates,
-          partner = _this$state.partner;
-
-      return axios.post('/admin/partners/report', { partner: partner, dates: dates });
-    }, _this.calculateTotal = function (orders) {
-      return orders.reduce(function (accu, order) {
-        return accu + order.total;
-      }, 0);
-    }, _this.calculateProfit = function (total) {
-      total = parseInt(total);
-      return total * (parseInt(_this.selectedPartner().profit) / 100);
-    }, _this.calculateTotalProfit = function (orders) {
-      return orders.reduce(function (accu, total) {
-        var profit = _this.calculateProfit(total.total);
-        return accu + profit;
-      }, 0);
-    }, _this.handleExport = function (e, format) {
-      var _this$state2 = _this.state,
-          dates = _this$state2.dates,
-          partner = _this$state2.partner;
-
-      axios.post('/admin/partners/export', { partner: partner, dates: dates, format: format }).then(function (res) {
-        return window.location.href = res.data;
       }).catch(function (err) {
-        return console.log(err.response.data);
+        appToaster.show({ message: 'Save Error', intent: _core.Intent.DANGER });
+        _this.setState({ loading: false });
       });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(Reports, [{
+  _createClass(Coupon, [{
+    key: 'componentDidMount',
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        var coupon, diet, _diet, newCoupon;
+
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                console.log(couponId);
+
+                if (!(couponId != 'new')) {
+                  _context.next = 17;
+                  break;
+                }
+
+                _context.prev = 2;
+                _context.next = 5;
+                return this.getCoupon(couponId);
+
+              case 5:
+                coupon = _context.sent;
+                _context.next = 8;
+                return this.getDiets();
+
+              case 8:
+                diet = _context.sent;
+
+                this.setState({
+                  loading: false,
+                  coupon: _extends({}, coupon.data, {
+                    promo_start: new Date(Date.parse(coupon.data.promo_start)),
+                    promo_end: new Date(Date.parse(coupon.data.promo_end)),
+                    menu: JSON.parse(coupon.data.menu),
+                    package_type: JSON.parse(coupon.data.package_type)
+                  }),
+                  diets: diet.data
+                });
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context['catch'](2);
+
+                console.log(_context.t0.response);
+
+              case 15:
+                _context.next = 22;
+                break;
+
+              case 17:
+                _context.next = 19;
+                return this.getDiets();
+
+              case 19:
+                _diet = _context.sent;
+                newCoupon = {
+                  amount: 0,
+                  code: '',
+                  discount_type: 'amount',
+                  item: '',
+                  limit_usage: 0,
+                  min_order: 1,
+                  max_order: 0,
+                  menu: [0],
+                  package_type: ['all'],
+                  promo_start: new Date(),
+                  promo_end: new Date()
+                };
+
+                this.setState({ coupon: newCoupon, loading: false, diets: _diet.data });
+
+              case 22:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[2, 12]]);
+      }));
+
+      function componentDidMount() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
+  }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       var _state = this.state,
-          partners = _state.partners,
+          coupon = _state.coupon,
           loading = _state.loading,
-          orders = _state.orders,
-          dates = _state.dates;
-
-      var startDate = dates && (0, _moment2.default)(dates[0]).format('DD MMMM YY');
-      var finishDate = dates && (0, _moment2.default)(dates[1]).format('DD MMMM YY');
+          diets = _state.diets;
 
       return _react2.default.createElement(
         'div',
         { className: 'inner' },
         _react2.default.createElement(
           'div',
-          { className: 'columns is-multiline is-centered no-padding' },
+          { className: 'loading ' + (loading ? 'loading-active' : '') },
+          _react2.default.createElement(_core.Spinner, null)
+        ),
+        coupon && _react2.default.createElement(
+          'div',
+          { className: 'columns form-inputs is-multiline' },
           _react2.default.createElement(
             'div',
-            { className: 'column' },
+            { className: 'column is-6' },
             _react2.default.createElement(
               'label',
               { className: 'pt-label' },
-              'Select Partner',
+              'Coupon Code',
+              _react2.default.createElement('input', { className: 'pt-input pt-fill', type: 'text', value: coupon.code, onChange: function onChange(e) {
+                  return _this2.handleChange(e, 'code');
+                } })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-6' },
+            _react2.default.createElement(
+              'label',
+              { className: 'pt-label' },
+              'Discount type',
               _react2.default.createElement(
                 'div',
                 { className: 'pt-select' },
                 _react2.default.createElement(
                   'select',
-                  { onChange: this.changePartner },
+                  { onChange: this.changeDiscountType, value: coupon.discount_type },
                   _react2.default.createElement(
                     'option',
-                    { defaultValue: true },
-                    'Select partner'
+                    { value: 'item' },
+                    'Item'
                   ),
-                  partners.map(function (partner, index) {
-                    return _react2.default.createElement(
-                      'option',
-                      { key: index, value: partner.id },
-                      partner.name
-                    );
-                  })
+                  _react2.default.createElement(
+                    'option',
+                    { value: 'percent' },
+                    'Percentage'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: 'amount' },
+                    'Amount'
+                  )
                 )
               )
             )
           ),
           _react2.default.createElement(
             'div',
-            { className: 'column is-narrow' },
+            { className: 'column is-6' },
             _react2.default.createElement(
               'label',
               { className: 'custom-label' },
-              'Select dates'
+              'Promo start date'
             ),
-            _react2.default.createElement(_datetime.DateRangeInput, _extends({ onChange: this.changeDate }, jsDateFormatter))
+            _react2.default.createElement(_datetime.DateInput, _extends({
+              onChange: function onChange(e) {
+                return _this2.changeDate(e, 'promo_start');
+              },
+              value: coupon.promo_start,
+              timePrecision: 1
+            }, jsDateFormatter))
           ),
           _react2.default.createElement(
             'div',
-            { className: 'column is-narrow' },
+            { className: 'column is-6' },
             _react2.default.createElement(
               'label',
               { className: 'custom-label' },
-              '\xA0'
+              'Promo end date'
             ),
-            _react2.default.createElement(_core.Button, { rightIcon: 'small-tick', text: 'SUBMIT', intent: _core.Intent.PRIMARY, onClick: this.handleSubmit })
+            _react2.default.createElement(_datetime.DateInput, _extends({
+              onChange: function onChange(e) {
+                return _this2.changeDate(e, 'promo_end');
+              },
+              value: coupon.promo_end,
+              timePrecision: 1
+            }, jsDateFormatter))
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-6' },
+            _react2.default.createElement(
+              'label',
+              { className: 'pt-label' },
+              'Minimum item order',
+              _react2.default.createElement('input', { className: 'pt-input pt-fill', type: 'text', value: coupon.min_order, onChange: function onChange(e) {
+                  return _this2.handleChange(e, 'min_order');
+                } })
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'help' },
+              'Enter 0 for no limit'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-6' },
+            _react2.default.createElement(
+              'label',
+              { className: 'pt-label' },
+              'Maximum item order',
+              _react2.default.createElement('input', { className: 'pt-input pt-fill', type: 'text', value: coupon.max_order, onChange: function onChange(e) {
+                  return _this2.handleChange(e, 'max_order');
+                } })
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'help' },
+              'Enter 0 for no limit'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-6' },
+            _react2.default.createElement(
+              'label',
+              { className: 'pt-label' },
+              'Coupon usage limit',
+              _react2.default.createElement('input', { className: 'pt-input pt-fill', type: 'text', value: coupon.limit_usage, onChange: function onChange(e) {
+                  return _this2.handleChange(e, 'limit_usage');
+                } })
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'help' },
+              'Enter 0 for no limit'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-6' },
+            _react2.default.createElement(
+              'label',
+              { className: 'pt-label' },
+              'Discount value',
+              _react2.default.createElement('input', { className: 'pt-input pt-fill', type: 'text', value: coupon.amount, onChange: function onChange(e) {
+                  return _this2.handleChange(e, 'amount');
+                } })
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'help' },
+              'if Discount type is amount / percentage'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-full' },
+            _react2.default.createElement(
+              'label',
+              { className: 'pt-label' },
+              'Free item',
+              _react2.default.createElement('textarea', { className: 'pt-input pt-fill', rows: '3', onChange: function onChange(e) {
+                  return _this2.handleChange(e, 'item');
+                }, value: coupon.item })
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'help' },
+              'if Discount type is Item'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-full' },
+            _react2.default.createElement(
+              'label',
+              { className: 'custom-label' },
+              'Apply promo only for menu'
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'diet-selector' },
+              _react2.default.createElement(
+                'a',
+                { href: 'javascript:', title: '', className: this.forAllMenu() ? 'active' : '', onClick: this.toggleAllMenu },
+                'All Menu'
+              ),
+              diets && diets.map(function (diet, index) {
+                return _react2.default.createElement(
+                  'a',
+                  { key: index, className: _this2.hasMenu(diet.id) ? 'active' : '', href: 'javascript:', title: '', onClick: function onClick(e) {
+                      return _this2.toggleMenu(e, diet.id);
+                    } },
+                  diet.name
+                );
+              })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column is-full' },
+            _react2.default.createElement(
+              'label',
+              { className: 'custom-label' },
+              'Apply promo only for package'
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'diet-selector' },
+              _react2.default.createElement(
+                'a',
+                { href: 'javascript:', title: '', className: this.forAllPackage() ? 'active' : '', onClick: this.toggleAllPackage },
+                'All Packages'
+              ),
+              _react2.default.createElement(
+                'a',
+                { className: this.hasPackage(1) ? 'active' : '', href: 'javascript:', title: '', onClick: function onClick(e) {
+                    return _this2.togglePackage(e, 1);
+                  } },
+                '6-day package'
+              ),
+              _react2.default.createElement(
+                'a',
+                { className: this.hasPackage(2) ? 'active' : '', href: 'javascript:', title: '', onClick: function onClick(e) {
+                    return _this2.togglePackage(e, 2);
+                  } },
+                '4-day package'
+              )
+            )
           )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'loading ' + (loading ? 'loading-active' : '') },
-          _react2.default.createElement(_core.Spinner, null)
-        ),
-        orders && _react2.default.createElement(
-          _react2.default.Fragment,
-          null,
-          _react2.default.createElement(
-            'h2',
-            null,
-            _react2.default.createElement(
-              'b',
-              null,
-              startDate
-            ),
-            ' to ',
-            _react2.default.createElement(
-              'b',
-              null,
-              finishDate
-            ),
-            ' '
-          ),
-          _react2.default.createElement(
-            'table',
-            { width: '100%', className: 'tbl' },
-            _react2.default.createElement(
-              'thead',
-              null,
-              _react2.default.createElement(
-                'tr',
-                null,
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Order'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Date'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Name'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Phone'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Payment methods'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Total'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  '%'
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  'Profit'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'tbody',
-              null,
-              orders.map(function (order, index) {
-                return _react2.default.createElement(
-                  'tr',
-                  { key: index },
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    _react2.default.createElement(
-                      'a',
-                      { href: '/admin/orders/' + order.order_number + '/' + order.id, title: '' },
-                      _react2.default.createElement(
-                        'b',
-                        null,
-                        order.order_number
-                      )
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    order.date
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    _react2.default.createElement(
-                      'a',
-                      { href: 'mailto:' + order.email, target: '_blank' },
-                      _react2.default.createElement(
-                        'b',
-                        null,
-                        order.name
-                      )
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    order.phone
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    order.payment_formatted
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    parsePrice(order.total),
-                    ' IDR'
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    _this3.selectedPartner().profit,
-                    '%'
-                  ),
-                  _react2.default.createElement(
-                    'td',
-                    null,
-                    parsePrice(_this3.calculateProfit(order.total)),
-                    ' IDR'
-                  )
-                );
-              }),
-              orders && orders.length > 0 && _react2.default.createElement(
-                'tr',
-                { className: 'row-total' },
-                _react2.default.createElement(
-                  'td',
-                  { colSpan: '5' },
-                  'Total'
-                ),
-                _react2.default.createElement(
-                  'td',
-                  null,
-                  _react2.default.createElement(
-                    'b',
-                    null,
-                    parsePrice(this.calculateTotal(orders)),
-                    ' IDR'
-                  )
-                ),
-                _react2.default.createElement('td', null),
-                _react2.default.createElement(
-                  'td',
-                  null,
-                  _react2.default.createElement(
-                    'b',
-                    null,
-                    parsePrice(this.calculateTotalProfit(orders)),
-                    ' IDR'
-                  )
-                )
-              ),
-              orders.length <= 0 && _react2.default.createElement(
-                'tr',
-                null,
-                _react2.default.createElement(
-                  'td',
-                  { colSpan: '8' },
-                  'Record not found'
-                )
-              )
-            )
-          ),
-          orders && orders.length > 0 && _react2.default.createElement(
-            'div',
-            { className: 'export-button' },
-            _react2.default.createElement(_core.Button, { rightIcon: 'th', text: 'EXPORT TO EXCEL', intent: _core.Intent.SUCCESS, onClick: function onClick(e) {
-                return _this3.handleExport(e, 'xlsx');
-              } })
-          )
+          { className: 'save-button' },
+          _react2.default.createElement(_core.Button, { icon: 'tick', text: 'SUBMIT', intent: _core.Intent.PRIMARY, onClick: this.handleSubmit })
         )
       );
     }
   }]);
 
-  return Reports;
+  return Coupon;
 }(_react.Component);
 
-exports.default = Reports;
+(0, _reactDom.render)(_react2.default.createElement(Coupon, null), document.getElementById('coupon-app'));
 
 /***/ }),
 
-/***/ "./resources/assets/js/backend/report.js":
+/***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _react = __webpack_require__("./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__("./node_modules/react-dom/index.js");
-
-var _Reports = __webpack_require__("./resources/assets/js/backend/Reports.js");
-
-var _Reports2 = _interopRequireDefault(_Reports);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var axios = window.axios = __webpack_require__("./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-// load React
-
-
-(0, _reactDom.render)(_react2.default.createElement(_Reports2.default, null), document.getElementById('report-app'));
-
-/***/ }),
-
-/***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("./resources/assets/js/backend/report.js");
+module.exports = __webpack_require__("./resources/assets/js/backend/coupon.js");
 
 
 /***/ })

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Mail;
 use Excel;
 
 use App\Models\Partner;
@@ -21,6 +22,59 @@ class PartnerController extends Controller
       $partners = Partner::all();
       return view('admin.partners', compact('partners'));
     }
+  }
+
+  public function create()
+  {
+    return view('admin.new-partner');
+  }
+
+  public function insert(Request $request)
+  {
+    $data = $request->all();
+    $data['always_visible'] = (isset($data['always_visible']) && ($data['always_visible'] == 'on')) ? 1 : 0;
+
+    $partner = Partner::create($data);
+
+    // send email to let me know
+    try {
+      Mail::send('emails.partner', compact('partner'), function ($m) use ($partner) {
+        $m
+          ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
+          ->to('angga@me.com', 'Angga Negara')
+          ->subject('MOTION Meal Plans - New partner added');
+      });
+    } catch (\Exception $e) {
+      // ... krik krik krik
+    }
+
+    request()->session()->flash('status', 'success');
+    return redirect('/admin/partners/'. $partner->id);
+  }
+
+  public function show($id)
+  {
+    $partner = Partner::find($id);
+
+    return view('admin.partner', compact('partner'));
+  }
+
+  public function update(Request $request, $id)
+  {
+    $data = $request->all();
+    $partner = Partner::find($id);
+    $data['always_visible'] = (isset($data['always_visible']) && ($data['always_visible'] == 'on')) ? 1 : 0;
+
+    $partner->update($data);
+
+    request()->session()->flash('status', 'success');
+    return redirect('/admin/partners/'. $id);
+  }
+
+  public function delete($id)
+  {
+    Partner::destroy($id);
+    return redirect('/admin/partners');
   }
 
   public function report()
@@ -66,6 +120,7 @@ class PartnerController extends Controller
 
   public function exportExcel(Request $request)
   {
+    $format = $request->format;
     $orders = $this->getReport($request);
     $partner = Partner::find($request->partner);
     list ($start, $finish) = $this->formatDates($request->dates);
@@ -87,7 +142,9 @@ class PartnerController extends Controller
           'Profit'
         ]);
         $total = 0;
+        $grand_total = 0;
         foreach ($orders as $order) {
+          $grand_total += intVal($order->total);
           $total_profit = intVal($order->total) * ($order->partner->profit / 100);
           $total += $total_profit;
           $sheet->appendRow([
@@ -102,11 +159,11 @@ class PartnerController extends Controller
           ]);
         }
         $sheet->appendRow([
-          '', '', '', '', '', '', 'TOTAL', $total
+          '', '', '', '', 'TOTAL', $grand_total, '', $total
         ]);
       });
-    })->store('xlsx', public_path('excel'));
+    })->store($format, public_path('excel'));
 
-    return response(asset('excel/'. $filename .'.xlsx'));
+    return response(asset('excel/'. $filename .'.'. $format));
   }
 }

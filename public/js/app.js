@@ -77336,6 +77336,8 @@ var CartOverview = function (_Component) {
         _this.setState({ coupon: _extends({}, _this.state.coupon, { value: res.data.value, item: res.data.item }) });
       }).then(function () {
         return _this.props.applyCoupon(_this.state.coupon);
+      }).catch(function (err) {
+        return window.alert(err.response.data.message);
       });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -77846,7 +77848,11 @@ var Footer = function Footer() {
         _react2.default.createElement(
           'div',
           { className: 'col-xs-12 col-md-6 footer-right' },
-          _react2.default.createElement('img', { src: '/images/m-trans.png', alt: 'Motion Meals', className: 'logo' }),
+          _react2.default.createElement(
+            'a',
+            { href: 'http://cafe.motionfitnessbali.com', title: '' },
+            _react2.default.createElement('img', { src: '/images/m-trans.png', alt: 'Motion Meals', className: 'logo' })
+          ),
           _react2.default.createElement(
             'p',
             { className: 'social' },

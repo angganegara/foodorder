@@ -52,6 +52,10 @@ class Reports extends Component
     return axios.post('/admin/partners/report', { partner, dates });
   }
 
+  calculateTotal = orders => {
+    return orders.reduce((accu, order) => accu + order.total, 0);
+  }
+
   calculateProfit = total => {
     total = parseInt(total);
     return total * (parseInt(this.selectedPartner().profit) / 100);
@@ -64,10 +68,10 @@ class Reports extends Component
     }, 0);
   }
 
-  handleExport = () => {
+  handleExport = (e, format) => {
     const { dates, partner } = this.state;
     axios
-      .post('/admin/partners/export', { partner, dates })
+      .post('/admin/partners/export', { partner, dates, format })
       .then(res => window.location.href=res.data)
       .catch(err => console.log(err.response.data));
   }
@@ -106,7 +110,7 @@ class Reports extends Component
         {/* should have use child component here - refactor soon */}
         {orders && (
           <React.Fragment>
-            <h2><b>{this.selectedPartner().name}</b> &mdash; <b>{startDate}</b> to <b>{finishDate}</b> </h2>
+            <h2><b>{startDate}</b> to <b>{finishDate}</b> </h2>
             <table width="100%" className="tbl">
               <thead>
                 <tr>
@@ -135,7 +139,9 @@ class Reports extends Component
                 ))}
                 {orders && (orders.length > 0) && (
                   <tr className="row-total">
-                    <td colSpan="7">Total</td>
+                    <td colSpan="5">Total</td>
+                    <td><b>{parsePrice(this.calculateTotal(orders))} IDR</b></td>
+                    <td></td>
                     <td><b>{parsePrice(this.calculateTotalProfit(orders))} IDR</b></td>
                   </tr>
                 )}
@@ -148,7 +154,7 @@ class Reports extends Component
             </table>
             {orders && (orders.length > 0) && (
               <div className="export-button">
-                <Button rightIcon="th" text="EXPORT TO EXCEL" intent={Intent.SUCCESS} onClick={this.handleExport} />
+                <Button rightIcon="th" text="EXPORT TO EXCEL" intent={Intent.SUCCESS} onClick={(e) => this.handleExport(e, 'xlsx')} />
               </div>
             )}
           </React.Fragment>

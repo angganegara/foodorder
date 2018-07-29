@@ -15,6 +15,7 @@ var ZopfliPlugin = require("zopfli-webpack-plugin");
 mix
   .react('resources/assets/js/app.js', 'public/js/app.js')
   .react('resources/assets/js/backend/report.js', 'public/js/report.js')
+  .react('resources/assets/js/backend/coupon.js', 'public/js/coupon.js')
   //.copy('public/js/app.js', 'public/bundle.js')
   .sass('resources/assets/sass/app.scss', 'public/css/app.css')
   .sass('resources/assets/sass/backend.scss', 'public/css/backend.css')

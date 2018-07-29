@@ -11,12 +11,25 @@ use Carbon\Carbon;
 class CouponController extends Controller
 {
 	public function index() {
-		return Coupon::take(50)->get();
+		$coupons = Coupon::all();
+
+    return view('admin.coupons', compact('coupons'));
 	}
 
-	public function show($id) {
-		return Coupon::findOrFail($id);
+	public function show(Request $request, $id) {
+		$coupon = Coupon::findOrFail($id)->toArray();
+
+    if ($request->ajax()) {
+      return response($coupon);
+    }
+
+    return view('admin.coupon', compact('coupon'));
 	}
+
+  public function create()
+  {
+    return view('admin.new-coupon');
+  }
 
 	public function update($id, Request $request) {
 		$coupon = Coupon::find($id);
@@ -25,15 +38,13 @@ class CouponController extends Controller
 		$coupon->promo_start = $request->promo_start == '' ? null : $request->promo_start;
 		$coupon->promo_end = $request->promo_end == '' ? null : $request->promo_end;
     $coupon->menu = json_encode($request->menu);
-    $coupon->price_type = json_encode($request->price_type);
+    $coupon->package_type = json_encode($request->package_type);
     $coupon->discount_type = $request->discount_type;
     $coupon->min_order = $request->min_order;
     $coupon->max_order = $request->max_order;
     $coupon->limit_usage = $request->limit_usage;
-    $coupon->delivery_dates = $request->delivery_dates;
-    $coupon->delivery_start = $request->delivery_start == '' ? null : $request->delivery_start;
 		$coupon->amount = $request->amount;
-		$coupon->item = $request->item;
+		$coupon->item = $request->item == null ? '' : $request->item;
 
 		$coupon->save();
 		return 'OK';
@@ -43,26 +54,25 @@ class CouponController extends Controller
 		$coupon = new Coupon;
 
 		$coupon->code = $request->code;
-		$coupon->promo_start = $request->promo_start == '' ? null : $request->promo_start;
-		$coupon->promo_end = $request->promo_end == '' ? null : $request->promo_end;
+    $coupon->promo_start = $request->promo_start == '' ? null : $request->promo_start;
+    $coupon->promo_end = $request->promo_end == '' ? null : $request->promo_end;
     $coupon->menu = json_encode($request->menu);
-    $coupon->price_type = json_encode($request->price_type);
+    $coupon->package_type = json_encode($request->package_type);
     $coupon->discount_type = $request->discount_type;
     $coupon->min_order = $request->min_order;
     $coupon->max_order = $request->max_order;
     $coupon->limit_usage = $request->limit_usage;
     $coupon->amount = $request->amount;
-    $coupon->delivery_dates = $request->delivery_dates;
-    $coupon->delivery_start = $request->delivery_start == '' ? null : $request->delivery_start;
-		$coupon->item = $request->item;
+    $coupon->item = $request->item == null ? '' : $request->item;
 
 		$coupon->save();
 		return $coupon->id;
 	}
 
-	public function delete($id) {
+	public function delete($id)
+  {
 		Coupon::destroy($id);
-		return 'OK';
+		return redirect('/admin/coupons');
 	}
 
 	public function applyCoupon(Request $request)
@@ -86,7 +96,7 @@ class CouponController extends Controller
 
     if ($data->limit_usage > 0) {
       // if limit usage is not 0, count the total
-      $usage = Order::where('coupon', $coupon)->count();
+      $usage = Order::where('coupon_code', $coupon)->count();
       if ($data->limit_usage <= $usage) {
         return response()->json([
           'status' => 'ERROR',
@@ -96,7 +106,7 @@ class CouponController extends Controller
     }
 
     $menus = json_decode($data->menu, true);
-    $price = json_decode($data->price_type, true);
+    $package = json_decode($data->package_type, true);
 
 		// has the promo started yet?
 		$today = time();
@@ -140,27 +150,27 @@ class CouponController extends Controller
 
     if ($minOrder > 0 || $maxOrder > 0) {
       // calculate total cart
-      $totalCart = array_reduce($cart, function($total, $item) use ($data, $price) {
+      $totalCart = array_reduce($cart, function($total, $item) use ($data, $package) {
         // only include item with eligible price type
-        if ($data->price_type == '["all"]') {
+        if ($data->package_type == '["all"]' || in_array($item['packageId'], $package)) {
           $total += $item['qty'];
         }
         return $total;
       }, 0);
 
-      $priceError = $price[0] !== 'all' ? $price[0] : '';
+      $packageError = $package[0] !== 'all' ? ($package[0] == 1 ? '6-day package' : '4-day package') : '';
 
       if (($minOrder > 0) && ($totalCart < $minOrder)) {
         return response()->json([
 					'status' => 'ERROR',
-					'message' => 'Sorry, this coupon is only valid when ordering a minimum of '. $minOrder .' '. $priceError .' meal plans at once'
+					'message' => 'Sorry, this coupon is only valid when ordering a minimum of '. $minOrder .' '. $packageError .' meal plans at once'
 				], 500);
       }
 
       if (($maxOrder > 0) && ($totalCart > $maxOrder)) {
         return response()->json([
 					'status' => 'ERROR',
-					'message' => 'Sorry, this coupon is only valid when ordering a maximum of '. $maxOrder .' '. $priceError .' meal plans at once'
+					'message' => 'Sorry, this coupon is only valid when ordering a maximum of '. $maxOrder .' '. $packageError .' meal plans at once'
 				], 500);
       }
     }
@@ -168,13 +178,13 @@ class CouponController extends Controller
     // calculate the discount only for affected items
     $discount = 0;
     $arr = [];
-    $priceName = $this->getPriceName($price);
+    $packageName = $this->getPackageName($package);
 
     foreach ($cart as $item) {
       // eligible for this menu ?
       if (in_array($item['id'], $menus) || $data->menu == '[0]') {
         // eligible for this type of package ?
-        if ($data->price_type == '["all"]') {
+        if ($data->package_type == '["all"]' || in_array($item['packageId'], $package)) {
           // do we have starting date restriction?
           if ($data->delivery_dates === 1 && $data->delivery_start !== null) {
             $delivery_start_limit = new Carbon($data->delivery_start);
@@ -210,11 +220,11 @@ class CouponController extends Controller
     } else {
       if ($data->discount_type != 'item') {
         $menuName = !isset($menuName) ? null : $menuName;
-        $with = $menuName ? 'with ' : '';
-        $priceError = $priceName ? $with . $priceName : '';
+        $with = $menuName ? ' with ' : '';
+        $packageError = $packageName ? $with . $packageName : '';
         return response()->json([
           'status' => 'ERROR',
-          'message' => 'Sorry, This Promo only applies for '. $menuName . $priceError
+          'message' => 'Sorry, This Promo only applies for '. $menuName . $packageError
         ], 500);
       } else {
         $arr = [
@@ -232,18 +242,18 @@ class CouponController extends Controller
 		return Diet::whereIn('id', $arr)->get(['name'])->implode('name', ', ');
   }
 
-  public function getPriceName($arr) {
+  public function getPackageName($arr) {
     $names = array_map(function ($menu) {
-      return $menu != 'all' ? $this->getPriceRawName($menu) : false;
+      return $menu != 'all' ? $this->getPackageRawName($menu) : false;
     }, $arr);
 
     return count($names) > 0 ? implode($names, ', ') : false;
   }
 
-  public function getPriceRawName($name) {
+  public function getPackageRawName($name) {
     switch ($name) {
-      case 'weekly': return 'Weekly Package'; break;
-      case 'daily': return 'Daily Package'; break;
+      case '1': return '6-day Package'; break;
+      case '2': return '4-day Package'; break;
     }
   }
 }
