@@ -17,7 +17,11 @@ class Item extends Model
     'category_id' => 'integer',
     'price' => 'float',
     'position' => 'integer',
-    'visible' => 'integer'
+    'visible' => 'integer',
+    'vegan' => 'integer',
+    'raw' => 'integer',
+    'natural' => 'integer',
+    'gf' => 'integer'
   ];
 
   public function category()
