@@ -12,6 +12,14 @@ class Coupon extends Model
     'code', 'promo_start', 'promo_end', 'menu', 'discount_type', 'package_type', 'amount', 'item', 'min_order', 'max_order', 'limit_usage'
   ];
 
+  protected $casts = [
+    'id' => 'integer',
+    'amount' => 'float',
+    'min_order' => 'integer',
+    'max_order' => 'integer',
+    'limit_usage' => 'integer'
+  ];
+
 	public function getStartAttribute() {
 		return $this->promo_start ? $this->promo_start->format('d F Y') : '-';
 	}

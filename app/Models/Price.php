@@ -11,6 +11,8 @@ class Price extends Model
   ];
 
   protected $casts = [
+    'id' => 'integer',
+    'price' => 'float',
     'sort' => 'integer'
   ];
 

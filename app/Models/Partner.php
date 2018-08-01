@@ -16,6 +16,12 @@ class Partner extends Model
     'updated_at', 'created_at', 'bcc'
   ];
 
+  protected $casts = [
+    'id' => 'integer',
+    'always_visible' => 'integer',
+    'profit' => 'float'
+  ];
+
   public function order()
   {
     return $this->hasMany(\App\Models\Order::class);

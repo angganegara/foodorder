@@ -12,6 +12,14 @@ class Item extends Model
     'updated_at', 'created_at'
   ];
 
+  protected $casts = [
+    'id' => 'integer',
+    'category_id' => 'integer',
+    'price' => 'float',
+    'position' => 'integer',
+    'visible' => 'integer'
+  ];
+
   public function category()
   {
     return $this->belongsTo('App\Models\Category');

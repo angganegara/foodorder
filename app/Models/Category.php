@@ -12,6 +12,11 @@ class Category extends Model
     'updated_at', 'created_at'
   ];
 
+  protected $casts = [
+    'id' => 'integer',
+    'sort' => 'integer'
+  ];
+
   public function diet()
   {
     return $this->hasMany('App\Models\Diet', 'category_id')->where('visible', 1)->orderBy('position', 'asc');

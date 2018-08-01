@@ -16,6 +16,14 @@ class Diet extends Model
     'slug'
   ];
 
+  protected $casts = [
+    'id' => 'integer',
+    'category_id' => 'integer',
+    'parent_id' => 'integer',
+    'position' => 'integer',
+    'visible' => 'integer'
+  ];
+
   public function getPriceFormattedAttribute()
   {
     return number_format($this->price_w, 0);
