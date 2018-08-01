@@ -59,6 +59,10 @@ class FoodController extends Controller
   {
     $food = Diet::find($id);
     $food['price'] = $food->prices;
+    $food->position = intVal($food->position);
+    $food->visible = intVal($food->visible);
+    $food->parent_id = intVal($food->parent_id);
+    $food->category_id = intVal($food->category_id);
 
     $dir = app()->basePath('public/images/foods');
     $files = glob($dir .'/*.jpg');
