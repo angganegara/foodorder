@@ -125,20 +125,39 @@ class Customize extends Component
   }
 
   updateAddress = (e, day) => {
-    const { activeItem, activeTab, saveAddress } = this.state;
-    activeItem.schedules[activeTab] = {...activeItem.schedules[activeTab], address: e.target.value};
-    this.setState({
-      ...this.state,
-      activeItem: { ...activeItem },
-      address: e.target.value
-    }, () => {
-      this.syncCartState();
-    });
+    const { saveStation, activeItem, activeTab, saveAddress } = this.state;
+    if (saveStation && activeTab == 0) {
+      // if current active tab is 0 and save station is selected, update all address
+      const newStation = activeItem.schedules.map(schedule => {
+        return {...schedule, address: e.target.value, pickup: activeItem.schedules[0].pickup }
+      });
+      this.setState({
+        ...this.state,
+        activeItem: { ...activeItem, schedules: newStation },
+        address: e.target.value
+      }, () => {
+        this.syncCartState();
+      });
+    } else {
+      activeItem.schedules[activeTab] = {...activeItem.schedules[activeTab], address: e.target.value};
+      this.setState({
+        ...this.state,
+        activeItem: { ...activeItem },
+        address: e.target.value
+      }, () => {
+        this.syncCartState();
+      });
+    }
   }
 
   saveStation = (e) => {
     const { activeItem, activeTab } = this.state;
     const saveStation = ! this.state.saveStation;
+    /*
+     * 3 scenario
+     * 1 : user click "your address of choice" then click save station right away before entering the address
+     * this causes a major bug where
+     */
     if (saveStation) {
       const newStation = activeItem.schedules.map(schedule => {
         return {...schedule, address: activeItem.schedules[0].address, pickup: activeItem.schedules[0].pickup }
@@ -206,6 +225,12 @@ class Customize extends Component
 
   changeTab = (e, index) => {
     const { activeTab, activeItem } = this.state;
+
+    if (activeItem.schedules[activeTab].pickup == 'address' && (activeItem.schedules[activeTab].address == '' || activeItem.schedules[activeTab] == null)) {
+      appToaster.show({ message: 'Please enter your delivery address.', intent: Intent.WARNING });
+      return false;
+    }
+
     this.scrollTop();
 
     if (index != 99) {
@@ -233,7 +258,7 @@ class Customize extends Component
   isAllStationSelected = () => {
     const { activeItem } = this.state;
     const totalDays = activeItem.schedules.length;
-    const selectedDays = activeItem.schedules.filter(schedule => schedule.pickup != null).length;
+    const selectedDays = activeItem.schedules.filter(schedule => (schedule.pickup != null && schedule.pickup != '')).length;
 
     return totalDays === selectedDays;
   }
@@ -510,7 +535,7 @@ class Customize extends Component
                             ))}
                             <Radio className="radio" label="Your address of choice" checked={day.pickup === 'address'} onChange={(e) => this.updateStation(e, day, 'address')} value="address" />
                             {day.pickup === 'address' && (
-                              <textarea rows="7" placeholder="Enter your address here" onChange={(e) => this.updateAddress(e, day)} value={day.address ? day.address : address}></textarea>
+                              <textarea rows="7" placeholder="Enter your address here" onChange={(e) => this.updateAddress(e, day)} value={day.address ? day.address : (address ? address : '')}></textarea>
                             )}
                             {index === 0 && day.pickup && <Checkbox checked={saveStation} label="Set selected pick-up station for all days" onClick={(e) => this.saveStation(e)} />}
                           </div>
