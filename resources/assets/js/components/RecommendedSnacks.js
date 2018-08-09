@@ -5,7 +5,7 @@ import snackState from '../store/snacks';
 
 const RecommendedSnacks = ({ snacks }) => (
   <div className="details--example-menu snack">
-    <h3><i className="far fa-thumbs-up"></i> Recommended</h3>
+    <h3><i className="far fa-thumbs-up"></i> Recommended Add-on Snacks</h3>
     <ul>
       {snacks.map((snack, index) => (
         <li key={index} className="snack-thumbs">

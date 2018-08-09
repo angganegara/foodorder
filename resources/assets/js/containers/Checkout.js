@@ -299,6 +299,9 @@ class Checkout extends Component
                   <div className="form-section">
                     <div className="form-inner">
                       <h2>Payment Option</h2>
+                      <div className="form-section--info">
+                        <p><em>Please note that bank transfer payment is possible from<br /><b>BCA</b> / <b>Permata</b> / <b>Mandiri</b> bank accounts only</em></p>
+                      </div>
                       <PaymentButton
                         active={payment == 'cash'}
                         icon="fa fa-motorcycle"
@@ -309,7 +312,7 @@ class Checkout extends Component
                         active={payment == 'creditcard'}
                         icon="fa fa-credit-card"
                         handleChange={(e) => this.handlePayment(e, 'creditcard')}
-                        label="Credit Card / Bank Transfer"
+                        label="Bank Transfer"
                       />
                       <PaymentButton
                         active={payment == 'paypal'}
