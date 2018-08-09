@@ -20,8 +20,8 @@ export const checkPackage6DisabledDates = (date) => {
     }
   }
 
-  if (day === 5 && hours > 22) {
-    // friday, past 10pm, set limit to 3 days
+  if (day === 5 && hours > 17) {
+    // friday, past 5pm, set limit to 3 days
     limit = new Date(date.setHours(24 * 3));
   }
 
