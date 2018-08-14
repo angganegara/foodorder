@@ -12,13 +12,13 @@ class Header extends Component
     this.state = {
       backToLink: {
         href: 'http://cafe.motionfitnessbali.com',
-        html: `<i class="fal fa-fw fa-angle-left"></i> back to Motion's Homepage`
+        html: `<i class="fal fa-fw fa-angle-left"></i> Motion Cafe`
       }
     }
   }
 
   componentDidMount() {
-    if (host == 'wanderlust.motionfitnessbali.com') {
+    /*if (host == 'wanderlust.motionfitnessbali.com') {
       this.setState({
         ...this.state,
         backToLink: {
@@ -26,7 +26,7 @@ class Header extends Component
           html: `<i class="fal fa-fw fa-angle-left"></i> back to Wanderlust page`
         }
       })
-    }
+    }*/
 
     $('a.mobile-menu').on('click', function() {
       $('.header-links').slideToggle();
@@ -42,7 +42,7 @@ class Header extends Component
           <figure><Link to="/" title=""><img src="/images/logo.png" alt="Motion Fitness Bali" className="logo" /></Link></figure>
           <a href="javascript:" title="" className="mobile-menu"><i className="fal fa-bars"></i></a>
           <div className="header-links">
-            <Link to="/" title="" className="active">Meal Plans</Link>
+            <a href={backToLink.href} title="">{backToLink.html}</a>
             <a href="http://cafe.motionfitnessbali.com/detox" title="">Detox</a>
             <a href="http://cafe.motionfitnessbali.com/retreat-catering" title="">Catering</a>
             <a href="http://cafe.motionfitnessbali.com/nutrition-consultation" title="">Nutrition Consultation</a>
