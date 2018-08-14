@@ -12,7 +12,7 @@ class Header extends Component
     this.state = {
       backToLink: {
         href: 'http://cafe.motionfitnessbali.com',
-        html: `<i class="fal fa-fw fa-angle-left"></i> Motion Cafe`
+        html: 'Motion Cafe'
       }
     }
   }
@@ -42,7 +42,7 @@ class Header extends Component
           <figure><Link to="/" title=""><img src="/images/logo.png" alt="Motion Fitness Bali" className="logo" /></Link></figure>
           <a href="javascript:" title="" className="mobile-menu"><i className="fal fa-bars"></i></a>
           <div className="header-links">
-            <a href={backToLink.href} title="">{backToLink.html}</a>
+            <a href={backToLink.href} title=""><span dangerouslySetInnerHTML={{__html: backToLink.html}}></span></a>
             <a href="http://cafe.motionfitnessbali.com/detox" title="">Detox</a>
             <a href="http://cafe.motionfitnessbali.com/retreat-catering" title="">Catering</a>
             <a href="http://cafe.motionfitnessbali.com/nutrition-consultation" title="">Nutrition Consultation</a>
