@@ -18,15 +18,15 @@ class Header extends Component
   }
 
   componentDidMount() {
-    /*if (host == 'wanderlust.motionfitnessbali.com') {
+    if (host == 'wanderlust.motionfitnessbali.com') {
       this.setState({
         ...this.state,
         backToLink: {
           href: 'http://www.crossfitwanderlust.com/fit-foods/',
-          html: `<i class="fal fa-fw fa-angle-left"></i> back to Wanderlust page`
+          html: `Wanderlust page`
         }
       })
-    }*/
+    }
 
     $('a.mobile-menu').on('click', function() {
       $('.header-links').slideToggle();
