@@ -100,7 +100,7 @@
                 @foreach ($cart->schedule as $schedule)
                   <tr>
                     <td><b>{{ $schedule->nice_date }}</b></td>
-                    <td>{{ $schedule->station }}</td>
+                    <td>{{ $schedule->station }} {{ $schedule->area ? '('. $schedule->area .')' : '' }}</td>
                     <td>{{ $schedule->snacks ? $schedule->snacks : '-' }}</td>
                   </tr>
                 @endforeach

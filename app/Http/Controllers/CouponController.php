@@ -109,6 +109,7 @@ class CouponController extends Controller
     $package = json_decode($data->package_type, true);
 
 		// has the promo started yet?
+    /*
 		$today = time();
 		$promo_start = $data->promo_start ? strtotime($data->promo_start) : null;
 		$promo_end = $data->promo_end ? strtotime($data->promo_end) : null;
@@ -126,6 +127,7 @@ class CouponController extends Controller
 				'message' => 'Sorry, This Promo is already over!'
 			], 500);
 		}
+    */
 
 		if ($data->menu != '[0]') {
 			// not for all menu
@@ -185,18 +187,17 @@ class CouponController extends Controller
       if (in_array($item['id'], $menus) || $data->menu == '[0]') {
         // eligible for this type of package ?
         if ($data->package_type == '["all"]' || in_array($item['packageId'], $package)) {
-          // do we have starting date restriction?
-          if ($data->delivery_dates === 1 && $data->delivery_start !== null) {
-            $delivery_start_limit = new Carbon($data->delivery_start);
-            $delivery_start_enter = new Carbon($item['dateStart']);
-
-            if (!$delivery_start_enter->eq($delivery_start_limit)) {
-              return response()->json([
-                'status' => 'ERROR',
-                'message' => 'Sorry, your order must be starting on '. $delivery_start_limit->format('l, j F Y')
-              ], 500);
-            }
+          // check delivery starting date restrictions
+          $promo_start = new Carbon($data->promo_start);
+          $promo_end = new Carbon($data->promo_end);
+          $delivery_start = new Carbon($item['dateStart']);
+          if ($delivery_start->lt($promo_start) || $delivery_start->gt($promo_end)) {
+            return response()->json([
+              'status' => 'ERROR',
+              'message' => 'Sorry, your order must be starting on '. $promo_start->format('l, j F Y')
+            ], 500);
           }
+
           // discount can be applied to this item
           switch ($data->discount_type) {
             case 'percent':

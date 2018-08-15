@@ -57,6 +57,12 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
                 <td>{parsePrice(prices.slimSundayPrice)} IDR</td>
               </tr>
             )}
+            {prices.deliveryPrice > 0 && (
+              <tr>
+                <td>DELIVERY SURCHARGE</td>
+                <td>{parsePrice(prices.deliveryPrice)} IDR</td>
+              </tr>
+            )}
             <tr>
               <td>TOTAL PRICE</td>
               <td>{parsePrice(prices.totalPrice)} IDR</td>

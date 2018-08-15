@@ -204,7 +204,7 @@ class Coupon extends Component
           </div>
 
           <div className="column is-6">
-            <label className="custom-label">Promo start date</label>
+            <label className="custom-label">Delivery starting date</label>
             <DateInput
               onChange={(e) => this.changeDate(e, 'promo_start')}
               value={coupon.promo_start}
@@ -213,7 +213,7 @@ class Coupon extends Component
             />
           </div>
           <div className="column is-6">
-            <label className="custom-label">Promo end date</label>
+            <label className="custom-label">Delivery end date</label>
             <DateInput
               onChange={(e) => this.changeDate(e, 'promo_end')}
               value={coupon.promo_end}
@@ -265,7 +265,14 @@ class Coupon extends Component
             <div className="diet-selector">
               <a href="javascript:" title="" className={this.forAllMenu() ? 'active' : ''} onClick={this.toggleAllMenu}>All Menu</a>
               {diets && diets.map((diet, index) => (
-                <a key={index} className={this.hasMenu(diet.id) ? 'active' : ''} href="javascript:" title="" onClick={(e) => this.toggleMenu(e, diet.id)}>{diet.name}</a>
+                <React.Fragment key={index}>
+                  {diet.children.length <= 0 && (
+                    <a className={this.hasMenu(diet.id) ? 'active' : ''} href="javascript:" title="" onClick={(e) => this.toggleMenu(e, diet.id)}>{diet.name}</a>
+                  )}
+                  {diet.children.length > 0 && diet.children.map((d, i) => (
+                    <a key={i} className={this.hasMenu(d.id) ? 'active' : ''} href="javascript:" title="" onClick={(e) => this.toggleMenu(e, d.id)}>{d.name}</a>
+                  ))}
+                </React.Fragment>
               ))}
             </div>
           </div>
@@ -275,7 +282,7 @@ class Coupon extends Component
             <div className="diet-selector">
               <a href="javascript:" title="" className={this.forAllPackage() ? 'active' : ''} onClick={this.toggleAllPackage}>All Packages</a>
               <a className={this.hasPackage(1) ? 'active' : ''} href="javascript:" title="" onClick={(e) => this.togglePackage(e, 1)}>6-day package</a>
-              <a className={this.hasPackage(2) ? 'active' : ''} href="javascript:" title="" onClick={(e) => this.togglePackage(e, 2)}>4-day package</a>
+              <a className={this.hasPackage(2) ? 'active' : ''} href="javascript:" title="" onClick={(e) => this.togglePackage(e, 2)}>Single days</a>
             </div>
           </div>
 

@@ -143,6 +143,20 @@ img.responsive {
 	max-width: 100%;
 	display: block;
 }
+.delivery-dates-range {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    display: block;
+    margin: 0 .5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: $main-color-darker !important;
+    font-size: 12px;
+  }
+}
+
 .pt-datepicker .DayPicker-Day.DayPicker-Day--outside { color: #454545 }
 .DayPicker-wrapper:focus { outline: none }
 .pt-datepicker .DayPicker-Day.DayPicker-Day--disabled { color: rgba(92, 112, 128, 0.5) !important }
@@ -1370,7 +1384,6 @@ section.top.customize {
       display: block;
       margin-top: .5rem;
       margin-bottom: 1rem;
-      margin-left: 26px;
       padding: 1rem;
       border: 1px dashed #ddd;
       border-radius: 4px;
@@ -1414,6 +1427,17 @@ section.top.customize {
     display: block;
     pointer-events: auto;
     opacity: 1;
+  }
+  .address-box {
+    margin-left: 26px;
+    margin-bottom: 1rem;
+  }
+  label.area {
+    display: block;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
 }
 .tab-transition {

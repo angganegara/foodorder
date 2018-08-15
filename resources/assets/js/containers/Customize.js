@@ -26,6 +26,7 @@ import {
   getIndex,
   getScheduleIndex
 } from '../helpers/cart';
+import { areas } from '../helpers/area';
 
 // store
 import cartState from '../store';
@@ -124,26 +125,26 @@ class Customize extends Component
     }
   }
 
-  updateAddress = (e, day) => {
+  updateAddress = (e, day, type) => {
     const { saveStation, activeItem, activeTab, saveAddress } = this.state;
     if (saveStation && activeTab == 0) {
       // if current active tab is 0 and save station is selected, update all address
       const newStation = activeItem.schedules.map(schedule => {
-        return {...schedule, address: e.target.value, pickup: activeItem.schedules[0].pickup }
+        return {...schedule, [type]: e.target.value, pickup: activeItem.schedules[0].pickup }
       });
       this.setState({
         ...this.state,
         activeItem: { ...activeItem, schedules: newStation },
-        address: e.target.value
+        [type]: e.target.value
       }, () => {
         this.syncCartState();
       });
     } else {
-      activeItem.schedules[activeTab] = {...activeItem.schedules[activeTab], address: e.target.value};
+      activeItem.schedules[activeTab] = {...activeItem.schedules[activeTab], [type]: e.target.value};
       this.setState({
         ...this.state,
         activeItem: { ...activeItem },
-        address: e.target.value
+        [type]: e.target.value
       }, () => {
         this.syncCartState();
       });
@@ -153,14 +154,10 @@ class Customize extends Component
   saveStation = (e) => {
     const { activeItem, activeTab } = this.state;
     const saveStation = ! this.state.saveStation;
-    /*
-     * 3 scenario
-     * 1 : user click "your address of choice" then click save station right away before entering the address
-     * this causes a major bug where
-     */
+
     if (saveStation) {
       const newStation = activeItem.schedules.map(schedule => {
-        return {...schedule, address: activeItem.schedules[0].address, pickup: activeItem.schedules[0].pickup }
+        return {...schedule, address: activeItem.schedules[0].address, area: activeItem.schedules[0].area, pickup: activeItem.schedules[0].pickup }
       });
       // update all arrays
       this.setState({
@@ -170,7 +167,7 @@ class Customize extends Component
     } else {
       // reset all station?
       const newStation = activeItem.schedules.map(schedule => {
-        return { ...schedule, address: null, pickup: null }
+        return { ...schedule, address: null, pickup: null, area: null }
       });
       this.setState({
         saveStation,
@@ -226,8 +223,12 @@ class Customize extends Component
   changeTab = (e, index) => {
     const { activeTab, activeItem } = this.state;
 
-    if (activeItem.schedules[activeTab].pickup == 'address' && (activeItem.schedules[activeTab].address == '' || activeItem.schedules[activeTab] == null)) {
-      appToaster.show({ message: 'Please enter your delivery address.', intent: Intent.WARNING });
+    if (
+      activeItem.schedules[activeTab].pickup == 'address' &&
+      ((activeItem.schedules[activeTab].address == '' || activeItem.schedules[activeTab] == null) ||
+      (activeItem.schedules[activeTab].area == '' || activeItem.schedules[activeTab].area == null))
+    ) {
+      appToaster.show({ message: 'Please enter your delivery address and/or area.', intent: Intent.WARNING });
       return false;
     }
 
@@ -242,7 +243,7 @@ class Customize extends Component
       this.setState({ activeTab: index, lastTab: false, activeDate: activeItem.schedules[index].date });
       this.showPageLoading();
     } else {
-      if (this.isAllStationSelected()) {
+      if (this.isAllStationSelected() && this.allAreaSelected()) {
         this.generateSnacksData();
         this.setState({ lastTab: true });
         this.showPageLoading();
@@ -254,6 +255,13 @@ class Customize extends Component
   }
 
   scrollTop = () => { $('html, body').animate({scrollTop: 0}, 500); }
+
+  allAreaSelected = () => {
+    const { activeItem } = this.state;
+    const check = activeItem.schedules.filter(s => s.pickup == 'address' && s.area == '').length;
+
+    return check <= 0;
+  }
 
   isAllStationSelected = () => {
     const { activeItem } = this.state;
@@ -294,7 +302,7 @@ class Customize extends Component
   parseStation = (type, index) => {
     switch (type) {
       case 'address':
-        return this.state.activeItem.schedules[index].address;
+        return this.state.activeItem.schedules[index].address +' ('+ this.state.activeItem.schedules[index].area +')';
         break;
       default:
         return station.stations.filter(s => s.id === type)[0].station;
@@ -310,11 +318,17 @@ class Customize extends Component
     const snacksPrice = activeItem.schedules
       .filter(s => s.snacksData.length > 0)
       .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.price), 0), 0);
+    const deliveryPrice = activeItem.schedules
+      .filter(s => s.pickup == 'address')
+      .reduce((accu, s) => {
+        return (accu += areas.filter(area => area.name == s.area)[0].price)
+      }, 0);
 
-    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice);
+    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice);
 
     return {
       slimSundayPrice,
+      deliveryPrice,
       foodPrice,
       snacksPrice,
       totalPrice
@@ -359,8 +373,11 @@ class Customize extends Component
     const snacksPrice = schedules
       .filter(s => s.snacksData.length > 0)
       .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.price), 0), 0);
+    const deliveryPrice = activeItem.schedules
+      .filter(s => s.pickup == 'address')
+      .reduce((accu, s) => (accu += areas.filter(area => area.name == s.area)[0].price), 0);
 
-    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice);
+    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice);
 
     let data = {
       ...activeItem,
@@ -374,6 +391,7 @@ class Customize extends Component
       schedules,
       foodPrice,
       snacksPrice,
+      deliveryPrice,
       totalPrice
     }
 
@@ -535,7 +553,21 @@ class Customize extends Component
                             ))}
                             <Radio className="radio" label="Your address of choice" checked={day.pickup === 'address'} onChange={(e) => this.updateStation(e, day, 'address')} value="address" />
                             {day.pickup === 'address' && (
-                              <textarea rows="7" placeholder="Enter your address here" onChange={(e) => this.updateAddress(e, day)} value={day.address ? day.address : (address ? address : '')}></textarea>
+                              <div className="address-box">
+                                <textarea rows="7" placeholder="Enter your address here" onChange={(e) => this.updateAddress(e, day, 'address')} value={day.address ? day.address : (address ? address : '')}></textarea>
+                                <label className="area">Select Area</label>
+                                <div className="pt-select">
+                                  <select onChange={(e) => this.updateAddress(e, day, 'area')} value={day.area}>
+                                    <option value="">Select area</option>
+                                    {areas.map((area, aindex) => (
+                                      <option value={area.name} key={aindex}>
+                                        {area.name}&nbsp;{area.price > 0 && ('('+ area.price +' IDR / day)')}
+                                        {area.price <= 0 && ('(Free)')}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
                             )}
                             {index === 0 && day.pickup && <Checkbox checked={saveStation} label="Set selected pick-up station for all days" onClick={(e) => this.saveStation(e)} />}
                           </div>

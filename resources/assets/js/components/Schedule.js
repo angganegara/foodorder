@@ -28,7 +28,7 @@ const Schedule = ({ indexKey, data, snacks, parseStation }) => (
           )}
           <div className="review-card--pickup">
             <span className="icon"><i className="fa fa-fw fa-truck"></i> Pickup station</span>
-            <p>{parseStation(day.pickup, index, day.address)}</p>
+            <p>{parseStation(day.pickup, index, day.address, day.area)}</p>
           </div>
         </div>
       ))}

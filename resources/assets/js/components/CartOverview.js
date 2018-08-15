@@ -50,10 +50,10 @@ class CartOverview extends Component
     return parsePrice(parseInt(totalCartPrice) - parseInt(discount));
   }
 
-  parseStation = (type, index, address) => {
+  parseStation = (type, index, address, area) => {
     switch (type) {
       case 'address':
-        return address;
+        return address + ' ('+ area +')';
         break;
       default:
         return station.stations.filter(s => s.id === type)[0].station;

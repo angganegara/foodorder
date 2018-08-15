@@ -112,6 +112,7 @@ class Checkout extends Component
   toggleTermsDialog = () => this.setState({ termsDialog: ! this.state.termsDialog })
   agreeTerms = () => this.setState({ termsDialog: false, form: {...this.state.form, terms: true} })
   applyCoupon = ({ code, value, item }) => this.setState({ form: {...this.state.form, coupon: code, couponValue: value, couponItem: item} })
+  getTotalDeliveryPrice = () => cartState.added.reduce((accu, total) => accu + total.deliveryPrice, 0)
 
   handleCheckout = () => {
     const { form, payment } = this.state;
@@ -136,7 +137,8 @@ class Checkout extends Component
     }
 
     const subTotal = cartState.added.reduce((accu, total) => accu + total.totalPrice, 0);
-    const data = { cart: cartState.added, form, methods: payment, subTotal};
+    const deliveryPrice = this.getTotalDeliveryPrice();
+    const data = { cart: cartState.added, form, methods: payment, subTotal, deliveryPrice};
 
     this.setState({ checkoutLoading: true });
 

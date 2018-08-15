@@ -180,7 +180,7 @@
                                       <br />SNACKS: <b>{{ $sch->snacks }}</b>
                                     @endif
                                     <br />
-                                    PICKUP STATION: <b>{{ $sch->station }}</b>
+                                    PICKUP STATION: <b>{{ $sch->station }}</b> {{ $sch->area ? '('. $sch->area .')' : '' }}
                                   </td>
                                 </tr>
                               @endforeach

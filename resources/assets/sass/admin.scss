@@ -511,6 +511,7 @@ table.total {
   justify-content: flex-start;
   align-items: center;
   margin-top: .5rem;
+  flex-wrap: wrap;
 
   a {
     display: block;
@@ -522,6 +523,9 @@ table.total {
     font-family: Monospace;
     font-size: 13px;
     margin-right: 10px;
+    min-width: 75px;
+    text-align: center;
+    margin-bottom: .7rem;
   }
   a.active {
     border-color: $main-color;

@@ -12,6 +12,7 @@ import {
   Radio,
   Switch,
   Popover,
+  Tag,
   PopoverInteractionKind
 } from '@blueprintjs/core';
 import { DatePicker } from '@blueprintjs/datetime';
@@ -39,15 +40,7 @@ import RecommendedSnacks from '../components/RecommendedSnacks';
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 let today = new Date();
 
-const isDisabled = date => {
-  if (
-    (date.getDay() === 0) ||
-    checkDayLimit(date)
-  ) {
-    return true;
-  }
-  return false;
-}
+const isDisabled = date => ((date.getDay() === 0) || checkDayLimit(date));
 
 class Details extends Component
 {
@@ -57,10 +50,12 @@ class Details extends Component
     overlay: false,
     alertOpen: false,
     skipAlert: false,
+    cells: [],
     form: {
       packageId: 1,
       slimSunday: false,
-      startDate: null
+      startDate: null,
+      endDate: null
     }
   };
 
@@ -74,6 +69,24 @@ class Details extends Component
   componentWillUnmount() {
     this.setState({ mounted: false });
     $(document).off('click', '.DayPicker-NavButton--next, .DayPicker-NavButton--prev', this.resetSelectedDate);
+  }
+
+  redrawDateRange = () => {
+    const { cells } = this.state;
+    if (cells.length > 0) {
+      setTimeout(() => {
+        $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
+        $('.DayPicker-Day.DayPicker-Day--selected').removeClass('DayPicker-Day--selected');
+      }, 50);
+      setTimeout(() => {
+        cells.map(cell => {
+          let el = $('.DayPicker-Day[aria-label="'+ cell.key+'"]');
+          console.log('trying to add $(\'.DayPicker-Day[aria-label="'+ cell.key+'"]\') with class '+ cell.cssClass);
+          el.addClass(cell.cssClass).attr('range', 'true');
+        })
+      }, 100);
+    }
+    // otherwise, silent
   }
 
   loadFood = id => {
@@ -130,6 +143,7 @@ class Details extends Component
           date: days.format('YYYY-MM-DD'),
           pickup: null,
           address: null,
+          area: '',
           snacks: []
         });
       }
@@ -160,15 +174,25 @@ class Details extends Component
 
   resetSelectedDate = () => {
     this.setState({ ...this.state, form: {...this.state.form, startDate: null} });
-    setTimeout(() => {
+    /*setTimeout(() => {
       $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
       $('.DayPicker-Day.DayPicker-Day--selected').removeClass('DayPicker--Day-selected')
-    }, 50);
+    }, 50);*/
   }
 
   handleDayClick = day => {
-    this.setState({ ...this.state, form: {...this.state.form, startDate: day} });
     const { packageId } = this.state.form;
+
+    let startDate = new Date(day);
+    let cloneDate = new Date(startDate.getTime());
+    let duration = day.getDay() == 1 ? 5 : 6;
+    if (packageId == 1) {
+      cloneDate.setHours(24 * duration);
+    }
+
+    this.setState({ ...this.state, form: {...this.state.form, startDate: day, endDate: cloneDate } });
+
+    /*
     setTimeout(() => {
       $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
       const isMon = day.getDay() == 1 ? 1 : 0;
@@ -180,6 +204,8 @@ class Details extends Component
       let dateRange = moment().range(startDate, endDate);
       let diff = dateRange.diff('days');
       let dateArr = Array.from(dateRange.by('days'));
+      let cells = [];
+      let cssClass;
 
       if (dateArr.length > 1) {
         dateArr.map((date, i) => {
@@ -187,21 +213,25 @@ class Details extends Component
           let Day = d.format('D');
           let day = d.format('d');
           let ariaFormat = d.format('ddd MMM DD YYYY');
-          let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]')
+          let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]');
 
           if (i == 0) {
-            el.addClass('dates-range dates-range-start').attr('range', 'true');
+            cssClass = 'dates-range dates-range-start';
+          } else {
+            if (day == '0') {
+              cssClass = 'dates-range-sunday';
+            }
+            if (day != '0') {
+              cssClass = 'dates-range';
+            }
+            if (i == diff) {
+              cssClass = 'dates-range dates-range-finish';
+            }
           }
-          if (day == '0') {
-            el.addClass('dates-range-sunday').attr('range', 'true');
-          }
-          if (day != '0') {
-            el.addClass('dates-range').attr('range', 'true');
-          }
-          if (i == diff) {
-            el.addClass('dates-range dates-range-finish').attr('range', 'true');
-          }
-        })
+
+          el.addClass(cssClass).attr('range', 'true');
+          cells.push({'key': ariaFormat, 'cssClass': cssClass });
+        });
       } else {
         dateArr.map((date, i) => {
           let d = moment(date);
@@ -209,12 +239,19 @@ class Details extends Component
           let day = d.format('d');
           let ariaFormat = d.format('ddd MMM DD YYYY');
           let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]');
-          el.addClass('dates-single').attr('range', 'true');
+          cssClass = 'dates-single';
+
+          el.addClass(cssClass).attr('range', 'true');
+          cells.push({'key': ariaFormat, 'cssClass': cssClass });
         });
       }
-    }, 50);
+
+      //this.setState({cells: cells});
+
+    }, 50);*/
   }
 
+  parseDate = date => (moment(date).format('ddd, MMM DD, YYYY'))
   toggleOverlay = () => this.setState({ overlay: !this.state.overlay })
   toggleSlimSunday = () => this.setState({ ...this.state, form: {...this.state.form, slimSunday: ! this.state.form.slimSunday } })
   cancelCart = () => this.setState({ alertOpen: false })
@@ -274,6 +311,15 @@ class Details extends Component
                         minDate={today}
                         value={this.state.form.startDate}
                       />
+                      {form.startDate && (
+                        <div className="delivery-dates-range">
+                          <Tag intent={Intent.PRIMARY}>{this.parseDate(form.startDate)}</Tag>
+                          &nbsp;
+                          <i className="far fa-arrow-right"></i>
+                          &nbsp;
+                          <Tag intent={Intent.PRIMARY}>{this.parseDate(form.endDate)}</Tag>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart"><i className="fal fa-cart-plus"></i> Add to cart</a>

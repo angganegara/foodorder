@@ -122,7 +122,7 @@ class OrderHelper
     $order->lname = $form['lname'];
     $order->email = $form['email'];
     $order->phone = $form['phone'];
-    $order->delivery_price = $form['deliveryprice'];
+    $order->delivery_price = $request->has('deliveryPrice') ? $request->deliveryPrice : 0;
     $order->delivery_discount = $form['discount'];
     $order->coupon_code = $form['coupon'];
     $order->coupon_value = $form['couponValue'];
@@ -153,7 +153,8 @@ class OrderHelper
       $oc->subtotal = intVal($cart['foodPrice']) * intVal($cart['qty']);
       $oc->snacks_price = $cart['snacksPrice'];
       $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
-      $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $cart['snacksPrice'];
+      $oc->delivery_price = intVal($cart['deliveryPrice']);
+      $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price;
       $oc->start_date = $cart['dateStart'];
       $oc->end_date = $cart['dateEnd'];
 
@@ -172,6 +173,7 @@ class OrderHelper
         $sc->meals = $cart['title'];
         $sc->snacks = $this->listSnacks($sch, $snacks);
         $sc->station = $sch['pickup'] != 'address' ? $stations[$sch['pickup']]->station : $sch['address'];
+        $sc->area = $sch['pickup'] == 'address' ? $sch['area'] : null;
         $sc->station_id = $sch['pickup'] != 'address' ? $sch['pickup'] : null;
 
         $sc->save();
@@ -180,7 +182,7 @@ class OrderHelper
 
     $order->update([
       'subtotal' => $total,
-      'total' => $total - $oc->coupon_value
+      'total' => ($total - $order->coupon_value)
     ]);
 
     // send order
@@ -218,7 +220,7 @@ class OrderHelper
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
-
+/*
     try {
       Mail::send(
         $email_layout,
@@ -299,7 +301,7 @@ class OrderHelper
       // log in
       return response()->json('CANNOT_SEND_MAIL', 422);
     }
-
+*/
     // set email flag
     $order->email_sent = 1;
     $order->save();
