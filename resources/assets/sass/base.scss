@@ -146,7 +146,8 @@ img.responsive {
 .pt-datepicker .DayPicker-Day.DayPicker-Day--outside { color: #454545 }
 .DayPicker-wrapper:focus { outline: none }
 .pt-datepicker .DayPicker-Day.DayPicker-Day--disabled { color: rgba(92, 112, 128, 0.5) !important }
-.DayPicker-Day--package6, .DayPicker-Day--package4 {
+.DayPicker-Day--isDisabled,
+.DayPicker-Day--today {
   color: rgba(92, 112, 128, 0.5) !important;
   pointer-events: none;
 }
@@ -834,6 +835,10 @@ section.top.details {
   border-bottom-left-radius: 0;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
+}
+.pt-datepicker .DayPicker-Day.dates-single {
+  border-radius: 4px !important;
+  color: #454545 !important;
 }
 
 /**

@@ -143,9 +143,14 @@
                           <td style="padding: 10px 20px 10px 20px; font-size: 12px; line-height: 150%;">
                             <strong>{{ $item['meals'] }}</strong>
                             <br />
-                            <span>{{ $item['package'] == 1 ? '6-day package' : '4-day package' }}</span>
+                            <span>{{ $item['package'] == 1 ? '6-day package' : 'Single days' }}</span>
                             <br />
-                            <span>{{ Carbon\Carbon::parse($item['start_date'])->format('D, M jS') }} &mdash; {{ Carbon\Carbon::parse($item['end_date'])->format('D, M jS') }}</span>
+                            <span>
+                              {{ Carbon\Carbon::parse($item['start_date'])->format('D, M jS') }}
+                              @if ($item['package'] == 1)
+                                &mdash; {{ Carbon\Carbon::parse($item['end_date'])->format('D, M jS') }}
+                              @endif
+                            </span>
                             @if ($item['slimsunday'] == 1)<br /><span>With SlimSunday</span>@endif
                           </td>
                           <td style="padding: 10px 20px 10px 20px; font-size: 12px; text-align: center; line-height: 150%;">

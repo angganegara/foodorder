@@ -11,8 +11,14 @@ import cartState from '../store';
 
 class MiniCart extends Component
 {
-  parsePackage = (id) => id === 1 ? '6-Day Package' : '4-Day Package';
-  parseDates = (dates) => moment(dates.dateStart).format('ddd, MMM Do') + ' &ndash; ' + moment(dates.dateEnd).format('ddd, MMM Do');
+  parsePackage = id => id === 1 ? '6-Day Package' : 'Single day';
+  parseDates = dates => {
+    if (dates.dateStart == dates.dateEnd) {
+      return moment(dates.dateStart).format('ddd, MMM Do');
+    } else {
+      return moment(dates.dateStart).format('ddd, MMM Do') + ' &ndash; ' + moment(dates.dateEnd).format('ddd, MMM Do');
+    }
+  }
 
   handleQty = (vnum, vstring, index) => {
     let item = cartState.added[index];

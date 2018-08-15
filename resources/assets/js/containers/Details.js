@@ -22,10 +22,7 @@ const moment = extendMoment(Moment);
 const $ = require('jquery');
 
 // helpers
-import {
-  checkPackage6DisabledDates,
-  checkPackage4DisabledDates
-} from '../helpers/dates';
+import { checkDayLimit } from '../helpers/dates';
 import { scrollTop } from '../helpers/utils';
 import { guid, parsePrice } from '../helpers/cart';
 
@@ -40,21 +37,16 @@ import ExampleMenu from '../components/ExampleMenu';
 import RecommendedSnacks from '../components/RecommendedSnacks';
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
-const monToday = new Date();
-const today = new Date();
+let today = new Date();
 
-const nextMonday = checkPackage6DisabledDates(monToday);
-const nextWed = checkPackage4DisabledDates(monToday);
-
-const package6 = date => {
-  const disableNextMonday = nextMonday ? (date.getDay() === 1 && date.getDate() === nextMonday.getDate() && date.getMonth() === nextMonday.getMonth() && date.getFullYear() === nextMonday.getFullYear()) : null;
-  const disableNextWed = nextWed ? (date.getDay() === 3 && date.getDate() === nextWed.getDate() && date.getMonth() === nextWed.getMonth() && date.getFullYear() === nextWed.getFullYear()) : null;
-  return disableNextMonday || disableNextWed || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
-}
-
-const package4 = date => {
-  const disableNextWed = nextWed ? (date.getDay() === 3 && date.getDate() === nextWed.getDate() && date.getMonth() === nextWed.getMonth() && date.getFullYear() === nextWed.getFullYear()) : null;
-  return disableNextWed || (date.getDay() === 0) || (date.getDay() === 2) || (date.getDay() === 4) || (date.getDay() === 5) || (date.getDay() === 6);
+const isDisabled = date => {
+  if (
+    (date.getDay() === 0) ||
+    checkDayLimit(date)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 class Details extends Component
@@ -65,7 +57,6 @@ class Details extends Component
     overlay: false,
     alertOpen: false,
     skipAlert: false,
-    modifiers: { package6 },
     form: {
       packageId: 1,
       slimSunday: false,
@@ -96,29 +87,15 @@ class Details extends Component
   }
 
   updatePackage = (e, id) => {
-    const pkg = id === 1 ? { package6 } : { package6 };
     if(this.state.form.startDate) {
       this.resetSelectedDate();
     }
-    this.setState({ ...this.state, modifiers: pkg, form: {...this.state.form, packageId: id, startDate: null} });
+    this.setState({ ...this.state, form: {...this.state.form, packageId: id, startDate: null} });
   }
 
   // needs to refactor later
   getItem = id => cartState.added.filter(item => item.key === id);
   isExist = id => this.getItem(id).length > 0;
-
-  checkEmptyCalendar = () => {
-    const { packageId } = this.state.form;
-    let totalDays = $('.DayPicker-Day').length;
-    let totalAvailableDays = packageId === 1 ? $('.DayPicker-Day--package6').length : $('.DayPicker-Day--package4').length;
-
-    // if the selected package does not have open date for delivery
-    if ((totalDays - 5) - totalAvailableDays < 0) {
-      // kosong, switch to the other package
-      // TO-DO : ask Roland
-      $('.DayPicker-NavButton--next').click();
-    }
-  }
 
   addtoCart = () => {
     let { id } = this.props.match.params;
@@ -130,9 +107,10 @@ class Details extends Component
       return false;
     }
 
-    const isWed = startDate.getDay() == 3 ? 1 : 0;
-    let duration = packageId === 1 ? 5 : 3;
-    duration = (isWed && duration == 5) ? 6 : duration;
+    const isMon = startDate.getDay() == 1 ? 1 : 0;
+    let duration = packageId == 1 ? 5 : 0;
+    duration = (!isMon && duration == 5) ? 6 : duration;
+
     let item = this.getItem(id);
     let ls = window.sessionStorage;
 
@@ -193,35 +171,47 @@ class Details extends Component
     const { packageId } = this.state.form;
     setTimeout(() => {
       $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
-      // is it wednesday ?
-      const isWed = day.getDay() == 3 ? 1 : 0;
-      let duration = packageId == 1 ? 5 : 3;
-      duration = (isWed && duration == 5) ? 6 : duration;
+      const isMon = day.getDay() == 1 ? 1 : 0;
+      let duration = packageId == 1 ? 5 : 0;
+      duration = (!isMon && duration == 5) ? 6 : duration;
+
       const startDate = moment(day);
       const endDate = moment(day).add(duration, 'd');
       let dateRange = moment().range(startDate, endDate);
       let diff = dateRange.diff('days');
       let dateArr = Array.from(dateRange.by('days'));
-      dateArr.map((date, i) => {
-        let d = moment(date);
-        let Day = d.format('D');
-        let day = d.format('d');
-        let ariaFormat = d.format('ddd MMM DD YYYY');
-        let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]')
 
-        if (i == 0) {
-          el.addClass('dates-range dates-range-start').attr('range', 'true');
-        }
-        if (day == '0') {
-          el.addClass('dates-range-sunday').attr('range', 'true');
-        }
-        if (day != '0') {
-          el.addClass('dates-range').attr('range', 'true');
-        }
-        if (i == diff) {
-          el.addClass('dates-range dates-range-finish').attr('range', 'true');
-        }
-      })
+      if (dateArr.length > 1) {
+        dateArr.map((date, i) => {
+          let d = moment(date);
+          let Day = d.format('D');
+          let day = d.format('d');
+          let ariaFormat = d.format('ddd MMM DD YYYY');
+          let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]')
+
+          if (i == 0) {
+            el.addClass('dates-range dates-range-start').attr('range', 'true');
+          }
+          if (day == '0') {
+            el.addClass('dates-range-sunday').attr('range', 'true');
+          }
+          if (day != '0') {
+            el.addClass('dates-range').attr('range', 'true');
+          }
+          if (i == diff) {
+            el.addClass('dates-range dates-range-finish').attr('range', 'true');
+          }
+        })
+      } else {
+        dateArr.map((date, i) => {
+          let d = moment(date);
+          let Day = d.format('D');
+          let day = d.format('d');
+          let ariaFormat = d.format('ddd MMM DD YYYY');
+          let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]');
+          el.addClass('dates-single').attr('range', 'true');
+        });
+      }
     }, 50);
   }
 
@@ -236,7 +226,7 @@ class Details extends Component
 
   render() {
     const { food, form, alertOpen } = this.state;
-    const modifiers = this.state.modifiers;
+    const modifiers = { isDisabled };
 
     return (
       <React.Fragment>

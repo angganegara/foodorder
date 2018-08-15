@@ -230,7 +230,7 @@ class OrderHelper
           $m
             ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
             ->to($order->email, $order->fname . ' ' . $order->lname)
-            ->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
+            //->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
             ->replyTo('foodorder@motionfitnessbali.com', 'Motion - Meal Plans');
 
           // get bcc we need

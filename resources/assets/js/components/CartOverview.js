@@ -20,8 +20,15 @@ class CartOverview extends Component
       item: ''
     }
   }
-  parsePackage = (id) => id === 1 ? '6-Day Package' : '4-Day Package';
-  parseDates = (dates) => moment(dates.dateStart).format('ddd, MMM Do') + ' &ndash; ' + moment(dates.dateEnd).format('ddd, MMM Do');
+  parsePackage = id => id === 1 ? '6-Day Package' : 'Single day';
+  parseDates = dates => {
+    if (dates.dateStart == dates.dateEnd) {
+      return moment(dates.dateStart).format('ddd, MMM Do');
+    } else {
+      return moment(dates.dateStart).format('ddd, MMM Do') + ' &ndash; ' + moment(dates.dateEnd).format('ddd, MMM Do');
+    }
+  }
+
   handleEmptyCart = () => cartState.added = [];
   handleDelete = (e, index) => {
     cartState.added.splice(index, 1);
