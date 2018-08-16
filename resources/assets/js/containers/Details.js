@@ -144,7 +144,8 @@ class Details extends Component
           pickup: null,
           address: null,
           area: '',
-          snacks: []
+          snacks: [],
+          snacksQty: {}
         });
       }
     }
@@ -174,10 +175,10 @@ class Details extends Component
 
   resetSelectedDate = () => {
     this.setState({ ...this.state, form: {...this.state.form, startDate: null} });
-    /*setTimeout(() => {
+    setTimeout(() => {
       $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
       $('.DayPicker-Day.DayPicker-Day--selected').removeClass('DayPicker--Day-selected')
-    }, 50);*/
+    }, 50);
   }
 
   handleDayClick = day => {
@@ -192,7 +193,6 @@ class Details extends Component
 
     this.setState({ ...this.state, form: {...this.state.form, startDate: day, endDate: cloneDate } });
 
-    /*
     setTimeout(() => {
       $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
       const isMon = day.getDay() == 1 ? 1 : 0;
@@ -230,7 +230,6 @@ class Details extends Component
           }
 
           el.addClass(cssClass).attr('range', 'true');
-          cells.push({'key': ariaFormat, 'cssClass': cssClass });
         });
       } else {
         dateArr.map((date, i) => {
@@ -242,13 +241,10 @@ class Details extends Component
           cssClass = 'dates-single';
 
           el.addClass(cssClass).attr('range', 'true');
-          cells.push({'key': ariaFormat, 'cssClass': cssClass });
         });
       }
 
-      //this.setState({cells: cells});
-
-    }, 50);*/
+    }, 50);
   }
 
   parseDate = date => (moment(date).format('ddd, MMM DD, YYYY'))

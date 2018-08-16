@@ -21,7 +21,7 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
                 <span className="icon"><i className="fa fa-fw fa-coffee"></i> snacks</span>
                 <div className="review-card--body-snacks">
                   {day.snacks.length > 0 && day.snacks.map((s, index) => (
-                    <span key={index}>{snack[s].name}</span>
+                    <span key={index}>{snack[s].name} ({day.snacksQty[s]}x)</span>
                   ))}
                 </div>
               </div>

@@ -14,7 +14,7 @@ const Schedule = ({ indexKey, data, snacks, parseStation }) => (
               <div className="review-card--body-snacks">
                 {day.snacks.length > 0 && day.snacks.map((s, index) => (
                   <span key={index}>
-                    {snacks[s].name}
+                    {snacks[s].name} ({day.snacksQty[s]}x)
                     {(snacks[s].protein || snacks[s].flavour) && (
                       <div className="snacks--opt">
                         {day.snackOptions && day.snackOptions[s] && day.snackOptions[s].protein && (<p>{day.snackOptions[s].protein}</p>)}

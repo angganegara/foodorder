@@ -70,7 +70,8 @@ class Snacks extends Component
   handleClick = (e, id) => {
     const { index, scheduleIndex, items } = this.state;
     const category = items.filter(category => category.items.filter(item => item.id == id)[0])[0];
-    const item = category.items.filter(item => item.id == id)[0]
+    const item = category.items.filter(item => item.id == id)[0];
+    let snacks = cartState.added[index].schedules[scheduleIndex];
 
     if (item.protein && !this.isSnackOptionExist(id, 'protein')) {
       // must select one of the options
@@ -84,7 +85,8 @@ class Snacks extends Component
       return false;
     }
 
-    cartState.added[index].schedules[scheduleIndex].snacks.push(id);
+    snacks.snacks.push(id);
+    snacks.snacksQty[id] = 1;
   }
 
   updateSnackOption = (e, id, type) => {

@@ -1084,6 +1084,22 @@ a.snacks-close-button {
 .snacks-card:nth-child(3n) {
   margin-right: 0;
 }
+.snacks-qty {
+  margin-top: .5rem;
+  padding-top: .5rem;
+  border-top: 1px dashed #ccc;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .pt-input-group { width: 50px }
+  label {
+    display: block;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+    margin-right: 1rem;
+  }
+}
 .snack-option {
   min-width: 200px;
   &--section {

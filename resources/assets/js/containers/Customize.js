@@ -16,6 +16,7 @@ import {
   Checkbox,
   Radio,
   Popover,
+  NumericInput,
   PopoverInteractionKind
 } from '@blueprintjs/core';
 const $ = require('jquery');
@@ -203,7 +204,14 @@ class Customize extends Component
     let selectedSnacks = [...activeItem.schedules];
     const snackIndex = selectedSnacks[activeTab].snacks.indexOf(snackId);
     selectedSnacks[activeTab].snacks.splice(snackIndex, 1);
+    console.log('delete '+ snackId);
+    delete selectedSnacks[activeTab].snacksQty[snackId];
     this.generateSnacksData();
+  }
+
+  updateSnackQty = (vnum, vstring, id) => {
+    const { activeItem, activeTab } = this.state;
+    activeItem.schedules[activeTab].snacksQty[id] = parseInt(vnum);
   }
 
   showSnacks = () => {
@@ -317,7 +325,7 @@ class Customize extends Component
     const foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
     const snacksPrice = activeItem.schedules
       .filter(s => s.snacksData.length > 0)
-      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.price), 0), 0);
+      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.totalPrice), 0), 0);
     const deliveryPrice = activeItem.schedules
       .filter(s => s.pickup == 'address')
       .reduce((accu, s) => {
@@ -345,6 +353,8 @@ class Customize extends Component
             id: snack,
             title: snacks[snack].name,
             price: snacks[snack].price,
+            qty: schedule.snacksQty[snack],
+            totalPrice: parseInt(snacks[snack].price) * parseInt(schedule.snacksQty[snack]),
             categoryId: snacks[snack].category.id,
             category: snacks[snack].category.title,
             description: snacks[snack].description
@@ -372,7 +382,7 @@ class Customize extends Component
     const foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
     const snacksPrice = schedules
       .filter(s => s.snacksData.length > 0)
-      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.price), 0), 0);
+      .reduce((accu, s) => accu += s.snacksData.reduce((total, snack) => total += parseInt(snack.totalPrice), 0), 0);
     const deliveryPrice = activeItem.schedules
       .filter(s => s.pickup == 'address')
       .reduce((accu, s) => (accu += areas.filter(area => area.name == s.area)[0].price), 0);
@@ -538,6 +548,14 @@ class Customize extends Component
                               <span>{sitem && sitem[snack] && (sitem[snack].name)}</span>
                               {sitem[snack].protein && <span className="opt">{days[activeTab].snackOptions[snack].protein}</span>}
                               {sitem[snack].flavour && <span className="opt">/ {days[activeTab].snackOptions[snack].flavour}</span>}
+                              <div className="snacks-qty">
+                                <label>QTY</label>
+                                <NumericInput
+                                  min={1}
+                                  fill={false}
+                                  onValueChange={(vnum, vstring) => this.updateSnackQty(vnum, vstring, snack)} value={days[activeTab].snacksQty[snack]}
+                                />
+                              </div>
                             </div>
                           ))}
                           <a href="javascript:" title="" className="customize--add-snacks" onClick={this.showSnacks}>
@@ -561,7 +579,7 @@ class Customize extends Component
                                     <option value="">Select area</option>
                                     {areas.map((area, aindex) => (
                                       <option value={area.name} key={aindex}>
-                                        {area.name}&nbsp;{area.price > 0 && ('('+ area.price +' IDR / day)')}
+                                        {area.name}&nbsp;{area.price > 0 && ('('+ parsePrice(area.price) +' IDR / day)')}
                                         {area.price <= 0 && ('(Free)')}
                                       </option>
                                     ))}

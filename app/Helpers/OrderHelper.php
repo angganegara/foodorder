@@ -92,8 +92,9 @@ class OrderHelper
           $snacks[$snack]->protein !== null ? array_push($options, $sch['snackOptions'][$snack]['protein']) : '';
           $snacks[$snack]->flavour !== null ? array_push($options, $sch['snackOptions'][$snack]['flavour']) : '';
         }
+        $qty = array_key_exists('snacksQty', $sch) ? ' ('. $sch['snacksQty'][$snack] .'x)' : '';
         $options = count($options) > 0 ? ' ('. implode(', ', $options) .')' : '';
-        return $snacks[$snack]->name . $options;
+        return $snacks[$snack]->name . $options . $qty;
       }, $array);
       return implode(', ', $map);
     }
@@ -220,7 +221,7 @@ class OrderHelper
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
-/*
+
     try {
       Mail::send(
         $email_layout,
@@ -232,7 +233,7 @@ class OrderHelper
           $m
             ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
             ->to($order->email, $order->fname . ' ' . $order->lname)
-            //->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
+            ->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
             ->replyTo('foodorder@motionfitnessbali.com', 'Motion - Meal Plans');
 
           // get bcc we need
@@ -301,7 +302,7 @@ class OrderHelper
       // log in
       return response()->json('CANNOT_SEND_MAIL', 422);
     }
-*/
+
     // set email flag
     $order->email_sent = 1;
     $order->save();
