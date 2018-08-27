@@ -33,6 +33,8 @@ Route::post('calculate-cart', 'CartController@calculateCart');
 
 Route::get('domain', 'FoodController@getDomain');
 
+Route::post('error-log', 'OrderController@errorLog');
+
 Route::get('menus', function () {
   return \App\Models\Menu::orderBy('id', 'asc')->get();
 });

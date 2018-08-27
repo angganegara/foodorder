@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Mail;
 
 use App\Models\Order;
 use App\Models\OrderCart;
 use App\Models\OrderSchedule;
 use App\Models\Partner;
+use App\Models\ErrorLog;
 use App\Helpers\OrderHelper;
 
 class OrderController extends Controller
@@ -91,5 +93,31 @@ class OrderController extends Controller
   {
     // delete order
     return $this->oh->deleteOrder($id);
+  }
+
+  public function errorLog(Request $request)
+  {
+    $msg = $request->errorMessage;
+    $data = json_encode($request->data);
+    $ip = $request->ip();
+
+    $err = new ErrorLog;
+    $err->message = $msg;
+    $err->request = $data;
+    $err->ip_address = $ip;
+    $err->save();
+
+    try {
+      Mail::send('emails.error', compact('err'), function ($m) {
+        $m
+          ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
+          ->subject('New error log')
+          ->to('angga@me.com', 'Angga Negara');
+      });
+    } catch (\Exception $e) {
+      // ...
+    }
+
+    return true;
   }
 }

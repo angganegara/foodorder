@@ -158,6 +158,12 @@ class OrderHelper
       $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price;
       $oc->start_date = $cart['dateStart'];
       $oc->end_date = $cart['dateEnd'];
+      $oc->schedules_data = json_encode($cart['schedules']);
+
+      if ($cart['schedules'] == '' || is_null($cart['schedules']) || count($cart['schedules']) <= 0) {
+        return response()->json('EMPTY-SCHEDULES', 500);
+        exit;
+      }
 
       $total += $oc->total_price;
 

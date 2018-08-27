@@ -33,6 +33,8 @@ const label = {
   phone: 'Phone number'
 };
 
+const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
+
 class Checkout extends Component
 {
   state = {
@@ -67,6 +69,11 @@ class Checkout extends Component
   }
 
   componentDidMount() {
+    if (cartState.added.length <= 0) {
+      appToaster.show({ message: 'Your cart is empty. Redirecting you to home page.', intent: Intent.DANGER });
+      setTimeout(() => window.location.href = '/', 2000);
+    }
+
     // 1. load foods and snacks so we get the correct price from server
     axios
       .get('/api/foods')
@@ -140,10 +147,9 @@ class Checkout extends Component
     const deliveryPrice = this.getTotalDeliveryPrice();
     const data = { cart: cartState.added, form, methods: payment, subTotal, deliveryPrice};
 
-    this.setState({ checkoutLoading: true });
-
     // for now we assume payment is cash
     if (window.confirm('You are about to send a binding food order. Do you want to submit?')) {
+      this.setState({ checkoutLoading: true });
       axios
         .post('/api/create-order', data)
         .then(res => {
@@ -151,7 +157,20 @@ class Checkout extends Component
           let methods = payment;
 
           this.continueCheckout(ordernumber);
-        });
+        })
+        .catch(err => {
+          if (err.response.data == 'EMPTY-SCHEDULES') {
+            appToaster.show({ message: 'Your cart is empty. Please add your item again.', intent: Intent.DANGER });
+            //cartState.added = [];
+            //axios.post('/api/error-log', {data: {...data, err: err.response.data}, errorMessage: 'Error when submitting order'});
+            this.setState({ checkoutLoading: false });
+            //setTimeout(() => window.location.href = '/', 2000);
+          } else {
+            window.alert("Something went wrong and the admin has been notified.\nPlease try again in few minutes or choose another payment methods.")
+            //axios.post('/api/error-log', {data: {...data, err: err.response.data}, errorMessage: 'Error when submitting order'});
+            this.setState({ checkoutLoading: false });
+          }
+        })
     }
 
     return false;
@@ -195,13 +214,21 @@ class Checkout extends Component
               onError: (result) => {
                 console.log('Error')
                 console.log(result)
+                this.setState({ checkoutLoading: false });
               },
-              onClose: () => {snap.hide()}
+              onClose: () => {
+                this.setState({ checkoutLoading: false });
+                snap.hide();
+              }
             })
             break;
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        window.alert("Something went wrong and the admin has been notified.\nPlease try again in few minutes or choose another payment methods.")
+        axios.post('/api/error-log', { data: { ordernumber, methods }, errorMessage: 'Error during submitting order, after the order has been created'});
+        this.setState({ checkoutLoading: false });
+      });
   }
 
   clearCart = () => cartState.added = [];
