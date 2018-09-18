@@ -26,7 +26,13 @@
         <tr>
           <td><a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}" title=""><b>{{ $order->order_number }}</b></a></td>
           <td>{{ $order->date }}</td>
-          <td><a href="mailto:{{ $order->email }}" target="_blank"><b>{{ $order->name }}</b></a></td>
+          <td>
+            @if ($order->email)
+              <a href="mailto:{{ $order->email }}" target="_blank"><b>{{ $order->name }}</b></a>
+            @else
+              <a href="#" target="_blank"><b>{{ $order->name }}</b></a>
+            @endif
+          </td>
           <td>{{ $order->phone }}</td>
           <td style="text-transform: uppercase">{{ $order->partner->name }}</td>
           <td>{{ $order->payment_formatted }}</td>
