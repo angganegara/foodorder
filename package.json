@@ -28,6 +28,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-hash-link": "^1.2.0",
     "react-transition-group": "^2.3.1",
+    "useragent.js": "^0.5.7",
     "zopfli-webpack-plugin": "^0.1.0"
   },
   "devDependencies": {

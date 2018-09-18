@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+let mix = require("laravel-mix");
 var ZopfliPlugin = require("zopfli-webpack-plugin");
 
 /*
@@ -13,25 +13,26 @@ var ZopfliPlugin = require("zopfli-webpack-plugin");
  */
 
 mix
-  .react('resources/assets/js/app.js', 'public/js/app.js')
-  .react('resources/assets/js/backend/report.js', 'public/js/report.js')
-  .react('resources/assets/js/backend/coupon.js', 'public/js/coupon.js')
+  .react("resources/assets/js/app.js", "public/js/app.js")
+  .react("resources/assets/js/backend/report.js", "public/js/report.js")
+  .react("resources/assets/js/backend/coupon.js", "public/js/coupon.js")
   //.copy('public/js/app.js', 'public/bundle.js')
-  .sass('resources/assets/sass/app.scss', 'public/css/app.css')
-  .sass('resources/assets/sass/backend.scss', 'public/css/backend.css')
-  .combine([
-    'resources/assets/css/pickadate/themes/classic.css',
-    'resources/assets/css/pickadate/themes/classic.date.css',
-    './node_modules/nprogress/nprogress.css'
-  ], 'public/css/plugins.css')
-  .version([
-    'public/css/plugins.css'
-  ])
+  .sass("resources/assets/sass/app.scss", "public/css/app.css")
+  .sass("resources/assets/sass/backend.scss", "public/css/backend.css")
+  .combine(
+    [
+      "resources/assets/css/pickadate/themes/classic.css",
+      "resources/assets/css/pickadate/themes/classic.date.css",
+      "./node_modules/nprogress/nprogress.css"
+    ],
+    "public/css/plugins.css"
+  )
+  .version(["public/css/plugins.css"])
   .webpackConfig({
     output: {
       //chunkFilename: 'js/[name].[chunkhash].js',
-      chunkFilename: 'js/[name].js',
-    },/*
+      chunkFilename: "js/[name].js"
+    } /*
     plugins: [
       new ZopfliPlugin({
         asset: '[path].gz[query]',
@@ -43,7 +44,7 @@ mix
     ]*/
   })
   .browserSync({
-    proxy: 'mealplans.test'
+    proxy: "mealplans.test"
   });
 
 // Full API

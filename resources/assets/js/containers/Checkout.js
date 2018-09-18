@@ -12,6 +12,7 @@ import {
 const $ = require("jquery");
 
 import cartState from "../store";
+import Useragent from "useragent.js";
 
 import CartOverview from "../components/CartOverview";
 import Input from "../components/Form/Input";
@@ -35,6 +36,7 @@ class Checkout extends Component {
     termsDialog: false,
     finish: false,
     payment: "cash",
+    popupMessage: "Finalizing your order, please don't close your browser",
     midtrans: false,
     snacks: [],
     foods: [],
@@ -179,13 +181,23 @@ class Checkout extends Component {
       (accu, total) => accu + total.totalPrice,
       0
     );
+
+    const ua = Useragent.analyze(navigator.userAgent);
+    const userAgent = `
+      User Agent: ${ua.ua}
+      Browser: ${ua.browser.full} (${ua.browser.name} VERSION ${
+      ua.browser.version
+    })
+      OS: ${ua.os.full} (${ua.os.name} VERSION ${ua.os.version})
+      Device: ${ua.device.full}`;
     const deliveryPrice = this.getTotalDeliveryPrice();
     const data = {
       cart: cartState.added,
       form,
       methods: payment,
       subTotal,
-      deliveryPrice
+      deliveryPrice,
+      userAgent
     };
 
     // for now we assume payment is cash
@@ -244,6 +256,10 @@ class Checkout extends Component {
             break;
           case 101:
             if (message == "StartPaypal" && redirect != "") {
+              this.setState({
+                popupMessage:
+                  "Redirecting you to PayPal website. This may take a minute, please don't close your browser."
+              });
               window.location = redirect;
             } else {
               window.alert(
@@ -303,7 +319,8 @@ class Checkout extends Component {
       form,
       snacks,
       errors,
-      termsDialog
+      termsDialog,
+      popupMessage
     } = this.state;
 
     return (
@@ -328,12 +345,16 @@ class Checkout extends Component {
         {checkoutLoading && (
           <div className="checkout-loading">
             <Spinner intent="primary" large={true} />
+            <br />
+            <p>{popupMessage}</p>
           </div>
         )}
         <section className="top checkout">
           {progress < 100 && (
             <div className="loading">
               <Spinner intent="primary" large={true} />
+              <br />
+              <p>Loading ...</p>
             </div>
           )}
           {progress >= 100 &&

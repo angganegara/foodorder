@@ -132,12 +132,13 @@ class OrderHelper
     $order->email_sent = 0;
     $order->comments = $form['comments'];
     $order->ip_address = $request->ip();
-    $order->partner_id = $partner->count() > 0 ? $partner->first()->id : null;
+    $order->partner_id = $partner->count() > 0 ? $partner->first()->id : 1;
     $order->payment = $request->methods;
     $order->paypal_response = null;
     $order->subtotal = $request->subTotal;
     $order->total = 0;
     $order->paid = $request->methods == 'cash' ? 1 : 0;
+    $order->user_agent = $request->userAgent;
 
     $order->save();
 
@@ -227,6 +228,11 @@ class OrderHelper
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
+
+    $order->email_sent = 1;
+    $order->save();
+
+    return 'OK';
 
     try {
       Mail::send(
