@@ -34,7 +34,7 @@
             @endif
           </td>
           <td>{{ $order->phone }}</td>
-          <td style="text-transform: uppercase">{{ $order->partner->name }}</td>
+          <td style="text-transform: uppercase">{{ $order->partner_id ? $order->partner->name : 'MOTION FITNESS BALI' }}</td>
           <td>{{ $order->payment_formatted }}</td>
           <td><a title="" class="pill status">{{ $order->order_status }}</a></td>
           <td class="actions">
