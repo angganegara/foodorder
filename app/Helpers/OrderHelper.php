@@ -229,11 +229,6 @@ class OrderHelper
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
 
-    $order->email_sent = 1;
-    $order->save();
-
-    return 'OK';
-
     try {
       Mail::send(
         $email_layout,
