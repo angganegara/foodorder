@@ -319,7 +319,7 @@ class OrderHelper
 
   public function deleteOrder($order_number)
   {
-    $order = Order::where('order_number', $order_number)->first();
+    $order = Order::find($order_number);
     // delete order cart
     OrderCart::where('order_id', $order->id)->delete();
     // delete order schedule

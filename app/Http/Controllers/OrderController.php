@@ -92,7 +92,9 @@ class OrderController extends Controller
   public function delete($id)
   {
     // delete order
-    return $this->oh->deleteOrder($id);
+    if ($this->oh->deleteOrder($id) === 'OK') {
+      return redirect('/admin/orders?time='. time());
+    };
   }
 
   public function errorLog(Request $request)

@@ -39,10 +39,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('/', 'AdminController@index');
 
   Route::get('orders', 'OrderController@index');
+  Route::get('orders/schedule', 'OrderController@schedule');
+  Route::get('orders/{id}/delete', 'OrderController@delete');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');
   Route::post('orders/{ordernumber}/{id}', 'OrderController@update');
-  Route::get('orders/{id}/delete', 'OrderController@delete');
-  Route::get('orders/schedule', 'OrderController@schedule');
 
   Route::get('partners', 'PartnerController@index');
   Route::get('partners/report', 'PartnerController@report');
