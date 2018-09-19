@@ -240,7 +240,7 @@ class OrderHelper
           $m
             ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
             ->to($order->email, $order->fname . ' ' . $order->lname)
-            ->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
+            //->cc('foodorder@motionfitnessbali.com', 'Motion Cafe Bali')
             ->replyTo('foodorder@motionfitnessbali.com', 'Motion - Meal Plans');
 
           // get bcc we need
@@ -304,10 +304,10 @@ class OrderHelper
     } catch (\Exception $e) {
       // delete order only if not resend!!!!
       if (!$resend) {
-        //$this->deleteOrder($order_number);
+        //$this->deleteOrder($order->id);
       }
       // log in
-      return response()->json('CANNOT_SEND_MAIL', 422);
+      abort(500, 'CANNOT_SEND_MAIL');
     }
 
     // set email flag

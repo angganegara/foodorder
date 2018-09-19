@@ -120,6 +120,6 @@ class OrderController extends Controller
       // ...
     }
 
-    return true;
+    return response('OK');
   }
 }
