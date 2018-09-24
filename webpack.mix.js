@@ -33,16 +33,16 @@ mix
     output: {
       //chunkFilename: 'js/[name].[chunkhash].js',
       chunkFilename: "js/[name].js"
-    } /*
+    },
     plugins: [
       new ZopfliPlugin({
-        asset: '[path].gz[query]',
-        algorithm: 'zopfli',
+        asset: "[path].gz[query]",
+        algorithm: "zopfli",
         test: /\.(js)$/,
         threshold: 10240,
         minRatio: 0.8
       })
-    ]*/
+    ]
   })
   .browserSync({
     proxy: "mealplans.test"
