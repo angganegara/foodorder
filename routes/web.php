@@ -22,6 +22,8 @@ if (env('APP_ENV') === 'local') {
 
     return ($data->with('ordercart.schedule')->get());
   });
+
+  Route::get('meal-plans', 'MealController@index');
 }
 Route::get('/snap', 'SnapController@snap');
 Route::get('/snaptoken', 'SnapController@token');

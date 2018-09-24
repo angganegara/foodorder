@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import { store, view } from 'react-easy-state';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { view } from "react-easy-state";
+import { Link } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 import {
   Alert,
   Overlay,
@@ -8,48 +9,48 @@ import {
   Toaster,
   Intent,
   Position,
-  Checkbox,
   Radio,
   Switch,
   Popover,
   Tag,
   PopoverInteractionKind
-} from '@blueprintjs/core';
-import { DatePicker } from '@blueprintjs/datetime';
-import Moment from 'moment';
-import { extendMoment } from 'moment-range';
+} from "@blueprintjs/core";
+import { DatePicker } from "@blueprintjs/datetime";
+import Moment from "moment";
+import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
 
-const $ = require('jquery');
+const $ = require("jquery");
 
 // helpers
-import { checkDayLimit } from '../helpers/dates';
-import { scrollTop } from '../helpers/utils';
-import { guid, parsePrice } from '../helpers/cart';
+import { checkDayLimit } from "../helpers/dates";
+import { scrollTop } from "../helpers/utils";
+import { guid, parsePrice } from "../helpers/cart";
 
 // store
-import cartState from '../store';
-import snackState from '../store/snacks';
+import cartState from "../store";
+import snackState from "../store/snacks";
 
 // components
-import HowItWorks from '../components/HowItWorks';
-import SlimSundayPopover from '../components/SlimSundayPopover';
-import ExampleMenu from '../components/ExampleMenu';
-import RecommendedSnacks from '../components/RecommendedSnacks';
+import HowItWorks from "../components/HowItWorks";
+import SlimSundayPopover from "../components/SlimSundayPopover";
+import ExampleMenu from "../components/ExampleMenu";
+import RecommendedSnacks from "../components/RecommendedSnacks";
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 let today = new Date();
 
-const isDisabled = date => ((date.getDay() === 0) || checkDayLimit(date));
+const isDisabled = date => date.getDay() === 0 || checkDayLimit(date);
 
-class Details extends Component
-{
+class Details extends Component {
   state = {
     mounted: false,
     food: null,
     overlay: false,
     alertOpen: false,
     skipAlert: false,
+    daysAmount: 0,
+    duration: 0,
     cells: [],
     form: {
       packageId: 1,
@@ -63,48 +64,73 @@ class Details extends Component
     const { id } = this.props.match.params;
     this.loadFood(id);
     scrollTop();
-    $(document).on('click', '.DayPicker-NavButton--next, .DayPicker-NavButton--prev', this.resetSelectedDate);
+    $(document).on(
+      "click",
+      ".DayPicker-NavButton--next, .DayPicker-NavButton--prev",
+      this.resetSelectedDate
+    );
   }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
-    $(document).off('click', '.DayPicker-NavButton--next, .DayPicker-NavButton--prev', this.resetSelectedDate);
+    $(document).off(
+      "click",
+      ".DayPicker-NavButton--next, .DayPicker-NavButton--prev",
+      this.resetSelectedDate
+    );
   }
 
   redrawDateRange = () => {
     const { cells } = this.state;
     if (cells.length > 0) {
       setTimeout(() => {
-        $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
-        $('.DayPicker-Day.DayPicker-Day--selected').removeClass('DayPicker-Day--selected');
+        $('[range="true"]')
+          .removeClass(
+            "dates-range dates-range-finish dates-range-start dates-range-sunday"
+          )
+          .attr("range", false);
+        $(".DayPicker-Day.DayPicker-Day--selected").removeClass(
+          "DayPicker-Day--selected"
+        );
       }, 50);
       setTimeout(() => {
         cells.map(cell => {
-          let el = $('.DayPicker-Day[aria-label="'+ cell.key+'"]');
-          console.log('trying to add $(\'.DayPicker-Day[aria-label="'+ cell.key+'"]\') with class '+ cell.cssClass);
-          el.addClass(cell.cssClass).attr('range', 'true');
-        })
+          let el = $('.DayPicker-Day[aria-label="' + cell.key + '"]');
+          console.log(
+            "trying to add $('.DayPicker-Day[aria-label=\"" +
+              cell.key +
+              "\"]') with class " +
+              cell.cssClass
+          );
+          el.addClass(cell.cssClass).attr("range", "true");
+        });
       }, 100);
     }
     // otherwise, silent
-  }
+  };
 
   loadFood = id => {
     axios
       .get(`/api/foods/${id}`)
       .then(res => this.setState({ food: res.data, mounted: true }))
       .catch(err => {
-        appToaster.show({ message: 'Cannot load this page. Redirecting you back to home page.', intent: Intent.DANGER });
-        setTimeout(() => this.props.history.push('/'), 3000);
-      })
-  }
+        appToaster.show({
+          message: "Cannot load this page. Redirecting you back to home page.",
+          intent: Intent.DANGER
+        });
+        setTimeout(() => this.props.history.push("/"), 3000);
+      });
+  };
 
   updatePackage = (e, id) => {
-    if(this.state.form.startDate) {
+    if (this.state.form.startDate) {
       this.resetSelectedDate();
     }
-    this.setState({ ...this.state, form: {...this.state.form, packageId: id, startDate: null} });
-  }
+    this.setState({
+      ...this.state,
+      form: { ...this.state.form, packageId: id, startDate: null }
+    });
+  };
 
   // needs to refactor later
   getItem = id => cartState.added.filter(item => item.key === id);
@@ -112,17 +138,16 @@ class Details extends Component
 
   addtoCart = () => {
     let { id } = this.props.match.params;
-    const { skipAlert } = this.state;
+    const { skipAlert, duration } = this.state;
     const { packageId, slimSunday, startDate } = this.state.form;
 
     if (!startDate) {
-      appToaster.show({ message: 'Please select the delivery starting date', intent: Intent.DANGER })
+      appToaster.show({
+        message: "Please select the delivery starting date",
+        intent: Intent.DANGER
+      });
       return false;
     }
-
-    const isMon = startDate.getDay() == 1 ? 1 : 0;
-    let duration = packageId == 1 ? 5 : 0;
-    duration = (!isMon && duration == 5) ? 6 : duration;
 
     let item = this.getItem(id);
     let ls = window.sessionStorage;
@@ -132,18 +157,18 @@ class Details extends Component
       return false;
     }
 
-    const range = moment.rangeFromInterval('days', duration, startDate);
+    const range = moment.rangeFromInterval("days", duration, startDate);
     const key = guid();
     let daysData = [];
-    for (let days of range.by('days')) {
+    for (let days of range.by("days")) {
       // skip sunday if any
-      if (days.format('d') != '0') {
+      if (days.format("d") != "0") {
         daysData.push({
-          label: days.format('ddd, MMM DD'),
-          date: days.format('YYYY-MM-DD'),
+          label: days.format("ddd, MMM DD"),
+          date: days.format("YYYY-MM-DD"),
           pickup: null,
           address: null,
-          area: '',
+          area: "",
           snacks: [],
           snacksQty: {}
         });
@@ -157,7 +182,7 @@ class Details extends Component
       slimSunday,
       schedules: daysData,
       complete: false
-    }
+    };
 
     if (!item.length) {
       cartState.added = [...cartState.added, data];
@@ -171,94 +196,135 @@ class Details extends Component
 
     // then go to customize-cart
     this.props.history.push(`/customize-cart/${key}`);
-  }
+  };
 
   resetSelectedDate = () => {
-    this.setState({ ...this.state, form: {...this.state.form, startDate: null} });
+    this.setState({
+      ...this.state,
+      form: { ...this.state.form, startDate: null }
+    });
     setTimeout(() => {
-      $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
-      $('.DayPicker-Day.DayPicker-Day--selected').removeClass('DayPicker--Day-selected')
+      $('[range="true"]')
+        .removeClass(
+          "dates-range dates-range-finish dates-range-start dates-range-sunday"
+        )
+        .attr("range", false);
+      $(".DayPicker-Day.DayPicker-Day--selected").removeClass(
+        "DayPicker--Day-selected"
+      );
     }, 50);
-  }
+  };
+
+  handleDaysAmount = e => {
+    this.resetSelectedDate();
+    const day = e.target.value <= 0 ? 1 : e.target.value;
+    this.setState({ daysAmount: parseInt(day) });
+  };
 
   handleDayClick = day => {
     const { packageId } = this.state.form;
+    const { daysAmount } = this.state;
 
     let startDate = new Date(day);
     let cloneDate = new Date(startDate.getTime());
-    let duration = day.getDay() == 1 ? 5 : 6;
+    let currentDay = day.getDay();
+    let duration;
     if (packageId == 1) {
-      cloneDate.setHours(24 * duration);
+      duration = currentDay == 1 ? 5 : 6;
+    } else {
+      duration = daysAmount - 1;
+      if (
+        (currentDay === 1 && daysAmount > 6) ||
+        (currentDay === 2 && daysAmount > 5) ||
+        (currentDay === 3 && daysAmount > 4) ||
+        (currentDay === 4 && daysAmount > 3) ||
+        (currentDay === 5 && daysAmount > 2) ||
+        (currentDay === 6 && daysAmount > 1)
+      ) {
+        duration = duration + 1;
+      }
     }
+    cloneDate.setHours(24 * duration);
 
-    this.setState({ ...this.state, form: {...this.state.form, startDate: day, endDate: cloneDate } });
+    this.setState({
+      ...this.state,
+      duration: duration,
+      form: { ...this.state.form, startDate: day, endDate: cloneDate }
+    });
 
     setTimeout(() => {
-      $('[range="true"]').removeClass('dates-range dates-range-finish dates-range-start dates-range-sunday').attr('range', false);
+      $('[range="true"]')
+        .removeClass(
+          "dates-range dates-range-finish dates-range-start dates-range-sunday"
+        )
+        .attr("range", false);
       const isMon = day.getDay() == 1 ? 1 : 0;
-      let duration = packageId == 1 ? 5 : 0;
-      duration = (!isMon && duration == 5) ? 6 : duration;
+      //let duration = packageId == 1 ? 5 : daysAmount - 1;
+      //duration = !isMon && duration == 5 ? 6 : duration;
 
       const startDate = moment(day);
-      const endDate = moment(day).add(duration, 'd');
+      const endDate = moment(day).add(duration, "d");
       let dateRange = moment().range(startDate, endDate);
-      let diff = dateRange.diff('days');
-      let dateArr = Array.from(dateRange.by('days'));
+      let diff = dateRange.diff("days");
+      let dateArr = Array.from(dateRange.by("days"));
       let cells = [];
       let cssClass;
 
       if (dateArr.length > 1) {
         dateArr.map((date, i) => {
           let d = moment(date);
-          let Day = d.format('D');
-          let day = d.format('d');
-          let ariaFormat = d.format('ddd MMM DD YYYY');
-          let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]');
+          let Day = d.format("D");
+          let day = d.format("d");
+          let ariaFormat = d.format("ddd MMM DD YYYY");
+          let el = $('.DayPicker-Day[aria-label="' + ariaFormat + '"]');
 
           if (i == 0) {
-            cssClass = 'dates-range dates-range-start';
+            cssClass = "dates-range dates-range-start";
           } else {
-            if (day == '0') {
-              cssClass = 'dates-range-sunday';
+            if (day == "0") {
+              cssClass = "dates-range-sunday";
             }
-            if (day != '0') {
-              cssClass = 'dates-range';
+            if (day != "0") {
+              cssClass = "dates-range";
             }
             if (i == diff) {
-              cssClass = 'dates-range dates-range-finish';
+              cssClass = "dates-range dates-range-finish";
             }
           }
 
-          el.addClass(cssClass).attr('range', 'true');
+          el.addClass(cssClass).attr("range", "true");
         });
       } else {
         dateArr.map((date, i) => {
           let d = moment(date);
-          let Day = d.format('D');
-          let day = d.format('d');
-          let ariaFormat = d.format('ddd MMM DD YYYY');
-          let el = $('.DayPicker-Day[aria-label="'+ ariaFormat +'"]');
-          cssClass = 'dates-single';
+          let Day = d.format("D");
+          let day = d.format("d");
+          let ariaFormat = d.format("ddd MMM DD YYYY");
+          let el = $('.DayPicker-Day[aria-label="' + ariaFormat + '"]');
+          cssClass = "dates-single";
 
-          el.addClass(cssClass).attr('range', 'true');
+          el.addClass(cssClass).attr("range", "true");
         });
       }
-
     }, 50);
-  }
+  };
 
-  parseDate = date => (moment(date).format('ddd, MMM DD, YYYY'))
-  toggleOverlay = () => this.setState({ overlay: !this.state.overlay })
-  toggleSlimSunday = () => this.setState({ ...this.state, form: {...this.state.form, slimSunday: ! this.state.form.slimSunday } })
-  cancelCart = () => this.setState({ alertOpen: false })
+  parseDate = date => moment(date).format("ddd, MMM DD, YYYY");
+  toggleOverlay = () => this.setState({ overlay: !this.state.overlay });
+  toggleSlimSunday = () =>
+    this.setState({
+      ...this.state,
+      form: { ...this.state.form, slimSunday: !this.state.form.slimSunday }
+    });
+  cancelCart = () => this.setState({ alertOpen: false });
   skipAlert = () => {
     this.setState({ alertOpen: false, skipAlert: true }, () => {
       this.addtoCart();
     });
-  }
+  };
 
   render() {
-    const { food, form, alertOpen } = this.state;
+    const { food, form, alertOpen, daysAmount } = this.state;
     const modifiers = { isDisabled };
 
     return (
@@ -266,41 +332,119 @@ class Details extends Component
         <section className="top details">
           <Overlay isOpen={this.state.overlay} onClose={this.toggleOverlay}>
             <section className="home hiw">
-              <HowItWorks autoOpen={true} closeButton={true} toggleOverlay={this.toggleOverlay}/>
+              <HowItWorks
+                autoOpen={true}
+                closeButton={true}
+                toggleOverlay={this.toggleOverlay}
+              />
             </section>
           </Overlay>
           {food && (
             <div className="container">
               <div className="row">
                 <div className="col-xs-12 col-md-2">
-                  <Link to="/" title="" className="details--return"><i className="fa fa-fw fa-long-arrow-alt-left"></i> Home</Link>
+                  <Link to="/" title="" className="details--return">
+                    <i className="fa fa-fw fa-long-arrow-alt-left" /> Home
+                  </Link>
                 </div>
                 <div className="col-xs-12 col-md-6">
                   <h1>{food.name}</h1>
-                  <div className="details--short-description" dangerouslySetInnerHTML={{__html: food.short_description}}></div>
-                  <div className="details--description" dangerouslySetInnerHTML={{__html: food.description}}></div>
-                  {food.example_menu && <ExampleMenu menu={food.example_menu} />}
-                  {food.recommended_snack && snackState.items && <RecommendedSnacks snacks={JSON.parse(food.recommended_snack)} />}
+                  <div
+                    className="details--short-description"
+                    dangerouslySetInnerHTML={{ __html: food.short_description }}
+                  />
+                  <div
+                    className="details--description"
+                    dangerouslySetInnerHTML={{ __html: food.description }}
+                  />
+                  {food.example_menu && (
+                    <ExampleMenu menu={food.example_menu} />
+                  )}
+                  {food.recommended_snack &&
+                    snackState.items && (
+                      <RecommendedSnacks
+                        snacks={JSON.parse(food.recommended_snack)}
+                      />
+                    )}
                 </div>
                 <div className="col-xs-12 col-md-4">
                   <div className="details--price-box">
-                    {food.prices.length && food.prices.map((price, index) => (
-                      <div className="details--price" key={index}>
-                        <span><Radio label={price.name} checked={form.packageId === price.sort} onChange={(e) => this.updatePackage(e, price.sort)} value={price.id} /></span>
-                        <span>{parsePrice(price.price)} IDR</span>
-                      </div>
-                    ))}
+                    {food.prices.length &&
+                      food.prices.map((price, index) => (
+                        <React.Fragment key={index}>
+                          <div className="details--price">
+                            <span>
+                              <Radio
+                                label={price.name}
+                                checked={form.packageId === price.sort}
+                                onChange={e =>
+                                  this.updatePackage(e, price.sort)
+                                }
+                                value={price.id}
+                              />
+                            </span>
+                            <span>{parsePrice(price.price)} IDR</span>
+                          </div>
+                          {price.sort === 2 && (
+                            <CSSTransition
+                              in={price.sort === 2 && form.packageId === 2}
+                              timeout={200}
+                              classNames="fade-"
+                              unmountOnExit
+                            >
+                              {state => (
+                                <div className="details--select-amount">
+                                  <select
+                                    value={daysAmount}
+                                    onChange={this.handleDaysAmount}
+                                  >
+                                    <option value={0}>
+                                      select amount of days
+                                    </option>
+                                    <option value={1}>1 day</option>
+                                    <option value={2}>2 days</option>
+                                    <option value={3}>3 days</option>
+                                    <option value={4}>4 days</option>
+                                    <option value={5}>5 days</option>
+                                  </select>
+                                </div>
+                              )}
+                            </CSSTransition>
+                          )}
+                        </React.Fragment>
+                      ))}
                     <div className="details--price">
                       <span>
-                        <Popover interactionKind={PopoverInteractionKind.HOVER} position={Position.TOP}>
-                          <Switch checked={form.slimSunday} onChange={this.toggleSlimSunday} label="Add Slim Sunday?" />
+                        <Popover
+                          interactionKind={PopoverInteractionKind.HOVER}
+                          position={Position.TOP}
+                        >
+                          <Switch
+                            checked={form.slimSunday}
+                            onChange={this.toggleSlimSunday}
+                            label="Add Slim Sunday?"
+                          />
                           <SlimSundayPopover />
                         </Popover>
                       </span>
-                      <span><b>300,000 IDR</b></span>
+                      <span>
+                        <b>300,000 IDR</b>
+                      </span>
                     </div>
                     <div className="details--calendar">
-                      <p><strong>Delivery Starting Date</strong></p>
+                      <CSSTransition
+                        in={form.packageId === 2 && daysAmount <= 0}
+                        timeout={200}
+                        classNames="fade-flat"
+                        unmountOnExit
+                      >
+                        <div className="calendar-warning">
+                          Please select amount of days first.
+                        </div>
+                      </CSSTransition>
+                      <p>
+                        <strong>Delivery Starting Date</strong>
+                      </p>
                       <DatePicker
                         onChange={this.handleDayClick}
                         modifiers={modifiers}
@@ -309,16 +453,27 @@ class Details extends Component
                       />
                       {form.startDate && (
                         <div className="delivery-dates-range">
-                          <Tag intent={Intent.PRIMARY}>{this.parseDate(form.startDate)}</Tag>
+                          <Tag intent={Intent.PRIMARY}>
+                            {this.parseDate(form.startDate)}
+                          </Tag>
                           &nbsp;
-                          <i className="far fa-arrow-right"></i>
+                          <i className="far fa-arrow-right" />
                           &nbsp;
-                          <Tag intent={Intent.PRIMARY}>{this.parseDate(form.endDate)}</Tag>
+                          <Tag intent={Intent.PRIMARY}>
+                            {this.parseDate(form.endDate)}
+                          </Tag>
                         </div>
                       )}
                     </div>
                   </div>
-                  <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart"><i className="fal fa-cart-plus"></i> Add to cart</a>
+                  <a
+                    href="javascript:"
+                    title=""
+                    onClick={this.addtoCart}
+                    className="details--add-to-cart"
+                  >
+                    <i className="fal fa-cart-plus" /> Add to cart
+                  </a>
                   <Alert
                     cancelButtonText="No, thanks"
                     onCancel={this.cancelCart}
@@ -328,22 +483,41 @@ class Details extends Component
                     intent={Intent.PRIMARY}
                     isOpen={alertOpen}
                   >
-                    <p>You already have this item in your cart. Do you want to add it anyway?</p>
+                    <p>
+                      You already have this item in your cart. Do you want to
+                      add it anyway?
+                    </p>
                   </Alert>
                   <div className="info">
-                    <a href="javascript:" title="" className="btn-normal" onClick={this.toggleOverlay}><i className="fal fa-fw fa-question-circle"></i> How it works</a>
+                    <a
+                      href="javascript:"
+                      title=""
+                      className="btn-normal"
+                      onClick={this.toggleOverlay}
+                    >
+                      <i className="fal fa-fw fa-question-circle" /> How it
+                      works
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           )}
-          {!food && <div className="loading"><Spinner intent="primary" large={true} /></div>}
+          {!food && (
+            <div className="loading">
+              <Spinner intent="primary" large={true} />
+            </div>
+          )}
         </section>
         <section className="details">
           <div className="details--pictures">
-            {food && food.pictures && Object.values(food.pictures).map((picture, index) => (
-              <div key={index}><img src={`/images/foods/${picture}`} alt="" /></div>
-            ))}
+            {food &&
+              food.pictures &&
+              Object.values(food.pictures).map((picture, index) => (
+                <div key={index}>
+                  <img src={`/images/foods/${picture}`} alt="" />
+                </div>
+              ))}
           </div>
         </section>
       </React.Fragment>

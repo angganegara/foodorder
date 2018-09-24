@@ -22,7 +22,7 @@ class OrderCart extends Model
 
   public function getPackageNameAttribute()
   {
-    return $this->package == "1" ? "6-day package" : "4-day package";
+    return $this->package == "1" ? "6-day package" : "Single days";
   }
 
   public function getDatePeriodAttribute()

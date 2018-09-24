@@ -239,7 +239,7 @@ class Customize extends Component {
     let selectedSnacks = [...activeItem.schedules];
     const snackIndex = selectedSnacks[activeTab].snacks.indexOf(snackId);
     selectedSnacks[activeTab].snacks.splice(snackIndex, 1);
-    console.log("delete " + snackId);
+
     delete selectedSnacks[activeTab].snacksQty[snackId];
     this.generateSnacksData();
   };
@@ -395,9 +395,15 @@ class Customize extends Component {
     const { activeItem, snacks, food } = this.state;
 
     const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
-    const foodPrice = food.prices.filter(
-      f => f.sort === activeItem.packageId
-    )[0].price;
+
+    let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0]
+      .price;
+
+    foodPrice =
+      activeItem.packageId === 2
+        ? foodPrice * activeItem.schedules.length
+        : foodPrice;
+
     const snacksPrice = activeItem.schedules
       .filter(s => s.snacksData.length > 0)
       .reduce(
@@ -469,9 +475,10 @@ class Customize extends Component {
     const schedules = activeItem.schedules;
 
     const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
-    const foodPrice = food.prices.filter(
-      f => f.sort === activeItem.packageId
-    )[0].price;
+    let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0]
+      .price;
+    foodPrice =
+      activeItem.packageId === 2 ? foodPrice * schedules.length : foodPrice;
     const snacksPrice = schedules
       .filter(s => s.snacksData.length > 0)
       .reduce(
