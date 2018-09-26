@@ -107,7 +107,7 @@ class OrderController extends Controller
         $m
           ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
           ->subject('New '. $food .' long-period order request')
-          ->to('angga@me.com', 'Motion - Meal Plans');
+          ->to('foodorder@motionfitnessbali.com', 'Motion - Meal Plans');
       });
     } catch (\Exception $e) {
       abort(500, 'CANNOT_SEND_MAIL');
