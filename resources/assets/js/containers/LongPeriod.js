@@ -41,7 +41,12 @@ class LongPeriod extends Component {
     return (
       <div className="lp-wrap">
         <div className="lp-box">
-          <div className="lp-title">LONG-PERIOD ORDER</div>
+          <div className="lp-title">
+            LONG-PERIOD ORDER
+            <a href="javascript:" onClick={this.props.closePopup}>
+              <i className="far fa-times" />
+            </a>
+          </div>
           <div className="lp-body">
             <p>
               Do you want to order more than 6 days at once?

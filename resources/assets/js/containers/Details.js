@@ -523,7 +523,7 @@ class Details extends Component {
                     onClick={this.addtoCart}
                     className="details--add-to-cart"
                   >
-                    <i className="fal fa-cart-plus" /> Add to cart
+                    Continue <i className="fal fa-fw fa-arrow-right" />
                   </a>
                   <Alert
                     cancelButtonText="No, thanks"

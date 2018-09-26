@@ -2150,6 +2150,13 @@ section.top.terms {
   font-family: $heading;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    color: #fff;
+    font-size: 1.3em;
+  }
 }
 .lp-body {
   padding: 1rem 1.5rem;
