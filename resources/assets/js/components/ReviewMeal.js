@@ -9,7 +9,9 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
         {days.map((day, index) => (
           <div key={index} className="review-card">
             <div className="review-card--day">
-              <span><i className="fal fa-fw fa-angle-down"></i> {day.label}</span>
+              <span><i className="fal fa-fw fa-angle-down"></i> {day.label}
+                {day.isSaturday && (prices.slimSundayPrice > 0) ? <small>(including Slim Sunday)</small> : ""}
+              </span>
               <a href="javascript:" onClick={(e) => changeTab(e, index)}><i className="fa fa-fw fa-pencil"></i> edit</a>
             </div>
             <div className="review-card--body">

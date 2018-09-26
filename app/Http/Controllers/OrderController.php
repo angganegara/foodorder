@@ -97,6 +97,25 @@ class OrderController extends Controller
     };
   }
 
+  public function sendLongPeriodOrder(Request $request)
+  {
+    $email = $request->email;
+    $food = $request->food;
+
+    try {
+      Mail::send('emails.long-period', compact('email', 'food'), function ($m) use ($food) {
+        $m
+          ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
+          ->subject('New '. $food .' long-period order request')
+          ->to('angga@me.com', 'Motion - Meal Plans');
+      });
+    } catch (\Exception $e) {
+      abort(500, 'CANNOT_SEND_MAIL');
+    }
+
+    return response('OK');
+  }
+
   public function errorLog(Request $request)
   {
     $msg = $request->errorMessage;

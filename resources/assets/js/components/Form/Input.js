@@ -1,8 +1,12 @@
-import React from 'react';
+import React from "react";
 
 const Input = ({ id, placeholder, label, handleChange, required, error }) => (
   <div className="form-group">
-    <label>{label} {required && <span className="req">*</span>}</label>
+    {label && (
+      <label>
+        {label} {required && <span className="req">*</span>}
+      </label>
+    )}
     <input
       id={id}
       type="text"

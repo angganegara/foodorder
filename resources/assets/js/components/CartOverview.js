@@ -169,6 +169,7 @@ class CartOverview extends Component {
                     indexKey={index}
                     data={item.schedules}
                     snacks={snacks}
+                    slimSunday={item.slimSunday}
                     parseStation={this.parseStation}
                   />
                 )}

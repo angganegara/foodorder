@@ -79,6 +79,13 @@ h6 {
     outline: none;
   }
 }
+.btn[disabled] {
+  cursor: progress;
+  &:hover {
+    background-color: $main-color;
+    color: #454545;
+  }
+}
 a.btn {
   color: #454545;
 }
@@ -1636,6 +1643,13 @@ section.top.customize {
       font-size: 12px;
       color: #454545;
     }
+    small {
+      display: inline-block;
+      margin-left: 0.5rem;
+      text-transform: capitalize;
+      letter-spacing: 0;
+      font-size: 14px;
+    }
   }
   &--body,
   &--pickup {
@@ -2109,6 +2123,40 @@ section.top.terms {
     border: 1px solid $main-color;
     border-left: 0;
     cursor: pointer;
+  }
+}
+.lp-wrap {
+  padding: 2rem;
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+}
+.lp-box {
+  max-width: 450px;
+  background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
+  border-radius: 4px;
+}
+.lp-title {
+  padding: 1rem 1.5rem;
+  background-color: $main-color-darker;
+  color: #fff;
+  font-family: $heading;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.lp-body {
+  padding: 1rem 1.5rem;
+  font-size: 14px;
+  font-weight: bold;
+  hr {
+    margin: 10px 0;
   }
 }
 

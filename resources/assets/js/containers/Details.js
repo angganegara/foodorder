@@ -36,6 +36,7 @@ import HowItWorks from "../components/HowItWorks";
 import SlimSundayPopover from "../components/SlimSundayPopover";
 import ExampleMenu from "../components/ExampleMenu";
 import RecommendedSnacks from "../components/RecommendedSnacks";
+import LongPeriod from "./LongPeriod";
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 let today = new Date();
@@ -48,6 +49,7 @@ class Details extends Component {
     food: null,
     overlay: false,
     alertOpen: false,
+    LPOpen: false,
     skipAlert: false,
     daysAmount: 0,
     duration: 0,
@@ -126,9 +128,18 @@ class Details extends Component {
     if (this.state.form.startDate) {
       this.resetSelectedDate();
     }
+    let slimSunday = this.state.form.slimSunday;
+    if (id == 2 && this.state.form.slimSunday) {
+      slimSunday = !slimSunday;
+    }
     this.setState({
       ...this.state,
-      form: { ...this.state.form, packageId: id, startDate: null }
+      form: {
+        ...this.state.form,
+        packageId: id,
+        startDate: null,
+        slimSunday: slimSunday
+      }
     });
   };
 
@@ -166,6 +177,7 @@ class Details extends Component {
         daysData.push({
           label: days.format("ddd, MMM DD"),
           date: days.format("YYYY-MM-DD"),
+          isSaturday: days.format("d") == "6",
           pickup: null,
           address: null,
           area: "",
@@ -222,7 +234,7 @@ class Details extends Component {
   };
 
   handleDayClick = day => {
-    const { packageId } = this.state.form;
+    const { packageId, slimSunday } = this.state.form;
     const { daysAmount } = this.state;
 
     let startDate = new Date(day);
@@ -267,16 +279,18 @@ class Details extends Component {
       let dateRange = moment().range(startDate, endDate);
       let diff = dateRange.diff("days");
       let dateArr = Array.from(dateRange.by("days"));
-      let cells = [];
       let cssClass;
+      let saturday = false;
 
       if (dateArr.length > 1) {
         dateArr.map((date, i) => {
           let d = moment(date);
-          let Day = d.format("D");
           let day = d.format("d");
           let ariaFormat = d.format("ddd MMM DD YYYY");
           let el = $('.DayPicker-Day[aria-label="' + ariaFormat + '"]');
+          if (day == "6") {
+            saturday = true;
+          }
 
           if (i == 0) {
             cssClass = "dates-range dates-range-start";
@@ -294,42 +308,79 @@ class Details extends Component {
 
           el.addClass(cssClass).attr("range", "true");
         });
-      } else {
-        dateArr.map((date, i) => {
-          let d = moment(date);
-          let Day = d.format("D");
-          let day = d.format("d");
-          let ariaFormat = d.format("ddd MMM DD YYYY");
-          let el = $('.DayPicker-Day[aria-label="' + ariaFormat + '"]');
-          cssClass = "dates-single";
+      }
 
-          el.addClass(cssClass).attr("range", "true");
-        });
+      if (slimSunday && !saturday) {
+        this.toggleSlimSunday();
       }
     }, 50);
   };
 
   parseDate = date => moment(date).format("ddd, MMM DD, YYYY");
   toggleOverlay = () => this.setState({ overlay: !this.state.overlay });
-  toggleSlimSunday = () =>
+  toggleLPOpen = () => this.setState({ LPOpen: !this.state.LPOpen });
+  toggleSlimSunday = () => {
+    const hasSaturday = this.hasSaturday();
+    let slimSunday;
+    if (!hasSaturday) {
+      slimSunday = false;
+      appToaster.show({
+        message: "Please include Saturday in order to add Slim Sunday",
+        intent: Intent.DANGER
+      });
+    } else {
+      slimSunday = !this.state.form.slimSunday;
+    }
     this.setState({
       ...this.state,
-      form: { ...this.state.form, slimSunday: !this.state.form.slimSunday }
+      form: { ...this.state.form, slimSunday: slimSunday }
     });
+  };
   cancelCart = () => this.setState({ alertOpen: false });
   skipAlert = () => {
     this.setState({ alertOpen: false, skipAlert: true }, () => {
       this.addtoCart();
     });
   };
+  hasSaturday = () => {
+    let { startDate, endDate } = this.state.form;
+    if (!startDate) {
+      return true;
+    }
+    endDate = moment(endDate).add(1, "d");
+    let dateRange = moment().range(startDate, endDate);
+    let dateArr = Array.from(dateRange.by("days"));
+    if (dateArr.length > 1) {
+      let saturday = false;
+      dateArr.map((date, i) => {
+        let d = moment(date);
+        let day = d.format("d");
+        if (day == "6") {
+          saturday = true;
+        }
+      });
+      return saturday;
+    }
+
+    return false;
+  };
+  showSlimSundayWarning = () => {
+    appToaster.show({
+      message: "Please include Saturday in order to add Slim Sunday",
+      intent: Intent.DANGER
+    });
+  };
 
   render() {
-    const { food, form, alertOpen, daysAmount } = this.state;
+    const { food, form, alertOpen, daysAmount, LPOpen } = this.state;
     const modifiers = { isDisabled };
 
     return (
       <React.Fragment>
         <section className="top details">
+          <Overlay isOpen={LPOpen} onClose={this.toggleLPOpen}>
+            <LongPeriod food={food} closePopup={this.toggleLPOpen} />
+          </Overlay>
           <Overlay isOpen={this.state.overlay} onClose={this.toggleOverlay}>
             <section className="home hiw">
               <HowItWorks
@@ -497,6 +548,15 @@ class Details extends Component {
                     >
                       <i className="fal fa-fw fa-question-circle" /> How it
                       works
+                    </a>
+                    <a
+                      href="javascript:"
+                      title=""
+                      className="btn-normal"
+                      onClick={this.toggleLPOpen}
+                    >
+                      <i className="fal fa-fw fa-question-circle" /> Long-period
+                      Order
                     </a>
                   </div>
                 </div>

@@ -31,6 +31,8 @@ Route::post('create-order', 'OrderController@createOrder');
 Route::post('send-order', 'OrderController@sendOrder');
 Route::post('calculate-cart', 'CartController@calculateCart');
 
+Route::post('long-period-order', 'OrderController@sendLongPeriodOrder');
+
 Route::get('domain', 'FoodController@getDomain');
 
 Route::post('error-log', 'OrderController@errorLog');

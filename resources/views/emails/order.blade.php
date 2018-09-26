@@ -170,6 +170,9 @@
                                   <th colspan="2" style="#222;padding: 7px 20px; font-size: 12px; border-top: 1px solid #ddd;color: #222;
                                     border-bottom: 1px solid #f6f6f6; background-color: #b5e1ed; text-align: left">
                                     {{ Carbon\Carbon::parse($sch->date)->format('D, M jS') }}
+                                    @if (($item['slimsunday'] == 1) && (Carbon\Carbon::parse($sch->date)->format('D') == "Sat"))
+                                      (Include Slim Sunday)
+                                    @endif
                                   </th>
                                 </tr>
                                 <tr>
