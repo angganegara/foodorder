@@ -1,9 +1,12 @@
-$main-color: #03A9F4;
+$main-color: #03a9f4;
 $primary-color: hsl(208, 100%, 50%);
 $box-border: #dbe5eb;
-$heading: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$heading: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  "Helvetica", "Arial", sans-serif;
 
-body, html {
+body,
+html {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -13,9 +16,23 @@ body {
   font-size: 14px;
   color: #454545;
 }
-a, a:focus, a:hover { text-decoration: none }
-.pagination { margin-top: 1rem; }
-.pagination-previous, .pagination-next, .pagination-link, .pagination-ellipsis { margin: .25rem .1rem }
+a,
+a:focus,
+a:hover {
+  text-decoration: none;
+}
+.hidden {
+  display: none;
+}
+.pagination {
+  margin-top: 1rem;
+}
+.pagination-previous,
+.pagination-next,
+.pagination-link,
+.pagination-ellipsis {
+  margin: 0.25rem 0.1rem;
+}
 .pagination-link.is-current {
   background-color: $main-color;
   border-color: $main-color;
@@ -26,7 +43,7 @@ section.login {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent url('/images/pat/stripes-light.png') left top repeat;
+  background: transparent url("/images/pat/stripes-light.png") left top repeat;
 
   .login-wrap {
     width: 300px;
@@ -46,14 +63,23 @@ section.admin {
 }
 
 .is-schedule {
-  .sidebar { display: none }
-  .main-content { padding: 1.5rem; }
-  .main-content nav.breadcrumb { display: none }
-  .body h1 { font-size: 32px; }
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    padding: 1.5rem;
+  }
+  .main-content nav.breadcrumb {
+    display: none;
+  }
+  .body h1 {
+    font-size: 32px;
+  }
   .tbl {
-    tr th, tr td {
+    tr th,
+    tr td {
       font-size: 18px;
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
     }
   }
 }
@@ -82,7 +108,7 @@ section.admin {
   }
   ul li.parent {
     display: block;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     color: $main-color;
     font-family: $heading;
     text-transform: uppercase;
@@ -91,16 +117,16 @@ section.admin {
   }
   ul li.single a {
     display: block;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     color: #fff;
     font-size: 13px;
   }
   ul li.children a {
-    padding: .5rem 1rem .5rem 2rem;
+    padding: 0.5rem 1rem 0.5rem 2rem;
     font-size: 13px;
     color: #fff;
-    opacity: .75;
-    transition: .2s ease-in-out all;
+    opacity: 0.75;
+    transition: 0.2s ease-in-out all;
     &:hover {
       opacity: 1;
       background-color: #101010;
@@ -124,18 +150,29 @@ section.admin {
   position: fixed;
   left: -15px;
   top: 0;
-  padding: .75rem 2rem;
+  padding: 0.75rem 2rem;
   border-left: 265px solid #121212;
   width: 100%;
   font-size: 14px;
-  background: transparent url('/images/pat/notebook.jpg') left top repeat;
+  z-index: 10;
+  background: transparent url("/images/pat/notebook.jpg") left top repeat;
   a {
     color: $main-color;
     font-weight: bold;
   }
-  li.is-active a { font-weight: normal }
+  li.is-active a {
+    font-weight: normal;
+  }
 }
-.breadcrumb:not(:last-child) { margin-bottom: 0 }
+.breadcrumb.no-border {
+  border-left: 0;
+  ul {
+    margin-left: 1rem;
+  }
+}
+.breadcrumb:not(:last-child) {
+  margin-bottom: 0;
+}
 
 .tbl {
   width: 100%;
@@ -146,17 +183,17 @@ section.admin {
     font-family: $heading;
     text-transform: uppercase;
     font-size: 12px;
-    padding: .5rem;
+    padding: 0.5rem;
     background-color: #252525;
     color: #eee;
   }
   tr td {
     font-size: 13px;
-    padding: .5rem;
+    padding: 0.5rem;
     border-bottom: 1px solid #eee;
   }
   tbody tr {
-    transition: .2s ease-in-out all;
+    transition: 0.2s ease-in-out all;
     background-color: #fff;
   }
   tr.row-total td {
@@ -178,8 +215,12 @@ section.admin {
       }
     }
   }
-  tr td a { color: $main-color; }
-  tr td a.tools-delete { color: red }
+  tr td a {
+    color: $main-color;
+  }
+  tr td a.tools-delete {
+    color: red;
+  }
   .tools {
     position: absolute;
     right: 0;
@@ -187,20 +228,22 @@ section.admin {
     width: 135px;
     opacity: 0;
     visibility: hidden;
-    transition: .2s ease-in-out all;
+    transition: 0.2s ease-in-out all;
     z-index: 5;
     display: flex;
     justify-content: flex-start;
     align-items: center;
   }
-  .tools a:first-child { border-left: 1px solid #eee }
+  .tools a:first-child {
+    border-left: 1px solid #eee;
+  }
   .tools a {
     background-color: #fff;
     font-family: $heading;
     font-weight: bold;
     text-transform: uppercase;
     display: block;
-    padding: .5rem .5rem;
+    padding: 0.5rem 0.5rem;
     border-right: 1px solid #eee;
   }
   .actions {
@@ -208,9 +251,11 @@ section.admin {
     a {
       color: #888;
       font-size: 14px;
-      margin-left: .25rem;
+      margin-left: 0.25rem;
     }
-    a:hover { color: $main-color }
+    a:hover {
+      color: $main-color;
+    }
   }
 }
 
@@ -234,7 +279,7 @@ section.admin {
     font-size: 17px;
     text-transform: uppercase;
     display: block;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     background: transparent url(/images/pat/notebook.jpg) left top repeat;
     color: #252525;
   }
@@ -243,7 +288,9 @@ section.admin {
     display: block;
     margin-bottom: 1rem;
   }
-  .form-row { margin-bottom: 0 }
+  .form-row {
+    margin-bottom: 0;
+  }
 }
 .form-footer {
   padding: 1rem 0;
@@ -264,11 +311,15 @@ section.admin {
     text-transform: uppercase;
     font-size: 12px;
     display: block;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 }
-.form-inputs .pt-label { margin-bottom: 0 }
-.form-inner { padding: .75rem 1rem; }
+.form-inputs .pt-label {
+  margin-bottom: 0;
+}
+.form-inner {
+  padding: 0.75rem 1rem;
+}
 .cart-wrap {
   display: flex;
   justify-content: center;
@@ -280,7 +331,7 @@ section.admin {
     display: block;
     text-transform: uppercase;
     font-size: 12px;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     font-weight: bold;
   }
 }
@@ -292,7 +343,7 @@ section.admin {
     font-weight: bold;
     text-transform: uppercase;
     display: block;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
   .cart-package {
     color: #9f9f9f;
@@ -305,8 +356,8 @@ section.admin {
   }
 }
 .cart-schedule {
-  padding: .5rem 1rem;
-  background: transparent url('/images/pat/blizzard.png') left top repeat;
+  padding: 0.5rem 1rem;
+  background: transparent url("/images/pat/blizzard.png") left top repeat;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   text-transform: uppercase;
@@ -319,7 +370,7 @@ section.admin {
   border-bottom: 1px solid #eee;
   .schedule-date {
     display: block;
-    padding: .5rem 1.5rem;
+    padding: 0.5rem 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 12px;
@@ -332,11 +383,11 @@ section.admin {
       display: block;
       font-size: 12px;
       font-weight: bold;
-      padding: .5rem 1.5rem 0 1.5rem;
+      padding: 0.5rem 1.5rem 0 1.5rem;
     }
     span:nth-child(2) {
       font-size: 13px;
-      padding: 0 1.5rem .5rem 1.5rem;
+      padding: 0 1.5rem 0.5rem 1.5rem;
       display: block;
     }
   }
@@ -347,7 +398,7 @@ section.admin {
 .schedule-wrap table {
   width: 100%;
   tr th {
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid #eee;
     font-size: 12px;
     text-transform: uppercase;
@@ -363,7 +414,7 @@ section.admin {
   }
   tr td {
     font-size: 13px;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
   }
   tr:nth-child(odd) td {
     background-color: #f5f5f5;
@@ -373,7 +424,7 @@ table.total {
   width: 100%;
   tr td {
     font-size: 13px;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px dashed #eee;
     text-align: right;
     font-weight: bold;
@@ -384,10 +435,10 @@ table.total {
   width: 100%;
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 .schedule {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   &--card {
     display: flex;
     flex-direction: column;
@@ -402,7 +453,9 @@ table.total {
     color: #757575;
     padding: 1rem;
   }
-  &--meals, &--snacks, &--station {
+  &--meals,
+  &--snacks,
+  &--station {
     border-top: 1px dashed #ddd;
     padding: 1rem;
     font-weight: 600;
@@ -420,7 +473,9 @@ table.total {
   }
   &--snacks {
     font-size: 20px;
-    span { display: block; }
+    span {
+      display: block;
+    }
     span:nth-child(1) {
       font-weight: 300;
       font-size: 12px;
@@ -429,7 +484,9 @@ table.total {
   }
   &--station {
     font-size: 20px;
-    span { display: block; }
+    span {
+      display: block;
+    }
     span:nth-child(1) {
       font-weight: 300;
       font-size: 12px;
@@ -442,10 +499,10 @@ table.total {
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 0 15px rgba(#000, .1);
+  box-shadow: 0 0 15px rgba(#000, 0.1);
   position: relative;
   h2 {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     padding-top: 0.5rem;
     border-top: 1px solid #eee;
     font-size: 16px;
@@ -453,13 +510,16 @@ table.total {
     margin-bottom: 1rem;
   }
 }
-.pt-label, .custom-label {
+.pt-label,
+.custom-label {
   display: block;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 12px;
 }
-.custom-label { margin-bottom: 5px }
+.custom-label {
+  margin-bottom: 5px;
+}
 .pt-label.with-date-input .pt-input {
   margin-top: 0;
 }
@@ -473,10 +533,10 @@ table.total {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(#fff, .85);
+  background-color: rgba(#fff, 0.85);
   opacity: 0;
   visibility: hidden;
-  transition: .2s ease-in-out all;
+  transition: 0.2s ease-in-out all;
 }
 .loading.loading-active {
   opacity: 1;
@@ -497,25 +557,29 @@ table.total {
   font-size: 12px;
   font-style: italic;
 }
-.pt-callout.mb { margin-bottom: 1rem }
+.pt-callout.mb {
+  margin-bottom: 1rem;
+}
 .discount-type {
   display: block;
   text-transform: uppercase;
   font-size: 12px;
   font-weight: bold;
 }
-.cal-full { width: 100% }
+.cal-full {
+  width: 100%;
+}
 
 .diet-selector {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   flex-wrap: wrap;
 
   a {
     display: block;
-    padding: .35rem .75rem;
+    padding: 0.35rem 0.75rem;
     color: #888;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -525,14 +589,14 @@ table.total {
     margin-right: 10px;
     min-width: 75px;
     text-align: center;
-    margin-bottom: .7rem;
+    margin-bottom: 0.7rem;
   }
   a.active {
     border-color: $main-color;
     color: #454545;
     &:before {
       content: "\f00c";
-      font-family: 'Font Awesome 5 Pro';
+      font-family: "Font Awesome 5 Pro";
       color: green;
       padding-right: 5px;
     }

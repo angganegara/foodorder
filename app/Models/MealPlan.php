@@ -20,4 +20,35 @@ class MealPlan extends Model
   {
     return $this->hasOne(\App\Models\Component::class, 'id', $day);
   }
+
+  public function day_1()
+  {
+    return $this->hasOne(\App\Models\Component::class, 'id', 'day_1');
+  }
+
+  public function day_2()
+  {
+    return $this->hasOne(\App\Models\Component::class, 'id', 'day_2');
+  }
+
+  public function day_3()
+  {
+    return $this->hasOne(\App\Models\Component::class, 'id', 'day_3');
+  }
+
+  public function day_4()
+  {
+    return $this->hasOne(\App\Models\Component::class, 'id', 'day_4');
+  }
+
+  public function day_5()
+  {
+    return $this->hasOne(\App\Models\Component::class, 'id', 'day_5');
+  }
+
+  public function day_6()
+  {
+    return $this->hasOne(\App\Models\Component::class, 'id', 'day_6');
+  }
+
 }

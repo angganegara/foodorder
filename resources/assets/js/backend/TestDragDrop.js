@@ -8,11 +8,12 @@ import TestDrag from "./TestDrag";
 class TestDragDrop extends Component {
   state = {
     days: [
-      { index: 0, date: "Sep 21, 2018" },
-      { index: 1, date: "Sep 22, 2018" },
-      { index: 2, date: "Sep 23, 2018" },
-      { index: 3, date: "Sep 24, 2018" },
-      { index: 4, date: "Sep 25, 2018" }
+      { index: 0, day: 1 },
+      { index: 1, day: 2 },
+      { index: 2, day: 3 },
+      { index: 3, day: 4 },
+      { index: 4, day: 5 },
+      { index: 5, day: 6 }
     ],
     mealplans: [
       {
@@ -23,7 +24,6 @@ class TestDragDrop extends Component {
       L. Grilled Tuna Steak with lemongrass, quinoa and stir-fried broccoli with tahini dressing. Topped with fresh herbs and pumpkin seeds<hr />
       S. Peanut Cookie<hr />
       D. Grilled chicken stripes with Mediterranean veggie wok, red rice, scrambled egg with black pepper, topped with fresh parsley and lime.`,
-        age: 22,
         pos: 0
       },
       {
@@ -34,7 +34,6 @@ class TestDragDrop extends Component {
       L. Grilled Tuna Steak with lemongrass, quinoa and stir-fried broccoli with tahini dressing. Topped with fresh herbs and pumpkin seeds<hr />
       S. Peanut Cookie<hr />
       D. Grilled chicken stripes with Mediterranean veggie wok, red rice, scrambled egg with black pepper, topped with fresh parsley and lime.`,
-        age: 18,
         pos: 1
       },
       {
@@ -45,7 +44,6 @@ class TestDragDrop extends Component {
       L. Grilled Tuna Steak with lemongrass, quinoa and stir-fried broccoli with tahini dressing. Topped with fresh herbs and pumpkin seeds<hr />
       S. Peanut Cookie<hr />
       D. Grilled chicken stripes with Mediterranean veggie wok, red rice, scrambled egg with black pepper, topped with fresh parsley and lime.`,
-        age: 19,
         pos: 2
       }
     ],
@@ -85,7 +83,7 @@ class TestDragDrop extends Component {
     return (
       <DragDropContextProvider backend={HTML5Backend}>
         <div className="test-wrapper">
-          <h3>New Meal Plans (5 days)</h3>
+          <h1>New Meal Plans (5 days)</h1>
           <div className="dropzone-wrapper">
             {days.map(day => (
               <TestDropZone

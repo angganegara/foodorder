@@ -17,7 +17,6 @@ mix
   .react("resources/assets/js/backend/report.js", "public/js/report.js")
   .react("resources/assets/js/backend/mealplans.js", "public/js/mealplans.js")
   .react("resources/assets/js/backend/coupon.js", "public/js/coupon.js")
-  //.copy('public/js/app.js', 'public/bundle.js')
   .sass("resources/assets/sass/app.scss", "public/css/app.css")
   .sass("resources/assets/sass/backend.scss", "public/css/backend.css")
   .combine(

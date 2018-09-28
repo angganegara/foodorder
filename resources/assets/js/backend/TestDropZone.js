@@ -67,7 +67,9 @@ class TestDropZone extends Component {
         <div className="dropzone-box" style={{ borderColor }}>
           {!items[index] && (
             <div className="dropzone-info">
-              {isActive ? "Release to drop" : "Drag a box here"}
+              {isActive
+                ? "Release to drop"
+                : "Add new component or drag existing component"}
             </div>
           )}
           {items[index] && (

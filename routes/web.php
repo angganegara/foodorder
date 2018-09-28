@@ -40,6 +40,11 @@ Route::get('/checkout/finish/{order_number}', 'PaymentController@getExpressCheck
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('/', 'AdminController@index');
 
+  Route::get('meal-plans', 'MealController@manage');
+  Route::post('meal-plans/new', 'MealController@newPlan');
+  Route::get('meal-plans/all', 'MealController@listPlan');
+  Route::get('meal-plans/{id}', 'MealController@getPlan');
+  Route::post('meal-plans/{id}/component-update', 'MealController@updateComponent');
   Route::get('orders', 'OrderController@index');
   Route::get('orders/schedule', 'OrderController@schedule');
   Route::get('orders/{id}/delete', 'OrderController@delete');
