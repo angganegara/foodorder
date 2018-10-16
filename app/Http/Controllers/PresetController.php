@@ -27,12 +27,12 @@ class PresetController extends Controller
     $preset = Preset::where('preset_name', $request->preset_name)->first();
     if ($preset) {
       if (!$overwrite) {
-        //return response('EXIST');
-        return response('OK');
+        return response('EXIST');
       } else {
         // update
         $preset->update($request->except(['overwrite']));
-        return response('OK');
+        $presets = Preset::all();
+        return response($presets);
       }
     }
 
