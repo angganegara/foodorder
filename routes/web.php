@@ -45,7 +45,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('meal-plans/all', 'MealController@listPlan');
   Route::get('meal-plans/{id}', 'MealController@getPlan');
   Route::post('meal-plans/{id}/component-update', 'MealController@updateComponent');
+
+  Route::post('presets/new', 'PresetController@insert');
+  Route::get('presets/all', 'PresetController@index');
+  Route::get('presets/{id}', 'PresetController@show');
+
   Route::get('orders', 'OrderController@index');
+  Route::get('orders/new', 'OrderController@create');
   Route::get('orders/schedule', 'OrderController@schedule');
   Route::get('orders/{id}/delete', 'OrderController@delete');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ButtonGroup, Button, Popover, PopoverInteractionKind, Intent, Position } from "@blueprintjs/core";
+import { ButtonGroup, Button, Intent } from "@blueprintjs/core";
 
 import DaysDrop from "./DaysDrop";
 import DaysDrag from "./DaysDrag";
@@ -15,6 +15,7 @@ class IndexMP extends Component {
       { index: 4, day: 5 },
       { index: 5, day: 6 }
     ],
+    copyData: null,
     meals: null,
     mealplans: null,
     items: [],
@@ -50,7 +51,7 @@ class IndexMP extends Component {
     const { mealplans, days } = this.state;
     let newItem;
     if (item.type === "days") {
-      newItem = { ...items };
+      newItem = [...items];
       newItem[index] = item;
     } else {
       // get the current meal plan's components
@@ -122,19 +123,25 @@ class IndexMP extends Component {
       });
     }
   };
-  copyComponent = ({ day, newIndex, data }) => {
-    const { items } = this.state;
-    let newItems = { ...items };
-    newItems[newIndex] = data;
-
+  copyComponent = data => {
     this.setState({
       ...this.state,
-      items: newItems
+      copyData: data
+    });
+  };
+  pasteComponent = (e, index) => {
+    e.preventDefault();
+    const { copyData } = this.state;
+    let items = { ...this.state.items };
+    items[index] = copyData;
+    this.setState({
+      ...this.state,
+      items: items
     });
   };
   clearCompoonent = ({ index }) => {
-    let items = { ...this.state.items };
-    delete items[index];
+    let items = [...this.state.items];
+    items[index] = null;
     this.setState({
       items
     });
@@ -163,7 +170,7 @@ class IndexMP extends Component {
   };
 
   render() {
-    const { mealplans, items, days, editor, editorData, categories, name, meals } = this.state;
+    const { mealplans, items, days, editor, editorData, categories, name, meals, copyData } = this.state;
     return (
       <React.Fragment>
         <DaysEditor {...editorData} active={editor} saveData={this.saveComponentEditor} closeEditor={this.closeEditor} />
@@ -205,6 +212,8 @@ class IndexMP extends Component {
                       showEditor={this.showComponentEditor}
                       copyDay={this.copyComponent}
                       clearDay={this.clearCompoonent}
+                      copyData={copyData}
+                      pasteData={this.pasteComponent}
                     />
                   ))}
                 </div>
@@ -225,7 +234,7 @@ class IndexMP extends Component {
                 <p>
                   Select any Meal Plan below and
                   <br />
-                  click "LOAD PLAN" to load the plan here
+                  click <span className="pt-icon-standard pt-icon-eye-open" /> to load the plan here
                 </p>
               </div>
             </div>
@@ -242,6 +251,7 @@ class IndexMP extends Component {
                     text=""
                     sort={index}
                     showEditor={this.showComponentEditor}
+                    copyDay={this.copyComponent}
                   />
                 ))}
               </DaysDrag>
@@ -297,7 +307,6 @@ class IndexMP extends Component {
                       <td>
                         <ButtonGroup minimal={false} large={false}>
                           <Button icon="eye-open" text="" onClick={e => this.getPlan(e, meal.id)} />
-                          <Button icon="cross" text="" />
                         </ButtonGroup>
                       </td>
                     </tr>

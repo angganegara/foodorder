@@ -1,4 +1,4 @@
-<sidebar class="sidebar {!! Request::is('admin/meal-plans*') ? "hidden" : "" !!}">
+<sidebar class="sidebar {!! Request::is('admin/meal-plans*') || Request::is('admin/orders/new*') ? "hidden" : "" !!}">
   <a href="javascript:" title="" class="logo"><img src="/images/M.jpg" alt="" /></a>
 
   <ul>

@@ -11,10 +11,10 @@ let dragInterval;
 // drag spec
 const daysSource = {
   beginDrag(props, monitor) {
+    let currentOffset = {};
     dragInterval = setInterval(() => {
       const { y } = monitor.getClientOffset();
       let pos = 0;
-      console.log(y, pos, windowArea);
       if (y < windowArea) {
         if (windowArea - y < 50) {
           pos = window.scrollY;
@@ -124,12 +124,6 @@ class DaysDrag extends Component {
               )}
             </div>
             <div className="dropzone-toolbars">
-              <ButtonGroup minimal={false} large={false}>
-                <PopoverCustom>
-                  <Button icon="edit" text="" onClick={e => this.handleClick({ e, id, menu })} />
-                  <div>Edit Component</div>
-                </PopoverCustom>
-              </ButtonGroup>
               <ButtonGroup minimal={false} large={false}>
                 <PopoverCustom>
                   <Button onClick={this.copyComponent} text="C" />

@@ -1,9 +1,8 @@
 $main-color: #03a9f4;
 $primary-color: hsl(208, 100%, 50%);
 $box-border: #dbe5eb;
-$heading: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen",
-  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-  "Helvetica", "Arial", sans-serif;
+$heading: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+  "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 
 body,
 html {
@@ -15,6 +14,10 @@ html {
 body {
   font-size: 14px;
   color: #454545;
+}
+html.no-overflow,
+html.no-overflow body {
+  overflow: initial;
 }
 a,
 a:focus,
@@ -140,11 +143,14 @@ section.admin {
 
 .main-content {
   flex-grow: 1;
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: scroll;
   position: relative;
   padding: 4rem 2rem 2rem 2rem;
   background-color: #eee;
+}
+.main-content.no-overflow {
+  overflow-y: initial;
 }
 .breadcrumb {
   position: fixed;

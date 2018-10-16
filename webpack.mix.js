@@ -16,6 +16,7 @@ mix
   .react("resources/assets/js/app.js", "public/js/app.js")
   .react("resources/assets/js/backend/report.js", "public/js/report.js")
   .react("resources/assets/js/backend/mealplans.js", "public/js/mealplans.js")
+  .react("resources/assets/js/backend/neworder.js", "public/js/neworder.js")
   .react("resources/assets/js/backend/coupon.js", "public/js/coupon.js")
   .sass("resources/assets/sass/app.scss", "public/css/app.css")
   .sass("resources/assets/sass/backend.scss", "public/css/backend.css")
@@ -32,7 +33,7 @@ mix
     output: {
       //chunkFilename: 'js/[name].[chunkhash].js',
       chunkFilename: "js/[name].js"
-    },
+    } /*
     plugins: [
       new ZopfliPlugin({
         asset: "[path].gz[query]",
@@ -41,7 +42,7 @@ mix
         threshold: 10240,
         minRatio: 0.8
       })
-    ]
+    ]*/
   })
   .browserSync({
     proxy: "mealplans.test"

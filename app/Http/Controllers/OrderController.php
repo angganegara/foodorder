@@ -52,6 +52,11 @@ class OrderController extends Controller
     return view('admin.order', compact('order'));
   }
 
+  public function create()
+  {
+    return view('admin.new-order');
+  }
+
   public function schedule()
   {
     $today = Carbon::create();

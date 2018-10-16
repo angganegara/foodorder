@@ -52,7 +52,6 @@ class DaysEditor extends Component {
         id: day,
         index: day,
         pos: day - 1,
-        text: `B. ${b}<hr />BS. ${bs}<hr />L. ${l}<hr />LS. ${ls}<hr />D. ${d}`,
         menu: { b, bs, l, ls, d },
         type: "days",
         source: "text"
