@@ -268,7 +268,7 @@ class App extends Component {
         }
         appToaster.show({
           message: "Preset Saved",
-          intent: Intent.DANGER
+          intent: Intent.SUCCESS
         });
         this.setState({ ...this.state, isSaving: false, alertOpen: false, overwrite: false, presets: res.data });
       });
