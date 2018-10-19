@@ -40,7 +40,7 @@ class Order extends Model
     if ($this->payment == 'creditcard') {
       return $this->trx_status ? $this->trx_status : 'Aborted';
     } else if ($this->payment == 'paypal') {
-      return 'Paid';
+      return $this->paid ? 'Incomplete' : 'Paid';
     } else {
       return '';
     }
