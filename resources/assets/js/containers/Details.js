@@ -2,19 +2,7 @@ import React, { Component } from "react";
 import { view } from "react-easy-state";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
-import {
-  Alert,
-  Overlay,
-  Spinner,
-  Toaster,
-  Intent,
-  Position,
-  Radio,
-  Switch,
-  Popover,
-  Tag,
-  PopoverInteractionKind
-} from "@blueprintjs/core";
+import { Alert, Overlay, Spinner, Toaster, Intent, Position, Radio, Switch, Popover, Tag, PopoverInteractionKind } from "@blueprintjs/core";
 import { DatePicker } from "@blueprintjs/datetime";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
@@ -66,20 +54,12 @@ class Details extends Component {
     const { id } = this.props.match.params;
     this.loadFood(id);
     scrollTop();
-    $(document).on(
-      "click",
-      ".DayPicker-NavButton--next, .DayPicker-NavButton--prev",
-      this.resetSelectedDate
-    );
+    $(document).on("click", ".DayPicker-NavButton--next, .DayPicker-NavButton--prev", this.resetSelectedDate);
   }
 
   componentWillUnmount() {
     this.setState({ mounted: false });
-    $(document).off(
-      "click",
-      ".DayPicker-NavButton--next, .DayPicker-NavButton--prev",
-      this.resetSelectedDate
-    );
+    $(document).off("click", ".DayPicker-NavButton--next, .DayPicker-NavButton--prev", this.resetSelectedDate);
   }
 
   redrawDateRange = () => {
@@ -87,23 +67,14 @@ class Details extends Component {
     if (cells.length > 0) {
       setTimeout(() => {
         $('[range="true"]')
-          .removeClass(
-            "dates-range dates-range-finish dates-range-start dates-range-sunday"
-          )
+          .removeClass("dates-range dates-range-finish dates-range-start dates-range-sunday")
           .attr("range", false);
-        $(".DayPicker-Day.DayPicker-Day--selected").removeClass(
-          "DayPicker-Day--selected"
-        );
+        $(".DayPicker-Day.DayPicker-Day--selected").removeClass("DayPicker-Day--selected");
       }, 50);
       setTimeout(() => {
         cells.map(cell => {
           let el = $('.DayPicker-Day[aria-label="' + cell.key + '"]');
-          console.log(
-            "trying to add $('.DayPicker-Day[aria-label=\"" +
-              cell.key +
-              "\"]') with class " +
-              cell.cssClass
-          );
+          console.log("trying to add $('.DayPicker-Day[aria-label=\"" + cell.key + "\"]') with class " + cell.cssClass);
           el.addClass(cell.cssClass).attr("range", "true");
         });
       }, 100);
@@ -191,6 +162,7 @@ class Details extends Component {
       key,
       id,
       packageId,
+      duration: daysData.length,
       slimSunday,
       schedules: daysData,
       complete: false
@@ -217,13 +189,9 @@ class Details extends Component {
     });
     setTimeout(() => {
       $('[range="true"]')
-        .removeClass(
-          "dates-range dates-range-finish dates-range-start dates-range-sunday"
-        )
+        .removeClass("dates-range dates-range-finish dates-range-start dates-range-sunday")
         .attr("range", false);
-      $(".DayPicker-Day.DayPicker-Day--selected").removeClass(
-        "DayPicker--Day-selected"
-      );
+      $(".DayPicker-Day.DayPicker-Day--selected").removeClass("DayPicker--Day-selected");
     }, 50);
   };
 
@@ -266,9 +234,7 @@ class Details extends Component {
 
     setTimeout(() => {
       $('[range="true"]')
-        .removeClass(
-          "dates-range dates-range-finish dates-range-start dates-range-sunday"
-        )
+        .removeClass("dates-range dates-range-finish dates-range-start dates-range-sunday")
         .attr("range", false);
       const isMon = day.getDay() == 1 ? 1 : 0;
       //let duration = packageId == 1 ? 5 : daysAmount - 1;
@@ -383,11 +349,7 @@ class Details extends Component {
           </Overlay>
           <Overlay isOpen={this.state.overlay} onClose={this.toggleOverlay}>
             <section className="home hiw">
-              <HowItWorks
-                autoOpen={true}
-                closeButton={true}
-                toggleOverlay={this.toggleOverlay}
-              />
+              <HowItWorks autoOpen={true} closeButton={true} toggleOverlay={this.toggleOverlay} />
             </section>
           </Overlay>
           {food && (
@@ -400,23 +362,10 @@ class Details extends Component {
                 </div>
                 <div className="col-xs-12 col-md-6">
                   <h1>{food.name}</h1>
-                  <div
-                    className="details--short-description"
-                    dangerouslySetInnerHTML={{ __html: food.short_description }}
-                  />
-                  <div
-                    className="details--description"
-                    dangerouslySetInnerHTML={{ __html: food.description }}
-                  />
-                  {food.example_menu && (
-                    <ExampleMenu menu={food.example_menu} />
-                  )}
-                  {food.recommended_snack &&
-                    snackState.items && (
-                      <RecommendedSnacks
-                        snacks={JSON.parse(food.recommended_snack)}
-                      />
-                    )}
+                  <div className="details--short-description" dangerouslySetInnerHTML={{ __html: food.short_description }} />
+                  <div className="details--description" dangerouslySetInnerHTML={{ __html: food.description }} />
+                  {food.example_menu && <ExampleMenu menu={food.example_menu} />}
+                  {food.recommended_snack && snackState.items && <RecommendedSnacks snacks={JSON.parse(food.recommended_snack)} />}
                 </div>
                 <div className="col-xs-12 col-md-4">
                   <div className="details--price-box">
@@ -428,30 +377,18 @@ class Details extends Component {
                               <Radio
                                 label={price.name}
                                 checked={form.packageId === price.sort}
-                                onChange={e =>
-                                  this.updatePackage(e, price.sort)
-                                }
+                                onChange={e => this.updatePackage(e, price.sort)}
                                 value={price.id}
                               />
                             </span>
                             <span>{parsePrice(price.price)} IDR</span>
                           </div>
                           {price.sort === 2 && (
-                            <CSSTransition
-                              in={price.sort === 2 && form.packageId === 2}
-                              timeout={200}
-                              classNames="fade-"
-                              unmountOnExit
-                            >
+                            <CSSTransition in={price.sort === 2 && form.packageId === 2} timeout={200} classNames="fade-" unmountOnExit>
                               {state => (
                                 <div className="details--select-amount">
-                                  <select
-                                    value={daysAmount}
-                                    onChange={this.handleDaysAmount}
-                                  >
-                                    <option value={0}>
-                                      select amount of days
-                                    </option>
+                                  <select value={daysAmount} onChange={this.handleDaysAmount}>
+                                    <option value={0}>select amount of days</option>
                                     <option value={1}>1 day</option>
                                     <option value={2}>2 days</option>
                                     <option value={3}>3 days</option>
@@ -466,15 +403,8 @@ class Details extends Component {
                       ))}
                     <div className="details--price">
                       <span>
-                        <Popover
-                          interactionKind={PopoverInteractionKind.HOVER}
-                          position={Position.TOP}
-                        >
-                          <Switch
-                            checked={form.slimSunday}
-                            onChange={this.toggleSlimSunday}
-                            label="Add Slim Sunday?"
-                          />
+                        <Popover interactionKind={PopoverInteractionKind.HOVER} position={Position.TOP}>
+                          <Switch checked={form.slimSunday} onChange={this.toggleSlimSunday} label="Add Slim Sunday?" />
                           <SlimSundayPopover />
                         </Popover>
                       </span>
@@ -483,46 +413,25 @@ class Details extends Component {
                       </span>
                     </div>
                     <div className="details--calendar">
-                      <CSSTransition
-                        in={form.packageId === 2 && daysAmount <= 0}
-                        timeout={200}
-                        classNames="fade-flat"
-                        unmountOnExit
-                      >
-                        <div className="calendar-warning">
-                          Please select amount of days first.
-                        </div>
+                      <CSSTransition in={form.packageId === 2 && daysAmount <= 0} timeout={200} classNames="fade-flat" unmountOnExit>
+                        <div className="calendar-warning">Please select amount of days first.</div>
                       </CSSTransition>
                       <p>
                         <strong>Delivery Starting Date</strong>
                       </p>
-                      <DatePicker
-                        onChange={this.handleDayClick}
-                        modifiers={modifiers}
-                        minDate={today}
-                        value={this.state.form.startDate}
-                      />
+                      <DatePicker onChange={this.handleDayClick} modifiers={modifiers} minDate={today} value={this.state.form.startDate} />
                       {form.startDate && (
                         <div className="delivery-dates-range">
-                          <Tag intent={Intent.PRIMARY}>
-                            {this.parseDate(form.startDate)}
-                          </Tag>
+                          <Tag intent={Intent.PRIMARY}>{this.parseDate(form.startDate)}</Tag>
                           &nbsp;
                           <i className="far fa-arrow-right" />
                           &nbsp;
-                          <Tag intent={Intent.PRIMARY}>
-                            {this.parseDate(form.endDate)}
-                          </Tag>
+                          <Tag intent={Intent.PRIMARY}>{this.parseDate(form.endDate)}</Tag>
                         </div>
                       )}
                     </div>
                   </div>
-                  <a
-                    href="javascript:"
-                    title=""
-                    onClick={this.addtoCart}
-                    className="details--add-to-cart"
-                  >
+                  <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart">
                     Continue <i className="fal fa-fw fa-arrow-right" />
                   </a>
                   <Alert
@@ -534,29 +443,14 @@ class Details extends Component {
                     intent={Intent.PRIMARY}
                     isOpen={alertOpen}
                   >
-                    <p>
-                      You already have this item in your cart. Do you want to
-                      add it anyway?
-                    </p>
+                    <p>You already have this item in your cart. Do you want to add it anyway?</p>
                   </Alert>
                   <div className="info">
-                    <a
-                      href="javascript:"
-                      title=""
-                      className="btn-normal"
-                      onClick={this.toggleOverlay}
-                    >
-                      <i className="fal fa-fw fa-question-circle" /> How it
-                      works
+                    <a href="javascript:" title="" className="btn-normal" onClick={this.toggleOverlay}>
+                      <i className="fal fa-fw fa-question-circle" /> How it works
                     </a>
-                    <a
-                      href="javascript:"
-                      title=""
-                      className="btn-normal"
-                      onClick={this.toggleLPOpen}
-                    >
-                      <i className="fal fa-fw fa-question-circle" /> Long-period
-                      Order
+                    <a href="javascript:" title="" className="btn-normal" onClick={this.toggleLPOpen}>
+                      <i className="fal fa-fw fa-question-circle" /> Long-period Order
                     </a>
                   </div>
                 </div>

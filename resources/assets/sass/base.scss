@@ -367,8 +367,22 @@ header {
       pointer-events: auto;
     }
   }
+  &--loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(#fff, 0.85);
+    z-index: 10;
+    i {
+      font-size: 3em;
+      color: $main-color;
+    }
+  }
   &--content {
-    min-width: 340px;
+    min-width: 380px;
     background-color: rgba(#fff, 0.95);
     border-radius: 4px;
     box-shadow: 2px 0 6px 1px rgba(#000, 0.1);
@@ -439,8 +453,7 @@ header {
   }
   &--total {
     padding: 0.5rem 1.25rem;
-    background: transparent url("/images/pat/concrete_wall_2.jpg") left top
-      repeat;
+    background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
     text-align: right;
     font-size: 15px;
     border-bottom: 1px dashed #ddd;
@@ -585,8 +598,7 @@ section.home.intro {
   }
   .hiw--body {
     padding: 2rem;
-    background: transparent url("/images/pat/concrete_wall_2.jpg") left top
-      repeat;
+    background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
     position: relative;
     z-index: 1;
     color: #454545;
@@ -626,8 +638,7 @@ section.home.intro {
   .bottle {
     width: 256px;
     height: 291px;
-    background: transparent url("/images/hiw-bottle.png") center center
-      no-repeat;
+    background: transparent url("/images/hiw-bottle.png") center center no-repeat;
     position: absolute;
     right: -40px;
     bottom: -55px;
@@ -1482,8 +1493,7 @@ section.top.customize {
       display: flex;
       justify-content: center;
       align-items: center;
-      background: transparent url("/images/pat/ep_naturalwhite.jpg") left top
-        repeat;
+      background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
     }
     h2 {
       display: block;
@@ -1940,6 +1950,20 @@ section.top.terms {
 
 .cart {
   position: relative;
+  &-overview-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(#fff, 0.85);
+    z-index: 10;
+    i {
+      font-size: 3em;
+      color: $main-color;
+    }
+  }
   &--sunday {
     font-size: 13px;
     color: #656565;
@@ -2013,8 +2037,7 @@ section.top.terms {
   }
   &--total {
     padding: 0.5rem 1.25rem;
-    background: transparent url("/images/pat/concrete_wall_2.jpg") left top
-      repeat;
+    background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
     text-align: right;
     font-size: 15px;
     border-bottom: 1px dashed #ddd;

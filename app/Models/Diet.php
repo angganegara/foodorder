@@ -51,7 +51,7 @@ class Diet extends Model
 
   public function priceByType($type, $column)
   {
-    $data = $this->hasMany('App\Models\Price', 'category', 'price')->where('type', $type)->first();
+    $data = $this->hasMany('App\Models\Price', 'category', 'price')->where('sort', $type)->first();
     return $data->{$column};
   }
 }

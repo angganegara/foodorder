@@ -16,36 +16,58 @@ class CartOverview extends Component {
       code: "",
       value: 0,
       item: ""
-    }
+    },
+    isLoading: true
   };
+
+  async componentDidMount() {
+    if (cartState.cartKey) {
+      try {
+        const { data } = await this.loadCart();
+        cartState.added = JSON.parse(data.cart);
+        this.setState({ isLoading: false });
+      } catch (err) {
+        this.props.invalidCart();
+      }
+    }
+  }
+
+  loadCart = () => axios.post("/api/cart/content", { cartKey: cartState.cartKey });
+  updateCart = () => axios.post("/api/cart/update", { cartKey: cartState.cartKey, cartData: JSON.stringify(cartState.added) });
   parsePackage = id => (id === 1 ? "6-Day Package" : "Single days");
   parseDates = dates => {
     if (dates.dateStart == dates.dateEnd) {
       return moment(dates.dateStart).format("ddd, MMM Do");
     } else {
-      return (
-        moment(dates.dateStart).format("ddd, MMM Do") +
-        " &ndash; " +
-        moment(dates.dateEnd).format("ddd, MMM Do")
-      );
+      return moment(dates.dateStart).format("ddd, MMM Do") + " &ndash; " + moment(dates.dateEnd).format("ddd, MMM Do");
     }
   };
 
   handleEmptyCart = () => (cartState.added = []);
-  handleDelete = (e, index) => {
-    cartState.added.splice(index, 1);
+  handleDelete = async (e, index) => {
+    this.setState({ isLoading: true });
+    try {
+      cartState.added.splice(index, 1);
+      const { data } = await this.updateCart();
+      this.setState({ isLoading: false });
+    } catch (err) {
+      // ...
+    }
     this.cancelCoupon();
   };
 
-  handleQty = (vnum, vstring, index) => {
-    let item = cartState.added[index];
-    const slimSunday = item.slimSunday ? 300000 : 0;
-    item.qty = vnum;
-    item.totalPrice =
-      (parseInt(item.foodPrice) +
-        parseInt(item.snacksPrice) +
-        parseInt(slimSunday)) *
-      vnum;
+  handleQty = async (vnum, vstring, index) => {
+    this.setState({ isLoading: true });
+    try {
+      let item = cartState.added[index];
+      const slimSunday = item.slimSunday ? 300000 : 0;
+      item.qty = vnum;
+      item.totalPrice = (parseInt(item.foodPrice) + parseInt(item.snacksPrice) + parseInt(slimSunday)) * vnum;
+      const { data } = await this.updateCart();
+      this.setState({ isLoading: false });
+    } catch (err) {
+      // ...
+    }
     this.cancelCoupon();
   };
 
@@ -73,17 +95,9 @@ class CartOverview extends Component {
   toggleCoupon = () => {
     $(".coupon--body").slideToggle();
   };
-  enterCoupon = e =>
-    this.setState({ coupon: { ...this.state.coupon, code: e.target.value } });
-  cartTotalPrice = () =>
-    cartState.added.reduce(
-      (accu, total) => accu + parseInt(total.totalPrice),
-      0
-    );
-  cancelCoupon = () =>
-    this.setState({ coupon: { value: 0, code: "", item: "" } }, () =>
-      this.props.applyCoupon(this.state.coupon)
-    );
+  enterCoupon = e => this.setState({ coupon: { ...this.state.coupon, code: e.target.value } });
+  cartTotalPrice = () => cartState.added.reduce((accu, total) => accu + parseInt(total.totalPrice), 0);
+  cancelCoupon = () => this.setState({ coupon: { value: 0, code: "", item: "" } }, () => this.props.applyCoupon(this.state.coupon));
   applyCoupon = () => {
     const data = {
       cart: cartState.added,
@@ -108,11 +122,16 @@ class CartOverview extends Component {
   render() {
     const cart = cartState.added.filter(cart => cart.complete);
     const { snacks } = this.props;
-    const { coupon } = this.state;
+    const { coupon, isLoading } = this.state;
 
     return (
       cart.length > 0 && (
         <div className="cart">
+          {isLoading && (
+            <div className="cart-overview-loading">
+              <i className="fal fa-spinner-third fa-spin" />
+            </div>
+          )}
           {cart.length &&
             cart.map((item, index) => (
               <React.Fragment key={index}>
@@ -121,24 +140,15 @@ class CartOverview extends Component {
                     <div className="cart--title">
                       <b>{item.title}</b>
                     </div>
-                    <div className="cart--package">
-                      {this.parsePackage(item.packageId)}
-                    </div>
+                    <div className="cart--package">{this.parsePackage(item.packageId)}</div>
                     <div
                       className="cart--dates"
                       dangerouslySetInnerHTML={{
                         __html: this.parseDates(item)
                       }}
                     />
-                    {item.slimSunday && (
-                      <div className="cart--sunday">with Slim Sunday</div>
-                    )}
-                    <a
-                      href="javascript:"
-                      title=""
-                      className="cart--schedule"
-                      onClick={e => this.toggleSchedule(e, index)}
-                    >
+                    {item.slimSunday && <div className="cart--sunday">with Slim Sunday</div>}
+                    <a href="javascript:" title="" className="cart--schedule" onClick={e => this.toggleSchedule(e, index)}>
                       <span>
                         <i className="fal fa-angle-down" /> VIEW SCHEDULE
                       </span>
@@ -150,17 +160,11 @@ class CartOverview extends Component {
                     <NumericInput
                       min={1}
                       fill={false}
-                      onValueChange={(vnum, vstring) =>
-                        this.handleQty(vnum, vstring, index)
-                      }
+                      onValueChange={(vnum, vstring) => this.handleQty(vnum, vstring, index)}
                       value={item.qty}
                     />
                   </div>
-                  <a
-                    href="javascript:"
-                    className="cart--remove"
-                    onClick={e => this.handleDelete(e, index)}
-                  >
+                  <a href="javascript:" className="cart--remove" onClick={e => this.handleDelete(e, index)}>
                     <i className="fa fa-fw fa-times" />
                   </a>
                 </div>
@@ -176,23 +180,14 @@ class CartOverview extends Component {
               </React.Fragment>
             ))}
           <div className="coupon">
-            <a
-              href="javascript:"
-              title=""
-              className="coupon--heading"
-              onClick={this.toggleCoupon}
-            >
+            <a href="javascript:" title="" className="coupon--heading" onClick={this.toggleCoupon}>
               <i className="fal fa-plus" /> have coupon code?
             </a>
             <div className="coupon--body">
               {coupon.value <= 0 &&
                 coupon.item == "" && (
                   <div className="input-group">
-                    <input
-                      type="text"
-                      placeholder="enter coupon code"
-                      onChange={this.enterCoupon}
-                    />
+                    <input type="text" placeholder="enter coupon code" onChange={this.enterCoupon} />
                     <button onClick={this.applyCoupon}>Apply</button>
                   </div>
                 )}

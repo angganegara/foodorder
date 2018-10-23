@@ -1,12 +1,17 @@
-import { store } from 'react-easy-state';
-import { observe } from '@nx-js/observer-util';
+import { store } from "react-easy-state";
+import { observe } from "@nx-js/observer-util";
+const sessionKey = "mp.v2";
+
 let ls = window.sessionStorage;
-let currentData = ls.getItem('mp');
+let currentData = ls.getItem(sessionKey);
 
-const cartState = currentData ? store(JSON.parse(currentData)) : store({
-  added: []
-});
+const cartState = currentData
+  ? store(JSON.parse(currentData))
+  : store({
+      added: [],
+      cartKey: null
+    });
 
-observe(() => sessionStorage.setItem('mp', JSON.stringify(cartState)))
+observe(() => sessionStorage.setItem(sessionKey, JSON.stringify(cartState)));
 
 export default cartState;

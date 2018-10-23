@@ -1,10 +1,12 @@
 {
-    "/js/app.js": "/js/app.js?id=ab9f1054a4a16e2335db",
-    "/css/app.css": "/css/app.css?id=81931f2a3c76432460b0",
-    "/css/backend.css": "/css/backend.css?id=2091f786ac8430e3a9b9",
-    "/js/neworder.js": "/js/neworder.js?id=aaf1e58cc603b1b40c0a",
-    "/js/mealplans.js": "/js/mealplans.js?id=ac945825357118cef2e1",
-    "/js/report.js": "/js/report.js?id=276f7cbe8e8cf9d5e637",
-    "/js/coupon.js": "/js/coupon.js?id=a7aefa89a331c190892f",
+    "/js/neworder.js": "/js/neworder.js?id=75d5d6a936a182a018ae",
+    "/js/mealplans.js": "/js/mealplans.js?id=e2cf2b568b1730934955",
+    "/js/vendor.js": "/js/vendor.js?id=7a93045fc7f14676a788",
+    "/js/app.js": "/js/app.js?id=71bbc5a67aa8407743f5",
+    "/css/app.css": "/css/app.css?id=37d5aba58c685aaebef5",
+    "/css/backend.css": "/css/backend.css?id=e621cf79b49290710aaa",
+    "/js/report.js": "/js/report.js?id=dc16fc4f97b399fc8d2e",
+    "/js/coupon.js": "/js/coupon.js?id=617754e552affaa2216e",
+    "/js/manifest.js": "/js/manifest.js?id=cc3c938d3203b863bf04",
     "/css/plugins.css": "/css/plugins.css?id=38d7e188411f1bdfc73e"
 }

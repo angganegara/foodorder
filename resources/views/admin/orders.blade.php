@@ -39,7 +39,7 @@
           <td><a title="" class="pill status">{{ $order->order_status }}</a></td>
           <td class="actions">
             <a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}"><i class="far fa-eye"></i></a>
-            <a href="/admin/orders/{{ $order->id }}/delete" onClick="return window.confirm('Are you sure?')" title=""><i class="far fa-trash-alt"></i></a>
+            <a href="/admin/orders/{{ $order->order_number }}/delete" onClick="return window.confirm('Are you sure?')" title=""><i class="far fa-trash-alt"></i></a>
           </td>
         </tr>
       @endforeach

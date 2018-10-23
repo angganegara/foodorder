@@ -21,7 +21,8 @@
 
   @yield('login')
 
+  <script src="{{ asset('js/manifest.js') }}"></script>
+  <script src="{{ env('APP_ENV') == 'local' ? asset('js/vendor.js') : asset('js/vendor.js.gz') }}"></script>
   @yield('admin')
-
 </body>
 </html>

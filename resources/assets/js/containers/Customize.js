@@ -4,17 +4,7 @@ import { Prompt } from "react-router";
 import { CSSTransition } from "react-transition-group";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
-import {
-  Dialog,
-  Button,
-  Spinner,
-  Toaster,
-  Intent,
-  Position,
-  Checkbox,
-  Radio,
-  NumericInput
-} from "@blueprintjs/core";
+import { Dialog, Button, Spinner, Toaster, Intent, Position, Checkbox, Radio, NumericInput } from "@blueprintjs/core";
 const $ = require("jquery");
 
 // helpers
@@ -216,10 +206,7 @@ class Customize extends Component {
   isSnackOptionExist = (id, type = null) => {
     const { activeItem, activeTab } = this.state;
     const data = activeItem.schedules[activeTab];
-    if (
-      data.hasOwnProperty("snackOptions") &&
-      data.snackOptions.hasOwnProperty(id)
-    ) {
+    if (data.hasOwnProperty("snackOptions") && data.snackOptions.hasOwnProperty(id)) {
       if (type) {
         if (!data.snackOptions[id][type]) {
           return false;
@@ -270,8 +257,7 @@ class Customize extends Component {
       activeItem.schedules[activeTab].pickup == "address" &&
       (activeItem.schedules[activeTab].address == "" ||
         activeItem.schedules[activeTab] == null ||
-        (activeItem.schedules[activeTab].area == "" ||
-          activeItem.schedules[activeTab].area == null))
+        (activeItem.schedules[activeTab].area == "" || activeItem.schedules[activeTab].area == null))
     ) {
       appToaster.show({
         message: "Please enter your delivery address and/or area.",
@@ -304,8 +290,7 @@ class Customize extends Component {
         this.showPageLoading();
       } else {
         appToaster.show({
-          message:
-            "To finish, please choose a pick-up station / delivery address for ALL days.",
+          message: "To finish, please choose a pick-up station / delivery address for ALL days.",
           intent: Intent.WARNING
         });
         return false;
@@ -319,9 +304,7 @@ class Customize extends Component {
 
   allAreaSelected = () => {
     const { activeItem } = this.state;
-    const check = activeItem.schedules.filter(
-      s => s.pickup == "address" && s.area == ""
-    ).length;
+    const check = activeItem.schedules.filter(s => s.pickup == "address" && s.area == "").length;
 
     return check <= 0;
   };
@@ -329,9 +312,7 @@ class Customize extends Component {
   isAllStationSelected = () => {
     const { activeItem } = this.state;
     const totalDays = activeItem.schedules.length;
-    const selectedDays = activeItem.schedules.filter(
-      schedule => schedule.pickup != null && schedule.pickup != ""
-    ).length;
+    const selectedDays = activeItem.schedules.filter(schedule => schedule.pickup != null && schedule.pickup != "").length;
 
     return totalDays === selectedDays;
   };
@@ -341,8 +322,7 @@ class Customize extends Component {
     const nextIndex = parseInt(activeTab) + 1;
     if (activeItem.schedules[activeTab].pickup === null) {
       appToaster.show({
-        message:
-          "To finish, please choose a pick-up station / delivery address for all days.",
+        message: "To finish, please choose a pick-up station / delivery address for all days.",
         intent: Intent.WARNING
       });
       return false;
@@ -378,12 +358,7 @@ class Customize extends Component {
   parseStation = (type, index) => {
     switch (type) {
       case "address":
-        return (
-          this.state.activeItem.schedules[index].address +
-          " (" +
-          this.state.activeItem.schedules[index].area +
-          ")"
-        );
+        return this.state.activeItem.schedules[index].address + " (" + this.state.activeItem.schedules[index].area + ")";
         break;
       default:
         return station.stations.filter(s => s.id === type)[0].station;
@@ -396,35 +371,18 @@ class Customize extends Component {
 
     const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
 
-    let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0]
-      .price;
+    let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
 
-    foodPrice =
-      activeItem.packageId === 2
-        ? foodPrice * activeItem.schedules.length
-        : foodPrice;
+    foodPrice = activeItem.packageId === 2 ? foodPrice * activeItem.schedules.length : foodPrice;
 
     const snacksPrice = activeItem.schedules
       .filter(s => s.snacksData.length > 0)
-      .reduce(
-        (accu, s) =>
-          (accu += s.snacksData.reduce(
-            (total, snack) => (total += parseInt(snack.totalPrice)),
-            0
-          )),
-        0
-      );
-    const deliveryPrice = activeItem.schedules
-      .filter(s => s.pickup == "address")
-      .reduce((accu, s) => {
-        return (accu += areas.filter(area => area.name == s.area)[0].price);
-      }, 0);
+      .reduce((accu, s) => (accu += s.snacksData.reduce((total, snack) => (total += parseInt(snack.totalPrice)), 0)), 0);
+    const deliveryPrice = activeItem.schedules.filter(s => s.pickup == "address").reduce((accu, s) => {
+      return (accu += areas.filter(area => area.name == s.area)[0].price);
+    }, 0);
 
-    const totalPrice =
-      parseInt(foodPrice) +
-      parseInt(snacksPrice) +
-      parseInt(slimSundayPrice) +
-      parseInt(deliveryPrice);
+    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice);
 
     return {
       slimSundayPrice,
@@ -448,9 +406,7 @@ class Customize extends Component {
               title: snacks[snack].name,
               price: snacks[snack].price,
               qty: schedule.snacksQty[snack],
-              totalPrice:
-                parseInt(snacks[snack].price) *
-                parseInt(schedule.snacksQty[snack]),
+              totalPrice: parseInt(snacks[snack].price) * parseInt(schedule.snacksQty[snack]),
               categoryId: snacks[snack].category.id,
               category: snacks[snack].category.title,
               description: snacks[snack].description
@@ -475,33 +431,16 @@ class Customize extends Component {
     const schedules = activeItem.schedules;
 
     const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
-    let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0]
-      .price;
-    foodPrice =
-      activeItem.packageId === 2 ? foodPrice * schedules.length : foodPrice;
+    let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
+    foodPrice = activeItem.packageId === 2 ? foodPrice * schedules.length : foodPrice;
     const snacksPrice = schedules
       .filter(s => s.snacksData.length > 0)
-      .reduce(
-        (accu, s) =>
-          (accu += s.snacksData.reduce(
-            (total, snack) => (total += parseInt(snack.totalPrice)),
-            0
-          )),
-        0
-      );
+      .reduce((accu, s) => (accu += s.snacksData.reduce((total, snack) => (total += parseInt(snack.totalPrice)), 0)), 0);
     const deliveryPrice = activeItem.schedules
       .filter(s => s.pickup == "address")
-      .reduce(
-        (accu, s) =>
-          (accu += areas.filter(area => area.name == s.area)[0].price),
-        0
-      );
+      .reduce((accu, s) => (accu += areas.filter(area => area.name == s.area)[0].price), 0);
 
-    const totalPrice =
-      parseInt(foodPrice) +
-      parseInt(snacksPrice) +
-      parseInt(slimSundayPrice) +
-      parseInt(deliveryPrice);
+    const totalPrice = parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice);
 
     let data = {
       ...activeItem,
@@ -521,15 +460,29 @@ class Customize extends Component {
 
     cartState.added[index] = data;
     // actually that's all ... no we're just showing popup
-    this.setState({
-      activeItem: { ...activeItem, complete: true },
-      cartLoading: false,
-      cartDialog: true
+    // switch to server side cart, lets try
+    let url = "";
+    let postData = null;
+    if (cartState.cartKey && cartState.cartKey != "") {
+      // update
+      url = "/api/cart/update";
+      postData = { cartData: JSON.stringify(cartState.added), cartKey: cartState.cartKey };
+    } else {
+      url = "/api/cart/save";
+      postData = { data: JSON.stringify(cartState.added) };
+    }
+    axios.post(url, postData).then(res => {
+      const cartKey = res.data;
+      cartState.cartKey = cartKey;
+      this.setState({
+        activeItem: { ...activeItem, complete: true },
+        cartLoading: false,
+        cartDialog: true
+      });
     });
   };
 
-  toggleCartDialog = () =>
-    this.setState({ cartDialog: !this.state.cartDialog });
+  toggleCartDialog = () => this.setState({ cartDialog: !this.state.cartDialog });
   returnToHomepage = () => this.props.history.push("/");
   goToCheckout = () => this.props.history.push("/checkout");
 
@@ -562,12 +515,7 @@ class Customize extends Component {
     }
     return (
       <React.Fragment>
-        <Snacks
-          itemKey={activeItem.key}
-          open={snackOverlay}
-          date={activeDate}
-          toggleWindow={this.toggleSnackOverlay}
-        />
+        <Snacks itemKey={activeItem.key} open={snackOverlay} date={activeDate} toggleWindow={this.toggleSnackOverlay} />
         <Prompt
           when={!activeItem.complete}
           message="This menu is incomplete. Leaving this page will delete this menu from your cart. Are you sure?"
@@ -584,22 +532,14 @@ class Customize extends Component {
             >
               <div className="pt-dialog-body">
                 <p>
-                  You have successfully add <strong>{food.name}</strong> to your
-                  cart.
+                  You have successfully add <strong>{food.name}</strong> to your cart.
                 </p>
                 <p>Do you want to go to checkout page?</p>
               </div>
               <div className="pt-dialog-footer">
                 <div className="pt-dialog-footer-actions">
-                  <Button
-                    onClick={this.returnToHomepage}
-                    text="No, return to homepage"
-                  />
-                  <Button
-                    intent={Intent.PRIMARY}
-                    onClick={this.goToCheckout}
-                    text="Yes, go to Checkout page"
-                  />
+                  <Button onClick={this.returnToHomepage} text="No, return to homepage" />
+                  <Button intent={Intent.PRIMARY} onClick={this.goToCheckout} text="Yes, go to Checkout page" />
                 </div>
               </div>
             </Dialog>
@@ -610,9 +550,7 @@ class Customize extends Component {
                 {!lastTab && (
                   <React.Fragment>
                     <h1>Customize your Order</h1>
-                    <p>
-                      Select your pick-up station, snacks & drinks for each day
-                    </p>
+                    <p>Select your pick-up station, snacks & drinks for each day</p>
                   </React.Fragment>
                 )}
                 {lastTab && <h1>Review your Order</h1>}
@@ -625,39 +563,19 @@ class Customize extends Component {
                           {days.map((day, index) => (
                             <li
                               className={`
-                              ${
-                                activeItem.schedules[index].pickup
-                                  ? "tab-clickable"
-                                  : ""
-                              }
-                              ${
-                                index === activeTab && !lastTab
-                                  ? "tab-active"
-                                  : ""
-                              }
+                              ${activeItem.schedules[index].pickup ? "tab-clickable" : ""}
+                              ${index === activeTab && !lastTab ? "tab-active" : ""}
                             `}
                               key={index}
                             >
-                              <a
-                                href="javascript:"
-                                title=""
-                                onClick={e => this.changeTab(e, index)}
-                              >
+                              <a href="javascript:" title="" onClick={e => this.changeTab(e, index)}>
                                 <div className="tab-title">Day {index + 1}</div>
                                 <div className="tab-date">{day.label}</div>
                               </a>
                             </li>
                           ))}
-                          <li
-                            className={`tab-clickable ${
-                              lastTab ? "tab-active" : ""
-                            }`}
-                          >
-                            <a
-                              href="javascript:"
-                              title=""
-                              onClick={e => this.changeTab(e, 99)}
-                            >
+                          <li className={`tab-clickable ${lastTab ? "tab-active" : ""}`}>
+                            <a href="javascript:" title="" onClick={e => this.changeTab(e, 99)}>
                               <div className="tab-title">Finish</div>
                               <div className="tab-date">Review</div>
                             </a>
@@ -678,19 +596,8 @@ class Customize extends Component {
                         prices={this.calculateDetails()}
                       />
                     )}
-                    <div
-                      className={
-                        lastTab
-                          ? "customize--tabs-body last-tab"
-                          : "customize--tabs-body"
-                      }
-                    >
-                      <CSSTransition
-                        in={this.state.pageLoading}
-                        timeout={200}
-                        classNames="hiw-"
-                        unmountOnExit
-                      >
+                    <div className={lastTab ? "customize--tabs-body last-tab" : "customize--tabs-body"}>
+                      <CSSTransition in={this.state.pageLoading} timeout={200} classNames="hiw-" unmountOnExit>
                         {state => (
                           <div className="page-loading">
                             <div className="loading">
@@ -701,18 +608,13 @@ class Customize extends Component {
                       </CSSTransition>
                       {days.map((day, index) => (
                         <div
-                          className={`tab ${
-                            index === activeTab ? "tab-active" : ""
-                          } ${this.state.pageLoading ? "tab-transition" : ""}`}
+                          className={`tab ${index === activeTab ? "tab-active" : ""} ${this.state.pageLoading ? "tab-transition" : ""}`}
                           key={index}
                         >
                           <div className="customize--body">
                             <div className="customize--item">
                               <figure>
-                                <img
-                                  src={`/images/foods/thumb_${food.id}.jpg`}
-                                  alt={food.name}
-                                />
+                                <img src={`/images/foods/thumb_${food.id}.jpg`} alt={food.name} />
                               </figure>
                               <span>{food.name}</span>
                             </div>
@@ -721,92 +623,34 @@ class Customize extends Component {
                               selectedSnacks.map((snack, index) => (
                                 <div className="customize--item" key={index}>
                                   <div className="snacks-icons">
-                                    {sitem[snack].gf == 1 && (
-                                      <img
-                                        src="/images/icons/gf.png"
-                                        alt="Gluten Free"
-                                        title="Gluten Free"
-                                      />
-                                    )}
-                                    {sitem[snack].vegan == 1 && (
-                                      <img
-                                        src="/images/icons/vegan.png"
-                                        alt="Vegan"
-                                        title="Vegan"
-                                      />
-                                    )}
-                                    {sitem[snack].raw == 1 && (
-                                      <img
-                                        src="/images/icons/raw.png"
-                                        alt="RAW"
-                                        title="RAW"
-                                      />
-                                    )}
+                                    {sitem[snack].gf == 1 && <img src="/images/icons/gf.png" alt="Gluten Free" title="Gluten Free" />}
+                                    {sitem[snack].vegan == 1 && <img src="/images/icons/vegan.png" alt="Vegan" title="Vegan" />}
+                                    {sitem[snack].raw == 1 && <img src="/images/icons/raw.png" alt="RAW" title="RAW" />}
                                     {sitem[snack].natural == 1 && (
-                                      <img
-                                        src="/images/icons/natural.png"
-                                        alt="100% Natural"
-                                        title="100% Natural"
-                                      />
+                                      <img src="/images/icons/natural.png" alt="100% Natural" title="100% Natural" />
                                     )}
                                   </div>
-                                  <a
-                                    href="javascript:"
-                                    title=""
-                                    className="snacks-delete"
-                                    onClick={e => this.removeSnack(e, snack)}
-                                  >
+                                  <a href="javascript:" title="" className="snacks-delete" onClick={e => this.removeSnack(e, snack)}>
                                     <i className="fal fa-times" />
                                   </a>
                                   <figure>
-                                    <img
-                                      src={`/images/snacks/${snack}.jpg`}
-                                      alt=""
-                                    />
+                                    <img src={`/images/snacks/${snack}.jpg`} alt="" />
                                   </figure>
-                                  <span>
-                                    {sitem && sitem[snack] && sitem[snack].name}
-                                  </span>
-                                  {sitem[snack].protein && (
-                                    <span className="opt">
-                                      {
-                                        days[activeTab].snackOptions[snack]
-                                          .protein
-                                      }
-                                    </span>
-                                  )}
-                                  {sitem[snack].flavour && (
-                                    <span className="opt">
-                                      /{" "}
-                                      {
-                                        days[activeTab].snackOptions[snack]
-                                          .flavour
-                                      }
-                                    </span>
-                                  )}
+                                  <span>{sitem && sitem[snack] && sitem[snack].name}</span>
+                                  {sitem[snack].protein && <span className="opt">{days[activeTab].snackOptions[snack].protein}</span>}
+                                  {sitem[snack].flavour && <span className="opt">/ {days[activeTab].snackOptions[snack].flavour}</span>}
                                   <div className="snacks-qty">
                                     <label>QTY</label>
                                     <NumericInput
                                       min={1}
                                       fill={false}
-                                      onValueChange={(vnum, vstring) =>
-                                        this.updateSnackQty(
-                                          vnum,
-                                          vstring,
-                                          snack
-                                        )
-                                      }
+                                      onValueChange={(vnum, vstring) => this.updateSnackQty(vnum, vstring, snack)}
                                       value={days[activeTab].snacksQty[snack]}
                                     />
                                   </div>
                                 </div>
                               ))}
-                            <a
-                              href="javascript:"
-                              title=""
-                              className="customize--add-snacks"
-                              onClick={this.showSnacks}
-                            >
+                            <a href="javascript:" title="" className="customize--add-snacks" onClick={this.showSnacks}>
                               <div className="blank">
                                 <i className="fa fa-2x fa-plus" />
                               </div>
@@ -825,9 +669,7 @@ class Customize extends Component {
                                       className="radio"
                                       label={<StationLabel station={s} />}
                                       checked={day.pickup === s.id}
-                                      onChange={e =>
-                                        this.updateStation(e, day, s.id)
-                                      }
+                                      onChange={e => this.updateStation(e, day, s.id)}
                                       value={s.id}
                                     />
                                   ))}
@@ -835,9 +677,7 @@ class Customize extends Component {
                                 className="radio"
                                 label="Your address of choice"
                                 checked={day.pickup === "address"}
-                                onChange={e =>
-                                  this.updateStation(e, day, "address")
-                                }
+                                onChange={e => this.updateStation(e, day, "address")}
                                 value="address"
                               />
                               {day.pickup === "address" && (
@@ -845,34 +685,18 @@ class Customize extends Component {
                                   <textarea
                                     rows="7"
                                     placeholder="Enter your address here"
-                                    onChange={e =>
-                                      this.updateAddress(e, day, "address")
-                                    }
-                                    value={
-                                      day.address
-                                        ? day.address
-                                        : address
-                                          ? address
-                                          : ""
-                                    }
+                                    onChange={e => this.updateAddress(e, day, "address")}
+                                    value={day.address ? day.address : address ? address : ""}
                                   />
                                   <label className="area">Select Area</label>
                                   <div className="pt-select">
-                                    <select
-                                      onChange={e =>
-                                        this.updateAddress(e, day, "area")
-                                      }
-                                      value={day.area}
-                                    >
+                                    <select onChange={e => this.updateAddress(e, day, "area")} value={day.area}>
                                       <option value="">Select area</option>
                                       {areas.map((area, aindex) => (
                                         <option value={area.name} key={aindex}>
                                           {area.name}
                                           &nbsp;
-                                          {area.price > 0 &&
-                                            "(" +
-                                              parsePrice(area.price) +
-                                              " IDR / day)"}
+                                          {area.price > 0 && "(" + parsePrice(area.price) + " IDR / day)"}
                                           {area.price <= 0 && "(Free)"}
                                         </option>
                                       ))}

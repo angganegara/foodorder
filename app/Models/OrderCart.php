@@ -36,4 +36,9 @@ class OrderCart extends Model
   {
     return number_format($this->total_price, 0);
   }
+
+  public function diet()
+  {
+    return $this->belongsTo(\App\Models\Diet::class, 'meal_id', 'id');
+  }
 }

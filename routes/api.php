@@ -23,6 +23,11 @@ Route::post('apply-coupon', 'CouponController@applyCoupon');
 Route::get('items', 'ItemController@index');
 Route::get('items/categorize', 'ItemController@categorize');
 
+Route::post('cart/save', 'CartController@save');
+Route::post('cart/content', 'CartController@show');
+Route::post('cart/update', 'CartController@update');
+Route::post('cart/empty', 'CartController@delete');
+
 Route::get('detox', 'FoodController@detox');
 
 Route::post('partners', 'PartnerController@index');

@@ -9,6 +9,7 @@ use App\Models\OrderSchedule;
 use App\Models\Diet;
 use App\Models\Partner;
 use App\Models\Item;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Mail;
 
 class OrderHelper
@@ -111,6 +112,8 @@ class OrderHelper
     $partner = Partner::where('domain', $url);
     $snacks = Item::all(['id', 'name', 'price', 'flavour', 'protein'])->keyBy('id');
     $stations = Partner::all(['id', 'station'])->keyBy('id');
+    $cartDB = Cart::where('cart_key', $request->cartKey)->first();
+    $cartData = json_decode($cartDB->cart, true);
 
     $order = new Order;
     $total = 0;
@@ -143,7 +146,7 @@ class OrderHelper
     $order->save();
 
     // save cart content
-    foreach ($request->cart as $cart) {
+    foreach ($cartData as $cart) {
       $oc = new OrderCart;
 
       $oc->order_id = $order->id;

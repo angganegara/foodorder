@@ -57,7 +57,7 @@ class App extends Component {
     presetName: "",
     overwrite: false,
     alertOpen: false,
-    loadFrom: ""
+    loadFrom: "preset"
   };
 
   async componentDidMount() {
@@ -310,254 +310,178 @@ class App extends Component {
         </Alert>
         <DaysEditor {...editorData} active={editor} saveData={this.saveComponentEditor} closeEditor={this.closeEditor} />
         <div className="mp-wrapper">
-          <h1>Create New Order</h1>
-          <div className="inner">
-            <div className="columns form-inputs is-multiline">
-              <Input label="First name" column="fname" value={fname} classNames="is-3" handleChange={this.changeField} />
-              <Input label="Last name" column="lname" value={lname} classNames="is-3" handleChange={this.changeField} />
-              <Input label="Email Address" column="email" value={email} classNames="is-3" handleChange={this.changeField} />
-              <Input label="Phone number" column="phone" value={phone} classNames="is-3" handleChange={this.changeField} />
+          <div className="mp-sidebar">
+            <h1>Create New Order</h1>
 
-              <Input label="Price (Subtotal)" column="price" value={price} classNames="is-3" handleChange={this.changeField} />
-              <Input label="Discount" column="discount" value={discount} classNames="is-3" handleChange={this.changeField} />
-              <Input label="Delivery Fee" column="delivery" value={delivery} classNames="is-3" handleChange={this.changeField} />
-              <Input label="Total Price" column="total" value={total} classNames="is-3" handleChange={this.changeField} />
+            <div className="mp-sidebar-forms">
+              <div className="columns form-inputs is-multiline">
+                <Input label="First name" column="fname" value={fname} classNames="is-6" handleChange={this.changeField} />
+                <Input label="Last name" column="lname" value={lname} classNames="is-6" handleChange={this.changeField} />
+                <Input label="Email Address" column="email" value={email} classNames="is-6" handleChange={this.changeField} />
+                <Input label="Phone number" column="phone" value={phone} classNames="is-6" handleChange={this.changeField} />
 
-              <div className="column is-3">
-                <label className="pt-label">
-                  Days
-                  <div className="pt-select">
-                    <select onChange={this.changeTotalDays} defaultValue={totalDays}>
-                      {availableDays.map((day, index) => (
-                        <option value={day} key={index}>
-                          {day} days
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </label>
-              </div>
-              <div className="column is-12">
-                <label className="pt-label">Meal Plan Components</label>
-                <div className="dropzone-wrapper">
-                  {days.map(day => (
-                    <DaysDrop
-                      key={day.index}
-                      day={day.day}
-                      items={items}
-                      index={day.index}
-                      onDrop={item => this.handleDrop(day.index, item)}
-                      showEditor={this.showComponentEditor}
-                      copyDay={this.copyComponent}
-                      clearDay={this.clearCompoonent}
-                      copyData={copyData}
-                      pasteData={this.pasteComponent}
-                    />
-                  ))}
+                <Input label="Price (Subtotal)" column="price" value={price} classNames="is-6" handleChange={this.changeField} />
+                <Input label="Discount" column="discount" value={discount} classNames="is-6" handleChange={this.changeField} />
+                <Input label="Delivery Fee" column="delivery" value={delivery} classNames="is-6" handleChange={this.changeField} />
+                <Input label="Total Price" column="total" value={total} classNames="is-6" handleChange={this.changeField} />
+
+                <div className="column is-12">
+                  <label className="pt-label">
+                    Days
+                    <div className="pt-select">
+                      <select onChange={this.changeTotalDays} defaultValue={totalDays}>
+                        {availableDays.map((day, index) => (
+                          <option value={day} key={index}>
+                            {day} days
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </label>
                 </div>
-              </div>
-              <div className="column is-6">
-                <label className="custom-label">Save Preset</label>
-                <ControlGroup fill={false}>
-                  <InputGroup placeholder="save preset as ..." onChange={this.handlePresetName} />
-                  <Button onClick={this.savePreset}>
-                    <span>
-                      <i className={`fal ${isSaving ? "fa-spinner-third fa-spin" : "fa-check"}`} />
-                      &nbsp;
-                      {isSaving ? "" : "SAVE"}
-                    </span>
-                  </Button>
-                </ControlGroup>
-              </div>
-              <div className="column is-12">
-                <Button icon="plus" text="SUBMIT" intent={Intent.PRIMARY} large={true} onClick={this.handleSubmit} />
+                <div className="column is-12">
+                  <div className="separator">
+                    <i className="fa fa-burn" />
+                  </div>
+                </div>
+                <div className="column is-12 center">
+                  <ButtonGroup large={true}>
+                    <Button onClick={e => this.handleLoadFrom(e, "preset")} intent={loadFrom == "preset" ? Intent.PRIMARY : Intent.NONE}>
+                      <i className="far fa-file" /> Preset
+                    </Button>
+                    <Button
+                      onClick={e => this.handleLoadFrom(e, "mealplan")}
+                      intent={loadFrom == "mealplan" ? Intent.PRIMARY : Intent.NONE}
+                    >
+                      <i className="far fa-database" /> Meal Plan
+                    </Button>
+                  </ButtonGroup>
+                </div>
+                <div className="column is-12">
+                  <div className="load-plan">
+                    {loadFrom &&
+                      loadFrom == "mealplan" && (
+                        <table className="pt-table table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Category</th>
+                              <th>&nbsp;</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {meals &&
+                              meals.map(meal => (
+                                <tr key={meal.id}>
+                                  <td>
+                                    <b>{meal.name}</b>
+                                  </td>
+                                  <td>{meal.category}</td>
+                                  <td>
+                                    <ButtonGroup minimal={false} large={false}>
+                                      <Button icon="eye-open" text="" onClick={e => this.getPlan(e, meal.id)} />
+                                    </ButtonGroup>
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      )}
+                    {loadFrom &&
+                      loadFrom == "preset" && (
+                        <table className="pt-table table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Days</th>
+                              <th>&nbsp;</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {presets &&
+                              presets.map(preset => (
+                                <tr key={preset.id}>
+                                  <td>{preset.preset_name}</td>
+                                  <td>{preset.email}</td>
+                                  <td>{preset.days}</td>
+                                  <td>
+                                    <ButtonGroup minimal={false} large={false}>
+                                      <Button icon="eye-open" text="" onClick={e => this.getPreset(e, preset.id)} />
+                                    </ButtonGroup>
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <br />
-          <h1>Load from Preset / Meal Plan database</h1>
-          <ButtonGroup large={true}>
-            <Button onClick={e => this.handleLoadFrom(e, "preset")} intent={loadFrom == "preset" ? Intent.PRIMARY : Intent.NONE}>
-              <i className="far fa-file" /> Load Preset
-            </Button>
-            <Button onClick={e => this.handleLoadFrom(e, "mealplan")} intent={loadFrom == "mealplan" ? Intent.PRIMARY : Intent.NONE}>
-              <i className="far fa-database" /> Load Meal Plan
-            </Button>
-          </ButtonGroup>
-          <br />
-          <br />
-          {loadFrom != "" &&
-            (!mealplans && !preset) && (
-              <div className="inner">
-                <div className="mp-loadout">
-                  <span className="icon">
-                    <i className="fal fa-archive" />
-                  </span>
-                  <p>
-                    Select any {loadFrom == "mealplan" ? "Meal Plan" : "Preset"} below and
-                    <br />
-                    click <span className="pt-icon-standard pt-icon-eye-open" /> to load the plan here
-                  </p>
+          <div className="mp-inner">
+            <h1>meal plan components</h1>
+            <div className="mp-inner-content">
+              <div className="columns form-inputs is-multiline">
+                <div className="column is-12">
+                  <div className="dropzone-wrapper">
+                    {days.map(day => (
+                      <DaysDrop
+                        key={day.index}
+                        day={day.day}
+                        items={items}
+                        index={day.index}
+                        onDrop={item => this.handleDrop(day.index, item)}
+                        showEditor={this.showComponentEditor}
+                        copyDay={this.copyComponent}
+                        clearDay={this.clearCompoonent}
+                        copyData={copyData}
+                        pasteData={this.pasteComponent}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="column is-6">
+                  <label className="custom-label">Save Preset</label>
+                  <ControlGroup fill={false}>
+                    <InputGroup placeholder="save preset as ..." onChange={this.handlePresetName} />
+                    <Button onClick={this.savePreset}>
+                      <span>
+                        <i className={`fal ${isSaving ? "fa-spinner-third fa-spin" : "fa-check"}`} />
+                        &nbsp;
+                        {isSaving ? "" : "SAVE"}
+                      </span>
+                    </Button>
+                  </ControlGroup>
+                </div>
+                <div className="column is-12">
+                  <Button icon="plus" text="SUBMIT" intent={Intent.PRIMARY} large={true} onClick={this.handleSubmit} />
                 </div>
               </div>
-            )}
-          {loadFrom == "mealplan" &&
-            mealplans && (
-              <div className="test-drag-wrapper writable">
-                <DaysDrag type="mp" key={mealplans.id} id={mealplans.id} text={mealplans.name} sort={1}>
-                  {mealplans.days.map((plan, index) => (
-                    <DaysDrag
-                      type="days"
-                      key={plan.id}
-                      menu={plan.menu}
-                      id={plan.id}
-                      text=""
-                      sort={index}
-                      showEditor={this.showComponentEditor}
-                      copyDay={this.copyComponent}
-                    />
-                  ))}
-                </DaysDrag>
-              </div>
-            )}
-          {loadFrom == "preset" &&
-            preset && (
-              <div className="test-drag-wrapper writable">
-                <DaysDrag type="mp" key={preset.id} id={preset.id} text={preset.preset_name} sort={1}>
-                  {preset.data.map((plan, index) => (
-                    <DaysDrag
-                      type="days"
-                      key={plan.id}
-                      menu={plan.menu}
-                      id={plan.id}
-                      text=""
-                      sort={index}
-                      showEditor={this.showComponentEditor}
-                      copyDay={this.copyComponent}
-                    />
-                  ))}
-                </DaysDrag>
-              </div>
-            )}
-          <br />
-          {loadFrom &&
-            loadFrom == "mealplan" && (
-              <div className="inner">
-                <table className="pt-table table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Category</th>
-                      <th colSpan="6">Example menu</th>
-                      <th>&nbsp;</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {meals &&
-                      meals.map(meal => (
-                        <tr key={meal.id}>
-                          <td>{meal.name}</td>
-                          <td>{meal.category}</td>
-                          <td>
-                            <b>Day 1</b>
-                            <br />
-                            B. {meal.day_1.breakfast}
-                          </td>
-                          <td>
-                            <b>Day 2</b>
-                            <br />
-                            B. {meal.day_2.breakfast}
-                          </td>
-                          <td>
-                            <b>Day 3</b>
-                            <br />
-                            B. {meal.day_3.breakfast}
-                          </td>
-                          <td>
-                            <b>Day 4</b>
-                            <br />
-                            B. {meal.day_4.breakfast}
-                          </td>
-                          <td>
-                            <b>Day 5</b>
-                            <br />
-                            B. {meal.day_5.breakfast}
-                          </td>
-                          <td>
-                            <b>Day 6</b>
-                            <br />
-                            B. {meal.day_6.breakfast}
-                          </td>
-                          <td>
-                            <ButtonGroup minimal={false} large={false}>
-                              <Button icon="eye-open" text="" onClick={e => this.getPlan(e, meal.id)} />
-                            </ButtonGroup>
-                          </td>
-                        </tr>
+            </div>
+            <div className="mp-loadout">
+              {loadFrom == "mealplan" &&
+                mealplans && (
+                  <div className="test-drag-wrapper writable">
+                    <DaysDrag type="mp" key={mealplans.id} id={mealplans.id} text={mealplans.name} sort={1}>
+                      {mealplans.days.map((plan, index) => (
+                        <DaysDrag
+                          type="days"
+                          key={plan.id}
+                          menu={plan.menu}
+                          id={plan.id}
+                          text=""
+                          sort={index}
+                          showEditor={this.showComponentEditor}
+                          copyDay={this.copyComponent}
+                        />
                       ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          {loadFrom &&
-            loadFrom == "preset" && (
-              <div className="inner">
-                <table className="pt-table table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th colSpan="6">Example menu</th>
-                      <th>&nbsp;</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {presets &&
-                      presets.map(preset => (
-                        <tr key={preset.id}>
-                          <td>{preset.preset_name}</td>
-                          <td>{preset.email}</td>
-                          <td>
-                            <b>Day 1</b>
-                            <br />
-                            B. {preset.data[0].menu.b}
-                          </td>
-                          <td>
-                            <b>Day 2</b>
-                            <br />
-                            B. {preset.data[1].menu.b}
-                          </td>
-                          <td>
-                            <b>Day 3</b>
-                            <br />
-                            B. {preset.data[2].menu.b}
-                          </td>
-                          <td>
-                            <b>Day 4</b>
-                            <br />
-                            B. {preset.data[3].menu.b}
-                          </td>
-                          <td>
-                            <b>Day 5</b>
-                            <br />
-                            B. {preset.data[4].menu.b}
-                          </td>
-                          <td>
-                            <b>Day 6</b>
-                            <br />
-                            B. {preset.data[5].menu.b}
-                          </td>
-                          <td>
-                            <ButtonGroup minimal={false} large={false}>
-                              <Button icon="eye-open" text="" onClick={e => this.getPreset(e, preset.id)} />
-                            </ButtonGroup>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </DaysDrag>
+                  </div>
+                )}
+            </div>
+          </div>
         </div>
       </React.Fragment>
     );

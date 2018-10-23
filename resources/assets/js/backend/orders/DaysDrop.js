@@ -93,7 +93,13 @@ class DaysDrop extends Component {
                   <i className="fal fa-plus-circle" />
                 </span>
                 {isActive && <span>Release to drop</span>}
-                {!isActive && <span>Add new component or drag existing component</span>}
+                {!isActive && (
+                  <span>
+                    Add new component
+                    <br />
+                    or drag existing component
+                  </span>
+                )}
               </a>
               {copyData && (
                 <div className="dropzone-paste">

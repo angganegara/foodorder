@@ -3,9 +3,10 @@
 
   <ul>
     <li class="single"><a href="/admin" title="">Dashboard</a></li>
-    <li class="single"><a href="/admin/meal-plans" title="">Manage Meal Plans</a></li>
-    <li class="parent"><i class="fal fa-angle-down"></i> Order</li>
+    <li class="parent"><i class="fal fa-angle-down"></i> Backend Order</li>
+    <li class="children"><a href="/admin/meal-plans" title="">Manage Meal Plans</a></li>
     <li class="children"><a href="/admin/orders/new" title="">Create New Orders</a></li>
+    <li class="parent"><i class="fal fa-angle-down"></i> Online Order</li>
     <li class="children"><a href="/admin/orders" title="">View Orders</a></li>
     <li class="children"><a href="/admin/orders/schedule" title="" target="_blank">Schedule</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Partner</li>

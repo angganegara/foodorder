@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { view } from "react-easy-state";
-import {
-  Dialog,
-  Button,
-  Spinner,
-  Toaster,
-  Intent,
-  Position
-} from "@blueprintjs/core";
+import { Dialog, Button, Spinner, Toaster, Intent, Position } from "@blueprintjs/core";
 const $ = require("jquery");
 
 import cartState from "../store";
@@ -74,9 +67,7 @@ class Checkout extends Component {
     // 1. load foods and snacks so we get the correct price from server
     axios
       .get("/api/foods")
-      .then(res =>
-        this.setState({ foods: res.data, progress: this.state.progress + 50 })
-      )
+      .then(res => this.setState({ foods: res.data, progress: this.state.progress + 50 }))
       .then(this.loadSnacks());
 
     // hol up - is this thank you page?
@@ -87,16 +78,21 @@ class Checkout extends Component {
   }
 
   loadSnacks = () => {
-    axios
-      .get("/api/items")
-      .then(res =>
-        this.setState({ snacks: res.data, progress: this.state.progress + 50 })
-      );
+    axios.get("/api/items").then(res => this.setState({ snacks: res.data, progress: this.state.progress + 50 }));
   };
 
   isValidEmail = email => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  };
+
+  invalidCart = () => {
+    appToaster.show({
+      message: "There is problem with your cart, please try again.",
+      intent: Intent.DANGER
+    });
+    cartState.added = [];
+    setTimeout(() => (window.location.href = "/"), 2000);
   };
 
   handleChange = (e, target) => {
@@ -131,8 +127,7 @@ class Checkout extends Component {
       errors: { ...this.state.errors, terms: null },
       form: { ...this.state.form, terms: !this.state.form.terms }
     });
-  toggleTermsDialog = () =>
-    this.setState({ termsDialog: !this.state.termsDialog });
+  toggleTermsDialog = () => this.setState({ termsDialog: !this.state.termsDialog });
   agreeTerms = () =>
     this.setState({
       termsDialog: false,
@@ -147,8 +142,7 @@ class Checkout extends Component {
         couponItem: item
       }
     });
-  getTotalDeliveryPrice = () =>
-    cartState.added.reduce((accu, total) => accu + total.deliveryPrice, 0);
+  getTotalDeliveryPrice = () => cartState.added.reduce((accu, total) => accu + total.deliveryPrice, 0);
 
   handleCheckout = () => {
     const { form, payment } = this.state;
@@ -177,22 +171,18 @@ class Checkout extends Component {
       return false;
     }
 
-    const subTotal = cartState.added.reduce(
-      (accu, total) => accu + total.totalPrice,
-      0
-    );
+    const subTotal = cartState.added.reduce((accu, total) => accu + total.totalPrice, 0);
 
     const ua = Useragent.analyze(navigator.userAgent);
     const userAgent = `
       User Agent: ${ua.ua}
-      Browser: ${ua.browser.full} (${ua.browser.name} VERSION ${
-      ua.browser.version
-    })
+      Browser: ${ua.browser.full} (${ua.browser.name} VERSION ${ua.browser.version})
       OS: ${ua.os.full} (${ua.os.name} VERSION ${ua.os.version})
       Device: ${ua.device.full}`;
     const deliveryPrice = this.getTotalDeliveryPrice();
     const data = {
       cart: cartState.added,
+      cartKey: cartState.cartKey,
       form,
       methods: payment,
       subTotal,
@@ -201,11 +191,7 @@ class Checkout extends Component {
     };
 
     // for now we assume payment is cash
-    if (
-      window.confirm(
-        "You are about to send a binding food order. Do you want to submit?"
-      )
-    ) {
+    if (window.confirm("You are about to send a binding food order. Do you want to submit?")) {
       this.setState({ checkoutLoading: true });
       axios
         .post("/api/create-order", data)
@@ -257,14 +243,11 @@ class Checkout extends Component {
           case 101:
             if (message == "StartPaypal" && redirect != "") {
               this.setState({
-                popupMessage:
-                  "Redirecting you to PayPal website. This may take a minute, please don't close your browser."
+                popupMessage: "Redirecting you to PayPal website. This may take a minute, please don't close your browser."
               });
               window.location = redirect;
             } else {
-              window.alert(
-                "There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com"
-              );
+              window.alert("There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com");
             }
             break;
           case 102:
@@ -298,47 +281,32 @@ class Checkout extends Component {
         );
         axios.post("/api/error-log", {
           data: { ordernumber, methods },
-          errorMessage:
-            "Error during submitting order, after the order has been created"
+          errorMessage: "Error during submitting order, after the order has been created"
         });
         this.setState({ checkoutLoading: false });
       });
   };
 
-  clearCart = () => (cartState.added = []);
+  clearCart = () => {
+    axios.post("api/cart/empty", { cartKey: cartState.cartKey }).then(res => {
+      cartState.added = [];
+      cartState.cartKey = null;
+    });
+  };
   scrollTop = () => {
     $("html, body").animate({ scrollTop: 0 }, 500);
   };
 
   render() {
-    const {
-      progress,
-      checkoutLoading,
-      payment,
-      finish,
-      form,
-      snacks,
-      errors,
-      termsDialog,
-      popupMessage
-    } = this.state;
+    const { progress, checkoutLoading, payment, finish, form, snacks, errors, termsDialog, popupMessage } = this.state;
 
     return (
       <React.Fragment>
-        <Dialog
-          icon="Document"
-          isOpen={termsDialog}
-          onClose={this.toggleTermsDialog}
-          title="Terms and Conditions"
-        >
+        <Dialog icon="Document" isOpen={termsDialog} onClose={this.toggleTermsDialog} title="Terms and Conditions">
           <TermsAndConditions />
           <div className="pt-dialog-footer">
             <div className="pt-dialog-footer-actions">
-              <Button
-                intent={Intent.PRIMARY}
-                onClick={this.agreeTerms}
-                text="I agree"
-              />
+              <Button intent={Intent.PRIMARY} onClick={this.agreeTerms} text="I agree" />
             </div>
           </div>
         </Dialog>
@@ -369,8 +337,7 @@ class Checkout extends Component {
                       <br />
                       <p>
                         <Link to="/" title="">
-                          <i className="fa fa-fw fa-long-arrow-alt-left" /> Back
-                          to home
+                          <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home
                         </Link>
                       </p>
                       <br />
@@ -400,8 +367,7 @@ class Checkout extends Component {
                       <p>
                         You are almost done
                         <br />
-                        Please check again all details and fill in your personal
-                        data below.
+                        Please check again all details and fill in your personal data below.
                       </p>
                     </div>
                   </div>
@@ -413,8 +379,7 @@ class Checkout extends Component {
                         <h2>Personal Data</h2>
                         <div className="form-section--info">
                           <p>
-                            Enter your details here. Fields marked with{" "}
-                            <span className="req">*</span> are required.
+                            Enter your details here. Fields marked with <span className="req">*</span> are required.
                           </p>
                         </div>
                         <div className="row form-row">
@@ -469,10 +434,8 @@ class Checkout extends Component {
                         <h2>Comments</h2>
                         <div className="form-section--info">
                           <p>
-                            Any special requests we should be aware of? Please
-                            let us know if you prefer your meal plan
-                            vegan/vegetarian/gluten-free/dairy-free. Any food
-                            you don’t like?
+                            Any special requests we should be aware of? Please let us know if you prefer your meal plan
+                            vegan/vegetarian/gluten-free/dairy-free. Any food you don’t like?
                           </p>
                         </div>
                         <div className="row form-row">
@@ -480,9 +443,7 @@ class Checkout extends Component {
                             <Textarea
                               label=""
                               placeholder="Feel free to write some comments here"
-                              handleChange={e =>
-                                this.handleChange(e, "comments")
-                              }
+                              handleChange={e => this.handleChange(e, "comments")}
                               required={true}
                             />
                           </div>
@@ -496,11 +457,9 @@ class Checkout extends Component {
                         <div className="form-section--info">
                           <p>
                             <em>
-                              Please note that bank transfer payment is possible
-                              from
+                              Please note that bank transfer payment is possible from
                               <br />
-                              <b>BCA</b> / <b>Permata</b> / <b>Mandiri</b> bank
-                              accounts only
+                              <b>BCA</b> / <b>Permata</b> / <b>Mandiri</b> bank accounts only
                             </em>
                           </p>
                         </div>
@@ -513,9 +472,7 @@ class Checkout extends Component {
                         <PaymentButton
                           active={payment == "creditcard"}
                           icon="fa fa-credit-card"
-                          handleChange={e =>
-                            this.handlePayment(e, "creditcard")
-                          }
+                          handleChange={e => this.handlePayment(e, "creditcard")}
                           label="Bank Transfer"
                         />
                         <PaymentButton
@@ -531,40 +488,24 @@ class Checkout extends Component {
                     <div className="form-section">
                       <div className="form-inner no-padding">
                         <h2>Order Overview</h2>
-                        <CartOverview
-                          snacks={snacks}
-                          applyCoupon={this.applyCoupon}
-                        />
+                        <CartOverview snacks={snacks} applyCoupon={this.applyCoupon} invalidCart={this.invalidCart} />
                       </div>
                     </div>
 
                     <div className="form-footer">
                       <div className="form-terms">
                         <label>
-                          <input
-                            type="checkbox"
-                            checked={form.terms}
-                            onChange={this.toggleTerms}
-                          />
+                          <input type="checkbox" checked={form.terms} onChange={this.toggleTerms} />
                           &nbsp; I agree to the{" "}
-                          <a
-                            href="javascript:"
-                            onClick={this.toggleTermsDialog}
-                          >
+                          <a href="javascript:" onClick={this.toggleTermsDialog}>
                             <b>Terms and Conditions</b>
                           </a>
                           <br />
-                          {errors.terms && (
-                            <span className="input-error">{errors.terms}</span>
-                          )}
+                          {errors.terms && <span className="input-error">{errors.terms}</span>}
                         </label>
                       </div>
                       <div className="form-submit">
-                        <button
-                          type="submit"
-                          className="btn"
-                          onClick={this.handleCheckout}
-                        >
+                        <button type="submit" className="btn" onClick={this.handleCheckout}>
                           SEND ORDER <i className="fal fa-angle-right" />
                         </button>
                       </div>
