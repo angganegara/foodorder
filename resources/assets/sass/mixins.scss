@@ -3,27 +3,28 @@ $container: 1120px;
 $tablet-portrait: 768px;
 $tablet-landscape: 1024px;
 $desktop-lg: 1420px;
+$desktop-hd: 1820px;
 
 @mixin phone {
   @media (max-width: #{$tablet-portrait - 1px}) {
-    @content
+    @content;
   }
 }
 
 @mixin tablet {
   @media (min-width: #{$tablet-portrait}) and (max-width: #{$tablet-landscape - 1px}) {
-    @content
+    @content;
   }
 }
 
 @mixin desktop-big {
   @media (min-width: #{$desktop-lg}) {
-    @content
+    @content;
   }
 }
 
 @mixin desktop-small {
   @media (max-width: #{$desktop-lg - 1px}) {
-    @content
+    @content;
   }
 }

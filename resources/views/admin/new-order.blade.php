@@ -1,9 +1,7 @@
-@extends('admin.admin')
+@extends('admin')
 
-@section('content')
-<div class="main-content no-overflow">
-  <div class="body" id="order-app"></div>
-</div>
+@section('admin')
+<div id="order-app"></div>
 
 <script src="{{ asset('js/neworder.js') }}"></script>
 @endsection

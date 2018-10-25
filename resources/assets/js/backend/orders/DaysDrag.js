@@ -3,60 +3,23 @@ import { DragSource } from "react-dnd";
 import { ButtonGroup, Button } from "@blueprintjs/core";
 import PopoverCustom from "./PopoverCustom";
 
-let windowHeight = window.innerHeight;
-let windowArea = Math.round(windowHeight / 2);
-let ticking = false;
-let dragInterval;
-
 // drag spec
 const daysSource = {
   beginDrag(props, monitor) {
-    let currentOffset = {};
-    dragInterval = setInterval(() => {
-      const { y } = monitor.getClientOffset();
-      let pos = 0;
-      if (y < windowArea) {
-        if (windowArea - y < 50) {
-          pos = window.scrollY;
-        } else if (windowArea - y >= 50 && windowArea - y < 200) {
-          pos = window.scrollY - 3;
-        } else if (windowArea - y > 200) {
-          pos = window.scrollY - 10;
-        }
-      } else if (y > windowArea) {
-        if (y - windowArea < 50) {
-          pos = window.scrollY;
-        } else if (y - windowArea >= 50 && y - windowArea < 200) {
-          pos = window.scrollY + 3;
-        } else if (y - windowArea > 200) {
-          pos = window.scrollY + 10;
-        }
-      }
-      if (pos > 0) {
-        if (!ticking) {
-          window.requestAnimationFrame(function() {
-            window.scroll(0, pos);
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }
-    }, 10);
     return {
       id: props.id,
       text: props.text,
       index: props.id,
       pos: props.sort,
       menu: props.menu,
-      type: props.type
+      type: props.type,
+      delivery: props.delivery
     };
   },
 
   endDrag(props, monitor) {
     const dropResult = monitor.getDropResult();
     const item = monitor.getItem();
-    //console.log(monitor.getClientOffset());
-    clearInterval(dragInterval);
 
     if (dropResult) {
       //alert(`You dropped ${item.text} into ${dropResult.name}!`);
@@ -96,9 +59,9 @@ class DaysDrag extends Component {
   };
 
   render() {
-    const { isDragging, connectDragPreview, connectDragSource, text, type, sort, children, menu, id } = this.props;
+    const { isDragging, connectDragPreview, connectDragSource, text, type, sort, children, menu, delivery, id } = this.props;
     return connectDragPreview(
-      <div className={type === "days" ? "test-drag" : "test-drag-parent"} style={{ opacity: isDragging ? 0.5 : 1 }}>
+      <div className={type === "days" ? "drag" : "drag-parent"} style={{ opacity: isDragging ? 0.5 : 1 }}>
         {connectDragSource(
           <div className="drag-handle">
             <i className="far fa-bars" />
@@ -123,6 +86,12 @@ class DaysDrag extends Component {
                 </React.Fragment>
               )}
             </div>
+            {delivery != "" && (
+              <div className="drag-delivery">
+                <b>Delivery Address</b>
+                {delivery}
+              </div>
+            )}
             <div className="dropzone-toolbars">
               <ButtonGroup minimal={false} large={false}>
                 <PopoverCustom>

@@ -40,6 +40,12 @@ a:hover {
   background-color: $main-color;
   border-color: $main-color;
 }
+.date-input-full {
+  display: block;
+}
+.pt-label-with-date {
+  margin-bottom: 5px !important;
+}
 section.login {
   width: 100%;
   height: 100%;

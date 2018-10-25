@@ -57,6 +57,77 @@ class OrderController extends Controller
     return view('admin.new-order');
   }
 
+  public function createMPOrder(Request $request)
+  {
+    $order = new Order;
+
+    $form = $request->data;
+
+    $order->order_number = time();
+    $order->fname = $form['fname'];
+    $order->lname = $form['lname'];
+    $order->email = $form['email'];
+    $order->phone = $form['phone'];
+    $order->comments = "BACKEND ORDER";
+    $order->delivery_price = intVal($form['delivery_price']);
+    $order->coupon_code = intVal($form['coupon_value']) > 0 ? "Custom Coupon (Backend Order)" : "";
+    $order->coupon_value = intVal($form['coupon_value']);
+    $order->confirmed = 1;
+    $order->email_sent = 0;
+    $order->ip_address = $request->ip();
+    $order->partner_id = 1;
+    $order->payment = 'cash';
+    $order->paypal_response = null;
+    $order->subtotal = intVal($form['subtotal']);
+    $order->total = intVal($form['total']);
+    $order->paid = 1;
+
+    $order->save();
+
+    // create new cart
+    $oc = new OrderCart;
+
+    $oc->order_id = $order->id;
+    $oc->meal_id = intVal($form['category']['id']);
+    $oc->meals = $form['category']['name'];
+    $oc->package = 2;
+    $oc->qty = 1;
+    $oc->slimsunday = 0;
+    $oc->subtotal = intVal($form['subtotal']);
+    $oc->snacks_price = 0;
+    $oc->slimsunday_price = 0;
+    $oc->delivery_price = intVal($form['delivery_price']);
+    $oc->total_price = intVal($form['total']);
+    $oc->start_date = $form['dates'][0];
+    $oc->end_date = $form['dates'][count($form['dates']) - 1];
+    $oc->schedules_data = null;
+
+    $oc->save();
+
+    // loop items
+    foreach ($form['items'] as $index => $sch) {
+      // save schedule
+      $sc = new OrderSchedule;
+
+      $sc->order_id = $order->id;
+      $sc->order_carts_id = $oc->id;
+      $sc->name = $form['fname'] .' '. $form['lname'];
+      $sc->date = $form['dates'][$index];
+      $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
+      $sc->snacks = null;
+      $sc->station = $sch['delivery'];
+
+      $sc->save();
+    }
+
+    $return = [
+      'id' => $order->id,
+      'order_number' => $order->order_number
+    ];
+
+    return response($return);
+  }
+
   public function schedule()
   {
     $today = Carbon::create();

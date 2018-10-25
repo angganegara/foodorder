@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { view } from "react-easy-state";
 import { DropTarget } from "react-dnd";
 import { ButtonGroup, Button } from "@blueprintjs/core";
 import PopoverCustom from "./PopoverCustom";
+import orderState from "../store/order";
 
 const daysDropTarget = {
   canDrop(props, monitor) {
@@ -31,26 +33,6 @@ function collect(connect, monitor) {
 }
 
 class DaysDrop extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (this.props.dropResult) {
-      if (this.props.dropResult.moved) {
-        //...
-      }
-    }
-    if (!this.props.isOver && nextProps.isOver) {
-      // You can use this as enter handler
-    }
-
-    if (this.props.isOver && !nextProps.isOver) {
-      // You can use this as leave handler
-    }
-
-    if (this.props.isOverCurrent && !nextProps.isOverCurrent) {
-      // You can be more specific and track enter/leave
-      // shallowly, not including nested targets
-    }
-  }
-
   handleClick = () => {
     const { items, index, day } = this.props;
     const data = !items[index] ? null : items[index];
@@ -72,8 +54,12 @@ class DaysDrop extends Component {
     this.props.copyDay(data);
   };
 
+  updateDelivery = (e, index) => {
+    orderState.items[index].delivery = e.target.value;
+  };
+
   render() {
-    const { isOver, canDrop, connectDropTarget, items, index, copyData } = this.props;
+    const { isOver, canDrop, connectDropTarget, items, index, copyData, date } = this.props;
     const isActive = canDrop && isOver;
     let borderColor = "#ddd";
     if (isActive) {
@@ -114,7 +100,12 @@ class DaysDrop extends Component {
           {items[index] && (
             <React.Fragment>
               <div>
-                <b>DAY {index + 1}</b>
+                <div className="dropzone-title">
+                  <span>DAY {index + 1}</span>
+                  <span>
+                    <i className="far fa-calendar-alt" /> {date}
+                  </span>
+                </div>
                 <span>B. {items[index].menu.b}</span>
                 <hr />
                 <span>S. {items[index].menu.bs}</span>
@@ -124,6 +115,15 @@ class DaysDrop extends Component {
                 <span>S. {items[index].menu.ls}</span>
                 <hr />
                 <span>D. {items[index].menu.d}</span>
+              </div>
+              <div className="day-delivery">
+                <b>DELIVERY ADDRESS</b>
+                <textarea
+                  className="delivery-textarea"
+                  rows="3"
+                  onChange={e => this.updateDelivery(e, index)}
+                  value={items[index].delivery}
+                />
               </div>
               <div className="dropzone-toolbars">
                 <ButtonGroup minimal={false} large={false}>
@@ -158,4 +158,4 @@ class DaysDrop extends Component {
   }
 }
 
-export default DropTarget("dropzone", daysDropTarget, collect)(DaysDrop);
+export default DropTarget("dropzone", daysDropTarget, collect)(view(DaysDrop));

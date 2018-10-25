@@ -52,6 +52,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::get('orders', 'OrderController@index');
   Route::get('orders/new', 'OrderController@create');
+  Route::post('orders/new', 'OrderController@createMPOrder');
   Route::get('orders/schedule', 'OrderController@schedule');
   Route::get('orders/{id}/delete', 'OrderController@delete');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');
