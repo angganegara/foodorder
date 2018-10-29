@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "../components/Form/Input";
+import Textarea from "../components/Form/Textarea";
 
 class LongPeriod extends Component {
   state = {
@@ -24,16 +25,14 @@ class LongPeriod extends Component {
       });
       return false;
     }
-    axios
-      .post("/api/long-period-order", { email: email, food: food.name })
-      .then(res => {
-        window.alert("Your message has been sent!");
-        this.setState({
-          isLoading: false,
-          email: ""
-        });
-        this.props.closePopup();
+    axios.post("/api/long-period-order", { email: email, food: food.name }).then(res => {
+      window.alert("Your message has been sent!");
+      this.setState({
+        isLoading: false,
+        email: ""
       });
+      this.props.closePopup();
+    });
   };
 
   render() {
@@ -51,28 +50,18 @@ class LongPeriod extends Component {
             <p>
               Do you want to order more than 6 days at once?
               <br />
-              No problem, just drop as a line here to get in contact with our
-              nutritionists.
+              No problem, just drop as a line here to get in contact with our nutritionists.
             </p>
-            <Input
-              id="email"
-              placeholder="Enter your email address"
-              handleChange={this.handleChange}
-              required={true}
-              error={error}
+            <Input id="email" placeholder="Enter your email address" handleChange={this.handleChange} required={true} error={error} />
+            <br />
+            <Textarea
+              label=""
+              placeholder="Please let us know what kind of meal plan you are interested in, and for how many days you want to order."
+              required={false}
             />
             <br />
-            <button
-              type="submit"
-              className="btn"
-              onClick={this.handleSubmit}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <i className="far fa-spin fa-spinner-third" />
-              ) : (
-                "SUBMIT"
-              )}
+            <button type="submit" className="btn" onClick={this.handleSubmit} disabled={isLoading}>
+              {isLoading ? <i className="far fa-spin fa-spinner-third" /> : "SUBMIT"}
             </button>
           </div>
         </div>

@@ -280,7 +280,7 @@ class Checkout extends Component {
           "Something went wrong and the admin has been notified.\nPlease try again in few minutes or choose another payment methods."
         );
         axios.post("/api/error-log", {
-          data: { ordernumber, methods },
+          data: { ordernumber, methods, err: err.response },
           errorMessage: "Error during submitting order, after the order has been created"
         });
         this.setState({ checkoutLoading: false });

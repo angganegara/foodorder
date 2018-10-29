@@ -1,6 +1,7 @@
 import { store } from "react-easy-state";
 import { observe } from "@nx-js/observer-util";
-export const sessionKey = "MPBackEnd.order";
+
+export const sessionKey = ACTION == "NEW" ? "MPBackEnd.order-new" : "MPBackEnd.order-edit";
 
 let ls = window.sessionStorage;
 let currentData = ls.getItem(sessionKey);
@@ -8,6 +9,7 @@ let currentData = ls.getItem(sessionKey);
 const orderState = currentData
   ? store(JSON.parse(currentData))
   : store({
+      action: ACTION,
       activePage: 1,
       form: {
         fname: "",
@@ -37,7 +39,7 @@ const orderState = currentData
       presets: null,
       preset: null,
       items: [],
-      category: null,
+      category: "",
       editor: false,
       editorData: null,
       isSaving: false,
@@ -51,7 +53,8 @@ const orderState = currentData
       datePeriods: [],
       dateRaw: [],
       duration: 6,
-      preview: false
+      preview: false,
+      carts: null
     });
 
 observe(() => sessionStorage.setItem(sessionKey, JSON.stringify(orderState)));

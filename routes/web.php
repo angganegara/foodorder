@@ -17,10 +17,10 @@ if (env('APP_ENV') === 'local') {
     return $oh->sendOrder($id);
   });
 
-  Route::get('/order/{id}', function ($id, \App\Models\Order $order) {
-    $data = $order->where('id', $id);
+  Route::get('/order/{number}', function ($number, \App\Models\Order $order) {
+    $data = $order->with('ordercart.schedule')->where('order_number', $number)->first();
 
-    return ($data->with('ordercart.schedule')->get());
+    return ($data);
   });
 
   Route::get('meal-plans', 'MealController@index');
@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::post('orders/new', 'OrderController@createMPOrder');
   Route::get('orders/schedule', 'OrderController@schedule');
   Route::get('orders/{id}/delete', 'OrderController@delete');
+  Route::get('orders/{id}/edit', 'OrderController@edit');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');
   Route::post('orders/{ordernumber}/{id}', 'OrderController@update');
 

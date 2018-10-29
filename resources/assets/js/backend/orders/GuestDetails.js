@@ -16,11 +16,46 @@ class GuestDetails extends Component {
   };
 
   componentDidMount() {
-    if (this.props.active) {
-      this.calculateDatePeriod();
-    }
     this.loadCategories();
+
+    if (ACTION == "EDIT") {
+      // always overwrite the
+      const order = JSON.parse(ORDER);
+      const carts = order.ordercart;
+      orderState.form.fname = order.fname;
+      orderState.form.lname = order.lname;
+      orderState.form.email = order.email;
+      orderState.form.phone = order.phone;
+      orderState.form.price = order.subtotal;
+      orderState.form.delivery = order.delivery_price;
+      orderState.form.discount = order.coupon_value;
+      orderState.form.total = order.total;
+      orderState.carts = carts;
+      orderState.category = carts[0].meal_id;
+      orderState.cartID = carts[0].id;
+      orderState.startingDate = Date.parse(new Date(carts[0].start_date));
+      orderState.duration = carts[0].duration;
+
+      this.loadMenuToSchedule();
+
+      this.setState({ startingDate: new Date(carts[0].start_date) }, () => {
+        this.changeTotalDays(orderState.duration);
+      });
+    } else {
+      if (this.props.active) {
+        this.calculateDatePeriod();
+      }
+    }
   }
+
+  loadMenuToSchedule = () => {
+    const { carts, cartID } = orderState;
+    const cart = carts.filter(c => c.id == cartID)[0];
+    const schedules = cart.schedule;
+    schedules.map(sch => {
+      let menu = sch.meals.split("<hr />");
+    });
+  };
 
   loadCategories = () => {
     axios.get("/api/foods").then(res => this.setState({ categories: res.data }));
@@ -58,7 +93,7 @@ class GuestDetails extends Component {
       }
     }
 
-    orderState.duration = duration;
+    orderState.duration = orderState.days.length + 1;
     orderState.startingDate = Date.parse(startingDate);
     orderState.endDate = Date.parse(cloneDate);
     orderState.datePeriods = dates;
@@ -67,7 +102,7 @@ class GuestDetails extends Component {
 
   changeTotalDays = e => {
     let newDays = [];
-    let days = e.target.value;
+    let days = ACTION == "NEW" ? e.target.value : e;
     for (let i = 0; i < parseInt(days); i++) {
       newDays.push({
         index: i,
@@ -95,9 +130,10 @@ class GuestDetails extends Component {
       name: category.name
     };
   };
+  changeCartID = e => (orderState.cartID = e.target.value == "" ? orderState.cartID : e.target.value);
 
   render() {
-    const { form, days, availableDays, endDate, category } = orderState;
+    const { form, days, availableDays, endDate, category, carts, cartID } = orderState;
     const { startingDate, categories } = this.state;
     const { active } = this.props;
     const totalDays = days.length;
@@ -123,33 +159,53 @@ class GuestDetails extends Component {
             </div>
             <hr className="form-separator" />
             <div className="columns form-inputs is-multiline">
-              <div className="column is-12">
-                <label className="pt-label">
-                  Meal Plan Category
-                  <div className="pt-select">
-                    <select onChange={this.changeCategory} value={category ? category.id : ""}>
-                      <option value="">Select Meal Plan Category</option>
-                      {categories &&
-                        categories.map((c, index) => (
-                          <React.Fragment key={c.id}>
-                            {c.id != 8 && <option value={c.id}>{c.name}</option>}
-                            {c.id == 8 &&
-                              c.children.map(subcat => (
-                                <option value={subcat.id} key={subcat.id}>
-                                  {subcat.name}
-                                </option>
-                              ))}
-                          </React.Fragment>
-                        ))}
-                    </select>
-                  </div>
-                </label>
-              </div>
+              {ACTION == "EDIT" && (
+                <div className="column is-12">
+                  <label className="pt-label">
+                    Select Meal Plan to edit
+                    <div className="pt-select">
+                      <select onChange={this.changeCartID} value={cartID}>
+                        <option value="">Select Meal you want to edit</option>
+                        {carts &&
+                          carts.map((cart, index) => (
+                            <option value={cart.id} key={cart.id}>
+                              {cart.meals}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  </label>
+                </div>
+              )}
+              {ACTION == "NEW" && (
+                <div className="column is-12">
+                  <label className="pt-label">
+                    Meal Plan Category
+                    <div className="pt-select">
+                      <select onChange={this.changeCategory} value={category ? category.id : ""}>
+                        <option value="">Select Meal Plan Category</option>
+                        {categories &&
+                          categories.map((c, index) => (
+                            <React.Fragment key={c.id}>
+                              {c.id != 8 && <option value={c.id}>{c.name}</option>}
+                              {c.id == 8 &&
+                                c.children.map(subcat => (
+                                  <option value={subcat.id} key={subcat.id}>
+                                    {subcat.name}
+                                  </option>
+                                ))}
+                            </React.Fragment>
+                          ))}
+                      </select>
+                    </div>
+                  </label>
+                </div>
+              )}
               <div className="column is-6">
                 <label className="pt-label">
                   Days
                   <div className="pt-select">
-                    <select onChange={this.changeTotalDays} defaultValue={totalDays}>
+                    <select onChange={this.changeTotalDays} value={totalDays}>
                       {availableDays.map((day, index) => (
                         <option value={day} key={index}>
                           {day} days

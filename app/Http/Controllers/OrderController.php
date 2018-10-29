@@ -40,6 +40,12 @@ class OrderController extends Controller
     return $this->oh->sendOrder($order_number, true);
   }
 
+  public function edit($id)
+  {
+    $order = Order::with('ordercart.schedule')->find($id);
+    return view('admin.edit-order', compact('order'));
+  }
+
   public function index(Request $request)
   {
 		$orders = Order::orderBy('created_at', 'desc')->with('partner')->paginate(30);
@@ -68,12 +74,12 @@ class OrderController extends Controller
     $order->lname = $form['lname'];
     $order->email = $form['email'];
     $order->phone = $form['phone'];
-    $order->comments = "BACKEND ORDER";
+    $order->backend_order = 1;
     $order->delivery_price = intVal($form['delivery_price']);
     $order->coupon_code = intVal($form['coupon_value']) > 0 ? "Custom Coupon (Backend Order)" : "";
     $order->coupon_value = intVal($form['coupon_value']);
     $order->confirmed = 1;
-    $order->email_sent = 0;
+    $order->email_sent = 1;
     $order->ip_address = $request->ip();
     $order->partner_id = 1;
     $order->payment = 'cash';
@@ -81,6 +87,8 @@ class OrderController extends Controller
     $order->subtotal = intVal($form['subtotal']);
     $order->total = intVal($form['total']);
     $order->paid = 1;
+    $order->backend_order = 1;
+    $order->menu_email_sent = 0;
 
     $order->save();
 
@@ -99,6 +107,7 @@ class OrderController extends Controller
     $oc->delivery_price = intVal($form['delivery_price']);
     $oc->total_price = intVal($form['total']);
     $oc->start_date = $form['dates'][0];
+    $oc->duration = $form['duration'];
     $oc->end_date = $form['dates'][count($form['dates']) - 1];
     $oc->schedules_data = null;
 
@@ -125,6 +134,10 @@ class OrderController extends Controller
       'order_number' => $order->order_number
     ];
 
+    if ($form['sendEmail']) {
+      $this->oh->sendOrder($order->order_number);
+    }
+
     return response($return);
   }
 
@@ -136,33 +149,6 @@ class OrderController extends Controller
     })->get();
 
     return view('admin.schedule', compact('schedules', 'today'));
-  }
-
-  public function update($id, Request $request)
-  {
-    $form = $request->form;
-		$cart = $request->cart;
-		$order = Order::find($id);
-
-		$order->fname = $form['fname'];
-		$order->lname = $form['lname'];
-		$order->email = $form['email'];
-		$order->phone = $form['phone'];
-		$order->intolerance = $form['intolerance'];
-		$order->allergies = $form['allergies'];
-		$order->dislikefood = $form['dislikefood'];
-		$order->extraprice = $form['extraprice'];
-		$order->comments = $form['comments'];
-		$order->save();
-
-		// save carts ?
-		foreach ($cart as $item) {
-			$c = OrderCart::find($item['id']);
-			$c->price = $item['price'];
-			$c->save();
-		}
-
-		return 'OK';
   }
 
   public function delete($id)

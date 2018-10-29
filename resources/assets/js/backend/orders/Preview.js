@@ -16,8 +16,8 @@ class Preview extends Component {
 
   formatDate = date => moment(date).format("DD MMM YYYY");
 
-  handleSubmit = () => {
-    const { form, items, dateRaw, category } = orderState;
+  handleSubmit = (e, { sendEmail }) => {
+    const { form, items, dateRaw, category, duration } = orderState;
     const data = {
       fname: form.fname,
       lname: form.lname,
@@ -28,23 +28,34 @@ class Preview extends Component {
       coupon_value: form.discount,
       total: form.total,
       items: items,
+      duration: duration,
       dates: dateRaw,
-      category: category
+      category: category,
+      sendEmail: sendEmail
     };
     this.setState({ isLoading: true });
+    const successMessage = sendEmail
+      ? "Order successfully saved and email is sent to customer. Redirecting to order page"
+      : "Order successfully saved. Redirecting to order page";
 
     axios.post("/admin/orders/new", { data }).then(res => {
       appToaster.show({
-        message: "Order successfully saved. Redirecting to order page",
+        message: successMessage,
         intent: Intent.SUCCESS
       });
       this.setState({ isLoading: false });
-      console.log(res.data);
       window.sessionStorage.removeItem(sessionKey);
       setTimeout(() => {
         window.location.href = `/admin/orders/${res.data.order_number}/${res.data.id}`;
       }, 3000);
     });
+  };
+  confirmSendingEmail = () => {
+    if (window.confirm("This will send email to customer. Continue?")) {
+      this.handleSubmit(null, { sendEmail: true });
+    } else {
+      return false;
+    }
   };
 
   render() {
@@ -56,8 +67,11 @@ class Preview extends Component {
         <React.Fragment>
           <div className={`mp-preview-wrapper mp-page ${active ? "active" : ""}`}>
             <div className="preview-body half">
-              <h1>
+              <h1 className="edit">
                 <i className="fa fa-address-card" /> customer details
+                <a href="javascript:" onClick={e => this.props.goto(e, 1)} title="" className="heading-edit">
+                  <i className="far fa-pencil" /> Edit
+                </a>
               </h1>
               <div className="columns is-multiline form-preview">
                 <div className="column is-4 label">First Name</div>
@@ -73,8 +87,11 @@ class Preview extends Component {
               </div>
             </div>
             <div className="preview-body half">
-              <h1>
+              <h1 className="edit">
                 <i className="fa fa-money-bill" /> Payment Details
+                <a href="javascript:" onClick={e => this.props.goto(e, 1)} title="" className="heading-edit">
+                  <i className="far fa-pencil" /> Edit
+                </a>
               </h1>
               <div className="columns is-multiline form-preview">
                 <div className="column is-4 label">Subtotal</div>
@@ -88,8 +105,11 @@ class Preview extends Component {
               </div>
             </div>
             <div className="preview-body full">
-              <h1>
+              <h1 className="edit">
                 <i className="fa fa-calendar-alt" /> Customer Schedule
+                <a href="javascript:" onClick={e => this.props.goto(e, 2)} title="" className="heading-edit">
+                  <i className="far fa-pencil" /> Edit
+                </a>
               </h1>
               <div className="page-date-periods">
                 <div className="date-pill">{this.formatDate(startingDate)}</div>
@@ -128,10 +148,22 @@ class Preview extends Component {
                   ))}
               </div>
             </div>
-            <a href="javascript:" title="" onClick={this.handleSubmit} className="next preview-nav">
+            <a href="javascript:" title="" onClick={e => this.handleSubmit(e, { sendEmail: false })} className="next preview-nav">
               {!isLoading && (
                 <span>
                   <i className="fa fa-fw fa-save" /> SAVE
+                </span>
+              )}
+              {isLoading && (
+                <span>
+                  <i className="fal fa-spinner-third fa-spin" />
+                </span>
+              )}
+            </a>
+            <a href="javascript:" title="" onClick={this.confirmSendingEmail} className="next preview-nav preview-email">
+              {!isLoading && (
+                <span>
+                  <i className="fa fa-fw fa-envelope" /> SAVE &amp; SEND EMAIL
                 </span>
               )}
               {isLoading && (

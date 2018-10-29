@@ -39,7 +39,7 @@
                 <td width="100%" colspan="2" valign="middle" style="padding: 20px; font-weight: bold;">
                   <p>Dear {{ $order->fname }} {{ $order->lname }}</p>
                   <p>Thank you for ordering with Motion. Please review the details of your personal data and order below.<br />
-                    Don’t hesitate to contact us in case anything went wrong with your order.</p>
+                    Don’t hesitate to contact us in case anything went wrong with your order.<!--<br /> We will send you an email with your detailed menu shortly.--></p>
                   <p>Enjoy smart eating!<br />Your Motion Team</p>
                 </td>
               </tr>
@@ -178,7 +178,12 @@
                                 <tr>
                                   <td width="75%" style="background-color: #fff; color: #222; line-height: 170%;
                                     #222;padding: 7px 20px; font-size: 12px;border-bottom: 1px solid #f5f5f5;">
-                                    MEALS: <b>{{ $sch->meals }}</b>
+                                    MEALS:
+                                    @if ($order->backend_order)
+                                      <b>{{ $sch->ordercart->meals }}</b>
+                                    @else
+                                      <b>{{ $sch->meals }}</b>
+                                    @endif
                                     @if ($sch->snacks != '')
                                       <br />SNACKS: <b>{{ $sch->snacks }}</b>
                                     @endif

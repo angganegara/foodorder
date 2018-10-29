@@ -116,12 +116,12 @@ a.mp-nav.next {
 
 a.preview-nav {
   position: fixed;
-  bottom: 2rem;
+  bottom: 5rem;
   z-index: 99;
   display: inline-block;
   background-color: $main-color;
   color: #fff;
-  font-size: 1.5em;
+  font-size: 1em;
   padding: 0.5rem 2rem;
   border-radius: 35px;
   transition: 0.2s ease-in all;
@@ -129,6 +129,9 @@ a.preview-nav {
   &:hover {
     box-shadow: 0 3px 10px 3px rgba(#38383a, 0.25);
   }
+}
+a.preview-email {
+  bottom: 2rem;
 }
 a.preview-nav.next {
   right: 2rem;
@@ -150,6 +153,20 @@ a.preview-nav.next {
     text-transform: capitalize;
     i {
       color: #abacb1;
+    }
+    a.heading-edit {
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 10px;
+      font-weight: bold;
+      color: $main-color;
+    }
+  }
+  h1.edit {
+    display: flex;
+    align-items: center;
+    > i:first-child {
+      margin-right: 5px;
     }
   }
 }

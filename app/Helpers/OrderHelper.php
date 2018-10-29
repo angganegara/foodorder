@@ -141,53 +141,57 @@ class OrderHelper
     $order->subtotal = $request->subTotal;
     $order->total = 0;
     $order->paid = $request->methods == 'cash' ? 1 : 0;
+    $order->backend_order = 0;
+    $order->menu_email_sent = 0;
     $order->user_agent = $request->userAgent;
 
     $order->save();
 
     // save cart content
     foreach ($cartData as $cart) {
-      $oc = new OrderCart;
+      if ($cart['complete']) {
+        $oc = new OrderCart;
 
-      $oc->order_id = $order->id;
-      $oc->meal_id = intVal($cart['id']);
-      $oc->meals = $cart['title'];
-      $oc->package = $cart['packageId'];
-      $oc->qty = $cart['qty'];
-      $oc->slimsunday = $cart['slimSunday'];
-      $oc->subtotal = intVal($cart['foodPrice']) * intVal($cart['qty']);
-      $oc->snacks_price = $cart['snacksPrice'];
-      $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
-      $oc->delivery_price = intVal($cart['deliveryPrice']);
-      $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price;
-      $oc->start_date = $cart['dateStart'];
-      $oc->end_date = $cart['dateEnd'];
-      $oc->schedules_data = json_encode($cart['schedules']);
+        $oc->order_id = $order->id;
+        $oc->meal_id = intVal($cart['id']);
+        $oc->meals = $cart['title'] ? $cart["title"] : null;
+        $oc->package = $cart['packageId'];
+        $oc->qty = $cart['qty'];
+        $oc->slimsunday = $cart['slimSunday'];
+        $oc->subtotal = intVal($cart['foodPrice']) * intVal($cart['qty']);
+        $oc->snacks_price = $cart['snacksPrice'];
+        $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
+        $oc->delivery_price = intVal($cart['deliveryPrice']);
+        $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price;
+        $oc->start_date = $cart['dateStart'];
+        $oc->end_date = $cart['dateEnd'];
+        $oc->schedules_data = json_encode($cart['schedules']);
 
-      if ($cart['schedules'] == '' || is_null($cart['schedules']) || count($cart['schedules']) <= 0) {
-        return response()->json('EMPTY-SCHEDULES', 500);
-        exit;
-      }
+        if ($cart['schedules'] == '' || is_null($cart['schedules']) || count($cart['schedules']) <= 0) {
+          return response()->json('EMPTY-SCHEDULES', 500);
+          exit;
+        }
 
-      $total += $oc->total_price;
+        $total += $oc->total_price;
 
-      $oc->save();
+        $oc->save();
 
-      foreach ($cart['schedules'] as $sch) {
-        // save schedule
-        $sc = new OrderSchedule;
+        foreach ($cart['schedules'] as $sch) {
+          // save schedule
+          $sc = new OrderSchedule;
 
-        $sc->order_id = $order->id;
-        $sc->order_carts_id = $oc->id;
-        $sc->name = $form['fname'] .' '. $form['lname'];
-        $sc->date = $sch['date'];
-        $sc->meals = $cart['title'];
-        $sc->snacks = $this->listSnacks($sch, $snacks);
-        $sc->station = $sch['pickup'] != 'address' ? $stations[$sch['pickup']]->station : $sch['address'];
-        $sc->area = $sch['pickup'] == 'address' ? $sch['area'] : null;
-        $sc->station_id = $sch['pickup'] != 'address' ? $sch['pickup'] : null;
+          $sc->order_id = $order->id;
+          $sc->order_carts_id = $oc->id;
+          $sc->name = $form['fname'] .' '. $form['lname'];
+          $sc->date = $sch['date'];
+          $sc->meals = $cart['title'];
+          $sc->snacks = $this->listSnacks($sch, $snacks);
+          $sc->station = $sch['pickup'] != 'address' ? $stations[$sch['pickup']]->station : $sch['address'];
+          $sc->area = $sch['pickup'] == 'address' ? $sch['area'] : null;
+          $sc->station_id = $sch['pickup'] != 'address' ? $sch['pickup'] : null;
 
-        $sc->save();
+          $sc->save();
+        }
       }
     }
 
@@ -203,7 +207,7 @@ class OrderHelper
   public function sendOrder($order_number, $resend = false)
   {
     $that = $this;
-    $order = Order::where('order_number', $order_number)->with('ordercart.schedule')->first();
+    $order = Order::with('ordercart.schedule')->where('order_number', $order_number)->first();
 
     $orderid = $order->id;
     // extra delivery ?
