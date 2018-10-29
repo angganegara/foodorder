@@ -164,6 +164,7 @@ class OrderHelper
         $oc->delivery_price = intVal($cart['deliveryPrice']);
         $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price;
         $oc->start_date = $cart['dateStart'];
+        $oc->duration = $cart['duration'];
         $oc->end_date = $cart['dateEnd'];
         $oc->schedules_data = json_encode($cart['schedules']);
 
