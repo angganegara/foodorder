@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f826b8db3eb6f082b9d1c28c1a7617a",
+    "content-hash": "a3d2a28a7d9068bf5588e9747f3322c5",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1554,6 +1554,48 @@
                 "uuid"
             ],
             "time": "2018-01-20T00:28:24+00:00"
+        },
+        {
+            "name": "s-ichikawa/laravel-sendgrid-driver",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s-ichikawa/laravel-sendgrid-driver.git",
+                "reference": "a033523c0688d5bcf6a49a23d508faea913e244a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s-ichikawa/laravel-sendgrid-driver/zipball/a033523c0688d5bcf6a49a23d508faea913e244a",
+                "reference": "a033523c0688d5bcf6a49a23d508faea913e244a",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~5.3|~6.2",
+                "illuminate/mail": "~5.3"
+            },
+            "require-dev": {
+                "illuminate/container": "~5.3",
+                "illuminate/filesystem": "~5.3",
+                "phpunit/phpunit": ">=4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sichikawa\\LaravelSendgridDriver\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "shingo.ichikawa",
+                    "email": "ichikawa.shingo.0829@gmail.com"
+                }
+            ],
+            "description": "This library adds a 'sendgrid' mail driver to Laravel.",
+            "time": "2017-01-25T15:29:03+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",

@@ -179,6 +179,7 @@ return [
 
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class
 
     ],
 
