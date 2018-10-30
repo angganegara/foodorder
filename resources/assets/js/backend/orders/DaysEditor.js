@@ -8,7 +8,8 @@ class DaysEditor extends Component {
     bs: "",
     l: "",
     ls: "",
-    d: ""
+    d: "",
+    delivery: ""
   };
 
   componentWillReceiveProps(nextProps) {
@@ -16,14 +17,15 @@ class DaysEditor extends Component {
       const { data } = nextProps;
       if (nextProps.type == "edit") {
         const { b, bs, l, ls, d } = data.menu;
-        this.setState({ b, bs, l, ls, d });
+        this.setState({ b, bs, l, ls, d, delivery: data.delivery });
       } else {
         this.setState({
           b: "",
           bs: "",
           l: "",
           ls: "",
-          d: ""
+          d: "",
+          delivery: ""
         });
       }
     }
@@ -45,16 +47,18 @@ class DaysEditor extends Component {
     this.props.closeEditor();
   };
   handleSubmit = () => {
-    const { b, bs, l, ls, d } = this.state;
+    const { b, bs, l, ls, d, delivery } = this.state;
     const { day, source, id } = this.props;
     if (source == "text") {
+      console.log(delivery);
       this.props.saveData({
         id: day,
         index: day,
         pos: day - 1,
         menu: { b, bs, l, ls, d },
         type: "days",
-        source: "text"
+        source: "text",
+        delivery: delivery
       });
     }
 
@@ -76,7 +80,8 @@ class DaysEditor extends Component {
       bs: "",
       l: "",
       ls: "",
-      d: ""
+      d: "",
+      delivery: ""
     });
   };
 

@@ -44,11 +44,12 @@ class Schedule extends Component {
     orderState.editorData = { type, day, data, source, id, sort };
   };
 
-  saveComponentEditor = ({ id, index, pos, text, menu, source }) => {
+  saveComponentEditor = ({ id, index, pos, text, menu, source, delivery }) => {
     if (source == "text") {
       const { items } = orderState;
       let newItems = [...items];
       newItems[pos] = {
+        delivery,
         id,
         index,
         pos,

@@ -40,16 +40,70 @@ class OrderController extends Controller
     return $this->oh->sendOrder($order_number, true);
   }
 
+  public function index(Request $request)
+  {
+		$orders = Order::orderBy('created_at', 'desc')->with('partner')->paginate(30);
+		return view('admin.orders', compact('orders'));
+  }
+
   public function edit($id)
   {
     $order = Order::with('ordercart.schedule')->find($id);
     return view('admin.edit-order', compact('order'));
   }
 
-  public function index(Request $request)
+  public function update(Request $request)
   {
-		$orders = Order::orderBy('created_at', 'desc')->with('partner')->paginate(30);
-		return view('admin.orders', compact('orders'));
+    $form = $request->data;
+
+    $order = Order::find($form['orderID']);
+
+    $order->fname = $form['fname'];
+    $order->lname = $form['lname'];
+    $order->email = $form['email'];
+    $order->phone = $form['phone'];
+    $order->backend_order = 1;
+    $order->delivery_price = intVal($form['delivery_price']);
+    $order->coupon_value = intVal($form['coupon_value']);
+    $order->confirmed = 1;
+    $order->subtotal = intVal($form['subtotal']);
+    $order->total = intVal($form['total']);
+
+    $order->save();
+
+    $oc = OrderCart::find($form['cartID']);
+
+    $oc->start_date = $form['dates'][0];
+    $oc->duration = $form['duration'];
+    $oc->end_date = $form['dates'][count($form['dates']) - 1];
+    $oc->schedules_data = null;
+
+    $oc->save();
+
+    // delete schedule
+    OrderSchedule::where('order_carts_id', $form['cartID'])->delete();
+
+    foreach ($form['items'] as $index => $sch) {
+      // save schedule
+      $sc = new OrderSchedule;
+
+      $sc->order_id = $order->id;
+      $sc->order_carts_id = $oc->id;
+      $sc->name = $form['fname'] .' '. $form['lname'];
+      $sc->date = $form['dates'][$index];
+      $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
+      $sc->snacks = null;
+      $sc->station = $sch['delivery'];
+
+      $sc->save();
+    }
+
+    $return = [
+      'id' => $order->id,
+      'order_number' => $order->order_number
+    ];
+
+    return response($return);
   }
 
   public function show($ordernumber, $id)
@@ -74,7 +128,6 @@ class OrderController extends Controller
     $order->lname = $form['lname'];
     $order->email = $form['email'];
     $order->phone = $form['phone'];
-    $order->backend_order = 1;
     $order->delivery_price = intVal($form['delivery_price']);
     $order->coupon_code = intVal($form['coupon_value']) > 0 ? "Custom Coupon (Backend Order)" : "";
     $order->coupon_value = intVal($form['coupon_value']);

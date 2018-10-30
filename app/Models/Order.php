@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-	protected $hidden = ['ip_address', 'updated_at'];
+	protected $hidden = ['ip_address', 'updated_at', 'user_agent'];
 	protected $appends = ['name', 'date', 'payment_formatted', 'order_status'];
 	protected $fillable = ['total'];
 

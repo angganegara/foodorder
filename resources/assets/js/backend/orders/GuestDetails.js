@@ -31,12 +31,14 @@ class GuestDetails extends Component {
       orderState.form.discount = order.coupon_value;
       orderState.form.total = order.total;
       orderState.carts = carts;
-      orderState.category = carts[0].meal_id;
+      orderState.category = { id: carts[0].meal_id, name: carts[0].meals };
       orderState.cartID = carts[0].id;
       orderState.startingDate = Date.parse(new Date(carts[0].start_date));
       orderState.duration = carts[0].duration;
 
-      this.loadMenuToSchedule();
+      if (order.backend_order) {
+        this.loadMenuToSchedule();
+      }
 
       this.setState({ startingDate: new Date(carts[0].start_date) }, () => {
         this.changeTotalDays(orderState.duration);
@@ -52,9 +54,30 @@ class GuestDetails extends Component {
     const { carts, cartID } = orderState;
     const cart = carts.filter(c => c.id == cartID)[0];
     const schedules = cart.schedule;
-    schedules.map(sch => {
+    let items = [];
+    schedules.map((sch, index) => {
       let menu = sch.meals.split("<hr />");
+      let menus = {
+        b: menu[0].replace("B: ", ""),
+        bs: menu[1].replace("S: ", ""),
+        l: menu[2].replace("L: ", ""),
+        ls: menu[3].replace("S: ", ""),
+        d: menu[4].replace("D: ", "")
+      };
+      let data = {
+        delivery: sch.station,
+        scheduleID: sch.id,
+        id: null,
+        index: index + 1,
+        menu: menus,
+        pos: index,
+        text: sch.meals,
+        type: "days"
+      };
+      items.push(data);
     });
+
+    orderState.items = items;
   };
 
   loadCategories = () => {
@@ -93,7 +116,7 @@ class GuestDetails extends Component {
       }
     }
 
-    orderState.duration = orderState.days.length + 1;
+    orderState.duration = orderState.days.length;
     orderState.startingDate = Date.parse(startingDate);
     orderState.endDate = Date.parse(cloneDate);
     orderState.datePeriods = dates;

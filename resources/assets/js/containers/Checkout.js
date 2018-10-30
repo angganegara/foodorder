@@ -241,13 +241,17 @@ class Checkout extends Component {
             }
             break;
           case 101:
-            if (message == "StartPaypal" && redirect != "") {
+            const { response } = res.data;
+            if (message == "StartPaypal" && redirect && response.ACK == "Success") {
               this.setState({
                 popupMessage: "Redirecting you to PayPal website. This may take a minute, please don't close your browser."
               });
               window.location = redirect;
             } else {
-              window.alert("There is a problem contacting PayPal. Please notify us at info@motionfitnessbali.com");
+              window.alert("There is a problem contacting PayPal. Please select different payment methods.");
+              this.setState({
+                checkoutLoading: false
+              });
             }
             break;
           case 102:
@@ -475,12 +479,13 @@ class Checkout extends Component {
                           handleChange={e => this.handlePayment(e, "creditcard")}
                           label="Bank Transfer"
                         />
+                        {/*
                         <PaymentButton
                           active={payment == "paypal"}
                           icon="fab fa-paypal"
                           handleChange={e => this.handlePayment(e, "paypal")}
                           label="PayPal"
-                        />
+                        />*/}
                       </div>
                     </div>
                   </div>

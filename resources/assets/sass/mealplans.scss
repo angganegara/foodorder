@@ -116,7 +116,7 @@ a.mp-nav.next {
 
 a.preview-nav {
   position: fixed;
-  bottom: 5rem;
+  bottom: 2rem;
   z-index: 99;
   display: inline-block;
   background-color: $main-color;
@@ -131,7 +131,7 @@ a.preview-nav {
   }
 }
 a.preview-email {
-  bottom: 2rem;
+  bottom: 5rem;
 }
 a.preview-nav.next {
   right: 2rem;
@@ -609,7 +609,7 @@ a.preview-nav.next {
   font-size: 12px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-direction: column;
   min-height: 300px;
   border-radius: 4px;
@@ -628,9 +628,12 @@ a.preview-nav.next {
       text-transform: uppercase;
     }
   }
+  .schedule-menu {
+    margin-bottom: 1rem;
+  }
   .schedule-delivery {
     display: block;
-    margin: 1rem 0;
+    margin: auto 0 0 0;
     span {
       font-weight: bold;
       display: block;

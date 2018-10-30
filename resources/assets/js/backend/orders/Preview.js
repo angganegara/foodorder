@@ -17,8 +17,11 @@ class Preview extends Component {
   formatDate = date => moment(date).format("DD MMM YYYY");
 
   handleSubmit = (e, { sendEmail }) => {
-    const { form, items, dateRaw, category, duration } = orderState;
+    const { form, items, dateRaw, category, duration, cartID } = orderState;
+    const order = JSON.parse(ORDER);
     const data = {
+      orderID: order.id,
+      cartID: cartID,
       fname: form.fname,
       lname: form.lname,
       email: form.email,
@@ -34,11 +37,13 @@ class Preview extends Component {
       sendEmail: sendEmail
     };
     this.setState({ isLoading: true });
+    const successAction = ACTION == "NEW" ? "saved" : "updated";
+    const url = ACTION == "NEW" ? "/admin/orders/new" : "/admin/orders/" + ORDER.id + "/edit";
     const successMessage = sendEmail
-      ? "Order successfully saved and email is sent to customer. Redirecting to order page"
-      : "Order successfully saved. Redirecting to order page";
+      ? "Order successfully " + successAction + " and email is sent to customer. Redirecting to order page"
+      : "Order successfully " + successAction + ". Redirecting to order page";
 
-    axios.post("/admin/orders/new", { data }).then(res => {
+    axios.post(url, { data }).then(res => {
       appToaster.show({
         message: successMessage,
         intent: Intent.SUCCESS
@@ -160,18 +165,20 @@ class Preview extends Component {
                 </span>
               )}
             </a>
-            <a href="javascript:" title="" onClick={this.confirmSendingEmail} className="next preview-nav preview-email">
-              {!isLoading && (
-                <span>
-                  <i className="fa fa-fw fa-envelope" /> SAVE &amp; SEND EMAIL
-                </span>
-              )}
-              {isLoading && (
-                <span>
-                  <i className="fal fa-spinner-third fa-spin" />
-                </span>
-              )}
-            </a>
+            {ACTION == "NEW" && (
+              <a href="javascript:" title="" onClick={this.confirmSendingEmail} className="next preview-nav preview-email">
+                {!isLoading && (
+                  <span>
+                    <i className="fa fa-fw fa-envelope" /> SAVE &amp; SEND EMAIL
+                  </span>
+                )}
+                {isLoading && (
+                  <span>
+                    <i className="fal fa-spinner-third fa-spin" />
+                  </span>
+                )}
+              </a>
+            )}
           </div>
         </React.Fragment>
       )

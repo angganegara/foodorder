@@ -37,7 +37,8 @@ class PaypalHelper
 				'code'     => 101,
 				'message'  => 'StartPaypal',
 				'redirect' => $response['paypal_link'],
-				'token'    => null
+        'token'    => null,
+        'response' => $response
 			];
     } catch (\Exception $e) {
       return response("Error processing PayPal payment : ". $e->getMessage());
