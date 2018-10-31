@@ -216,9 +216,10 @@ class OrderController extends Controller
   {
     $email = $request->email;
     $food = $request->food;
+    $day = $request->day;
 
     try {
-      Mail::send('emails.long-period', compact('email', 'food'), function ($m) use ($food) {
+      Mail::send('emails.long-period', compact('email', 'food', 'day'), function ($m) use ($food) {
         $m
           ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
           ->subject('New '. $food .' long-period order request')
