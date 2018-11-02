@@ -46,7 +46,7 @@ class DaysEditor extends Component {
   };
   handleSubmit = () => {
     const { b, bs, l, ls, d } = this.state;
-    const { day, source, id } = this.props;
+    const { day, source, sort, id } = this.props;
     if (source == "text") {
       this.props.saveData({
         id: day,
@@ -66,7 +66,8 @@ class DaysEditor extends Component {
         this.props.saveData({
           id: id,
           menu: { breakfast, breakfast_snack, lunch, lunch_snack, dinner },
-          source: "database"
+          source: "database",
+          sort: sort
         });
         this.closeEditor();
       });

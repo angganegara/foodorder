@@ -194,14 +194,33 @@ class OrderController extends Controller
     return response($return);
   }
 
-  public function schedule()
+  public function schedule(Request $request)
   {
-    $today = Carbon::create();
+    $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
+
     $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
       $query->where('paid', 1);
     })->get();
+    $tomorrow = $today->addDay()->format('Y-m-d');
+    $yesterday = $today->subDays(2)->format('Y-m-d');
+    $today->addDay();
 
-    return view('admin.schedule', compact('schedules', 'today'));
+    return view('admin.schedule', compact('schedules', 'today', 'yesterday', 'tomorrow'));
+  }
+
+  public function kitchen(Request $request)
+  {
+    $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
+    if (!$request->has('date')) { $today->addDay(); }
+
+    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
+      $query->where('paid', 1);
+    })->get();
+    $tomorrow = $today->addDay()->format('Y-m-d');
+    $yesterday = $today->subDays(2)->format('Y-m-d');
+    $today->addDay();
+
+    return view('admin.kitchen', compact('schedules', 'today', 'yesterday', 'tomorrow'));
   }
 
   public function delete($id)

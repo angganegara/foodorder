@@ -4,9 +4,9 @@
 <div class="main-content schedule-parent">
   <div class="body">
     <h1>
-      <a href="/admin/orders/schedule?date={{ $yesterday }}" title="" class="schedule-nav"><i class="far fa-arrow-left"></i></a>
+      <a href="/admin/orders/kitchen?date={{ $yesterday }}" title="" class="schedule-nav"><i class="far fa-arrow-left"></i></a>
       SCHEDULE {{ $today->format('d M Y') }}
-      <a href="/admin/orders/schedule?date={{ $tomorrow }}" title="" class="schedule-nav"><i class="far fa-arrow-right"></i></a>
+      <a href="/admin/orders/kitchen?date={{ $tomorrow }}" title="" class="schedule-nav"><i class="far fa-arrow-right"></i></a>
     </h1>
 
     <div class="schedule-wrapper schedule">
@@ -24,10 +24,6 @@
               <span>{{ $sc->snacks }}</span>
             </div>
           @endif
-          <div class="schedule--station">
-            <span>{{ $sc->station_id ? 'Pickup at' : 'Deliver to' }}</span>
-            <span>{{ $sc->station }}</span>
-          </div>
         </div>
       @endforeach
 

@@ -7,7 +7,8 @@
     <li class="parent"><i class="fal fa-angle-down"></i> Orders</li>
     <li class="children"><a href="/admin/orders/new" title="">Create New Orders</a></li>
     <li class="children"><a href="/admin/orders" title="">View Orders</a></li>
-    <li class="children"><a href="/admin/orders/schedule" title="" target="_blank">Schedule</a></li>
+    <li class="children"><a href="/admin/orders/schedule" title="" target="_blank">Delivery Schedule</a></li>
+    <li class="children"><a href="/admin/orders/kitchen" title="" target="_blank">Kitchen Schedule</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Partner</li>
     <li class="children"><a href="/admin/partners/report" title="" {!! Request::is('admin/partners/report*') ? 'class="active"' : '' !!}>Monthly Report</a></li>
     <li class="children"><a href="/admin/partners" title="">View Partners</a></li>

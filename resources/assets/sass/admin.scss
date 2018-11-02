@@ -1,4 +1,5 @@
 $main-color: #03a9f4;
+$alt-color: #4a66ff;
 $primary-color: hsl(208, 100%, 50%);
 $box-border: #dbe5eb;
 $heading: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
@@ -81,9 +82,6 @@ section.admin {
   .main-content nav.breadcrumb {
     display: none;
   }
-  .body h1 {
-    font-size: 32px;
-  }
   .tbl {
     tr th,
     tr td {
@@ -153,7 +151,7 @@ section.admin {
   overflow-y: scroll;
   position: relative;
   padding: 4rem 2rem 2rem 2rem;
-  background-color: #eee;
+  background-color: #e4e7ec;
 }
 .main-content.no-overflow {
   overflow-y: initial;
@@ -448,8 +446,34 @@ table.total {
 .schedule-wrapper {
   width: 100%;
   display: grid;
+  justify-items: center;
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+.schedule-parent {
+  h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 2rem;
+  }
+}
+a.schedule-nav {
+  margin: 0 1rem;
+  padding: 0 0.75rem;
+  border-radius: 50%;
+  color: $alt-color;
+  background-color: transparent;
+  border: 1px solid $alt-color;
+  font-size: 0.75em;
+  transition: 0.1s ease-in all;
+  &:hover {
+    background-color: $alt-color;
+    color: #fff;
+    i {
+      color: #fff;
+    }
+  }
 }
 .schedule {
   font-family: "Roboto";
@@ -459,6 +483,7 @@ table.total {
     border: 1px solid #e5e5e5;
     background-color: #fff;
     border-radius: 3px;
+    border-top: 3px solid $alt-color;
   }
   &--name {
     flex-grow: 1;
@@ -477,16 +502,21 @@ table.total {
     color: #252525;
   }
   &--meals {
-    font-size: 28px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.75;
     span {
       display: block;
       font-weight: 300;
       font-size: 12px;
       letter-spacing: 1px;
     }
+    hr {
+      margin: 5px 0;
+    }
   }
   &--snacks {
-    font-size: 20px;
+    font-size: 14px;
     span {
       display: block;
     }
@@ -497,7 +527,7 @@ table.total {
     }
   }
   &--station {
-    font-size: 20px;
+    font-size: 16px;
     span {
       display: block;
     }

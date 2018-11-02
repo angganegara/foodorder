@@ -20,9 +20,28 @@ class MealController extends Controller
 
   public function newPlan(Request $request)
   {
+    $overwrite = $request->overwrite;
+    $plan = MealPlan::where('name', $request->name)->first();
+    if ($plan) {
+      if (!$overwrite) {
+        return response('EXIST');
+      } else {
+        // delete current meal plan
+        $day_1 = $plan->day_1;
+        $day_2 = $plan->day_2;
+        $day_3 = $plan->day_3;
+        $day_4 = $plan->day_4;
+        $day_5 = $plan->day_5;
+        $day_6 = $plan->day_6;
+
+        Component::destroy([$day_1, $day_2, $day_3, $day_4, $day_5, $day_6]);
+        $plan->delete();
+      }
+    }
+
     $name = $request->name;
     $category = $request->category;
-    $items = $request->items;
+    $items = json_decode($request->data, true);
     $ids = [];
     foreach ($items as $index => $item) {
       $day = intVal($index) + 1;
@@ -39,7 +58,7 @@ class MealController extends Controller
 
     $mp = new MealPlan;
     $mp->name = $name;
-    $mp->category = $category;
+    $mp->category = strtoupper($category['name']);
     $mp->day_1 = $ids["day_1"];
     $mp->day_2 = $ids["day_2"];
     $mp->day_3 = $ids["day_3"];
@@ -48,7 +67,9 @@ class MealController extends Controller
     $mp->day_6 = $ids["day_6"];
     $mp->save();
 
-    return response('?OK'. time());
+    $mps = MealPlan::all();
+
+    return response($mps);
   }
 
   public function listPlan()

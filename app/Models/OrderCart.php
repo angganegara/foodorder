@@ -7,7 +7,8 @@ use Carbon\Carbon;
 
 class OrderCart extends Model
 {
-	//protected $table = 'order_carts';
+  //protected $table = 'order_carts';
+  protected $hidden = ['schedules_data'];
   protected $appends = ['package_name', 'date_period', 'parsed_price'];
 
 	public function order()

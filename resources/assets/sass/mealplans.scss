@@ -13,7 +13,8 @@ $desktop-hd: 1820px;
   }
 }
 
-#order-app {
+#order-app,
+#mp-app {
   background-color: #e4e7ec;
   width: 100vw;
   height: 100vh;
@@ -219,6 +220,15 @@ a.preview-nav.next {
   display: flex;
   padding: 2rem;
 }
+.mp-manage .mp-guest-schedule,
+.mp-manage .mp-loadout {
+  h1 {
+    padding: 1.5rem;
+  }
+  .action-buttons {
+    transform: translateY(-50%);
+  }
+}
 .mp-loadout,
 .mp-guest-schedule {
   position: relative;
@@ -261,12 +271,44 @@ a.preview-nav.next {
     display: inline-block;
     padding: 0.5rem 0.75rem;
     transition: 0.2s ease-in all;
+    i {
+      transition: 0.2s ease-in all;
+    }
+  }
+  .action-buttons.reverse a {
+    border: 2px solid $main-color;
+    background-color: #fff;
+    color: $main-color;
+    i {
+      color: $main-color;
+    }
+  }
+  .action-buttons.reverse a:hover,
+  .action-buttons.reverse a.active {
+    background-color: $main-color;
+    border: 2px solid transparent;
+    color: #fff;
+    i {
+      color: #fff;
+    }
   }
   .action-buttons a:hover,
   .action-buttons a.active {
     background-color: $main-color;
     color: #fff;
+    i {
+      color: #fff;
+    }
   }
+}
+.mp-form {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  input.pt-input {
+    width: 300px;
+  }
+  border-bottom: 1px solid #eee;
 }
 .mp-loadout {
   width: 100%;

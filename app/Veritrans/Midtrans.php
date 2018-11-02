@@ -132,7 +132,7 @@ class Midtrans {
 		} else {
 			$result_array = json_decode($result);
 			if ($info['http_code'] != 201 && $info['http_code'] != 200) {
-				$message = 'Midtrans Error (' . $info['http_code'] . '): ' . $result_array->status_message;
+				$message = 'Midtrans Error (' . $info['http_code'] . ')';
         return response($message);
 				throw new \Exception($message, $info['http_code']);
 			} else {
