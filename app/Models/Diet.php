@@ -13,7 +13,9 @@ class Diet extends Model
   ];
 
   protected $appends = [
-    'slug'
+    'pictures',
+    'slug',
+    'prices',
   ];
 
   protected $casts = [
@@ -27,6 +29,27 @@ class Diet extends Model
   public function getPriceFormattedAttribute()
   {
     return number_format($this->price_w, 0);
+  }
+
+  public function getPricesAttribute()
+  {
+    return $this->prices()->get();
+  }
+
+  public function getPicturesAttribute()
+  {
+    $id = $this->id;
+    $dir = app()->basePath('public/images/foods');
+    $files = glob($dir .'/*.jpg');
+
+    $files = array_map(function($value) {
+      $tmp = explode('/', $value);
+      return $tmp[count($tmp)-1];
+    }, $files);
+
+    return array_filter($files, function($value) use($id) {
+      return intVal(explode('_', $value)[0]) === $id;
+    });
   }
 
   public function getSlugAttribute()

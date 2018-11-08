@@ -206,15 +206,10 @@ class Checkout extends Component {
               message: "Your cart is empty. Please add your item again.",
               intent: Intent.DANGER
             });
-            //cartState.added = [];
-            //axios.post('/api/error-log', {data: {...data, err: err.response.data}, errorMessage: 'Error when submitting order'});
+            cartState.added = [];
             this.setState({ checkoutLoading: false });
-            //setTimeout(() => window.location.href = '/', 2000);
+            setTimeout(() => (window.location.href = "/"), 2000);
           } else {
-            window.alert(
-              "Something went wrong and the admin has been notified.\nPlease try again in few minutes or choose another payment methods."
-            );
-            //axios.post('/api/error-log', {data: {...data, err: err.response.data}, errorMessage: 'Error when submitting order'});
             this.setState({ checkoutLoading: false });
           }
         });
@@ -267,8 +262,6 @@ class Checkout extends Component {
                 this.clearCart();
               },
               onError: result => {
-                console.log("Error");
-                console.log(result);
                 this.setState({ checkoutLoading: false });
               },
               onClose: () => {
@@ -280,14 +273,16 @@ class Checkout extends Component {
         }
       })
       .catch(err => {
+        /*
         window.alert(
           "Something went wrong and the admin has been notified.\nPlease try again in few minutes or choose another payment methods."
         );
         axios.post("/api/error-log", {
-          data: { ordernumber, methods, err: err.response },
+          data: { ordernumber, methods, err: err.response.data },
           errorMessage: "Error during submitting order, after the order has been created"
         });
-        this.setState({ checkoutLoading: false });
+        */
+        this.setState({ finish: true, checkoutLoading: false });
       });
   };
 

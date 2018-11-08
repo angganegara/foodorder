@@ -77,7 +77,7 @@ class MiniCart extends Component {
       return (
         <div className="mini-cart">
           <a href="javascript:" title="" className="toggler">
-            <i className="fa fa-fw fa-shopping-cart" /> your cart
+            <i className="fa fa-fw fa-shopping-cart" />
           </a>
           <div className="mini-cart--wrapper">
             <div className="mini-cart--content">
@@ -95,7 +95,7 @@ class MiniCart extends Component {
         <React.Fragment>
           <div className="mini-cart">
             <a href="javascript:" title="" className="toggler">
-              <i className="fa fa-fw fa-shopping-cart" /> your cart
+              <i className="fa fa-fw fa-shopping-cart" />
             </a>
             <div className="mini-cart--wrapper">
               <div className="mini-cart--content">

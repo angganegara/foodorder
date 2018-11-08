@@ -55,30 +55,9 @@ class FoodController extends Controller
     return $this->populateData($foods);
   }
 
-  public function show($id)
+  public function show(Diet $diet)
   {
-    $food = Diet::find($id);
-    $food['price'] = $food->prices;
-    $food->position = intVal($food->position);
-    $food->visible = intVal($food->visible);
-    $food->parent_id = intVal($food->parent_id);
-    $food->category_id = intVal($food->category_id);
-
-    $dir = app()->basePath('public/images/foods');
-    $files = glob($dir .'/*.jpg');
-
-    $files = array_map(function($value) {
-      $tmp = explode('/', $value);
-      return $tmp[count($tmp)-1];
-    }, $files);
-
-    $pictures = array_filter($files, function($value) use($id) {
-      return explode('_', $value)[0] === $id;
-    });
-
-    $food['pictures'] = $pictures;
-
-    return $food;
+    return $diet;
   }
 
   public function price($id, $type)

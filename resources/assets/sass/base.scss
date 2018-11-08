@@ -4,7 +4,8 @@
 $main-color: #b5e2f0;
 $main-color-darker: #74a6b5;
 $alt-color: #5bc0de;
-$heading: "Univers LT Std";
+$heading: "Century Gothic", "Univers LT Std", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+  "Helvetica Neue", sans-serif;
 
 body,
 html {
@@ -25,7 +26,8 @@ html {
 }
 
 body {
-  font-family: "Proxima Nova", "Helvetica", "Arial";
+  font-family: "Century Gothic", "Proxima Nova", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 16px;
   color: #333;
   line-height: 1.5;
@@ -61,19 +63,20 @@ h6 {
 }
 .btn {
   cursor: pointer;
-  background-color: $main-color;
-  color: #454545;
+  border: 1px solid #cacaca;
+  background-color: transparent;
+  color: #757575;
   font-family: $heading;
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: bold;
   text-transform: uppercase;
-  padding: 0.75rem 1.75rem 0.5rem 1.75rem;
-  border: 0;
+  padding: 0.75rem 1.75rem;
   border-radius: 4px;
   transition: 0.2s ease-in-out all;
   &:hover {
-    background-color: $main-color-darker;
-    color: #fff;
+    border-color: #454545;
+    color: #454545;
   }
   &:focus {
     outline: none;
@@ -115,20 +118,20 @@ a.btn-primary {
 }
 .btn-primary {
   display: block;
-  background-color: #74a6b5;
-  text-align: center;
+  border: 1.5px solid #707070;
+  background-color: transparent;
   font-weight: bold;
+  text-align: center;
   font-family: $heading;
   font-size: 16px;
   text-transform: uppercase;
   border-radius: 4px;
   padding: 0.95rem 1rem 0.75rem 1rem;
-  color: #fff;
-  box-shadow: 0 2px 3px 1px rgba(#000, 0.15);
+  color: #707070;
   transition: 0.2s ease-in-out all;
   &:hover {
-    background-color: darken(#74a6b5, 7%);
-    box-shadow: 0 3px 10px 2px rgba(#000, 0.2);
+    border-color: #303030;
+    color: #303030;
   }
 }
 .btn-primary.compact {
@@ -266,19 +269,37 @@ section.home .inner .drop-down h1 {
 
 header {
   width: 100%;
-  background-color: #0a0a0a;
+  background-color: rgba(#0a0a0a, 0.85);
   position: fixed;
   left: 0;
   top: 0;
   z-index: 10;
   backface-visibility: hidden;
 }
+.header-mini {
+  border-bottom: 1px solid #000;
+}
+.header.header-socials {
+  justify-content: flex-end;
+  align-items: center;
+  a {
+    font-size: 14px;
+    color: #fff;
+    padding: 0 7px;
+  }
+  a:last-child {
+    padding: 0 0 0 7px;
+  }
+  a img {
+    display: block;
+  }
+}
 .header {
   position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 1rem 1.8rem 0.5rem 1.8rem;
+  padding: 10px 0;
 
   a.mobile-menu {
     display: none;
@@ -305,7 +326,9 @@ header {
       color: #ddd;
       text-transform: uppercase;
       margin-left: 1rem;
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 25px 7px;
     }
     a.active {
       color: #fff;
@@ -313,7 +336,7 @@ header {
   }
   .main-site {
     margin-left: auto;
-    font-size: 13px;
+    font-size: 14px;
     text-transform: uppercase;
     color: #aaa;
     &:hover {
@@ -332,8 +355,9 @@ header {
   }
   a.toggler {
     color: #ddd;
-    font-size: 13px;
+    font-size: 14px;
     text-transform: uppercase;
+    font-weight: bold;
     .fa {
       margin-left: 0.25rem;
     }
@@ -393,7 +417,7 @@ header {
       width: 0;
       height: 0;
       position: absolute;
-      right: 50px;
+      right: 5px;
       top: -10px;
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
@@ -498,7 +522,7 @@ header {
 }
 
 section.top {
-  padding-top: 25px;
+  padding-top: 45px;
 }
 
 .loading {
@@ -568,6 +592,7 @@ section.home.intro {
     span:nth-child(1) {
       font-family: $heading;
       color: $main-color-darker;
+      font-weight: bold;
       font-size: 22px;
       text-transform: uppercase;
       margin-right: 2rem;
@@ -749,7 +774,7 @@ section.home.foods {
  * DETAILS
  */
 section.top.details {
-  padding-top: 10rem;
+  padding-top: 12rem;
 }
 .details {
   padding: 3rem 0 5rem 0;
@@ -1401,7 +1426,8 @@ section.top.customize {
     }
     .tab-title {
       font-family: $heading;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: bold;
       text-transform: uppercase;
       color: #454545;
       display: block;
@@ -1631,7 +1657,7 @@ section.top.customize {
   justify-content: flex-start;
   align-items: flex-start;
   .review-wrap {
-    width: 500px;
+    flex: 1;
     margin-right: 1rem;
     background-color: #fff;
     border: 1px dashed #dbdbdb;
@@ -1717,7 +1743,7 @@ section.top.customize {
 }
 .review-buttons {
   text-align: right;
-  width: 500px;
+  flex: 1;
   table {
     border: 1px dashed #dbdbdb;
     width: 100%;

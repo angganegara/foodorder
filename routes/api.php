@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Route::get('foods/categorize', 'FoodController@categorize');
 Route::get('foods', 'FoodController@index');
 Route::get('foods/category/{id}', 'FoodController@getItems');
-Route::get('foods/{id}', 'FoodController@show');
+Route::get('foods/{diet}', 'FoodController@show');
 Route::get('foods/{id}/type/{type}', 'FoodController@price');
 Route::post('apply-coupon', 'CouponController@applyCoupon');
 
