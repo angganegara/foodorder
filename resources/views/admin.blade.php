@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon.png" />
   <title>Motion Cafe Bali | Admin</title>
   <link rel="stylesheet" href="/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="/css/backend.css" />
+  <link rel="stylesheet" href="/css/backend.css" media="screen" />
   <link rel="stylesheet" href="/css/redactor.css" />
   <link rel="stylesheet" href="/css/datepicker.min.css" />
 </head>

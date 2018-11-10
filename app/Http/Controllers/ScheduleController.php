@@ -19,19 +19,35 @@ class ScheduleController extends Controller
   public function __construct(OrderHelper $oh)
   {
     $this->oh = $oh;
+    $this->middleware('staff');
   }
 
-  public function index($date='')
+  public function schedule(Request $request)
   {
-    if ($date == '') {
-		  $date = date('Y-m-d');
-    }
+    $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
 
-    $carbon = new Carbon($date);
-		$orders = OrderSchedule::where('date', 'like', '%'. $carbon->format('l, d M Y') .'%')->with('order')->whereHas('order', function ($query) {
-			$query->where('paid', 1);
-		})->get();
+    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
+      $query->where('paid', 1);
+    })->get();
+    $tomorrow = $today->addDay()->format('Y-m-d');
+    $yesterday = $today->subDays(2)->format('Y-m-d');
+    $today->addDay();
 
-    return response()->json($orders);
+    return view('schedule', compact('schedules', 'today', 'yesterday', 'tomorrow'));
+  }
+
+  public function kitchen(Request $request)
+  {
+    $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
+    if (!$request->has('date')) { $today->addDay(); }
+
+    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
+      $query->where('paid', 1);
+    })->get();
+    $tomorrow = $today->addDay()->format('Y-m-d');
+    $yesterday = $today->subDays(2)->format('Y-m-d');
+    $today->addDay();
+
+    return view('kitchen', compact('schedules', 'today', 'yesterday', 'tomorrow'));
   }
 }

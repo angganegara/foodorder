@@ -477,6 +477,9 @@ a.schedule-nav {
 }
 .schedule {
   font-family: "Roboto";
+  &--block {
+    display: block;
+  }
   &--card {
     width: 100%;
     display: flex;

@@ -1,0 +1,29 @@
+@import "../../../node_modules/normalize.css/normalize.css";
+@import "fonts";
+@import "grids";
+@import "mixins";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.main {
+  padding: 1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 14px;
+  display: block;
+  text-align: right;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #aaa;
+  text-transform: uppercase;
+}
+
+a.schedule-nav {
+  display: none;
+}

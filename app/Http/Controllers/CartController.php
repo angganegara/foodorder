@@ -32,7 +32,7 @@ class CartController extends Controller
     $cart = Cart::where('cart_key', $cartKey)->first();
     if (!$cart) {
       $cart = new Cart;
-      $cart->cart_key = $cart_key;
+      $cart->cart_key = $cartKey;
     }
     $cart->cart = $request->cartData;
     $cart->save();

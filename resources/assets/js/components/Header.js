@@ -42,7 +42,7 @@ class Header extends Component {
             <a href="https://www.facebook.com/motionfitnessbali" title="" target="_blank">
               <i className="fab fa-facebook-f" />
             </a>
-            <a href="https://www.facebook.com/motionfitnessbali" title="" target="_blank">
+            <a href="https://instagram.com/avocadocafebali" title="" target="_blank">
               <i className="fab fa-instagram" />
             </a>
             <a href="https://www.facebook.com/motionfitnessbali" title="" target="_blank">

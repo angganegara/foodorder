@@ -20,6 +20,7 @@ mix
   .react("resources/assets/js/backend/coupon.js", "public/js/coupon.js")
   .extract(["react", "react-router-dom", "react-router", "moment"])
   .sass("resources/assets/sass/app.scss", "public/css/app.css")
+  .sass("resources/assets/sass/print.scss", "public/css/print.css")
   .sass("resources/assets/sass/backend.scss", "public/css/backend.css")
   .combine(
     [

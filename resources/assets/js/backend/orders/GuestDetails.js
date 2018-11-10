@@ -41,7 +41,7 @@ class GuestDetails extends Component {
       }
 
       this.setState({ startingDate: new Date(carts[0].start_date) }, () => {
-        this.changeTotalDays(orderState.duration);
+        this.changeTotalDays(null, orderState.duration);
       });
     } else {
       if (this.props.active) {
@@ -123,9 +123,9 @@ class GuestDetails extends Component {
     orderState.dateRaw = datesRaw;
   }
 
-  changeTotalDays = e => {
+  changeTotalDays = (e, day = null) => {
     let newDays = [];
-    let days = ACTION == "NEW" ? e.target.value : e;
+    let days = day ? day : e.target.value;
     for (let i = 0; i < parseInt(days); i++) {
       newDays.push({
         index: i,

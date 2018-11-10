@@ -78,6 +78,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('coupons/{id}/delete', 'CouponController@delete');
 });
 
+Route::get('kitchen/{key}', 'ScheduleController@kitchen');
+Route::get('delivery/{key}', 'ScheduleController@delivery');
+
 Route::get('auth/login', 'AuthController@index')->name('login');
 Route::post('auth/login', 'AuthController@login');
 Route::get('auth/logout', 'AuthController@logout');

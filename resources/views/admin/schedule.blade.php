@@ -13,20 +13,22 @@
 
       @foreach ($schedules as $sc)
         <div class="schedule--card">
-          <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }}</div>
-          <div class="schedule--meals">
-            <span>MEALS</span>
-            {!! $sc->meals !!}
-          </div>
-          @if ($sc->snacks)
-            <div class="schedule--snacks">
-              <span>Snacks</span>
-              <span>{{ $sc->snacks }}</span>
+          <div class="schedule--block">
+            <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }}</div>
+            <div class="schedule--meals">
+              <span>MEALS</span>
+              {!! $sc->meals !!}
             </div>
-          @endif
-          <div class="schedule--station">
-            <span>{{ $sc->station_id ? 'Pickup at' : 'Deliver to' }}</span>
-            <span>{{ $sc->station }}</span>
+            @if ($sc->snacks)
+              <div class="schedule--snacks">
+                <span>Snacks</span>
+                <span>{{ $sc->snacks }}</span>
+              </div>
+            @endif
+            <div class="schedule--station">
+              <span>{{ $sc->station_id ? 'Pickup at' : 'Deliver to' }}</span>
+              <span>{{ $sc->station }}</span>
+            </div>
           </div>
         </div>
       @endforeach
