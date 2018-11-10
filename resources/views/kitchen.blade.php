@@ -19,7 +19,7 @@
         @if ($sc->snacks)
           <div class="schedule--snacks">
             <span>Snacks</span>
-            <span>{{ $sc->snacks }}</span>
+            {{ $sc->snacks }}
           </div>
         @endif
       </div>
