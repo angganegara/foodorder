@@ -10,9 +10,12 @@
   <meta name="robots" content="nofollow" />
   <title>Motion Meal Plan</title>
   <link rel="stylesheet" href="/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="/css/print.css" media="print" />
+  <link rel="stylesheet" href="/css/print.css" />
 </head>
 <body>
   @yield('content')
+
+  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+  @yield('scripts')
 </body>
 </html>

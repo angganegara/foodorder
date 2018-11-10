@@ -324,196 +324,194 @@ class Checkout extends Component {
               <p>Loading ...</p>
             </div>
           )}
-          {progress >= 100 &&
-            finish && (
-              <div className="container">
-                <div className="row">
-                  <div className="col-xs-12 col-md-12">
-                    <h1>Thank you</h1>
-                    <div className="checkout--subtitle">
-                      <p>Your food order has been submitted successfully.</p>
-                      <p>Your Motion Cafe Team</p>
-                      <br />
-                      <p>
-                        <Link to="/" title="">
-                          <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home
-                        </Link>
-                      </p>
-                      <br />
+          {progress >= 100 && finish && (
+            <div className="container">
+              <div className="row">
+                <div className="col-xs-12 col-md-12">
+                  <h1>Thank you</h1>
+                  <div className="checkout--subtitle">
+                    <p>Your food order has been submitted successfully.</p>
+                    <p>Your Motion Cafe Team</p>
+                    <br />
+                    <p>
                       <Link to="/" title="">
-                        <img
-                          src="/images/thankyou.jpg?v=1"
-                          alt=""
-                          style={{
-                            width: "25%",
-                            display: "block",
-                            margin: "0 auto"
-                          }}
-                        />
+                        <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home
                       </Link>
-                    </div>
+                    </p>
+                    <br />
+                    <Link to="/" title="">
+                      <img
+                        src="/images/thankyou.jpg?v=1"
+                        alt=""
+                        style={{
+                          width: "25%",
+                          display: "block",
+                          margin: "0 auto"
+                        }}
+                      />
+                    </Link>
                   </div>
                 </div>
               </div>
-            )}
-          {progress >= 100 &&
-            !finish && (
-              <div className="container">
-                <div className="row">
-                  <div className="col-xs-12 col-md-12">
-                    <h1>Checkout</h1>
-                    <div className="checkout--subtitle">
-                      <p>
-                        You are almost done
-                        <br />
-                        Please check again all details and fill in your personal data below.
-                      </p>
-                    </div>
+            </div>
+          )}
+          {progress >= 100 && !finish && (
+            <div className="container">
+              <div className="row">
+                <div className="col-xs-12 col-md-12">
+                  <h1>Checkout</h1>
+                  <div className="checkout--subtitle">
+                    <p>
+                      You are almost done
+                      <br />
+                      Please check again all details and fill in your personal data below.
+                    </p>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-xs-12 col-sm-12 col-md-7 form-left">
-                    <div className="form-section">
-                      <div className="form-inner">
-                        <h2>Personal Data</h2>
-                        <div className="form-section--info">
-                          <p>
-                            Enter your details here. Fields marked with <span className="req">*</span> are required.
-                          </p>
+              </div>
+              <div className="row">
+                <div className="col-xs-12 col-sm-12 col-md-7 form-left">
+                  <div className="form-section">
+                    <div className="form-inner">
+                      <h2>Personal Data</h2>
+                      <div className="form-section--info">
+                        <p>
+                          Enter your details here. Fields marked with <span className="req">*</span> are required.
+                        </p>
+                      </div>
+                      <div className="row form-row">
+                        <div className="col-xs-12 col-md-6">
+                          <Input
+                            id="fname"
+                            label="First Name"
+                            placeholder="First name"
+                            handleChange={e => this.handleChange(e, "fname")}
+                            required={true}
+                            error={errors.fname}
+                          />
                         </div>
-                        <div className="row form-row">
-                          <div className="col-xs-12 col-md-6">
-                            <Input
-                              id="fname"
-                              label="First Name"
-                              placeholder="First name"
-                              handleChange={e => this.handleChange(e, "fname")}
-                              required={true}
-                              error={errors.fname}
-                            />
-                          </div>
-                          <div className="col-xs-12 col-md-6">
-                            <Input
-                              id="lname"
-                              label="Surname"
-                              placeholder="Surname"
-                              handleChange={e => this.handleChange(e, "lname")}
-                              required={true}
-                              error={errors.lname}
-                            />
-                          </div>
+                        <div className="col-xs-12 col-md-6">
+                          <Input
+                            id="lname"
+                            label="Surname"
+                            placeholder="Surname"
+                            handleChange={e => this.handleChange(e, "lname")}
+                            required={true}
+                            error={errors.lname}
+                          />
                         </div>
-                        <div className="row form-row">
-                          <div className="col-xs-12 col-md-6">
-                            <Input
-                              id="email"
-                              label="Email Address"
-                              placeholder="Email address"
-                              handleChange={e => this.handleChange(e, "email")}
-                              required={true}
-                              error={errors.email}
-                            />
-                          </div>
-                          <div className="col-xs-12 col-md-6">
-                            <Input
-                              id="phone"
-                              label="Phone Number"
-                              placeholder="Phone number"
-                              handleChange={e => this.handleChange(e, "phone")}
-                              required={true}
-                              error={errors.phone}
-                            />
-                          </div>
+                      </div>
+                      <div className="row form-row">
+                        <div className="col-xs-12 col-md-6">
+                          <Input
+                            id="email"
+                            label="Email Address"
+                            placeholder="Email address"
+                            handleChange={e => this.handleChange(e, "email")}
+                            required={true}
+                            error={errors.email}
+                          />
+                        </div>
+                        <div className="col-xs-12 col-md-6">
+                          <Input
+                            id="phone"
+                            label="Phone Number"
+                            placeholder="Phone number"
+                            handleChange={e => this.handleChange(e, "phone")}
+                            required={true}
+                            error={errors.phone}
+                          />
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="form-section">
-                      <div className="form-inner">
-                        <h2>Comments</h2>
-                        <div className="form-section--info">
-                          <p>
-                            Any special requests we should be aware of? Please let us know if you prefer your meal plan
-                            vegan/vegetarian/gluten-free/dairy-free. Any food you don’t like?
-                          </p>
-                        </div>
-                        <div className="row form-row">
-                          <div className="col-xs-12">
-                            <Textarea
-                              label=""
-                              placeholder="Feel free to write some comments here"
-                              handleChange={e => this.handleChange(e, "comments")}
-                              required={true}
-                            />
-                          </div>
+                  <div className="form-section">
+                    <div className="form-inner">
+                      <h2>Comments</h2>
+                      <div className="form-section--info">
+                        <p>
+                          Any special requests we should be aware of? Please let us know if you prefer your meal plan
+                          vegan/vegetarian/gluten-free/dairy-free. Any food you don’t like?
+                        </p>
+                      </div>
+                      <div className="row form-row">
+                        <div className="col-xs-12">
+                          <Textarea
+                            label=""
+                            placeholder="Feel free to write some comments here"
+                            handleChange={e => this.handleChange(e, "comments")}
+                            required={true}
+                          />
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="form-section">
-                      <div className="form-inner">
-                        <h2>Payment Option</h2>
-                        <div className="form-section--info">
-                          <p>
-                            <em>
-                              Please note that bank transfer payment is possible from
-                              <br />
-                              <b>BCA</b> / <b>Permata</b> / <b>Mandiri</b> bank accounts only
-                            </em>
-                          </p>
-                        </div>
-                        <PaymentButton
-                          active={payment == "cash"}
-                          icon="fa fa-motorcycle"
-                          handleChange={e => this.handlePayment(e, "cash")}
-                          label="Cash to driver / the cafe"
-                        />
-                        <PaymentButton
-                          active={payment == "creditcard"}
-                          icon="fa fa-credit-card"
-                          handleChange={e => this.handlePayment(e, "creditcard")}
-                          label="Bank Transfer"
-                        />
-                        {/*
+                  <div className="form-section">
+                    <div className="form-inner">
+                      <h2>Payment Option</h2>
+                      <div className="form-section--info">
+                        <p>
+                          <em>
+                            Please note that bank transfer payment is possible from
+                            <br />
+                            <b>BCA</b> / <b>Permata</b> / <b>Mandiri</b> bank accounts only
+                          </em>
+                        </p>
+                      </div>
+                      <PaymentButton
+                        active={payment == "cash"}
+                        icon="fa fa-motorcycle"
+                        handleChange={e => this.handlePayment(e, "cash")}
+                        label="Cash to driver / the cafe"
+                      />
+                      <PaymentButton
+                        active={payment == "creditcard"}
+                        icon="fa fa-credit-card"
+                        handleChange={e => this.handlePayment(e, "creditcard")}
+                        label="Bank Transfer"
+                      />
+                      {/*
                         <PaymentButton
                           active={payment == "paypal"}
                           icon="fab fa-paypal"
                           handleChange={e => this.handlePayment(e, "paypal")}
                           label="PayPal"
                         />*/}
-                      </div>
                     </div>
                   </div>
-                  <div className="col-xs-12 col-sm-12 col-md-5">
-                    <div className="form-section">
-                      <div className="form-inner no-padding">
-                        <h2>Order Overview</h2>
-                        <CartOverview snacks={snacks} applyCoupon={this.applyCoupon} invalidCart={this.invalidCart} />
-                      </div>
+                </div>
+                <div className="col-xs-12 col-sm-12 col-md-5">
+                  <div className="form-section">
+                    <div className="form-inner no-padding">
+                      <h2>Order Overview</h2>
+                      <CartOverview snacks={snacks} applyCoupon={this.applyCoupon} invalidCart={this.invalidCart} />
                     </div>
+                  </div>
 
-                    <div className="form-footer">
-                      <div className="form-terms">
-                        <label>
-                          <input type="checkbox" checked={form.terms} onChange={this.toggleTerms} />
-                          &nbsp; I agree to the{" "}
-                          <a href="javascript:" onClick={this.toggleTermsDialog}>
-                            <b>Terms and Conditions</b>
-                          </a>
-                          <br />
-                          {errors.terms && <span className="input-error">{errors.terms}</span>}
-                        </label>
-                      </div>
-                      <div className="form-submit">
-                        <button type="submit" className="btn" onClick={this.handleCheckout}>
-                          SEND ORDER <i className="fal fa-angle-right" />
-                        </button>
-                      </div>
+                  <div className="form-footer">
+                    <div className="form-terms">
+                      <label>
+                        <input type="checkbox" checked={form.terms} onChange={this.toggleTerms} />
+                        &nbsp; I agree to the{" "}
+                        <a href="javascript:" onClick={this.toggleTermsDialog}>
+                          <b>Terms and Conditions</b>
+                        </a>
+                        <br />
+                        {errors.terms && <span className="input-error">{errors.terms}</span>}
+                      </label>
+                    </div>
+                    <div className="form-submit">
+                      <button type="submit" className="btn" onClick={this.handleCheckout}>
+                        SEND ORDER <i className="fal fa-angle-right" />
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
+          )}
         </section>
       </React.Fragment>
     );

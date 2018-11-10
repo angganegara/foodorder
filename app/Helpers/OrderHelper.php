@@ -190,6 +190,8 @@ class OrderHelper
           $sc->station = $sch['pickup'] != 'address' ? $stations[$sch['pickup']]->station : $sch['address'];
           $sc->area = $sch['pickup'] == 'address' ? $sch['area'] : null;
           $sc->station_id = $sch['pickup'] != 'address' ? $sch['pickup'] : null;
+          $sc->is_delivered = 0;
+          $sc->delivered_time = null;
 
           $sc->save();
         }

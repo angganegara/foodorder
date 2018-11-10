@@ -80,6 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
 Route::get('kitchen/{key}', 'ScheduleController@kitchen');
 Route::get('delivery/{key}', 'ScheduleController@delivery');
+Route::post('delivery/{key}', 'ScheduleController@completeDelivery');
 
 Route::get('auth/login', 'AuthController@index')->name('login');
 Route::post('auth/login', 'AuthController@login');

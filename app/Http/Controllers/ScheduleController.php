@@ -22,7 +22,7 @@ class ScheduleController extends Controller
     $this->middleware('staff');
   }
 
-  public function schedule(Request $request)
+  public function delivery(Request $request)
   {
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
 
@@ -33,7 +33,7 @@ class ScheduleController extends Controller
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
 
-    return view('schedule', compact('schedules', 'today', 'yesterday', 'tomorrow'));
+    return view('delivery', compact('schedules', 'today', 'yesterday', 'tomorrow'));
   }
 
   public function kitchen(Request $request)
@@ -49,5 +49,14 @@ class ScheduleController extends Controller
     $today->addDay();
 
     return view('kitchen', compact('schedules', 'today', 'yesterday', 'tomorrow'));
+  }
+
+  public function completeDelivery(Request $request)
+  {
+    $id = $request->id;
+    $date = date('Y-m-d H:i:s');
+    $schedule = OrderSchedule::find($id)->update(['is_delivered' => 1, 'delivered_time' => $date]);
+
+    return 'OK';
   }
 }

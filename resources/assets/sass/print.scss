@@ -13,17 +13,136 @@ body {
   padding: 1rem;
 }
 
+.schedule-wrapper {
+  display: grid;
+  justify-items: center;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+.schedule {
+  &--card {
+    border-top: 2px solid #333;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  &--card:nth-child(6) {
+    display: block;
+    page-break-after: always;
+  }
+  &--name {
+    display: block;
+    font-variant: small-caps;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  &--meals {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  hr {
+    margin: 5px 0;
+    border: 1px dashed #ddd;
+    border-bottom: 0;
+  }
+  &--delivery {
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+    margin-top: auto;
+    font-size: 14px;
+    span {
+      display: block;
+      font-weight: 500;
+      font-variant: small-caps;
+      margin-bottom: 0.75rem;
+    }
+  }
+}
+a.complete-delivery,
+a.complete-delivery:focus,
+a.complete-delivery:active {
+  display: block;
+  margin-top: 1.5rem;
+  border: 2px solid #4a66ff;
+  color: #4a66ff;
+  font-weight: 500;
+  font-variant: small-caps;
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease-in all;
+  &:hover {
+    background-color: #4a66ff;
+    color: #fff;
+  }
+}
+a.complete-delivery.completed,
+a.complete-delivery.completed:focus,
+a.complete-delivery.completed:active {
+  background-color: #77ca29;
+  color: #fff;
+  border-color: #77ca29;
+  pointer-events: none;
+}
+
 h1 {
   margin: 0;
   font-size: 14px;
   display: block;
   text-align: right;
   padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px dashed #aaa;
   text-transform: uppercase;
 }
+.print {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  a.btn {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background-color: #4a66ff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+}
 
-a.schedule-nav {
-  display: none;
+@media only screen {
+  h1 {
+    text-align: center;
+    font-size: 18px;
+    margin: 1rem 0;
+  }
+  a.schedule-nav {
+    display: inline-block;
+    margin: 0 5px;
+    color: #4a66ff;
+  }
+}
+
+@media only print {
+  @page {
+    size: A4 landscape;
+  }
+
+  a.schedule-nav {
+    display: none;
+  }
+  .print {
+    display: none;
+  }
+  .schedule {
+    &--card {
+      padding: 10px 0 0 0;
+    }
+    &--meals {
+      font-size: 12px;
+    }
+  }
 }

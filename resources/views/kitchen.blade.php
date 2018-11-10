@@ -12,9 +12,8 @@
 
     @foreach ($schedules as $sc)
       <div class="schedule--card">
-        <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }}</div>
+        <div class="schedule--name">{{ $sc->name }}</div>
         <div class="schedule--meals">
-          <span>MEALS</span>
           {!! $sc->meals !!}
         </div>
         @if ($sc->snacks)
@@ -27,5 +26,10 @@
     @endforeach
 
   </div>
+
+  <div class="print">
+    <a href="javascript:" class="btn" onClick="window.print()">PRINT PAGE</a>
+  </div>
+
 </div>
 @endsection

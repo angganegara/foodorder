@@ -8,6 +8,7 @@ use Carbon\Carbon;
 class OrderSchedule extends Model
 {
   protected $appends = ['nice_date'];
+  protected $fillable = ['is_delivered', 'delivered_time'];
 
 	public function order()
 	{
