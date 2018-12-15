@@ -30,6 +30,7 @@ const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 let today = new Date();
 
 const isDisabled = date => date.getDay() === 0 || checkDayLimit(date);
+console.log(checkDayLimit(today));
 
 class Details extends Component {
   state = {
