@@ -420,7 +420,16 @@ class Details extends Component {
                       <p>
                         <strong>Delivery Starting Date</strong>
                       </p>
-                      <DatePicker onChange={this.handleDayClick} modifiers={modifiers} minDate={today} value={this.state.form.startDate} />
+                      <DatePicker
+                        month={new Date(2018, 12)}
+                        fromMonth={new Date(2018, 12)}
+                        toMonth={new Date(2019, 12)}
+                        onChange={this.handleDayClick}
+                        modifiers={modifiers}
+                        minDate={today}
+                        maxDate={new Date(2020, 12)}
+                        value={this.state.form.startDate}
+                      />
                       {form.startDate && (
                         <div className="delivery-dates-range">
                           <Tag intent={Intent.PRIMARY}>{this.parseDate(form.startDate)}</Tag>
