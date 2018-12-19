@@ -228,102 +228,98 @@ class Schedule extends Component {
             </h1>
             {showTable && (
               <div className="table-wrapper">
-                {loadFrom &&
-                  loadFrom == "mealplan" && (
-                    <table className="pt-table table">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Category</th>
-                          <th>&nbsp;</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {meals &&
-                          meals.map(meal => (
-                            <tr key={meal.id}>
-                              <td>
-                                <b>{meal.name}</b>
-                              </td>
-                              <td>{meal.category}</td>
-                              <td>
-                                <a href="javascript:" onClick={e => this.getPlan(e, meal.id)}>
-                                  <i className="fa fa-fw fa-eye" /> LOAD
-                                </a>
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  )}
-                {loadFrom &&
-                  loadFrom == "preset" && (
-                    <table className="pt-table table">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th>Days</th>
-                          <th>&nbsp;</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {presets &&
-                          presets.map(preset => (
-                            <tr key={preset.id}>
-                              <td>{preset.preset_name}</td>
-                              <td>{preset.email}</td>
-                              <td>{preset.days}</td>
-                              <td>
-                                <a href="javascript:" onClick={e => this.getPreset(e, preset.id)}>
-                                  <i className="fa fa-fw fa-eye" /> LOAD
-                                </a>
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  )}
+                {loadFrom && loadFrom == "mealplan" && (
+                  <table className="pt-table table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {meals &&
+                        meals.map(meal => (
+                          <tr key={meal.id}>
+                            <td>
+                              <b>{meal.name}</b>
+                            </td>
+                            <td>{meal.category}</td>
+                            <td>
+                              <a href="javascript:" onClick={e => this.getPlan(e, meal.id)}>
+                                <i className="fa fa-fw fa-eye" /> LOAD
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
+                {loadFrom && loadFrom == "preset" && (
+                  <table className="pt-table table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Days</th>
+                        <th>&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {presets &&
+                        presets.map(preset => (
+                          <tr key={preset.id}>
+                            <td>{preset.preset_name}</td>
+                            <td>{preset.email}</td>
+                            <td>{preset.days}</td>
+                            <td>
+                              <a href="javascript:" onClick={e => this.getPreset(e, preset.id)}>
+                                <i className="fa fa-fw fa-eye" /> LOAD
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             )}
             {!showTable && (
               <div className="dragzone-wrapper writable">
-                {loadFrom == "mealplan" &&
-                  mealplans && (
-                    <DaysDrag type="mp" key={`mealplan-${mealplans.id}`} id={mealplans.id} text={mealplans.name} sort={1}>
-                      {mealplans.days.map((plan, index) => (
-                        <DaysDrag
-                          type="days"
-                          key={`mealplan-${index}`}
-                          menu={plan.menu}
-                          id={plan.id}
-                          text=""
-                          delivery=""
-                          sort={index}
-                          showEditor={this.showComponentEditor}
-                          copyDay={this.copyComponent}
-                        />
-                      ))}
-                    </DaysDrag>
-                  )}
-                {loadFrom == "preset" &&
-                  preset && (
-                    <DaysDrag type="mp" key={`preset-${preset.id}`} id={preset.id} text={preset.preset_name} sort={1}>
-                      {preset.data.map((plan, index) => (
-                        <DaysDrag
-                          type="days"
-                          key={`preset-${index}`}
-                          menu={plan.menu}
-                          id={plan.id}
-                          text=""
-                          delivery={plan.delivery ? plan.delivery : ""}
-                          sort={index}
-                          showEditor={this.showComponentEditor}
-                          copyDay={this.copyComponent}
-                        />
-                      ))}
-                    </DaysDrag>
-                  )}
+                {loadFrom == "mealplan" && mealplans && (
+                  <DaysDrag type="mp" key={`mealplan-${mealplans.id}`} id={mealplans.id} text={mealplans.name} sort={1}>
+                    {mealplans.days.map((plan, index) => (
+                      <DaysDrag
+                        type="days"
+                        key={`mealplan-${index}`}
+                        menu={plan.menu}
+                        id={plan.id}
+                        text=""
+                        delivery=""
+                        sort={index}
+                        showEditor={this.showComponentEditor}
+                        copyDay={this.copyComponent}
+                      />
+                    ))}
+                  </DaysDrag>
+                )}
+                {loadFrom == "preset" && preset && (
+                  <DaysDrag type="mp" key={`preset-${preset.id}`} id={preset.id} text={preset.preset_name} sort={1}>
+                    {preset.data.map((plan, index) => (
+                      <DaysDrag
+                        type="days"
+                        key={`preset-${index}`}
+                        menu={plan.menu}
+                        id={plan.id}
+                        text=""
+                        delivery={plan.delivery ? plan.delivery : ""}
+                        sort={index}
+                        showEditor={this.showComponentEditor}
+                        copyDay={this.copyComponent}
+                      />
+                    ))}
+                  </DaysDrag>
+                )}
               </div>
             )}
           </div>
@@ -364,7 +360,7 @@ class Schedule extends Component {
           <a href="javascript:" title="" onClick={this.handleNext} className="mp-nav next">
             <i className="fal fa-arrow-right" />
           </a>
-          <a href="javascript:" title="" onClick={e => this.props.goto(e, 3)} className="mp-nav prev">
+          <a href="javascript:" title="" onClick={e => this.props.goto(e, 1)} className="mp-nav prev">
             <i className="fal fa-arrow-left" />
           </a>
         </div>

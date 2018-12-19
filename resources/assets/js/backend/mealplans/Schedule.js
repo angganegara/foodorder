@@ -132,7 +132,13 @@ class Schedule extends Component {
     if (id == "") {
       orderState.category = null;
     } else {
-      let category = categories.filter(category => category.id == id)[0];
+      let category = null;
+      if (id == 10 || id == 11 || id == 12) {
+        let parent = categories.filter(category => category.id == 8)[0];
+        category = parent.children.filter(child => child.id == id)[0];
+      } else {
+        category = categories.filter(category => category.id == id)[0];
+      }
       orderState.category = {
         id: category.id,
         name: category.name
@@ -274,24 +280,23 @@ class Schedule extends Component {
               </div>
             )}
             <div className="dragzone-wrapper writable">
-              {loadFrom == "mealplan" &&
-                mealplans && (
-                  <DaysDrag type="mp" key={`mealplan-${mealplans.id}`} id={mealplans.id} text={mealplans.name} sort={1}>
-                    {mealplans.days.map((plan, index) => (
-                      <DaysDrag
-                        type="days"
-                        key={`mealplan-${index}`}
-                        menu={plan.menu}
-                        id={plan.id}
-                        text=""
-                        delivery=""
-                        sort={index}
-                        showEditor={this.showComponentEditor}
-                        copyDay={this.copyComponent}
-                      />
-                    ))}
-                  </DaysDrag>
-                )}
+              {loadFrom == "mealplan" && mealplans && (
+                <DaysDrag type="mp" key={`mealplan-${mealplans.id}`} id={mealplans.id} text={mealplans.name} sort={1}>
+                  {mealplans.days.map((plan, index) => (
+                    <DaysDrag
+                      type="days"
+                      key={`mealplan-${index}`}
+                      menu={plan.menu}
+                      id={plan.id}
+                      text=""
+                      delivery=""
+                      sort={index}
+                      showEditor={this.showComponentEditor}
+                      copyDay={this.copyComponent}
+                    />
+                  ))}
+                </DaysDrag>
+              )}
             </div>
           </div>
           <div className="mp-guest-schedule">

@@ -147,7 +147,13 @@ class GuestDetails extends Component {
   changeCategory = e => {
     const { categories } = this.state;
     let id = e.target.value;
-    let category = categories.filter(category => category.id == id)[0];
+    let category = null;
+    if (id == 10 || id == 11 || id == 12) {
+      let parent = categories.filter(category => category.id == 8)[0];
+      category = parent.children.filter(child => child.id == id)[0];
+    } else {
+      category = categories.filter(category => category.id == id)[0];
+    }
     orderState.category = {
       id: category.id,
       name: category.name
