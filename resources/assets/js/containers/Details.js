@@ -25,12 +25,19 @@ import SlimSundayPopover from "../components/SlimSundayPopover";
 import ExampleMenu from "../components/ExampleMenu";
 import RecommendedSnacks from "../components/RecommendedSnacks";
 import LongPeriod from "./LongPeriod";
+import AvailableOptions from "../components/AvailableOptions";
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 let today = new Date();
 
 const isDisabled = date => date.getDay() === 0 || checkDayLimit(date);
-console.log(checkDayLimit(today));
+
+const foodCodes = {
+  VG: "Vegetarian",
+  V: "Vegan",
+  DF: "Dairy-free",
+  GF: "Gluten-free"
+};
 
 class Details extends Component {
   state = {
@@ -337,6 +344,17 @@ class Details extends Component {
       intent: Intent.DANGER
     });
   };
+  showFoodIcons = iconCodes => {
+    const codes = iconCodes.split(", ");
+    return codes.map(code => {
+      return (
+        <Popover key={code} interactionKind={PopoverInteractionKind.HOVER} position={Position.TOP}>
+          <img src={`/images/icons/${code}.png`} alt={foodCodes[code]} title={foodCodes[code]} />
+          <div>{foodCodes[code]}</div>
+        </Popover>
+      );
+    });
+  };
 
   render() {
     const { food, form, alertOpen, daysAmount, LPOpen } = this.state;
@@ -362,7 +380,10 @@ class Details extends Component {
                   </Link>
                 </div>
                 <div className="col-xs-12 col-md-6">
-                  <h1>{food.name}</h1>
+                  <h1 className="details--title">
+                    <span>{food.name}</span>
+                    {food.standard_symbols && <span className="details--icons">{this.showFoodIcons(food.standard_symbols)}</span>}
+                  </h1>
                   <div className="details--short-description" dangerouslySetInnerHTML={{ __html: food.short_description }} />
                   <div className="details--description" dangerouslySetInnerHTML={{ __html: food.description }} />
                   {food.example_menu && <ExampleMenu menu={food.example_menu} />}
@@ -459,10 +480,11 @@ class Details extends Component {
                     <a href="javascript:" title="" className="btn-normal" onClick={this.toggleOverlay}>
                       <i className="fal fa-fw fa-question-circle" /> How it works
                     </a>
-                    <a href="javascript:" title="" className="btn-normal" onClick={this.toggleLPOpen}>
+                    <a href="javascript:" title="" className="btn-normal main-color" onClick={this.toggleLPOpen}>
                       <i className="fal fa-fw fa-question-circle" /> Long-period Order
                     </a>
                   </div>
+                  {food.available_symbols && <AvailableOptions icons={this.showFoodIcons(food.available_symbols)} />}
                 </div>
               </div>
             </div>
