@@ -349,7 +349,7 @@ class Details extends Component {
     return codes.map(code => {
       return (
         <Popover key={code} interactionKind={PopoverInteractionKind.HOVER} position={Position.TOP}>
-          <img src={`/images/icons/${code}.png`} alt={foodCodes[code]} title={foodCodes[code]} />
+          <img src={`/images/icons/${code.toLowerCase()}.png`} alt={foodCodes[code]} title={foodCodes[code]} />
           <div>{foodCodes[code]}</div>
         </Popover>
       );
