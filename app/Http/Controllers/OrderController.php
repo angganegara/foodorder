@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Mail;
+use Excel;
 
 use App\Models\Order;
 use App\Models\OrderCart;
@@ -275,5 +276,77 @@ class OrderController extends Controller
     }
 
     return response('OK');
+  }
+
+  public function recommendation()
+  {
+    return view('admin.recommendation');
+  }
+
+  public function showRecommendation(Request $request)
+  {
+    if (!$request->ajax()) {
+      exit;
+    }
+
+    $orders = $this->getRecommendation($request);
+    return response($orders->toArray());
+  }
+
+  public function getRecommendation($request)
+  {
+    $orders = null;
+    if ($request->dates == '') { return response('Please select the dates', 500); }
+
+    list ($start, $finish) = $this->formatDates($request->dates);
+
+    $orders = Order::where('paid', 1)
+                    ->where('created_at', '>=', $start)
+                    ->where('created_at', '<=', $finish)
+                    ->get();
+
+    return $orders;
+  }
+
+  public function formatDates($dates)
+  {
+    return [
+      Carbon::parse($dates[0])->format('Y-m-d'),
+      Carbon::parse($dates[1])->format('Y-m-d')
+    ];
+  }
+
+  public function exportRecommendationExcel(Request $request)
+  {
+    $format = $request->format;
+    $orders = $this->getRecommendation($request);
+    list ($start, $finish) = $this->formatDates($request->dates);
+
+    $filename = 'Recommendation-Report-'. Carbon::parse($start)->format('d-M-Y') .'-to-'. Carbon::parse($finish)->format('d-M-Y');
+
+    Excel::create($filename, function ($excel) use ($filename, $orders) {
+      $excel->setTitle($filename);
+      $excel->sheet('Sheet 1', function ($sheet) use ($orders) {
+        $sheet->setColumnFormat(['D' => '0']);
+        $sheet->row(1, [
+          'Order number',
+          'Date',
+          'Name',
+          'Where Did You Learn About Us?',
+          'Motion Name',
+        ]);
+        foreach ($orders as $order) {
+          $sheet->appendRow([
+            $order->order_number,
+            $order->date,
+            $order->name,
+            $order->learn_how,
+            ($order->learn_name ? $order->learn_name : '-')
+          ]);
+        }
+      });
+    })->store($format, public_path('excel'));
+
+    return response(asset('excel/'. $filename .'.'. $format));
   }
 }

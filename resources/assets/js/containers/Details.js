@@ -156,12 +156,18 @@ class Details extends Component {
         daysData.push({
           label: days.format("ddd, MMM DD"),
           date: days.format("YYYY-MM-DD"),
+          dates: {
+            m: days.format("MMMM"),
+            d: days.format("D"),
+            day: days.format("dddd")
+          },
           isSaturday: days.format("d") == "6",
           pickup: null,
           address: null,
           area: "",
           snacks: [],
-          snacksQty: {}
+          snacksQty: {},
+          snacksData: []
         });
       }
     }

@@ -37,9 +37,7 @@ class Customize extends Component {
     cartDialog: false,
     cartLoading: false,
     snackOverlay: false,
-    progress: 0,
-
-    activeIndex: 0
+    progress: 0
   };
 
   componentDidMount() {
@@ -238,9 +236,9 @@ class Customize extends Component {
     activeItem.schedules[activeTab].snacksQty[id] = parseInt(vnum);
   };
 
-  showSnacks = (e, index) => {
+  showSnacks = () => {
     // set active date & toggle overlay
-    this.setState({ snackOverlay: true, activeIndex: index });
+    this.setState({ snackOverlay: true });
     $("body").addClass("ml-overlay-open");
   };
 
@@ -502,8 +500,7 @@ class Customize extends Component {
       cartDialog,
       cartLoading,
       progress,
-      snackOverlay,
-      activeIndex
+      snackOverlay
     } = this.state;
     const days = activeItem ? activeItem.schedules : null;
     const sitem = this.state.snacks;
@@ -520,7 +517,7 @@ class Customize extends Component {
     }
     return (
       <React.Fragment>
-        <Snacks itemKey={activeItem.key} open={snackOverlay} activeIndex={activeIndex} toggleWindow={this.toggleSnackOverlay} />
+        <Snacks itemKey={activeItem.key} open={snackOverlay} date={activeDate} toggleWindow={this.toggleSnackOverlay} />
         <Prompt
           when={!activeItem.complete}
           message="This menu is incomplete. Leaving this page will delete this menu from your cart. Are you sure?"
@@ -561,6 +558,32 @@ class Customize extends Component {
               <br />
               {days.length && (
                 <React.Fragment>
+                  {!lastTab && (
+                    <div className="mobile-overflow">
+                      <ul className="customize--tabs-wrapper">
+                        {days.map((day, index) => (
+                          <li
+                            className={`
+                              ${activeItem.schedules[index].pickup ? "tab-clickable" : ""}
+                              ${index === activeTab && !lastTab ? "tab-active" : ""}
+                            `}
+                            key={index}
+                          >
+                            <a href="javascript:" title="" onClick={e => this.changeTab(e, index)}>
+                              <div className="tab-title">Day {index + 1}</div>
+                              <div className="tab-date">{day.label}</div>
+                            </a>
+                          </li>
+                        ))}
+                        <li className={`tab-clickable ${lastTab ? "tab-active" : ""}`}>
+                          <a href="javascript:" title="" onClick={e => this.changeTab(e, 99)}>
+                            <div className="tab-title">Finish</div>
+                            <div className="tab-date">Review</div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                   {lastTab && (
                     <ReviewMeal
                       {...this.props}
@@ -594,14 +617,11 @@ class Customize extends Component {
                             <figure>
                               <img src={`/images/foods/thumb_${food.id}.jpg`} alt={food.name} />
                             </figure>
-                            <span>
-                              {food.name} / Day {index + 1}
-                            </span>
-                            <span className="day-label">{day.label}</span>
+                            <span>{food.name}</span>
                           </div>
-                          {days[index].snacks &&
-                            days[index].snacks.length > 0 &&
-                            days[index].snacks.map((snack, index) => (
+                          {selectedSnacks &&
+                            selectedSnacks.length > 0 &&
+                            selectedSnacks.map((snack, index) => (
                               <div className="customize--item" key={index}>
                                 <div className="snacks-icons">
                                   {sitem[snack].gf == 1 && <img src="/images/icons/gf.png" alt="Gluten Free" title="Gluten Free" />}
@@ -619,15 +639,80 @@ class Customize extends Component {
                                 </figure>
                                 <span>{sitem && sitem[snack] && sitem[snack].name}</span>
                                 {sitem[snack].protein && <span className="opt">{days[activeTab].snackOptions[snack].protein}</span>}
-                                {sitem[snack].flavour && <span className="opt">/ {days[activeTab].snackOptions[snack].flavour}</span>}
+                                {sitem[snack].flavour && <span className="opt">{days[activeTab].snackOptions[snack].flavour}</span>}
+                                <div className="snacks-qty">
+                                  <label>QTY</label>
+                                  <NumericInput
+                                    min={1}
+                                    fill={false}
+                                    onValueChange={(vnum, vstring) => this.updateSnackQty(vnum, vstring, snack)}
+                                    value={days[activeTab].snacksQty[snack]}
+                                  />
+                                </div>
                               </div>
                             ))}
-                          <a href="javascript:" title="" className="customize--add-snacks" onClick={e => this.showSnacks(e, index)}>
+                          <a href="javascript:" title="" className="customize--add-snacks" onClick={this.showSnacks}>
                             <div className="blank">
                               <i className="fa fa-2x fa-plus" />
                             </div>
                             <span>Add snacks</span>
                           </a>
+                        </div>
+                        <div className="customize--pickup-body">
+                          <div className="customize--pickup-body-left">
+                            <h2>pickup station</h2>
+                            {station.stations.length > 0 &&
+                              station
+                                .availableStations()
+                                .map((s, index) => (
+                                  <Radio
+                                    key={index}
+                                    className="radio"
+                                    label={<StationLabel station={s} />}
+                                    checked={day.pickup === s.id}
+                                    onChange={e => this.updateStation(e, day, s.id)}
+                                    value={s.id}
+                                  />
+                                ))}
+                            <Radio
+                              className="radio"
+                              label="Your address of choice"
+                              checked={day.pickup === "address"}
+                              onChange={e => this.updateStation(e, day, "address")}
+                              value="address"
+                            />
+                            {day.pickup === "address" && (
+                              <div className="address-box">
+                                <textarea
+                                  rows="7"
+                                  placeholder="Enter your address here"
+                                  onChange={e => this.updateAddress(e, day, "address")}
+                                  value={day.address ? day.address : address ? address : ""}
+                                />
+                                <label className="area">Select Area</label>
+                                <div className="pt-select">
+                                  <select onChange={e => this.updateAddress(e, day, "area")} value={day.area}>
+                                    <option value="">Select area</option>
+                                    {areas.map((area, aindex) => (
+                                      <option value={area.name} key={aindex}>
+                                        {area.name}
+                                        &nbsp;
+                                        {area.price > 0 && "(" + parsePrice(area.price) + " IDR / day)"}
+                                        {area.price <= 0 && "(Free)"}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+                            )}
+                            {index === 0 && day.pickup && (
+                              <Checkbox
+                                checked={saveStation}
+                                label="Set selected pick-up station for all days"
+                                onClick={e => this.saveStation(e)}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}

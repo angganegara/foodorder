@@ -38,8 +38,9 @@
               <tr>
                 <td width="100%" colspan="2" valign="middle" style="padding: 20px; font-weight: bold;">
                   <p>Dear {{ $order->fname }} {{ $order->lname }}</p>
-                  <p>Thank you for ordering with Motion. Please review the details of your personal data and order below.<br />
-                    Don’t hesitate to contact us in case anything went wrong with your order.<!--<br /> We will send you an email with your detailed menu shortly.--></p>
+                  <p>Thank you for ordering with Motion. Please review the details of your personal data and order below. {{ $hasDetox ? 'We have attached an information sheet about your detox to this e-mail. Please make sure to read it carefully.' : '' }}</p>
+
+                  <p>Don’t hesitate to contact us in case anything went wrong with your order.<!--<br /> We will send you an email with your detailed menu shortly.--></p>
                   <p>Enjoy smart eating!<br />Your Motion Team</p>
                 </td>
               </tr>

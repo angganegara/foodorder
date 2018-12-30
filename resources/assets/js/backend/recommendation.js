@@ -1,4 +1,8 @@
+const axios = (window.axios = require("axios"));
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
 import React, { Component } from "react";
+import { render } from "react-dom";
 import { Button, Icon, Intent, Spinner, Toaster, Position } from "@blueprintjs/core";
 import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
 
@@ -18,18 +22,14 @@ const jsDateFormatter = {
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 
-class Reports extends Component {
+class Recommendation extends Component {
   state = {
-    partners: JSON.parse(partners),
-    partner: null,
     dates: null,
     loading: false,
     orders: null
   };
 
-  changePartner = e => this.setState({ partner: parseInt(e.target.value) });
   changeDate = range => this.setState({ dates: range });
-  selectedPartner = () => this.state.partners.filter(p => p.id == this.state.partner)[0];
 
   handleSubmit = async () => {
     this.setState({ loading: true });
@@ -47,57 +47,26 @@ class Reports extends Component {
   };
 
   getReport = () => {
-    const { dates, partner } = this.state;
-    return axios.post("/admin/partners/report", { partner, dates });
-  };
-
-  calculateTotal = orders => {
-    return orders.reduce((accu, order) => accu + order.total, 0);
-  };
-
-  calculateProfit = total => {
-    total = parseInt(total);
-    return total * (parseInt(this.selectedPartner().profit) / 100);
-  };
-
-  calculateTotalProfit = orders => {
-    return orders.reduce((accu, total) => {
-      let profit = this.calculateProfit(total.total);
-      return accu + profit;
-    }, 0);
+    const { dates } = this.state;
+    return axios.post("/admin/orders/recommendation", { dates });
   };
 
   handleExport = (e, format) => {
-    const { dates, partner } = this.state;
+    const { dates } = this.state;
     axios
-      .post("/admin/partners/export", { partner, dates, format })
+      .post("/admin/orders/recommendation/export", { dates, format })
       .then(res => (window.location.href = res.data))
       .catch(err => console.log(err.response.data));
   };
 
   render() {
-    const { partners, loading, orders, dates } = this.state;
+    const { loading, orders, dates } = this.state;
     const startDate = dates && moment(dates[0]).format("DD MMMM YY");
     const finishDate = dates && moment(dates[1]).format("DD MMMM YY");
 
     return (
       <div className="inner">
-        <div className="columns is-multiline is-centered no-padding">
-          <div className="column">
-            <label className="pt-label">
-              Select Partner
-              <div className="pt-select">
-                <select onChange={this.changePartner}>
-                  <option defaultValue>Select partner</option>
-                  {partners.map((partner, index) => (
-                    <option key={index} value={partner.id}>
-                      {partner.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </label>
-          </div>
+        <div className="columns is-multiline no-padding">
           <div className="column is-narrow">
             <label className="custom-label">Select dates</label>
             <DateRangeInput onChange={this.changeDate} {...jsDateFormatter} minDate={new Date(2017, 12)} maxDate={new Date(2024, 12)} />
@@ -122,11 +91,8 @@ class Reports extends Component {
                   <th>Order</th>
                   <th>Date</th>
                   <th>Name</th>
-                  <th>Phone</th>
-                  <th>Payment methods</th>
-                  <th>Total</th>
-                  <th>%</th>
-                  <th>Profit</th>
+                  <th>Where Did You Learn About Us?</th>
+                  <th>Motion Name</th>
                 </tr>
               </thead>
               <tbody>
@@ -139,32 +105,17 @@ class Reports extends Component {
                     </td>
                     <td>{order.date}</td>
                     <td>
-                      <a href={`mailto:${order.email}`} target="_blank">
+                      <a href="#" target="_blank">
                         <b>{order.name}</b>
                       </a>
                     </td>
-                    <td>{order.phone}</td>
-                    <td>{order.payment_formatted}</td>
-                    <td>{parsePrice(order.total)} IDR</td>
-                    <td>{this.selectedPartner().profit}%</td>
-                    <td>{parsePrice(this.calculateProfit(order.total))} IDR</td>
+                    <td>{order.learn_how}</td>
+                    <td>{order.learn_name ? order.learn_name : "-"}</td>
                   </tr>
                 ))}
-                {orders && orders.length > 0 && (
-                  <tr className="row-total">
-                    <td colSpan="5">Total</td>
-                    <td>
-                      <b>{parsePrice(this.calculateTotal(orders))} IDR</b>
-                    </td>
-                    <td />
-                    <td>
-                      <b>{parsePrice(this.calculateTotalProfit(orders))} IDR</b>
-                    </td>
-                  </tr>
-                )}
                 {orders.length <= 0 && (
                   <tr>
-                    <td colSpan="8">Record not found</td>
+                    <td colSpan="5">Record not found</td>
                   </tr>
                 )}
               </tbody>
@@ -181,4 +132,4 @@ class Reports extends Component {
   }
 }
 
-export default Reports;
+render(<Recommendation />, document.getElementById("recommendation-app"));

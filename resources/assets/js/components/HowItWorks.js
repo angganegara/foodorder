@@ -1,46 +1,46 @@
-import React, { Component } from 'react';
-import { CSSTransition } from 'react-transition-group';
+import React, { Component } from "react";
+import { CSSTransition } from "react-transition-group";
 
-class HowItWorks extends Component
-{
+class HowItWorks extends Component {
   state = {
     open: false
   };
 
   componentDidMount() {
     if (this.props.autoOpen) {
-      this.setState({open: true});
+      this.setState({ open: true });
     }
   }
 
   handleClick = e => {
     this.setState({
-      open: ! this.state.open
-    })
-  }
+      open: !this.state.open
+    });
+  };
 
   render() {
     const icon = this.state.open ? `<i class="fal fa-fw fa-angle-up"></i>` : `<i class="fal fa-fw fa-angle-down"></i>`;
 
     return (
       <React.Fragment>
-        {this.props.closeButton && <a href="javascript:" className="hiw--close" title="" onClick={this.props.toggleOverlay}><i className="fal fa-times"></i></a>}
+        {this.props.closeButton && (
+          <a href="javascript:" className="hiw--close" title="" onClick={this.props.toggleOverlay}>
+            <i className="fal fa-times" />
+          </a>
+        )}
         <a href="javascript:" title="" onClick={this.handleClick} className="hiw--title">
           <div className="container">
-            <span><i dangerouslySetInnerHTML={{__html: icon}}></i> How it Works</span>
+            <span>
+              <i dangerouslySetInnerHTML={{ __html: icon }} /> How it Works
+            </span>
             <span>Info about ordering/delivery/payment</span>
             <span>&nbsp;</span>
           </div>
         </a>
-        <CSSTransition
-          in={this.state.open}
-          timeout={0}
-          classNames="hiw-"
-          unmountOnExit
-        >
+        <CSSTransition in={this.state.open} timeout={0} classNames="hiw-" unmountOnExit>
           {state => (
             <div className="hiw--body">
-              <div className="bottle"></div>
+              <div className="bottle" />
               <div className="container">
                 <div className="row">
                   <div className="col-xs-12 col-md-4">
@@ -49,7 +49,7 @@ class HowItWorks extends Component
                       <li>Starting days for your diet: Mondays to Saturdays</li>
                       <li>Order must be placed 48hrs in advance to give us time to prepare your diet</li>
                       <li>Sundays we are closed for orders and food production</li>
-                      <li>Latest order for Monday until Friday 17:00.</li>
+                      <li>Latest order for Monday until Saturday 14:00.</li>
                       <li>Office times for possible queries: Mon. - Fri. 08:00 - 17:00.</li>
                     </ul>
                   </div>

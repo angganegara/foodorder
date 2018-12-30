@@ -140,6 +140,8 @@ class OrderHelper
     $order->paypal_response = null;
     $order->subtotal = $request->subTotal;
     $order->total = 0;
+    $order->learn_how = $form["howdidyoulearn"];
+    $order->learn_name = $form["staff_name"] == "Other" ? $form["staff_other"] : $form["staff_name"];
     $order->paid = $request->methods == 'cash' ? 1 : 0;
     $order->backend_order = 0;
     $order->menu_email_sent = 0;
@@ -218,15 +220,17 @@ class OrderHelper
     // get order
     $oc = OrderCart::where('order_id', $orderid)->get();
     // include protein ?
-    $hp = $oc->where('item_id', 7)->count();
+    $hp = $oc->where('meal_id', 7)->count();
     // soup detox
-    $dts = $oc->where('item_id', 10)->count();
+    $dts = $oc->where('meal_id', 10)->count();
     // juice detox
-    $dtj = $oc->where('item_id', 11)->count();
+    $dtj = $oc->where('meal_id', 11)->count();
     // slim booster diet
-    $sbd = $oc->where('item_id', 12)->count();
+    $sbd = $oc->where('meal_id', 12)->count();
     // parse cart
-    //return view('emails.order', compact('order', 'that', 'extra'));
+    $hasDetox = $dts || $dtj || $sbd;
+
+    //return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
     //exit();
 
     // pdfs
@@ -242,7 +246,7 @@ class OrderHelper
     try {
       Mail::send(
         $email_layout,
-        compact('order', 'items', 'that', 'extra'),
+        compact('order', 'items', 'that', 'extra', 'hasDetox'),
         function ($m) use (
           $order, $pdf, $pdf_hp, $hp, $pdf_dt, $pdf_ayu1, $pdf_ayu2,
           $dts, $dtj, $sbd, $email_subject, $resend
@@ -316,6 +320,7 @@ class OrderHelper
       if (!$resend) {
         //$this->deleteOrder($order->id);
       }
+      dd($e);
       // log in
       abort(500, 'CANNOT_SEND_MAIL');
     }

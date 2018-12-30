@@ -17,7 +17,9 @@ const label = {
   fname: "First name",
   lname: "Surname",
   email: "Email address",
-  phone: "Phone number"
+  phone: "Phone number",
+  gender: "Gender",
+  howdidyoulearn: "This"
 };
 
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
@@ -44,15 +46,24 @@ class Checkout extends Component {
       couponValue: 0,
       couponItem: "",
       deliveryprice: 0,
-      discount: 0
+      discount: 0,
+      gender: "",
+      howdidyoulearn: "",
+      staff_name: "",
+      staff_other: ""
     },
     errors: {
       fname: null,
       lname: null,
       email: null,
       phone: null,
-      terms: null
-    }
+      terms: null,
+      gender: null,
+      howdidyoulearn: null,
+      staffName: null,
+      staffOther: null
+    },
+    activeIndex: 3
   };
 
   componentDidMount() {
@@ -144,9 +155,15 @@ class Checkout extends Component {
     });
   getTotalDeliveryPrice = () => cartState.added.reduce((accu, total) => accu + total.deliveryPrice, 0);
 
+  handleHowDidYouLearn = e =>
+    this.setState({ errors: { ...this.state.errors, howdidyoulearn: null }, form: { ...this.state.form, howdidyoulearn: e.target.value } });
+  handleStaffSelect = e =>
+    this.setState({ errors: { ...this.state.errors, staffName: null }, form: { ...this.state.form, staff_name: e.target.value } });
+  handleStaffOther = e =>
+    this.setState({ errors: { ...this.state.errors, staffOther: null }, form: { ...this.state.form, staff_other: e.target.value } });
   handleCheckout = () => {
     const { form, payment } = this.state;
-    const required = ["fname", "lname", "email", "phone"];
+    const required = ["fname", "lname", "email", "phone", "gender", "howdidyoulearn"];
     let errors = null;
     let gotoTop = false;
     $(".form-input").removeClass("error");
@@ -164,6 +181,18 @@ class Checkout extends Component {
       errors = {
         ...errors,
         terms: "You must agree to the Terms and Conditions"
+      };
+    }
+    if (form.howdidyoulearn == "Recommended by a Motion trainer/employee" && form.staff_name == "") {
+      errors = {
+        ...errors,
+        staffName: "Please select the name"
+      };
+    }
+    if (form.howdidyoulearn == "Recommended by a Motion trainer/employee" && form.staff_name == "Other" && form.staff_other == "") {
+      errors = {
+        ...errors,
+        staffOther: "Please enter the name"
       };
     }
     if (errors) {
@@ -297,7 +326,7 @@ class Checkout extends Component {
   };
 
   render() {
-    const { progress, checkoutLoading, payment, finish, form, snacks, errors, termsDialog, popupMessage } = this.state;
+    const { progress, checkoutLoading, payment, finish, form, snacks, errors, termsDialog, popupMessage, activeIndex } = this.state;
 
     return (
       <React.Fragment>
@@ -357,18 +386,38 @@ class Checkout extends Component {
           )}
           {progress >= 100 && !finish && (
             <div className="container">
-              <div className="row">
-                <div className="col-xs-12 col-md-12">
-                  <h1>Checkout</h1>
-                  <div className="checkout--subtitle">
-                    <p>
-                      You are almost done
-                      <br />
-                      Please check again all details and fill in your personal data below.
-                    </p>
-                  </div>
-                </div>
+              <h1>Finalize your Order</h1>
+              <p>You are almost done! Please finish the following steps:</p>
+              <div className="order-nav">
+                <ul>
+                  <li className={activeIndex == 0 ? "active" : ""}>
+                    <span className="order-nav--step">1</span>
+                    <span className="order-nav--title">Pimp Your Menu</span>
+                  </li>
+                  <li className="bike-icon">
+                    <img src="/images/icons/delivery.png" alt="" />
+                  </li>
+                  <li className={activeIndex == 1 ? "active" : ""}>
+                    <span className="order-nav--step">2</span>
+                    <span className="order-nav--title">Delivery Info</span>
+                  </li>
+                  <li className="bike-icon">
+                    <img src="/images/icons/delivery.png" alt="" />
+                  </li>
+                  <li className={activeIndex == 2 ? "active" : ""}>
+                    <span className="order-nav--step">3</span>
+                    <span className="order-nav--title">Review</span>
+                  </li>
+                  <li className="bike-icon">
+                    <img src="/images/icons/delivery.png" alt="" />
+                  </li>
+                  <li className={activeIndex == 3 ? "active" : ""}>
+                    <span className="order-nav--step">4</span>
+                    <span className="order-nav--title">Checkout</span>
+                  </li>
+                </ul>
               </div>
+
               <div className="row">
                 <div className="col-xs-12 col-sm-12 col-md-7 form-left">
                   <div className="form-section">
@@ -423,6 +472,87 @@ class Checkout extends Component {
                           />
                         </div>
                       </div>
+
+                      <div className="row form-row">
+                        <div className="col-xs-12">
+                          <div className="form-group">
+                            <label>
+                              Gender <span className="req">*</span>
+                            </label>
+                            <div className="gender-fields">
+                              <label>
+                                <input type="radio" name="gender" value="female" onClick={e => this.handleChange(e, "gender")} /> Female
+                              </label>
+                              <label>
+                                <input type="radio" name="gender" value="male" onClick={e => this.handleChange(e, "gender")} /> Male
+                              </label>
+                            </div>
+                            {errors.gender && <span className="input-error">{errors.gender}</span>}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="row form-row">
+                        <div className="col-xs-12">
+                          <div className="form-group">
+                            <label>
+                              How did you learn about Motion Meal Plans? <span className="req">*</span>
+                            </label>
+                            <div className="pt-select">
+                              <select onChange={this.handleHowDidYouLearn}>
+                                <option value="">Please Select</option>
+                                <option value="Motion Website">Motion Website</option>
+                                <option value="Social Media">Social Media</option>
+                                <option value="Motion Cafe">Motion Cafe</option>
+                                <option value="Motion Gym">Motion Gym</option>
+                                <option value="Flyer/Poster">Flyer/Poster</option>
+                                <option value="Recommended by a friend">Recommended by a friend</option>
+                                <option value="Recommended by a Motion trainer/employee">Recommended by a Motion trainer/employee</option>
+                              </select>
+                            </div>
+                            {errors.howdidyoulearn && (
+                              <React.Fragment>
+                                <br />
+                                <span className="input-error">{errors.howdidyoulearn}</span>
+                              </React.Fragment>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {form.howdidyoulearn == "Recommended by a Motion trainer/employee" && (
+                        <div className="row form-row">
+                          <div className="col-xs-12">
+                            <div className="form-group">
+                              <label>Please select the name of Motion trainer/employee</label>
+                              <div className="trainer-fields">
+                                <div className="pt-select">
+                                  <select onChange={this.handleStaffSelect}>
+                                    <option value="">Please Select</option>
+                                    <option value="Fay">Fay</option>
+                                    <option value="Petrus">Petrus</option>
+                                    <option value="Iris">Iris</option>
+                                    <option value="Other">Other</option>
+                                  </select>
+                                </div>
+                                {errors.staffName && <span className="input-error">{errors.staffName}</span>}
+
+                                {form.staff_name == "Other" && (
+                                  <React.Fragment>
+                                    <input
+                                      type="text"
+                                      className="form-input"
+                                      placeholder="Please enter a name"
+                                      onChange={this.handleStaffOther}
+                                    />
+                                    {errors.staffOther && <span className="input-error">{errors.staffOther}</span>}
+                                  </React.Fragment>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 

@@ -1,13 +1,14 @@
 {
     "/js/neworder.js": "/js/neworder.js?id=288197d7fe9e98aaf11b",
     "/js/mealplans.js": "/js/mealplans.js?id=6dbdeca1800de30e2fab",
-    "/js/vendor.js": "/js/vendor.js?id=7a93045fc7f14676a788",
-    "/js/app.js": "/js/app.js?id=30b66143831c4e8e1910",
-    "/css/app.css": "/css/app.css?id=91a05c672cbe30242f68",
+    "/js/vendor.js": "/js/vendor.js?id=7080d890147265457b87",
+    "/js/app.js": "/js/app.js?id=98883da5620034f589b8",
+    "/css/app.css": "/css/app.css?id=ba595298dce7ef2c037b",
     "/css/print.css": "/css/print.css?id=0066d11e0524e62729c3",
     "/css/backend.css": "/css/backend.css?id=17ed00dba3bee49e0837",
-    "/js/report.js": "/js/report.js?id=dc16fc4f97b399fc8d2e",
-    "/js/coupon.js": "/js/coupon.js?id=24a803146bc0b76a3daf",
-    "/js/manifest.js": "/js/manifest.js?id=cc3c938d3203b863bf04",
+    "/js/report.js": "/js/report.js?id=5cacd7648b9df7b606ee",
+    "/js/recommendation.js": "/js/recommendation.js?id=4d2de0f85a8578018fba",
+    "/js/coupon.js": "/js/coupon.js?id=003b41fb7c3e0a7c6858",
+    "/js/manifest.js": "/js/manifest.js?id=1f89d0df563d76e6f4da",
     "/css/plugins.css": "/css/plugins.css?id=38d7e188411f1bdfc73e"
 }

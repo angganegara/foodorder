@@ -2,7 +2,7 @@ import React from 'react';
 
 import { parsePrice } from '../helpers/cart';
 
-const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartLoading, changeTab, activeItem, prices}) => (
+const ReviewMeal = ({...props, parseStation, food, snack, days, changeSection, prices}) => (
   <div className="customize--tabs-body">
     <div className="review">
       <div className="review-wrap">
@@ -12,7 +12,7 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
               <span><i className="fal fa-fw fa-angle-down"></i> {day.label}
                 {day.isSaturday && (prices.slimSundayPrice > 0) ? <small>(including Slim Sunday)</small> : ""}
               </span>
-              <a href="javascript:" onClick={(e) => changeTab(e, index)}><i className="fa fa-fw fa-pencil"></i> edit</a>
+              <a href="javascript:" onClick={(e) => changeSection(e, 0)}><i className="fa fa-fw fa-pencil"></i> edit</a>
             </div>
             <div className="review-card--body">
               <span className="icon"><i className="fa fa-fw fa-utensils"></i> meal</span>
@@ -59,6 +59,12 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
                 <td>{parsePrice(prices.slimSundayPrice)} IDR</td>
               </tr>
             )}
+            {prices.ecoPrice > 0 && (
+              <tr>
+                <td>ECO PACK</td>
+                <td>{parsePrice(prices.ecoPrice)} IDR</td>
+              </tr>
+            )}
             {prices.deliveryPrice > 0 && (
               <tr>
                 <td>DELIVERY SURCHARGE</td>
@@ -71,13 +77,6 @@ const ReviewMeal = ({...props, parseStation, food, snack, days, addToCart, cartL
             </tr>
           </tbody>
         </table>
-        <br />
-        <p>
-          <a href="javascript:" className={`btn ${cartLoading ? 'btn-disabled' : ''}`} onClick={addToCart}>
-            {!cartLoading && <span>Continue <i className="fal fa-fw fa-arrow-right"></i></span>}
-            {cartLoading && <span><i className="fal fa-fw fa-spinner-third fa-spin"></i> Processing</span>}
-          </a>
-        </p>
       </div>
     </div>
   </div>

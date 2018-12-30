@@ -55,6 +55,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::post('orders/new', 'OrderController@createMPOrder');
   Route::get('orders/schedule', 'OrderController@schedule');
   Route::get('orders/kitchen', 'OrderController@kitchen');
+  Route::get('orders/recommendation', 'OrderController@recommendation');
+  Route::post('orders/recommendation', 'OrderController@showRecommendation');
+  Route::post('orders/recommendation/export', 'OrderController@exportRecommendationExcel');
   Route::get('orders/{id}/delete', 'OrderController@delete');
   Route::get('orders/{id}/edit', 'OrderController@edit');
   Route::post('orders/{id}/edit', 'OrderController@update');
