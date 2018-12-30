@@ -102,7 +102,7 @@ class PartnerController extends Controller
     $orders = Order::where('partner_id', $request->partner)
                     ->where('paid', 1)
                     ->where('created_at', '>=', $start)
-                    ->where('created_at', '<=', $finish)
+                    ->where('created_at', '<=', $finish .' 23:59:59')
                     ->get();
 
     return $orders;
