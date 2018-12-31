@@ -237,45 +237,6 @@ class Customize extends Component {
     $("html, body").animate({ scrollTop: 0 }, 500);
   };
 
-  allAreaSelected = () => {
-    const { activeItem } = this.state;
-    const check = activeItem.schedules.filter(s => s.pickup == "address" && s.area == "").length;
-
-    return check <= 0;
-  };
-
-  isAllStationSelected = () => {
-    const { activeItem } = this.state;
-    const totalDays = activeItem.schedules.length;
-    const selectedDays = activeItem.schedules.filter(schedule => schedule.pickup != null && schedule.pickup != "").length;
-
-    return totalDays === selectedDays;
-  };
-
-  nextTab = e => {
-    const { activeTab, activeItem } = this.state;
-    const nextIndex = parseInt(activeTab) + 1;
-    if (activeItem.schedules[activeTab].pickup === null) {
-      appToaster.show({
-        message: "To finish, please choose a pick-up station / delivery address for all days.",
-        intent: Intent.WARNING
-      });
-      return false;
-    }
-    if (activeItem.schedules[nextIndex]) {
-      // is the address selected?
-      this.setState({
-        activeTab: nextIndex,
-        activeDate: activeItem.schedules[nextIndex].date
-      });
-      this.showPageLoading();
-      this.scrollTop();
-    } else {
-      this.setState({ lastTab: true });
-      this.showPageLoading();
-    }
-  };
-
   parseStation = (type, index) => {
     switch (type) {
       case "address":
@@ -378,7 +339,7 @@ class Customize extends Component {
         }, 0);
     }
 
-    const ecoPrice = ecoPack ? 1000000 : 0;
+    const ecoPrice = ecoPack ? 100000 : 0;
     const totalPrice =
       parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice) + parseInt(ecoPrice);
 
@@ -429,6 +390,11 @@ class Customize extends Component {
   changeSection = (e, index) => {
     const { activeIndex, pickup, address, area } = this.state;
     e.preventDefault();
+
+    if (activeIndex == 0 && index == 1) {
+      // from 1 to 2
+      this.generateSnacksData();
+    }
 
     if (activeIndex == 1 && index == 2) {
       // check if delivery address is entered

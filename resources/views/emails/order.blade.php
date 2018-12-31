@@ -144,7 +144,7 @@
                           <td style="padding: 10px 20px 10px 20px; font-size: 12px; line-height: 150%;">
                             <strong>{{ $item['meals'] }}</strong>
                             <br />
-                            <span>{{ $item['package'] == 1 ? '6-day package' : 'Single days' }}</span>
+                            <span>{{ $item['package'] == 1 ? '6-day package' : 'Single days' }} {!! $item['eco_price'] > 0 ? '- with Eco pack' : '' !!}</span>
                             <br />
                             <span>
                               {{ Carbon\Carbon::parse($item['start_date'])->format('D, M jS') }}

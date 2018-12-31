@@ -164,7 +164,8 @@ class OrderHelper
         $oc->snacks_price = $cart['snacksPrice'];
         $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
         $oc->delivery_price = intVal($cart['deliveryPrice']);
-        $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price;
+        $oc->eco_price = intVal($cart['ecoPrice']);
+        $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price + $oc->eco_price;
         $oc->start_date = $cart['dateStart'];
         $oc->duration = $cart['duration'];
         $oc->end_date = $cart['dateEnd'];

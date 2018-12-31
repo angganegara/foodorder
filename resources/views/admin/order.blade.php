@@ -79,7 +79,7 @@
             <div class="cart-row">
               <div class="cart-wrap">
                 <div class="cart-body">
-                  <div class="cart-title">{{ $cart->meals }}</div>
+                  <div class="cart-title">{{ $cart->meals }} {!! $cart->eco_price > 0 ? '- with Eco pack' : '' !!}</div>
                   <div class="cart-package">{{ $cart->package_name }}</div>
                   <div class="cart-dates">{{ $cart->date_period }}</div>
                   @if ($cart->slimsunday == 1)<div class="cart-slimsunday">+ Slim Sunday</div>@endif
