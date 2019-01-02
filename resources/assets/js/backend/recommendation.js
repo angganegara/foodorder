@@ -71,6 +71,10 @@ class Recommendation extends Component {
   };
 
   calculateCommision = order => {
+    if (!order.learn_how || order.learn_how == "") {
+      return 0;
+    }
+
     if (order.learn_how && order.learn_how != "Recommended by a Motion trainer/employee") {
       return 0;
     }
