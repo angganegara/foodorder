@@ -20,13 +20,23 @@ const jsDateFormatter = {
   placeholder: "MM/DD/YYYY"
 };
 
+const groupBy = (items, key) =>
+  items.reduce(
+    (result, item) => ({
+      ...result,
+      [item[key]]: [...(result[item[key]] || []), item]
+    }),
+    {}
+  );
+
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 
 class Recommendation extends Component {
   state = {
     dates: null,
     loading: false,
-    orders: null
+    orders: null,
+    commissions: null
   };
 
   changeDate = range => this.setState({ dates: range });
@@ -37,7 +47,8 @@ class Recommendation extends Component {
       const res = await this.getReport();
       this.setState({
         loading: false,
-        orders: res.data
+        orders: res.data,
+        commissions: this.calculateStaffCommissions(res.data)
       });
     } catch (error) {
       const err = error.response.data;
@@ -59,8 +70,42 @@ class Recommendation extends Component {
       .catch(err => console.log(err.response.data));
   };
 
+  calculateCommision = order => {
+    if (order.learn_how && order.learn_how != "Recommended by a Motion trainer/employee") {
+      return 0;
+    }
+
+    return parsePrice(order.total * 0.05);
+  };
+
+  calculateStaffCommissions = orders => {
+    let result = [];
+    let filtered;
+    let grouped;
+
+    filtered = orders
+      .filter(order => {
+        return order.learn_how && order.learn_how == "Recommended by a Motion trainer/employee";
+      })
+      .filter(order => {
+        return order.learn_name == "Fay" || order.learn_name == "Petrus";
+      });
+
+    grouped = groupBy(filtered, "learn_name");
+
+    if (!grouped) {
+      return result;
+    }
+
+    for (let name in grouped) {
+      result[name] = grouped[name].reduce((accu, cur) => (accu += cur.total * 0.05), 0);
+    }
+
+    return result;
+  };
+
   render() {
-    const { loading, orders, dates } = this.state;
+    const { loading, orders, dates, commissions } = this.state;
     const startDate = dates && moment(dates[0]).format("DD MMMM YY");
     const finishDate = dates && moment(dates[1]).format("DD MMMM YY");
 
@@ -91,8 +136,10 @@ class Recommendation extends Component {
                   <th>Order</th>
                   <th>Date</th>
                   <th>Name</th>
+                  <th>Total</th>
                   <th>Where Did You Learn About Us?</th>
                   <th>Motion Name</th>
+                  <th>Commission</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,8 +156,10 @@ class Recommendation extends Component {
                         <b>{order.name}</b>
                       </a>
                     </td>
+                    <td>IDR {parsePrice(order.total)}</td>
                     <td>{order.learn_how}</td>
                     <td>{order.learn_name ? order.learn_name : "-"}</td>
+                    <td>IDR {this.calculateCommision(order)}</td>
                   </tr>
                 ))}
                 {orders.length <= 0 && (
@@ -120,6 +169,16 @@ class Recommendation extends Component {
                 )}
               </tbody>
             </table>
+            <br />
+            <p>
+              <b>Total Commission</b>
+            </p>
+            {commissions && (
+              <div>
+                <p>Fay: IDR {parsePrice(commissions.Fay)}</p>
+                <p>Petrus: IDR {parsePrice(commissions.Petrus)}</p>
+              </div>
+            )}
             {orders && orders.length > 0 && (
               <div className="export-button">
                 <Button rightIcon="th" text="EXPORT TO EXCEL" intent={Intent.SUCCESS} onClick={e => this.handleExport(e, "xlsx")} />

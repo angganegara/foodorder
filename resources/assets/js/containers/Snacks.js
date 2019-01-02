@@ -18,34 +18,29 @@ const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 class Snacks extends Component {
   state = {
     items: null,
-    itemIndex: 0,
-    activeIndex: 0,
     selected: [],
     index: null,
-    scheduleIndex: null
+    scheduleIndex: null,
+    activeIndex: 0
   };
 
   componentDidMount() {
     const index = getIndex(this.props.itemKey);
-    const scheduleIndex = this.props.activeIndex;
     axios.get("/api/items/categorize").then(res => {
       this.setState({
         items: res.data,
         index: index,
-        scheduleIndex: scheduleIndex,
-        itemIndex: this.props.activeIndex
+        scheduleIndex: this.props.scheduleIndex
       });
     });
   }
 
   componentDidUpdate(props) {
-    if (this.props.activeIndex != props.activeIndex) {
+    if (this.props.scheduleIndex != props.scheduleIndex) {
       const index = getIndex(this.props.itemKey);
-      const scheduleIndex = this.props.activeIndex;
       this.setState({
         index: index,
-        scheduleIndex: scheduleIndex,
-        itemIndex: this.props.activeIndex
+        scheduleIndex: this.props.scheduleIndex
       });
     }
   }

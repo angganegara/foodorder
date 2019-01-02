@@ -13,7 +13,7 @@
 
       @foreach ($schedules as $sc)
         <div class="schedule--card">
-          <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }}</div>
+          <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }} {{ $sc->order->gender ? "({$sc->order->gender})" : '' }}</div>
           <div class="schedule--meals">
             <span>MEALS</span>
             {!! $sc->meals !!}

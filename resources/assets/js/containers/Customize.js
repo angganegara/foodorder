@@ -42,7 +42,8 @@ class Customize extends Component {
     activeIndex: 0,
     pickup: "",
     area: "",
-    ecoPack: false
+    ecoPack: false,
+    scheduleIndex: 0
   };
 
   componentDidMount() {
@@ -179,7 +180,7 @@ class Customize extends Component {
 
   showSnacks = (e, index) => {
     // set active date & toggle overlay
-    this.setState({ snackOverlay: true, activeIndex: index });
+    this.setState({ snackOverlay: true, scheduleIndex: index });
     $("body").addClass("ml-overlay-open");
   };
 
@@ -430,7 +431,8 @@ class Customize extends Component {
       snackOverlay,
       activeIndex,
       pickup,
-      ecoPack
+      ecoPack,
+      scheduleIndex
     } = this.state;
     const days = activeItem ? activeItem.schedules : null;
     const sitem = this.state.snacks;
@@ -447,7 +449,7 @@ class Customize extends Component {
     }
     return (
       <React.Fragment>
-        <Snacks itemKey={activeItem.key} open={snackOverlay} activeIndex={activeIndex} toggleWindow={this.toggleSnackOverlay} />
+        <Snacks itemKey={activeItem.key} open={snackOverlay} scheduleIndex={scheduleIndex} toggleWindow={this.toggleSnackOverlay} />
         <Prompt
           when={!activeItem.complete}
           message="This menu is incomplete. Leaving this page will delete this menu from your cart. Are you sure?"

@@ -132,6 +132,7 @@ class OrderHelper
     $order->coupon_value = $form['couponValue'];
     $order->coupon_message = isset($form['couponItem']) ? $form['couponItem'] : null;
     $order->confirmed = 0;
+    $order->gender = $form['gender'];
     $order->email_sent = 0;
     $order->comments = $form['comments'];
     $order->ip_address = $request->ip();

@@ -16,6 +16,7 @@
         <th>Order</th>
         <th>Date</th>
         <th>Name</th>
+        <th>Gender</th>
         <th>Phone</th>
         <th>Referral</th>
         <th>Payment methods</th>
@@ -33,6 +34,7 @@
               <a href="#" target="_blank"><b>{{ $order->name }}</b></a>
             @endif
           </td>
+          <td>{{ $order->gender ? $order->gender : '-' }}</td>
           <td>{{ $order->phone }}</td>
           <td style="text-transform: uppercase">{{ $order->partner_id ? $order->partner->name : 'MOTION FITNESS BALI' }}</td>
           <td>{{ $order->payment_formatted }}</td>
