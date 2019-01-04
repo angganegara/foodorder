@@ -11,7 +11,7 @@ class FoodController extends Controller
 {
   public function index()
   {
-    return Diet::orderBy('position', 'asc')->with('children')->with('prices')->where('parent_id', 0)->get();
+    return Diet::orderBy('name', 'asc')->with('children')->with('prices')->where('parent_id', 0)->get();
   }
 
   public function populateData($data)

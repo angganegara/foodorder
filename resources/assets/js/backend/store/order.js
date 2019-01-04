@@ -16,6 +16,7 @@ const orderState = currentData
         lname: "",
         email: "",
         phone: "",
+        comments: "",
         price: 0,
         discount: 0,
         delivery: 0,

@@ -329,7 +329,7 @@ class Schedule extends Component {
                         {c.id == 8 &&
                           c.children.map(subcat => (
                             <option value={subcat.id} key={subcat.id}>
-                              {subcat.name}
+                              Detox - {subcat.name}
                             </option>
                           ))}
                       </React.Fragment>

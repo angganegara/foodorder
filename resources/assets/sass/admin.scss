@@ -498,6 +498,7 @@ a.schedule-nav {
   }
   &--meals,
   &--snacks,
+  &--comments,
   &--station {
     border-top: 1px dashed #ddd;
     padding: 1rem;
@@ -525,6 +526,19 @@ a.schedule-nav {
       display: block;
     }
     span:nth-child(1) {
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+  }
+  &--comments {
+    font-size: 14px;
+    text-transform: initial;
+    span {
+      display: block;
+    }
+    span:nth-child(1) {
+      text-transform: uppercase;
       font-weight: 300;
       font-size: 12px;
       letter-spacing: 1px;

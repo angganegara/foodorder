@@ -6,6 +6,7 @@ import { extendMoment } from "moment-range";
 
 import orderState from "../store/order";
 import Input from "./Input";
+import Textarea from "./Textarea";
 
 const moment = extendMoment(Moment);
 
@@ -27,6 +28,7 @@ class GuestDetails extends Component {
       orderState.form.email = order.email;
       orderState.form.phone = order.phone;
       orderState.form.price = order.subtotal;
+      orderState.form.comments = order.comments;
       orderState.form.delivery = order.delivery_price;
       orderState.form.discount = order.coupon_value;
       orderState.form.total = order.total;
@@ -178,6 +180,7 @@ class GuestDetails extends Component {
               <Input label="Last name" column="lname" value={form.lname} classNames="is-6" />
               <Input label="Email Address" column="email" value={form.email} classNames="is-6" />
               <Input label="Phone number" column="phone" value={form.phone} classNames="is-6" />
+              <Textarea label="Comments" column="comments" value={form.comments} classNames="is-12" />
             </div>
             <hr className="form-separator" />
             <div className="columns form-inputs is-multiline">

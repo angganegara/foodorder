@@ -63,6 +63,7 @@ class OrderController extends Controller
     $order->lname = $form['lname'];
     $order->email = $form['email'];
     $order->phone = $form['phone'];
+    $order->comments = $form['comments'];
     $order->backend_order = 1;
     $order->delivery_price = intVal($form['delivery_price']);
     $order->coupon_value = intVal($form['coupon_value']);

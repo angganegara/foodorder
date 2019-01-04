@@ -24,6 +24,12 @@
               <span>{{ $sc->snacks }}</span>
             </div>
           @endif
+          @if ($sc->order->comments != "")
+            <div class="schedule--comments">
+              <span>Comments</span>
+              <span>{{ $sc->order->comments }}</span>
+            </div>
+          @endif
         </div>
       @endforeach
 

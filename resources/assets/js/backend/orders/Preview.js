@@ -26,6 +26,7 @@ class Preview extends Component {
       lname: form.lname,
       email: form.email,
       phone: form.phone,
+      comments: form.comments,
       subtotal: form.price,
       delivery_price: form.delivery,
       coupon_value: form.discount,

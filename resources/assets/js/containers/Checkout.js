@@ -266,7 +266,7 @@ class Checkout extends Component {
             break;
           case 101:
             const { response } = res.data;
-            if (message == "StartPaypal" && redirect && response.ACK == "Success") {
+            if (message == "StartPaypal" && redirect && (response.ACK == "Success" || response.ACK == "SuccessWithWarning")) {
               this.setState({
                 popupMessage: "Redirecting you to PayPal website. This may take a minute, please don't close your browser."
               });
@@ -602,13 +602,12 @@ class Checkout extends Component {
                         handleChange={e => this.handlePayment(e, "creditcard")}
                         label="Bank Transfer"
                       />
-                      {/*
-                        <PaymentButton
-                          active={payment == "paypal"}
-                          icon="fab fa-paypal"
-                          handleChange={e => this.handlePayment(e, "paypal")}
-                          label="PayPal"
-                        />*/}
+                      <PaymentButton
+                        active={payment == "paypal"}
+                        icon="fab fa-paypal"
+                        handleChange={e => this.handlePayment(e, "paypal")}
+                        label="PayPal"
+                      />
                     </div>
                   </div>
                 </div>

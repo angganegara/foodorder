@@ -67,14 +67,14 @@ class MealController extends Controller
     $mp->day_6 = $ids["day_6"];
     $mp->save();
 
-    $mps = MealPlan::all();
+    $mps = MealPlan::with(['day_1', 'day_2', 'day_3', 'day_4', 'day_5', 'day_6'])->orderBy('category', 'asc')->orderBy('name', 'asc')->get();
 
     return response($mps);
   }
 
   public function listPlan()
   {
-    $mp = MealPlan::with(['day_1', 'day_2', 'day_3', 'day_4', 'day_5', 'day_6'])->get();
+    $mp = MealPlan::with(['day_1', 'day_2', 'day_3', 'day_4', 'day_5', 'day_6'])->orderBy('category', 'asc')->orderBy('name', 'asc')->get();
     return $mp;
   }
 

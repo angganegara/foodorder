@@ -3,7 +3,7 @@
 
   <ul>
     <li class="single"><a href="/admin" title="">Dashboard</a></li>
-    <li class="single"><a href="/admin/meal-plans" title="">Manage Meal Plans</a></li>
+    <li class="single"><a href="/admin/meal-plans" title="" target="_blank">Manage Meal Plans</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Orders</li>
     <li class="children"><a href="/admin/orders/new" title="">Create New Orders</a></li>
     <li class="children"><a href="/admin/orders" title="">View Orders</a></li>
