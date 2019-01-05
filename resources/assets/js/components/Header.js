@@ -10,7 +10,7 @@ class Header extends Component {
     super(props);
     this.state = {
       backToLink: {
-        href: "http://cafe.motionfitnessbali.com",
+        href: "http://www.motionfitnessbali.com",
         html: "Home"
       }
     };
@@ -66,14 +66,20 @@ class Header extends Component {
             <a href={backToLink.href} title="">
               <span dangerouslySetInnerHTML={{ __html: backToLink.html }} />
             </a>
-            <a href="http://cafe.motionfitnessbali.com/detox" title="">
-              Detox
+            <a href="http://www.motionfitnessbali.com/food" title="">
+              Food
             </a>
-            <a href="http://cafe.motionfitnessbali.com/retreat-catering" title="">
-              Catering
+            <a href="http://www.motionfitnessbali.com/fitness" title="">
+              Fitness
             </a>
-            <a href="http://cafe.motionfitnessbali.com/nutrition-consultation" title="">
-              Nutrition Consultation
+            <a href="http://www.motionfitnessbali.com/shop" title="">
+              Store
+            </a>
+            <a href="http://www.motionfitnessbali.com/blog" title="">
+              Blog
+            </a>
+            <a href="http://www.motionfitnessbali.com/contact" title="">
+              Contact
             </a>
           </div>
           {this.props.location.pathname != "/checkout" && <MiniCart />}
