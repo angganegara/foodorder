@@ -277,14 +277,15 @@ section.home .inner .drop-down h1 {
 
 header {
   width: 100%;
-  background-color: rgba(#0a0a0a, 0.85);
   position: fixed;
   left: 0;
   top: 0;
   z-index: 10;
   backface-visibility: hidden;
+  background-color: rgba(#0a0a0a, 0.65);
 }
 .header-mini {
+  background-color: rgba(#0a0a0a, 0.5);
   border-bottom: 1px solid #000;
 }
 .header.header-socials {
