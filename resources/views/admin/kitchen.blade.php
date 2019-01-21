@@ -1,4 +1,4 @@
-@extends('print')
+@extends('print', ['title' => 'KITCHEN SCHEDULE | Motion Cafe Bali'])
 
 @section('content')
 <div class="main-content schedule-parent">

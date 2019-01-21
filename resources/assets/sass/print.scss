@@ -3,14 +3,18 @@
 @import "grids";
 @import "mixins";
 
+@page {
+  size: A4 portrait;
+}
+
 body {
   margin: 0;
-  padding: 0.5rem;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-.main {
-  padding: 1rem;
+.main-content {
+  padding: 0;
 }
 
 .schedule-wrapper {
@@ -161,10 +165,15 @@ h1 {
 }
 
 @media only print {
-  @page {
-    size: A4 landscape;
+  body {
+    padding: 5rem 10mm;
+    page-break-after: always;
+    background: white;
   }
-
+  .main-content {
+    width: 190mm;
+    height: 276mm;
+  }
   a.schedule-nav {
     display: none;
   }

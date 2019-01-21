@@ -1,4 +1,4 @@
-@extends('print')
+@extends('print', [$title => 'DELIVERY | Motion Meal Plans'])
 
 @section('content')
 <div class="main">
