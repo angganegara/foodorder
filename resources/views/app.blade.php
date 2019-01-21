@@ -26,8 +26,8 @@
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Motion Cafe Bali | Homemade &amp; Fresh, Vegan &amp; Paleo Friendly" />
-  <meta property="og:url" content="https://foodorder.motionfitnessbali.com/" />
-  <meta property="og:site_name" content="Motion Fitness Bali" />
+  <meta property="og:url" content="https://mealplans.motionfitnessbali.com/" />
+  <meta property="og:site_name" content="Motion Cafe Bali" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Motion Cafe Bali | Homemade &amp; Fresh, Vegan &amp; Paleo Friendly" />
 </head>
