@@ -1,4 +1,4 @@
-@extends('admin.admin')
+@extends('print')
 
 @section('content')
 <div class="main-content schedule-parent">
