@@ -38,7 +38,7 @@ class GuestDetails extends Component {
       orderState.startingDate = Date.parse(new Date(carts[0].start_date));
       orderState.duration = carts[0].duration;
 
-      if (order.backend_order) {
+      if (order.backend_order == "1") {
         this.loadMenuToSchedule();
       }
 

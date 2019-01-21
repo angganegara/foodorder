@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="{{ Request::is('admin/orders/new*') || Request::is('admin/meal-plans*') ? 'no-overflow' : '' }}">
 <head>
   <meta charset="utf-8">
@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="/css/backend.css" media="screen" />
   <link rel="stylesheet" href="/css/redactor.css" />
   <link rel="stylesheet" href="/css/datepicker.min.css" />
+  <link rel="stylesheet" href="/css/print.css" media="print" />
 </head>
 <body>
 
