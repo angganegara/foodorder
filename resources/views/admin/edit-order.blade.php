@@ -1,4 +1,4 @@
-@extends('admin')
+@extends('admin', ['title' => 'EDIT MP ORDER | Motion Cafe Bali | Admin'])
 
 @section('admin')
 <div id="order-app"></div>

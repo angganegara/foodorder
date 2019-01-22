@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon-precomposed" href="/images/favicon.png" />
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/favicon.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon.png" />
-  <title>Motion Cafe Bali | Admin</title>
+  <title>{{ isset($title) ? $title : "Motion Cafe Bali | Admin" }}</title>
   <link rel="stylesheet" href="/css/fontawesome-all.min.css">
   <link rel="stylesheet" href="/css/backend.css" media="screen" />
   <link rel="stylesheet" href="/css/redactor.css" />

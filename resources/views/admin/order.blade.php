@@ -1,4 +1,4 @@
-@extends('admin.admin')
+@extends('admin.admin', ['title' => 'VIEW ORDER | Motion Cafe Bali | Admin'])
 
 @section('content')
 <div class="main-content">

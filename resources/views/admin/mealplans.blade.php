@@ -1,4 +1,4 @@
-@extends('admin.admin')
+@extends('admin.admin', ['title' => 'MP DATABASE | Motion Cafe Bali | Admin'])
 
 @section('content')
 <div id="mp-app"></div>
