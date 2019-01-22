@@ -11,7 +11,10 @@
   </nav>
 
   <div class="body">
-    <h1># {{ $order->order_number }} ({{ $order->name }})</h1>
+    <div class="title-flex">
+      <h1># {{ $order->order_number }} ({{ $order->name }})</h1>
+      <a href="/admin/orders/{{ $order->id }}/edit" title="" class="button is-info">UPDATE MEAL PLAN</a>
+    </div>
     <div class="columns">
       <div class="column is-half">
         <div class="form-section">

@@ -160,7 +160,50 @@
                             </div>
                           </td>
                           <td style="padding: 10px 20px 10px 20px; font-size: 12px; text-align: right; line-height: 150%;">
-                            {{ number_format($item['total_price'], 0) }} IDR
+                            {{ number_format($item['subtotal'], 0) }} IDR
+                          </td>
+                        </tr>
+                        @if ($item['snacks_price'] > 0)
+                        <tr>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"><b>Snacks</b></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%; text-align: right">
+                            {{ number_format($item['snacks_price'], 0) }} IDR
+                          </td>
+                        </tr>
+                        @endif
+                        @if ($item['slimsunday_price'] > 0)
+                        <tr>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"><b>Slim Sunday</b></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;">1</td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%; text-align: right">
+                            {{ number_format($item['slimsunday_price'], 0) }} IDR
+                          </td>
+                        </tr>
+                        @endif
+                        @if ($item['eco_price'] > 0)
+                        <tr>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"><b>ECO Pack</b></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%; text-align: right">
+                            {{ number_format($item['eco_price'], 0) }} IDR
+                          </td>
+                        </tr>
+                        @endif
+                        @if ($item['snacks_price'] > 0)
+                        <tr>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"><b>Delivery</b></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%;"></td>
+                          <td style="padding: 5px 20px; font-size: 12px; line-height: 150%; text-align: right">
+                            {{ number_format($item['delivery_price'], 0) }} IDR
+                          </td>
+                        </tr>
+                        @endif
+                        <tr>
+                          <td style="padding: 5px 20px 10px 20px; font-size: 12px; line-height: 150%;">&nbsp;</td>
+                          <td style="padding: 5px 20px 10px 20px; font-size: 12px; line-height: 150%;"><b>SUBTOTAL</b></td>
+                          <td style="padding: 5px 20px 10px 20px; font-size: 12px; line-height: 150%; text-align: right">
+                            <b>{{ number_format($item['total_price'], 0) }} IDR</b>
                           </td>
                         </tr>
                         <tr>

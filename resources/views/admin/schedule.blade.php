@@ -5,35 +5,39 @@
   <div class="body">
     <h1>
       <a href="/admin/orders/schedule?date={{ $yesterday }}" title="" class="schedule-nav"><i class="far fa-arrow-left"></i></a>
-      SCHEDULE {{ $today->format('d M Y') }}
+      DELIVERY SCHEDULE {{ $today->format('d M Y') }}
       <a href="/admin/orders/schedule?date={{ $tomorrow }}" title="" class="schedule-nav"><i class="far fa-arrow-right"></i></a>
     </h1>
 
-    <div class="schedule-wrapper schedule">
-
-      @foreach ($schedules as $sc)
-        <div class="schedule--card">
-          <div class="schedule--block">
-            <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }}</div>
-            <div class="schedule--meals">
-              <span>MEALS</span>
-              {!! $sc->meals !!}
-            </div>
-            @if ($sc->snacks)
-              <div class="schedule--snacks">
-                <span>Snacks</span>
-                <span>{{ $sc->snacks }}</span>
-              </div>
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <th width="25%">Name</th>
+        <th width="15%">Menu</th>
+        <th width="10%">Eco Pack</th>
+        <th width="50%">Delivered to</th>
+      </tr>
+      @foreach ($result as $md5)
+        @foreach ($md5 as $index => $sc)
+          <?php $total = count($md5); ?>
+          <tr>
+            <td>{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
+            <td>{{ $sc['menu'] }}</td>
+            <td>{{ $sc['eco'] > 0 ? "YES" : "NO" }}</td>
+            @if ($total > 1)
+              @if ($index == 0)
+                <td rowspan="{{ $total }}">
+                  {!! $sc['address'] !!}
+                </td>
+              @endif
+            @else
+              <td>
+                {!! $sc['address'] !!}
+              </td>
             @endif
-            <div class="schedule--station">
-              <span>{{ $sc->station_id ? 'Pickup at' : 'Deliver to' }}</span>
-              <span>{{ $sc->station }}</span>
-            </div>
-          </div>
-        </div>
+          </tr>
+        @endforeach
       @endforeach
-
-    </div>
+    </table>
   </div>
 </div>
 @endsection

@@ -594,7 +594,7 @@ class Checkout extends Component {
                         active={payment == "cash"}
                         icon="fa fa-motorcycle"
                         handleChange={e => this.handlePayment(e, "cash")}
-                        label="Cash to driver / the cafe"
+                        label="Cash to driver"
                       />
                       <PaymentButton
                         active={payment == "creditcard"}

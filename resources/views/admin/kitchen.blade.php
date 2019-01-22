@@ -5,35 +5,42 @@
   <div class="body">
     <h1>
       <a href="/admin/orders/kitchen?date={{ $yesterday }}" title="" class="schedule-nav"><i class="far fa-arrow-left"></i></a>
-      SCHEDULE {{ $today->format('d M Y') }}
+      KITCHEN SCHEDULE ({{ $today->format('l d F Y') }})
       <a href="/admin/orders/kitchen?date={{ $tomorrow }}" title="" class="schedule-nav"><i class="far fa-arrow-right"></i></a>
     </h1>
 
-    <div class="schedule-wrapper schedule">
-
-      @foreach ($schedules as $sc)
-        <div class="schedule--card">
-          <div class="schedule--name"><i class="far fa-user"></i> {{ $sc->name }} {{ $sc->order->gender ? "({$sc->order->gender})" : '' }}</div>
-          <div class="schedule--meals">
-            <span>MEALS</span>
-            {!! $sc->meals !!}
-          </div>
-          @if ($sc->snacks)
-            <div class="schedule--snacks">
-              <span>Snacks</span>
-              <span>{{ $sc->snacks }}</span>
-            </div>
-          @endif
-          @if ($sc->order->comments != "")
-            <div class="schedule--comments">
-              <span>Comments</span>
-              <span>{{ $sc->order->comments }}</span>
-            </div>
-          @endif
-        </div>
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <th>Name</th>
+        <th>Menu</th>
+        <th>Eco Pack</th>
+        <th>Description</th>
+      </tr>
+      @foreach ($result as $md5)
+        @foreach ($md5 as $index => $sc)
+          <?php $total = count($md5); ?>
+          <tr>
+            <td>{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
+            <td>{{ $sc['menu'] }}</td>
+            <td>{{ $sc['eco'] > 0 ? "YES" : "NO" }}</td>
+            @if ($total > 1)
+              @if ($index == 0)
+                <td rowspan="{{ $total }}">
+                  {!! $sc['meals'] !!}
+                  {!! $sc['snacks'] ? '<hr />extra snacks : '. $sc['snacks'] : '' !!}
+                </td>
+              @endif
+            @else
+              <td>
+                {!! $sc['meals'] !!}
+                {!! $sc['snacks'] ? '<hr />extra snacks : '. $sc['snacks'] : '' !!}
+              </td>
+            @endif
+          </tr>
+        @endforeach
       @endforeach
+    </table>
 
-    </div>
   </div>
 </div>
 @endsection

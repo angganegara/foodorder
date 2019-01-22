@@ -207,7 +207,24 @@ class OrderController extends Controller
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
 
-    return view('admin.schedule', compact('schedules', 'today', 'yesterday', 'tomorrow'));
+    $result = collect([]);
+    if ($schedules) {
+      foreach ($schedules as $sc) {
+        $result->push([
+          'name' => $sc->name,
+          'address' => $sc->station,
+          'menu' => $sc->ordercart->meals,
+          'gender' => $sc->order->gender,
+          'eco' => $sc->ordercart->eco_price > 0,
+          'snacks' => $sc->snacks,
+          'md5' => md5(trim($sc->station))
+        ]);
+      }
+    }
+
+    $result = $result->groupBy('md5')->toArray();
+
+    return view('admin.schedule', compact('result', 'today', 'yesterday', 'tomorrow'));
   }
 
   public function kitchen(Request $request)
@@ -215,14 +232,31 @@ class OrderController extends Controller
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
     if (!$request->has('date')) { $today->addDay(); }
 
-    $schedules = OrderSchedule::with(['order'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
+    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
       $query->where('paid', 1);
     })->get();
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
 
-    return view('admin.kitchen', compact('schedules', 'today', 'yesterday', 'tomorrow'));
+    $result = collect([]);
+    if ($schedules) {
+      foreach ($schedules as $sc) {
+        $result->push([
+          'name' => $sc->name,
+          'meals' => $sc->meals,
+          'menu' => $sc->ordercart->meals,
+          'gender' => $sc->order->gender,
+          'eco' => $sc->ordercart->eco_price > 0,
+          'snacks' => $sc->snacks,
+          'md5' => md5(trim($sc->meals))
+        ]);
+      }
+    }
+
+    $result = $result->groupBy('md5')->toArray();
+
+    return view('admin.kitchen', compact('result', 'today', 'yesterday', 'tomorrow'));
   }
 
   public function delete($id)

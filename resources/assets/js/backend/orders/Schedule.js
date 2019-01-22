@@ -12,12 +12,25 @@ import DaysEditor from "./DaysEditor";
 const appToaster = Toaster.create({ position: Position.TOP_RIGHT });
 
 class Schedule extends Component {
+  state = {
+    schedules: []
+  };
+
   async componentDidMount() {
     const meals = await this.loadMeals();
     const presets = await this.loadPresets();
+    let schedules = null;
+    let order = null;
     orderState.meals = meals.data;
     orderState.presets = presets.data;
     orderState.loadFrom = "";
+    if (ACTION == "EDIT") {
+      order = JSON.parse(ORDER);
+      schedules = order.ordercart[0].schedule.map(sch => {
+        return { date: sch.date, address: sch.station };
+      });
+      orderState.schedules = schedules;
+    }
   }
 
   loadMeals = () => axios.get("/admin/meal-plans/all");
@@ -134,8 +147,9 @@ class Schedule extends Component {
     orderState.preset = null;
   };
   handleDrop(index, item) {
-    const { mealplans, preset, loadFrom, days, items } = orderState;
+    const { mealplans, preset, loadFrom, days, items, schedules } = orderState;
     let newItem;
+
     if (item.type === "days") {
       newItem = [...items];
       newItem[index] = item;
@@ -152,6 +166,20 @@ class Schedule extends Component {
       }
       newItem = items;
     }
+    if (ACTION == "EDIT") {
+      newItem = newItem.map((item, index) => {
+        if (item) {
+          let delivery = "";
+          if (schedules[index]) {
+            delivery = schedules[index].address;
+          }
+          return { ...item, delivery: delivery };
+        } else {
+          return null;
+        }
+      });
+    }
+    //console.log(newItem);
     orderState.items = newItem;
   }
 
@@ -171,6 +199,7 @@ class Schedule extends Component {
 
   render() {
     const { active } = this.props;
+    const { schedules } = this.state;
     const {
       days,
       items,
@@ -186,6 +215,7 @@ class Schedule extends Component {
       showTable,
       presets,
       datePeriods,
+      dateRaw,
       startingDate
     } = orderState;
     return (
@@ -353,6 +383,7 @@ class Schedule extends Component {
                   copyData={copyData}
                   pasteData={this.pasteComponent}
                   date={datePeriods[index]}
+                  dateRaw={dateRaw[index]}
                 />
               ))}
             </div>

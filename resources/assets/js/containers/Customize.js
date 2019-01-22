@@ -600,10 +600,11 @@ class Customize extends Component {
                             placeholder="Enter your address here"
                             onChange={e => this.updateAddress(e, "address")}
                             value={address}
+                            disabled={pickup !== "address"}
                           />
                           <label className="area">Select Area</label>
                           <div className="pt-select">
-                            <select onChange={e => this.updateAddress(e, "area")} value={area}>
+                            <select onChange={e => this.updateAddress(e, "area")} value={area} disabled={pickup !== "address"}>
                               <option value="">Select area</option>
                               {areas.map((area, aindex) => (
                                 <option value={area.name} key={aindex}>

@@ -28,7 +28,7 @@ class GuestDetails extends Component {
       orderState.form.email = order.email;
       orderState.form.phone = order.phone;
       orderState.form.price = order.subtotal;
-      orderState.form.comments = order.comments;
+      orderState.form.comments = order.comments ? order.comments : "";
       orderState.form.delivery = order.delivery_price;
       orderState.form.discount = order.coupon_value;
       orderState.form.total = order.total;
