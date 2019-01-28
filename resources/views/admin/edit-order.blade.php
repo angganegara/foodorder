@@ -4,12 +4,11 @@
 <div id="order-app"></div>
 
 <?php
-$json = str_replace("'", "\'", json_encode($order));
-$json = str_replace('\n', '', $json);
+$json = json_encode($order);
 ?>
 <script>
 var ACTION = 'EDIT';
-var ORDER = '<?php echo $json; ?>';
+var ORDER = <?php echo $json; ?>;
 </script>
 <script src="{{ asset('js/neworder.js') }}"></script>
 @endsection

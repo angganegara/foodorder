@@ -25,7 +25,7 @@ class Schedule extends Component {
     orderState.presets = presets.data;
     orderState.loadFrom = "";
     if (ACTION == "EDIT") {
-      order = JSON.parse(ORDER);
+      order = ORDER;
       schedules = order.ordercart[0].schedule.map(sch => {
         return { date: sch.date, address: sch.station };
       });

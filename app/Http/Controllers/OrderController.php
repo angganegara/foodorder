@@ -53,6 +53,15 @@ class OrderController extends Controller
     return view('admin.edit-order', compact('order'));
   }
 
+  public function sendMPEmail(Request $request, $id)
+  {
+    $order = Order::find($id);
+    $this->oh->sendOrder($order->order_number);
+    $order->update(['menu_email_sent' => 1]);
+
+    return response('OK');
+  }
+
   public function update(Request $request)
   {
     $form = $request->data;
@@ -70,6 +79,7 @@ class OrderController extends Controller
     $order->confirmed = 1;
     $order->subtotal = intVal($form['subtotal']);
     $order->total = intVal($form['total']);
+    $order->backend_order = 1;
 
     $order->save();
 
@@ -247,6 +257,7 @@ class OrderController extends Controller
           'meals' => $sc->meals,
           'menu' => $sc->ordercart->meals,
           'gender' => $sc->order->gender,
+          'comments' => $sc->order->comments,
           'eco' => $sc->ordercart->eco_price > 0,
           'snacks' => $sc->snacks,
           'md5' => md5(trim($sc->meals))

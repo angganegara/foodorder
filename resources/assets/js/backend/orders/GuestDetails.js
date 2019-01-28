@@ -21,7 +21,7 @@ class GuestDetails extends Component {
 
     if (ACTION == "EDIT") {
       // always overwrite the
-      const order = JSON.parse(ORDER);
+      const order = ORDER;
       const carts = order.ordercart;
       orderState.form.fname = order.fname;
       orderState.form.lname = order.lname;

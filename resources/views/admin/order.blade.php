@@ -13,7 +13,13 @@
   <div class="body">
     <div class="title-flex">
       <h1># {{ $order->order_number }} ({{ $order->name }})</h1>
-      <a href="/admin/orders/{{ $order->id }}/edit" title="" class="button is-info">UPDATE MEAL PLAN</a>
+      <div class="title-buttons">
+        <a href="/admin/orders/{{ $order->id }}/edit" title="" class="button is-info"><i class="fa fa-pencil"></i> &nbsp;<span>UPDATE MEAL PLAN</span></a>
+        &nbsp;
+        <a href="javascript:" title="" class="button is-info mp-email">
+          <i class="fa fa-envelope"></i> &nbsp;<span>{{ $order->menu_email_sent ? 'RESEND MP EMAIL' : 'SEND MP EMAIL' }}</span>
+        </a>
+      </div>
     </div>
     <div class="columns">
       <div class="column is-half">
@@ -135,4 +141,32 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+  var orderID = {{ $order->id }};
+  $('.mp-email').click(function (e) {
+    e.preventDefault();
+    var $el = $(this);
+    var buttonText = $el.html();
+
+    $el.html('<i class="fal fa-spinner-third fa-spin"></i> &nbsp;<span>SENDING</span>').attr('disabled', true);
+    axios
+      .post('/admin/orders/'+ orderID +'/send-mp-email', {
+        orderID: orderID
+      })
+      .then(function (res) {
+        if (res.data == 'OK') {
+          alert("MP Email sent");
+        }
+
+        $el.html('<i class="fa fa-envelope"></i> &nbsp;<span>RESEND MP EMAIL</span>').attr('disabled', false);
+      })
+      .catch(function (err) {
+        alert("Fail to send email. Please try again");
+        $el.html(buttonText);
+      })
+  })
+</script>
 @endsection

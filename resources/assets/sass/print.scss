@@ -187,7 +187,8 @@ table {
     text-transform: lowercase;
     font-variant: small-caps;
   }
-  tr td:nth-child(4) {
+  tr td:nth-child(4),
+  tr td:nth-child(5) {
     text-transform: lowercase;
     font-variant: small-caps;
   }

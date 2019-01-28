@@ -14,6 +14,7 @@
         <th>Name</th>
         <th>Menu</th>
         <th>Eco Pack</th>
+        <th>Comments</th>
         <th>Description</th>
       </tr>
       @foreach ($result as $md5)
@@ -23,6 +24,7 @@
             <td>{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
             <td>{{ $sc['menu'] }}</td>
             <td>{{ $sc['eco'] > 0 ? "YES" : "NO" }}</td>
+            <td>{{ $sc['comments'] }}</td>
             @if ($total > 1)
               @if ($index == 0)
                 <td rowspan="{{ $total }}">

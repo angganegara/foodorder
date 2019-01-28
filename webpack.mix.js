@@ -14,6 +14,7 @@ var ZopfliPlugin = require("zopfli-webpack-plugin");
 
 mix
   .react("resources/assets/js/app.js", "public/js/app.js")
+  .js("resources/assets/js/admin.js", "public/js/admin.js")
   .react("resources/assets/js/backend/report.js", "public/js/report.js")
   .react("resources/assets/js/backend/mealplans.js", "public/js/mealplans.js")
   .react("resources/assets/js/backend/neworder.js", "public/js/neworder.js")

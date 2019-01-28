@@ -18,9 +18,9 @@
         <th>Name</th>
         <th>Gender</th>
         <th>Phone</th>
-        <th>Referral</th>
         <th>Payment methods</th>
-        <th>Status</th>
+        <th class="text-center">MP Email</th>
+        <th class="text-center">Status</th>
         <th></th>
       </tr>
       @foreach ($orders as $index => $order)
@@ -36,9 +36,11 @@
           </td>
           <td>{{ $order->gender ? $order->gender : '-' }}</td>
           <td>{{ $order->phone }}</td>
-          <td style="text-transform: uppercase">{{ $order->partner_id ? $order->partner->name : 'MOTION FITNESS BALI' }}</td>
           <td>{{ $order->payment_formatted }}</td>
-          <td><a title="" class="pill status">{{ $order->order_status }}</a></td>
+          <td class="text-center">
+            {!! $order->menu_email_sent ? '<i class="fal fa-check is-success"></i>' : '<i class="fal fa-times is-danger"></i>' !!}
+          </td>
+          <td class="text-center"><a title="" class="pill status">{{ strtoupper($order->order_status) }}</a></td>
           <td class="actions">
             <a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}"><i class="far fa-eye"></i></a>
             <a href="/admin/orders/{{ $order->id }}/edit" target="_blank"><i class="far fa-pencil"></i></a>

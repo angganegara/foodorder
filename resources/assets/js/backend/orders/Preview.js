@@ -18,7 +18,7 @@ class Preview extends Component {
 
   handleSubmit = (e, { sendEmail }) => {
     const { form, items, dateRaw, category, duration, cartID } = orderState;
-    const order = JSON.parse(ORDER);
+    const order = ORDER;
     const data = {
       orderID: order.id,
       cartID: cartID,

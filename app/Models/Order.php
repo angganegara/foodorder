@@ -8,7 +8,7 @@ class Order extends Model
 {
 	protected $hidden = ['ip_address', 'updated_at', 'user_agent'];
 	protected $appends = ['name', 'date', 'payment_formatted', 'order_status'];
-	protected $fillable = ['total'];
+  protected $fillable = ['total', 'menu_email_sent'];
 
 	public function getNameAttribute()
 	{

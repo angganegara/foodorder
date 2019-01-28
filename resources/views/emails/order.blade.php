@@ -222,11 +222,11 @@
                                 <tr>
                                   <td width="75%" style="background-color: #fff; color: #222; line-height: 170%;
                                     #222;padding: 7px 20px; font-size: 12px;border-bottom: 1px solid #f5f5f5;">
-                                    MEALS:
                                     @if ($order->backend_order)
-                                      <b>{{ $sch->ordercart->meals }}</b>
+                                      <b>{!! str_replace('<hr />', '<hr style="border-top: 1px solid #eee; border-bottom: 0"/>', $sch->meals) !!}</b>
+                                      <br />
                                     @else
-                                      <b>{{ $sch->meals }}</b>
+                                      MEALS: <b>{{ $sch->ordercart->meals }}</b>
                                     @endif
                                     @if ($sch->snacks != '')
                                       <br />SNACKS: <b>{{ $sch->snacks }}</b>

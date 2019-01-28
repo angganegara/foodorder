@@ -25,6 +25,18 @@ a:focus,
 a:hover {
   text-decoration: none;
 }
+.text-center {
+  text-align: center;
+}
+.is-danger {
+  color: rgb(223, 117, 31);
+}
+.is-success {
+  color: rgb(0, 206, 0);
+}
+.button[disabled] {
+  pointer-events: none;
+}
 .hidden {
   display: none;
 }
