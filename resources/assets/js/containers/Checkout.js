@@ -529,9 +529,13 @@ class Checkout extends Component {
                                 <div className="pt-select">
                                   <select onChange={this.handleStaffSelect}>
                                     <option value="">Please Select</option>
+                                    <option value="Aldhy">Aldhy</option>
                                     <option value="Fay">Fay</option>
-                                    <option value="Petrus">Petrus</option>
                                     <option value="Iris">Iris</option>
+                                    <option value="Mada">Mada</option>
+                                    <option value="Nadi">Nadi</option>
+                                    <option value="Petrus">Petrus</option>
+                                    <option value="Summer">Summer</option>
                                     <option value="Other">Other</option>
                                   </select>
                                 </div>

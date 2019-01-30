@@ -3,8 +3,8 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 import React, { Component } from "react";
 import { render } from "react-dom";
-import { Button, Icon, Intent, Spinner, Toaster, Position } from "@blueprintjs/core";
-import { DateRange, DateRangeInput, IDateFormatProps } from "@blueprintjs/datetime";
+import { Button, Intent, Spinner, Toaster, Position } from "@blueprintjs/core";
+import { DateRangeInput } from "@blueprintjs/datetime";
 
 import moment from "moment";
 import numeral from "numeral";
@@ -92,7 +92,14 @@ class Recommendation extends Component {
         return order.learn_how && order.learn_how == "Recommended by a Motion trainer/employee";
       })
       .filter(order => {
-        return order.learn_name == "Fay" || order.learn_name == "Petrus";
+        return (
+          order.learn_name == "Fay" ||
+          order.learn_name == "Petrus" ||
+          order.learn_name == "Aldhy" ||
+          order.learn_name == "Summer" ||
+          order.learn_name == "Nadi" ||
+          order.learn_name == "Mada"
+        );
       });
 
     grouped = groupBy(filtered, "learn_name");
@@ -179,8 +186,12 @@ class Recommendation extends Component {
             </p>
             {commissions && (
               <div>
+                <p>aldhy: IDR {parsePrice(commissions.Aldhy)}</p>
                 <p>Fay: IDR {parsePrice(commissions.Fay)}</p>
+                <p>Mada: IDR {parsePrice(commissions.Mada)}</p>
+                <p>Nadi: IDR {parsePrice(commissions.Nadi)}</p>
                 <p>Petrus: IDR {parsePrice(commissions.Petrus)}</p>
+                <p>Summer: IDR {parsePrice(commissions.Summer)}</p>
               </div>
             )}
             {orders && orders.length > 0 && (
