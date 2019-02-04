@@ -40,4 +40,11 @@ class PresetController extends Controller
     $presets = Preset::all();
     return response($presets);
   }
+
+  public function delete($id)
+  {
+    Preset::findOrFail($id)->delete();
+
+    return response('OK');
+  }
 }

@@ -8,7 +8,7 @@ class Order extends Model
 {
 	protected $hidden = ['ip_address', 'updated_at', 'user_agent'];
 	protected $appends = ['name', 'date', 'payment_formatted', 'order_status'];
-  protected $fillable = ['total', 'menu_email_sent'];
+  protected $fillable = ['total', 'menu_email_sent', 'cash_paid', 'cash_paid_date'];
 
 	public function getNameAttribute()
 	{
@@ -59,5 +59,34 @@ class Order extends Model
   public function partner()
   {
     return $this->hasOne(\App\Models\Partner::class, 'id', 'partner_id');
+  }
+
+  public function openAmount()
+  {
+    $open = $this->total;
+
+    switch ($this->payment) {
+      case 'paypal':
+        if ($this->paypal_response == 'Completed') {
+          $open = 0;
+        }
+      break;
+
+      case 'creditcard':
+        if (
+          strtoupper($this->trx_status) == 'ACCEPT'
+          && ($this->trx_status_code == '200' || $this->trx_status_code == '202')
+          && ($this->trx_status == 'settlement')
+        ) {
+          $open = 0;
+        }
+      break;
+
+      case 'cash':
+        $open = $this->total - $this->cash_paid;
+      break;
+    }
+
+    return $open;
   }
 }

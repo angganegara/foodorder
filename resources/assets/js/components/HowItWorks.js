@@ -49,7 +49,7 @@ class HowItWorks extends Component {
                       <li>Starting days for your diet: Mondays to Saturdays</li>
                       <li>Order must be placed 48hrs in advance to give us time to prepare your diet</li>
                       <li>Sundays we are closed for orders and food production</li>
-                      <li>Latest order for Monday until Saturday 14:00.</li>
+                      <li>Latest order for Monday until Saturday 10:00.</li>
                       <li>Office times for possible queries: Mon. - Fri. 08:00 - 17:00.</li>
                     </ul>
                   </div>

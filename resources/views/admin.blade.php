@@ -25,6 +25,9 @@
   <script src="{{ asset('js/manifest.js') }}"></script>
   <script src="{{ asset('js/vendor.js') }}"></script>
   <script src="{{ asset('js/admin.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/datepicker.min.js"></script>
+  <script src="/js/datepicker.en.js"></script>
 
   @yield('admin')
   @yield('scripts')

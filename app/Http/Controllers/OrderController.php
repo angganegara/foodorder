@@ -56,7 +56,7 @@ class OrderController extends Controller
   public function sendMPEmail(Request $request, $id)
   {
     $order = Order::find($id);
-    $this->oh->sendOrder($order->order_number);
+    $this->oh->sendMPEmail($order->order_number);
     $order->update(['menu_email_sent' => 1]);
 
     return response('OK');
@@ -227,7 +227,10 @@ class OrderController extends Controller
           'gender' => $sc->order->gender,
           'eco' => $sc->ordercart->eco_price > 0,
           'snacks' => $sc->snacks,
-          'md5' => md5(trim($sc->station))
+          'md5' => md5(trim($sc->station)),
+          'payment' => $sc->order->payment,
+          'total' => $sc->order->total,
+          'open' => $sc->order->openAmount()
         ]);
       }
     }
@@ -360,6 +363,16 @@ class OrderController extends Controller
       Carbon::parse($dates[0])->format('Y-m-d'),
       Carbon::parse($dates[1])->format('Y-m-d')
     ];
+  }
+
+  public function updatePayment(Request $request, $id)
+  {
+    $order = Order::find($id)->update([
+      'cash_paid' => $request->amount,
+      'cash_paid_date' => $request->date
+    ]);
+
+    return response('OK');
   }
 
   public function exportRecommendationExcel(Request $request)

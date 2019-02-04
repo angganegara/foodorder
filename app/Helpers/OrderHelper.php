@@ -211,6 +211,49 @@ class OrderHelper
     return $order->order_number;
   }
 
+  public function sendMPEmail($order_number)
+  {
+    $that = $this;
+    $order = Order::with('ordercart.schedule')->where('order_number', $order_number)->first();
+
+    $orderid = $order->id;
+    // get order
+    $oc = OrderCart::where('order_id', $orderid)->get();
+
+    //return view('emails.mp-email', compact('order', 'that', 'extra', 'hasDetox'));
+    //exit();
+
+    $email_layout = 'emails.mp-email';
+    $email_subject = 'Motion Meal Plan - your menu';
+
+    try {
+      Mail::send(
+        $email_layout,
+        compact('order', 'that'),
+        function ($m) use ($order, $email_subject) {
+          $m
+            ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
+            ->subject($email_subject)
+            ->to($order->email, $order->fname . ' ' . $order->lname)
+            ->replyTo('foodorder@motionfitnessbali.com', 'Motion - Meal Plans');
+        }
+      );
+    } catch (\Exception $e) {
+      // delete order only if not resend!!!!
+      if (!$resend) {
+        //$this->deleteOrder($order->id);
+      }
+      // log in
+      abort(500, 'CANNOT_SEND_MAIL');
+    }
+
+    // set email flag
+    $order->menu_email_sent = 1;
+    $order->save();
+
+    return 'OK';
+  }
+
   public function sendOrder($order_number, $resend = false)
   {
     $that = $this;
@@ -322,7 +365,6 @@ class OrderHelper
       if (!$resend) {
         //$this->deleteOrder($order->id);
       }
-      dd($e);
       // log in
       abort(500, 'CANNOT_SEND_MAIL');
     }

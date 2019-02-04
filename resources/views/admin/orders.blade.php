@@ -16,9 +16,9 @@
         <th>Order</th>
         <th>Date</th>
         <th>Name</th>
-        <th>Gender</th>
-        <th>Phone</th>
-        <th>Payment methods</th>
+        <th class="text-center">Payment</th>
+        <th class="text-center">Total Amount</th>
+        <th class="text-center">Open Amount</th>
         <th class="text-center">MP Email</th>
         <th class="text-center">Status</th>
         <th></th>
@@ -34,9 +34,20 @@
               <a href="#" target="_blank"><b>{{ $order->name }}</b></a>
             @endif
           </td>
-          <td>{{ $order->gender ? $order->gender : '-' }}</td>
-          <td>{{ $order->phone }}</td>
-          <td>{{ $order->payment_formatted }}</td>
+          <td class="text-center">
+            <span class="pill-{{ $order->payment_formatted }}">
+              @if ($order->payment_formatted == 'cash')
+                <i class="far fa-dollar-sign"></i>
+              @elseif ($order->payment_formatted == 'Paypal')
+                <i class="fab fa-paypal"></i>
+              @elseif ($order->payment_formatted == 'bank_transfer')
+                <i class="far fa-exchange"></i>
+              @endif
+              {{ $order->payment_formatted }}
+            </span>
+          </td>
+          <td class="text-center">IDR <b>{{ number_format($order->total) }}</b></td>
+          <td class="text-center">{!! $order->openAmount() > 0 ? 'IDR <b>'. number_format($order->openAmount()) .'</b>' : '-' !!}</td>
           <td class="text-center">
             {!! $order->menu_email_sent ? '<i class="fal fa-check is-success"></i>' : '<i class="fal fa-times is-danger"></i>' !!}
           </td>

@@ -28,6 +28,9 @@ a:hover {
 .text-center {
   text-align: center;
 }
+.text-right {
+  text-align: right;
+}
 .is-danger {
   color: rgb(223, 117, 31);
 }
@@ -82,6 +85,40 @@ section.admin {
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
+}
+
+.update-payment-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  a {
+    display: block;
+    background-color: $main-color;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+}
+
+.pill-cash {
+  font-variant: small-caps;
+  color: #343434;
+  .far {
+    color: rgb(21, 180, 21);
+  }
+}
+.pill-Paypal {
+  font-variant: small-caps;
+  color: #1850b9;
+  text-transform: lowercase;
+}
+.pill-bank_transfer {
+  font-variant: small-caps;
+  color: #e2750e;
+  text-transform: lowercase;
 }
 
 .is-schedule {
@@ -353,6 +390,9 @@ section.admin {
 }
 .form-inputs .pt-label {
   margin-bottom: 0;
+}
+.form-order .pt-label {
+  margin-bottom: 10px;
 }
 .form-inner {
   padding: 0.75rem 1rem;

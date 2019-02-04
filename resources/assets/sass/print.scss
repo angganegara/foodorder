@@ -182,13 +182,14 @@ table {
   }
   tr td:nth-child(1),
   tr td:nth-child(2),
-  tr td:nth-child(3) {
+  tr td:nth-child(3),
+  tr td:nth-child(4),
+  tr td:nth-child(5) {
     text-align: center;
     text-transform: lowercase;
     font-variant: small-caps;
   }
-  tr td:nth-child(4),
-  tr td:nth-child(5) {
+  tr td:nth-child(6) {
     text-transform: lowercase;
     font-variant: small-caps;
   }

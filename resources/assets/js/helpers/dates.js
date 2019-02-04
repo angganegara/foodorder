@@ -38,7 +38,7 @@ export const checkDayLimit = date => {
   let limit;
   let duration = day == 1 ? 47 : 23;
 
-  if (today.getDay() == 6 && hours <= 13) {
+  if (today.getDay() == 6 && hours <= 9) {
     duration = 0;
   }
 

@@ -72,8 +72,28 @@
                   <label>Payment Status</label>
                   {{ $order->order_status }}
                 </div>
+              @else
+                <div class="column is-half">
+                  <label>Open amount</label>
+                  {!! $order->openAmount() > 0 ? 'IDR <b>'. number_format($order->openAmount(), 0) .'</b>' : '0' !!}
+                </div>
               @endif
             </div>
+            @if ($order->payment == 'cash')
+            <div class="columns form-order is-multiline">
+              <div class="column is-half">
+                <label class="pt-label">Amount paid</label>
+                <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ $order->cash_paid }}">
+              </div>
+              <div class="column is-half">
+                <label class="pt-label">Date of payment</label>
+                <input type="text" name="amount_paid" class="pt-input pt-fill datepicker-here" data-language="en" data-date-format="yyyy-mm-dd" data-auto-close="true" value="{{ $order->cash_paid_date }}">
+                <div class="update-payment-button">
+                  <a href="javascript:" title="" class="update-payment-button" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
+                </div>
+              </div>
+            </div>
+            @endif
           </div>
         </div>
 
@@ -123,8 +143,8 @@
           <h2>order total</h2>
           <table class="total">
             <tr>
-              <td width="75%">subtotal</td>
-              <td width="25%">{{ number_format($order->subtotal, 0) }} IDR</td>
+              <td width="70%">subtotal</td>
+              <td width="30%">{{ number_format($order->subtotal, 0) }} IDR</td>
             </tr>
             <tr>
               <td>discount @if ($order->coupon_code)(code: {{ $order->coupon_code }})@endif </td>
@@ -134,6 +154,16 @@
               <td>total</td>
               <td>{{ number_format($order->total) }} IDR</td>
             </tr>
+            @if ($order->payment == 'cash')
+            <tr>
+              <td>Amount Paid</td>
+              <td>{{ number_format($order->cash_paid) }} IDR</td>
+            </tr>
+            <tr>
+              <td>Open Amount</td>
+              <td>{{ number_format($order->openAmount()) }} IDR</td>
+            </tr>
+            @endif
           </table>
         </div>
 
@@ -166,6 +196,32 @@
       .catch(function (err) {
         alert("Fail to send email. Please try again");
         $el.html(buttonText);
+      })
+  });
+  $('.update-payment-button a').click(function (e) {
+    var $this = $(this);
+    var id = $this.data('id');
+    var ordernumber = $this.data('ordernumber');
+    var amount = $('input[name="amount_paid"]').val();
+    var date = $('.datepicker-here').val();
+
+    $this.html('<span><i class="fal fa-spinner-third fa-spin"></i></span>').attr('disabled', true);
+    axios
+      .post('/admin/orders/'+ id +'/update-payment', {
+        amount: amount,
+        date: date
+      })
+      .then(function (res) {
+        if (res.data == 'OK') {
+          alert("Payment updated");
+          location.href = "/admin/orders/" + ordernumber + "/" + id;
+        }
+
+        $this.html('<span>UPDATE</span>').attr('disabled', false);
+      })
+      .catch(function (err) {
+        alert("Fail updating. Please try again.");
+        $this.html('<span>UPDATE</span>').attr('disabled', false);
       })
   })
 </script>

@@ -401,7 +401,7 @@ class Customize extends Component {
       // check if delivery address is entered
       if (pickup === "" || (pickup == "address" && (address == "" || area == ""))) {
         appToaster.show({
-          message: "To proceed, please choose a pick-up station / delivery address.",
+          message: "To proceed, please choose a pick-up station / delivery address and select a delivery area.",
           intent: Intent.WARNING
         });
         return false;

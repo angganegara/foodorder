@@ -125,4 +125,30 @@ class MealController extends Controller
       'days' => $days
     ];
   }
+
+  public function updatePlan(Request $request)
+  {
+    MealPlan::findOrFail($request->id)->update([
+      'name' => $request->name
+    ]);
+
+    return response('OK');
+  }
+
+  public function deletePlan($id)
+  {
+    $mp = MealPlan::find($id);
+    $compIds = [
+      $mp->day_1,
+      $mp->day_2,
+      $mp->day_3,
+      $mp->day_4,
+      $mp->day_5,
+      $mp->day_6,
+    ];
+    $comp = Component::whereIn('id', $compIds)->delete();
+    $mp->delete();
+
+    return response('OK');
+  }
 }

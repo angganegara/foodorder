@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MealPlan extends Model
 {
+  protected $fillable = ['name'];
+
 	protected $casts = [
     'id' => 'integer',
     'day_1' => 'integer',

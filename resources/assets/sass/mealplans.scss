@@ -531,6 +531,22 @@ a.preview-nav.next {
     }
   }
 }
+.table {
+  .mp-buttons {
+  }
+  .mp-buttons a {
+    display: inline-block;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    padding: 0 5px;
+    &:nth-child(1) {
+      color: $main-color;
+    }
+    &:nth-child(2) {
+      color: #aaa;
+    }
+  }
+}
 
 .mp-wrapper {
   display: flex;

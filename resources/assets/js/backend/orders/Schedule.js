@@ -197,6 +197,16 @@ class Schedule extends Component {
     this.props.goto(null, 3);
   };
 
+  deletePreset = (e, id) => {
+    if (window.confirm("Are you sure you want to delete this preset?")) {
+      axios.post("/admin/presets/" + id + "/delete").then(res => {
+        $(".preset-" + id).fadeOut();
+      });
+    }
+
+    return false;
+  };
+
   render() {
     const { active } = this.props;
     const { schedules } = this.state;
@@ -275,9 +285,9 @@ class Schedule extends Component {
                               <b>{meal.name}</b>
                             </td>
                             <td>{meal.category}</td>
-                            <td>
+                            <td className="mp-buttons">
                               <a href="javascript:" onClick={e => this.getPlan(e, meal.id)}>
-                                <i className="fa fa-fw fa-eye" /> LOAD
+                                LOAD
                               </a>
                             </td>
                           </tr>
@@ -298,13 +308,17 @@ class Schedule extends Component {
                     <tbody>
                       {presets &&
                         presets.map(preset => (
-                          <tr key={preset.id}>
+                          <tr key={preset.id} className={`preset-${preset.id}`}>
                             <td>{preset.preset_name}</td>
                             <td>{preset.email}</td>
                             <td>{preset.days}</td>
-                            <td>
+                            <td className="mp-buttons">
                               <a href="javascript:" onClick={e => this.getPreset(e, preset.id)}>
-                                <i className="fa fa-fw fa-eye" /> LOAD
+                                LOAD
+                              </a>
+                              &middot;
+                              <a href="javascript:" onClick={e => this.deletePreset(e, preset.id)}>
+                                DELETE
                               </a>
                             </td>
                           </tr>

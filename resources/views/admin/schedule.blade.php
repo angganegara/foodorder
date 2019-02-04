@@ -14,7 +14,9 @@
         <th width="25%">Name</th>
         <th width="15%">Menu</th>
         <th width="10%">Eco Pack</th>
-        <th width="50%">Delivered to</th>
+        <th width="15%">Total</th>
+        <th width="15%">Open</th>
+        <th>Delivered to</th>
       </tr>
       @foreach ($result as $md5)
         @foreach ($md5 as $index => $sc)
@@ -23,6 +25,16 @@
             <td>{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
             <td>{{ $sc['menu'] }}</td>
             <td>{{ $sc['eco'] > 0 ? "YES" : "NO" }}</td>
+            @if ($sc['payment'] == 'cash')
+              <td>
+                {{ $sc['payment'] == 'cash' ? 'IDR '. number_format($sc['total']) : '' }}
+              </td>
+              <td>
+                {{ $sc['payment'] == 'cash' && $sc['open'] > 0 ? 'IDR '. number_format($sc['open']) : '' }}
+              </td>
+            @else
+              <td colspan="2"></td>
+            @endif
             @if ($total > 1)
               @if ($index == 0)
                 <td rowspan="{{ $total }}">

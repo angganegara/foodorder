@@ -205,6 +205,36 @@ class Schedule extends Component {
   };
   handleName = e => (orderState.presetName = e.target.value);
 
+  deletePlan = (e, id) => {
+    if (window.confirm("Are you sure you want to delete this meal plan?")) {
+      axios.post("/admin/meal-plans/" + id + "/delete").then(res => {
+        $(".mp-" + id).fadeOut();
+      });
+    }
+
+    return false;
+  };
+
+  handleMealName = (e, index) => {
+    let meals = [...orderState.meals];
+    meals[index].name = e.target.value;
+    orderState.meals = meals;
+  };
+
+  handleSaveMealName = (e, index, id) => {
+    axios
+      .post("/admin/meal-plans/" + id + "/update", {
+        id,
+        name: orderState.meals[index].name
+      })
+      .then(res => {
+        appToaster.show({
+          message: "Meal Plan Updated",
+          intent: Intent.SUCCESS
+        });
+      });
+  };
+
   render() {
     const {
       days,
@@ -262,15 +292,24 @@ class Schedule extends Component {
                   </thead>
                   <tbody>
                     {meals &&
-                      meals.map(meal => (
-                        <tr key={meal.id}>
+                      meals.map((meal, mealIndex) => (
+                        <tr key={meal.id} className={`mp-${meal.id}`}>
                           <td>
-                            <b>{meal.name}</b>
+                            <div className="pt-control-group">
+                              <input type="text" value={meal.name} className="pt-input" onChange={e => this.handleMealName(e, mealIndex)} />
+                              <button className="pt-button" onClick={e => this.handleSaveMealName(e, mealIndex, meal.id)}>
+                                SAVE
+                              </button>
+                            </div>
                           </td>
                           <td>{meal.category}</td>
-                          <td>
+                          <td className="mp-buttons">
                             <a href="javascript:" onClick={e => this.getPlan(e, meal.id)}>
-                              <i className="fa fa-fw fa-eye" /> LOAD
+                              LOAD
+                            </a>
+                            &middot;
+                            <a href="javascript:" onClick={e => this.deletePlan(e, meal.id)}>
+                              DELETE
                             </a>
                           </td>
                         </tr>

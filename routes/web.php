@@ -14,7 +14,7 @@
 if (env('APP_ENV') === 'local') {
   Route::get('/email-debug/{id}', function ($id) {
     $oh = new App\Helpers\OrderHelper;
-    return $oh->sendOrder($id);
+    return $oh->sendMPEmail($id);
   });
 
   Route::get('/order/{number}', function ($number, \App\Models\Order $order) {
@@ -25,6 +25,7 @@ if (env('APP_ENV') === 'local') {
 
   Route::get('meal-plans', 'MealController@index');
 }
+Route::get('tasks', 'TaskController@paymentReminder');
 Route::get('/snap', 'SnapController@snap');
 Route::get('/snaptoken', 'SnapController@token');
 Route::post('/snapfinish', 'SnapController@finish');
@@ -44,11 +45,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::post('meal-plans/new', 'MealController@newPlan');
   Route::get('meal-plans/all', 'MealController@listPlan');
   Route::get('meal-plans/{id}', 'MealController@getPlan');
+  Route::post('meal-plans/{id}/update', 'MealController@updatePlan');
+  Route::post('meal-plans/{id}/delete', 'MealController@deletePlan');
   Route::post('meal-plans/{id}/component-update', 'MealController@updateComponent');
 
   Route::post('presets/new', 'PresetController@insert');
   Route::get('presets/all', 'PresetController@index');
   Route::get('presets/{id}', 'PresetController@show');
+  Route::post('presets/{id}/delete', 'PresetController@delete');
 
   Route::get('orders', 'OrderController@index');
   Route::get('orders/new', 'OrderController@create');
@@ -62,6 +66,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('orders/{id}/edit', 'OrderController@edit');
   Route::post('orders/{id}/edit', 'OrderController@update');
   Route::post('orders/{id}/send-mp-email', 'OrderController@sendMPEmail');
+  Route::post('orders/{id}/update-payment', 'OrderController@updatePayment');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');
 
   Route::get('partners', 'PartnerController@index');
