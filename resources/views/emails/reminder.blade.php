@@ -5,7 +5,7 @@
 
 <BODY style="margin: 0; padding: 0; width: 100%; background-color: #eee">
 
-<table width="600" align="center" valign="top" cellpadding="0" cellspacing="0" style="margin-top: 30px">
+<table width="100%" align="center" valign="top" cellpadding="0" cellspacing="0">
   <tr>
     <td align="center" valign="top">
       <table width="100%" align="center" cellpadding="0" cellspacing="0">
