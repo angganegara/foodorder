@@ -34,14 +34,14 @@ class TaskController extends Controller
     $today = date('Y-m-d');
     $orders = Order::with(['ordercart'])
       ->where('payment', 'cash')
-      ->where('cash_paid', null)
+      ->where('cash_paid', 0)
       ->where('backend_order', 1)
       ->whereHas('ordercart', function ($q) use ($today) {
         $q->where('start_date', $today);
       })
       ->get();
 
-    if ($orders) {
+    if ($orders->count() > 0) {
       dd($orders);
       foreach ($orders as $order) {
         //$this->sendPaymentReminderEmail($order);
