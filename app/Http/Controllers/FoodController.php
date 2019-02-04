@@ -13,9 +13,7 @@ class FoodController extends Controller
   {
     $diet = Diet::orderBy('name', 'asc')->with('children')->with('prices')->where('parent_id', 0);
 
-    if (request()->has('show_hidden')) {
-      $diet = $diet->where('visible', 1);
-    } else {
+    if (!request()->has('show_hidden')) {
       $diet = $diet->where('visible', 0);
     }
 
