@@ -11,7 +11,15 @@ class FoodController extends Controller
 {
   public function index()
   {
-    return Diet::orderBy('name', 'asc')->with('children')->with('prices')->where('parent_id', 0)->where('visible', 1)->get();
+    $diet = Diet::orderBy('name', 'asc')->with('children')->with('prices')->where('parent_id', 0);
+
+    if (request()->has('show_hidden')) {
+      $diet = $diet->where('visible', 1);
+    } else {
+      $diet = $diet->where('visible', 0);
+    }
+
+    return $diet->get();
   }
 
   public function populateData($data)

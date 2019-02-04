@@ -27,7 +27,7 @@ class Schedule extends Component {
   }
 
   loadMeals = () => axios.get("/admin/meal-plans/all");
-  loadCategories = () => axios.get("/api/foods").then(res => this.setState({ categories: res.data }));
+  loadCategories = () => axios.get("/api/foods?show_hidden=1").then(res => this.setState({ categories: res.data }));
 
   getPlan = (e, id) => {
     axios.get("/admin/meal-plans/" + id).then(res => {
