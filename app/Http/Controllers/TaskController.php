@@ -36,15 +36,16 @@ class TaskController extends Controller
       ->where('payment', 'cash')
       ->where('cash_paid', 0)
       ->where('backend_order', 1)
+      ->where('email_payment_reminder', 0)
       ->whereHas('ordercart', function ($q) use ($today) {
         $q->where('start_date', $today);
       })
       ->get();
 
     if ($orders->count() > 0) {
-      dd($orders);
       foreach ($orders as $order) {
-        //$this->sendPaymentReminderEmail($order);
+        $this->sendPaymentReminderEmail($order);
+        $order->update(['email_payment_reminder' => 1]);
       }
     }
 
