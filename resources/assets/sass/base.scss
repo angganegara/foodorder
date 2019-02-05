@@ -1383,7 +1383,7 @@ a.snacks-close-button {
       color: #454545;
       &:before {
         content: "\F00C";
-        font-family: Font Awesome\ 5 Pro;
+        font-family: Font Awesome\5 Pro;
         position: absolute;
         left: -25px;
         color: $main-color;
@@ -2180,6 +2180,10 @@ section.top.checkout {
   }
   input.form-input.error {
     border: 1px solid rgba(red, 0.75);
+  }
+  #howdidyoulearn.error {
+    border: 1px solid rgba(red, 0.75);
+    border-radius: 4px;
   }
 }
 .input-error {

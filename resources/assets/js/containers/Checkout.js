@@ -498,7 +498,7 @@ class Checkout extends Component {
                             <label>
                               How did you learn about Motion Meal Plans? <span className="req">*</span>
                             </label>
-                            <div className="pt-select">
+                            <div className="pt-select" id="howdidyoulearn">
                               <select onChange={this.handleHowDidYouLearn}>
                                 <option value="">Please Select</option>
                                 <option value="Motion Website">Motion Website</option>
