@@ -285,17 +285,6 @@ class OrderHelper
     $pdf_ayu1 = rtrim(app()->basePath('public/pdf/ayurveda-information.pdf'), '/');
     $pdf_ayu2 = rtrim(app()->basePath('public/pdf/ayurveda-test.pdf'), '/');
 
-    if (request()->has('debug')) {
-      dd([
-        'hasDetox' => $hasDetox,
-        'dts' => $dts,
-        'dtj' => $dtj,
-        'sbd' => $sbd,
-        'pdf' => $pdf_dt,
-        'resend' => $resend
-      ]);
-    }
-
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
 
@@ -332,21 +321,21 @@ class OrderHelper
 
           if ($hp > 0) {
             if (!$resend) {
-              $m->attach($pdf_hp, ['as' => 'High Protein Diet I or II.pdf']);
+              $m->attach($pdf_hp, ['as' => 'High Protein Diet I or II.pdf', 'mime' => 'application/pdf']);
             }
           }
           // if contain detox category ... and / or customized diet
           if ($dts > 0 || $dtj > 0 || $sbd > 0) {
             if (!$resend) {
-              $m->attach($pdf_dt, ['as' => 'Detox Questionnaire.pdf']);
+              $m->attach($pdf_dt, ['as' => 'Detox Questionnaire.pdf', 'mime' => 'application/pdf']);
             }
           }
           // if contain juice veggie
           if ($dtj != '') {
             if (!$resend) {
               $m->attach(
-                  rtrim(app()->publicPath('pdf/juice-detox-info.pdf'), '/'),
-                  ['as' => 'Juice Detox Info.pdf']
+                  rtrim(app()->basePath('public/pdf/juice-detox-info.pdf'), '/'),
+                  ['as' => 'Juice Detox Info.pdf', 'mime' => 'application/pdf']
                 );
             }
           }
@@ -354,8 +343,8 @@ class OrderHelper
           if ($dts != '') {
             if (!$resend) {
               $m->attach(
-                  rtrim(app()->publicPath('pdf/soup-detox-info.pdf'), '/'),
-                  ['as' => 'Soup Detox Info.pdf']
+                  rtrim(app()->basePath('public/pdf/soup-detox-info.pdf'), '/'),
+                  ['as' => 'Soup Detox Info.pdf', 'mime' => 'application/pdf']
                 );
             }
           }
@@ -363,8 +352,8 @@ class OrderHelper
           if ($sbd != '') {
             if (!$resend) {
               $m->attach(
-                  rtrim(app()->publicPath('pdf/slim-booster-detox-info.pdf'), '/'),
-                  ['as' => 'Slim Booster Detox Info.pdf']
+                  rtrim(app()->basePath('public/pdf/slim-booster-detox-info.pdf'), '/'),
+                  ['as' => 'Slim Booster Detox Info.pdf', 'mime' => 'application/pdf']
                 );
             }
           }
