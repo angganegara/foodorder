@@ -334,7 +334,7 @@ class OrderHelper
           if ($dtj != '') {
             if (!$resend) {
               $m->attach(
-                  rtrim(app()->basePath('public/pdf/juice-detox-info.pdf'), '/'),
+                  rtrim(app()->publicPath('pdf/juice-detox-info.pdf'), '/'),
                   ['as' => 'Juice Detox Info.pdf']
                 );
             }
@@ -343,7 +343,7 @@ class OrderHelper
           if ($dts != '') {
             if (!$resend) {
               $m->attach(
-                  rtrim(app()->basePath('public/pdf/soup-detox-info.pdf'), '/'),
+                  rtrim(app()->publicPath('pdf/soup-detox-info.pdf'), '/'),
                   ['as' => 'Soup Detox Info.pdf']
                 );
             }
@@ -352,7 +352,7 @@ class OrderHelper
           if ($sbd != '') {
             if (!$resend) {
               $m->attach(
-                  rtrim(app()->basePath('public/pdf/slim-booster-detox-info.pdf'), '/'),
+                  rtrim(app()->publicPath('pdf/slim-booster-detox-info.pdf'), '/'),
                   ['as' => 'Slim Booster Detox Info.pdf']
                 );
             }
