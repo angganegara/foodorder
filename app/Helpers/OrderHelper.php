@@ -275,15 +275,6 @@ class OrderHelper
     // parse cart
     $hasDetox = $dts || $dtj || $sbd;
 
-    if (request()->has('debug')) {
-      dd([
-        'hasDetox' => $hasDetox,
-        'dts' => $dts,
-        'dtj' => $dtj,
-        'sbd' => $sbd
-      ]);
-    }
-
     //return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
     //exit();
 
@@ -293,6 +284,17 @@ class OrderHelper
     $pdf_dt = rtrim(app()->basePath('public/pdf/detox-questionnaire.pdf'), '/');
     $pdf_ayu1 = rtrim(app()->basePath('public/pdf/ayurveda-information.pdf'), '/');
     $pdf_ayu2 = rtrim(app()->basePath('public/pdf/ayurveda-test.pdf'), '/');
+
+    if (request()->has('debug')) {
+      dd([
+        'hasDetox' => $hasDetox,
+        'dts' => $dts,
+        'dtj' => $dtj,
+        'sbd' => $sbd,
+        'pdf' => $pdf_dt,
+        'resend' => $resend
+      ]);
+    }
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
     $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
