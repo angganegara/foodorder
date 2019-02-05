@@ -275,6 +275,15 @@ class OrderHelper
     // parse cart
     $hasDetox = $dts || $dtj || $sbd;
 
+    if (request()->has('debug')) {
+      dd([
+        'hasDetox' => $hasDetox,
+        'dts' => $dts,
+        'dtj' => $dtj,
+        'sbd' => $sbd
+      ]);
+    }
+
     //return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
     //exit();
 
