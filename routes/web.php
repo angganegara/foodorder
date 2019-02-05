@@ -12,6 +12,11 @@
 */
 
 if (env('APP_ENV') === 'local') {
+  Route::get('/email-debug/{id}', function ($id) {
+    $oh = new App\Helpers\OrderHelper;
+    return $oh->sendMPEmail($id);
+  });
+
   Route::get('/order/{number}', function ($number, \App\Models\Order $order) {
     $data = $order->with('ordercart.schedule')->where('order_number', $number)->first();
 
@@ -20,10 +25,6 @@ if (env('APP_ENV') === 'local') {
 
   Route::get('meal-plans', 'MealController@index');
 }
-Route::get('/email-debug/{id}', function ($id) {
-  $oh = new App\Helpers\OrderHelper;
-  return $oh->sendOrder($id);
-});
 Route::get('tasks', 'TaskController@paymentReminder');
 Route::get('/snap', 'SnapController@snap');
 Route::get('/snaptoken', 'SnapController@token');
