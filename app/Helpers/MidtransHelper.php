@@ -33,9 +33,9 @@ class MidtransHelper
 			array_push($data, [
 				'id' => $oc->id,
 				'price' => $oc->total_price,
-				'name' => $oc->meals . $slim_sunday,
-				'quantity' => $oc->qty
-			]);
+				'name' => $oc->meals .' x'. $oc->qty .' '. $slim_sunday,
+				'quantity' => 1
+      ]);
 		}
 
 		if ($order->coupon_value > 0) {
