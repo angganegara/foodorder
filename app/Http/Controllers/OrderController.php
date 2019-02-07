@@ -367,9 +367,11 @@ class OrderController extends Controller
 
   public function updatePayment(Request $request, $id)
   {
+    $date = explode('/', $request->date);
+    $newDate = $date[2] .'-'. $date[1] .'-'. $date[0];
     $order = Order::find($id)->update([
       'cash_paid' => $request->amount,
-      'cash_paid_date' => $request->date
+      'cash_paid_date' => $newDate
     ]);
 
     return response('OK');

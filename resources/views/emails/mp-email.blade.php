@@ -29,7 +29,7 @@
               font-family: Arial, sans-serif; font-size: 12px;
               line-height: 140%; color: #222;">
               <tr>
-                <td width="100%" colspan="2" valign="middle" style="padding: 20px; font-weight: bold;">
+                <td width="100%" colspan="2" valign="middle" style="padding: 20px;">
                   <p>Dear {{ $order->fname }} {{ $order->lname }}</p>
                   <p>please find below your detailed menu for your food order.</p>
                   <p>Enjoy smart eating!<br />Your Motion Team</p>
@@ -153,7 +153,7 @@
                                   <td width="75%" style="background-color: #fff; color: #222; line-height: 170%;
                                     #222;padding: 7px 20px; font-size: 12px;border-bottom: 1px solid #f5f5f5;">
                                     @if ($order->backend_order)
-                                      <b>{!! str_replace('<hr />', '<hr style="border-top: 1px solid #eee; border-bottom: 0"/>', $sch->meals) !!}</b>
+                                      {!! str_replace('<hr />', '<hr style="border-top: 1px solid #eee; border-bottom: 0"/>', $sch->meals) !!}
                                       <br />
                                     @else
                                       MEALS: <b>{{ $sch->ordercart->meals }}</b>

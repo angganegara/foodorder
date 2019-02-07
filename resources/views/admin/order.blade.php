@@ -83,11 +83,11 @@
             <div class="columns form-order is-multiline">
               <div class="column is-half">
                 <label class="pt-label">Amount paid</label>
-                <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ $order->cash_paid }}">
+                <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ number_format($order->cash_paid) }}">
               </div>
               <div class="column is-half">
                 <label class="pt-label">Date of payment</label>
-                <input type="text" name="amount_paid" class="pt-input pt-fill datepicker-here" data-language="en" data-date-format="yyyy-mm-dd" data-auto-close="true" value="{{ $order->cash_paid_date }}">
+                <input type="text" name="amount_paid" class="pt-input pt-fill datepicker-here" data-language="en" data-date-format="dd/mm/yyyy" data-auto-close="true" value="{{ date('d/m/Y', strtotime($order->cash_paid_date)) }}">
                 <div class="update-payment-button">
                   <a href="javascript:" title="" class="update-payment-button" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
                 </div>
@@ -176,6 +176,22 @@
 @section('scripts')
 <script>
   var orderID = {{ $order->id }};
+  $('input[name="amount_paid"]').on('keyup', function (e) {
+    var val = e.target.value;
+    var isMinus = false;
+    if (val != "" && val.length > 3 ) {
+        if (val.search('-') !== -1) {
+            val = val.replace('-', '');
+            isMinus = true;
+        }
+        val = parseInt(val.replace(/\,/g, ''));
+
+        if (isMinus) {
+            val = val - (val * 2);
+        }
+        $(this).val(parseInt(val).toLocaleString('en-US'))
+    }
+  })
   $('.mp-email').click(function (e) {
     e.preventDefault();
     var $el = $(this);
@@ -204,6 +220,18 @@
     var ordernumber = $this.data('ordernumber');
     var amount = $('input[name="amount_paid"]').val();
     var date = $('.datepicker-here').val();
+
+    if (parseInt(amount) <= 0 || amount == '') {
+      alert('Please enter the amount');
+      return false;
+    }
+
+    if (date == '') {
+      alert('Please enter date of payment');
+      return false;
+    }
+
+    amount = parseInt(amount.replace(/\,/g, ''));
 
     $this.html('<span><i class="fal fa-spinner-third fa-spin"></i></span>').attr('disabled', true);
     axios

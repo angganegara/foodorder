@@ -36,7 +36,7 @@
               font-family: Arial, sans-serif; font-size: 12px;
               line-height: 140%; color: #222;">
               <tr>
-                <td width="100%" colspan="2" valign="middle" style="padding: 20px; font-weight: bold;">
+                <td width="100%" colspan="2" valign="middle" style="padding: 20px;">
                   <p>Dear {{ $order->fname }} {{ $order->lname }}</p>
                   <p>Thank you for ordering with Motion. Please review the details of your personal data and order below. {{ $hasDetox ? 'We have attached an information sheet about your detox to this e-mail. Please make sure to read it carefully.' : '' }}</p>
 
@@ -226,10 +226,10 @@
                                       <b>{!! str_replace('<hr />', '<hr style="border-top: 1px solid #eee; border-bottom: 0"/>', $sch->meals) !!}</b>
                                       <br />
                                     @else
-                                      MEALS: <b>{{ $sch->ordercart->meals }}</b>
+                                      MEALS: {{ $sch->ordercart->meals }}
                                     @endif
                                     @if ($sch->snacks != '')
-                                      <br />SNACKS: <b>{{ $sch->snacks }}</b>
+                                      <br />SNACKS: {{ $sch->snacks }}
                                     @endif
                                     <br />
                                     PICKUP STATION: <b>{{ $sch->station }}</b> {{ $sch->area ? '('. $sch->area .')' : '' }}
