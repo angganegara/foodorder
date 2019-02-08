@@ -280,8 +280,8 @@ class OrderHelper
     // parse cart
     $hasDetox = $dts || $dtj || $sbd;
 
-    return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
-    exit();
+    //return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
+    //exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');
