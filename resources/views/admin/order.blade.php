@@ -87,7 +87,15 @@
               </div>
               <div class="column is-half">
                 <label class="pt-label">Date of payment</label>
-                <input type="text" name="amount_paid" class="pt-input pt-fill datepicker-here" data-language="en" data-date-format="dd/mm/yyyy" data-auto-close="true" value="{{ date('d/m/Y', strtotime($order->cash_paid_date)) }}">
+                <input
+                  type="text"
+                  name="amount_paid"
+                  class="pt-input pt-fill datepicker-here"
+                  data-language="en"
+                  data-date-format="dd/mm/yyyy"
+                  data-auto-close="true"
+                  value="{{ $order->cash_paid_date ? date('d/m/Y', strtotime($order->cash_paid_date)) : '' }}"
+                />
                 <div class="update-payment-button">
                   <a href="javascript:" title="" class="update-payment-button" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
                 </div>
