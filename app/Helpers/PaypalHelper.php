@@ -54,10 +54,10 @@ class PaypalHelper
 		foreach($order->ordercart as $oc) {
       $slim_sunday = $oc->slimsunday == "1" ? "(with Slim Sunday)" : "";
 			array_push($data['items'], [
-				'name' => $oc->meals . $slim_sunday,
+				'name' => $oc->meals .' x'. $oc->qty .' '. $slim_sunday,
 				'price' => $this->convertToUSD($oc->total_price),
 				'desc' => '',
-				'qty' => $oc->qty
+				'qty' => 1
 			]);
 		}
 

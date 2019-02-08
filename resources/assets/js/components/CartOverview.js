@@ -62,7 +62,7 @@ class CartOverview extends Component {
       let item = cartState.added[index];
       const slimSunday = item.slimSunday ? 300000 : 0;
       item.qty = vnum;
-      item.totalPrice = (parseInt(item.foodPrice) + parseInt(item.snacksPrice) + parseInt(slimSunday)) * vnum;
+      item.totalPrice = (parseInt(item.foodPrice) + parseInt(item.ecoPrice) + parseInt(item.snacksPrice) + parseInt(slimSunday)) * vnum;
       const { data } = await this.updateCart();
       this.setState({ isLoading: false });
     } catch (err) {
@@ -184,13 +184,12 @@ class CartOverview extends Component {
               <i className="fal fa-plus" /> have coupon code?
             </a>
             <div className="coupon--body">
-              {coupon.value <= 0 &&
-                coupon.item == "" && (
-                  <div className="input-group">
-                    <input type="text" placeholder="enter coupon code" onChange={this.enterCoupon} />
-                    <button onClick={this.applyCoupon}>Apply</button>
-                  </div>
-                )}
+              {coupon.value <= 0 && coupon.item == "" && (
+                <div className="input-group">
+                  <input type="text" placeholder="enter coupon code" onChange={this.enterCoupon} />
+                  <button onClick={this.applyCoupon}>Apply</button>
+                </div>
+              )}
               {coupon.value > 0 && (
                 <p className="coupon--success">
                   <i className="fal fa-check" /> Successfully applied discount.{" "}

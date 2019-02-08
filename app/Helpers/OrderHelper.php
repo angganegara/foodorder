@@ -154,6 +154,11 @@ class OrderHelper
     foreach ($cartData as $cart) {
       if ($cart['complete']) {
         $oc = new OrderCart;
+        $ss_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
+        $food_price = intVal($cart['foodPrice']);
+        $eco_price = intVal($cart['ecoPrice']);
+        $snack_price = intVal($cart['snacksPrice']);
+        $qty = intVal($cart['qty']);
 
         $oc->order_id = $order->id;
         $oc->meal_id = intVal($cart['id']);
@@ -161,12 +166,12 @@ class OrderHelper
         $oc->package = $cart['packageId'];
         $oc->qty = $cart['qty'];
         $oc->slimsunday = $cart['slimSunday'];
-        $oc->subtotal = intVal($cart['foodPrice']) * intVal($cart['qty']);
-        $oc->snacks_price = $cart['snacksPrice'];
-        $oc->slimsunday_price = intVal($cart['slimSunday']) == 1 ? $slimSundayPrice : 0;
+        $oc->subtotal = $food_price;
+        $oc->snacks_price = $snack_price;
+        $oc->slimsunday_price = $ss_price;
         $oc->delivery_price = intVal($cart['deliveryPrice']);
-        $oc->eco_price = intVal($cart['ecoPrice']);
-        $oc->total_price = $oc->subtotal + $oc->slimsunday_price + $oc->snacks_price + $oc->delivery_price + $oc->eco_price;
+        $oc->eco_price = $eco_price;
+        $oc->total_price = (($food_price + $snack_price + $eco_price + $ss_price) * $qty) + $oc->delivery_price;
         $oc->start_date = $cart['dateStart'];
         $oc->duration = $cart['duration'];
         $oc->end_date = $cart['dateEnd'];
@@ -275,8 +280,8 @@ class OrderHelper
     // parse cart
     $hasDetox = $dts || $dtj || $sbd;
 
-    //return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
-    //exit();
+    return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
+    exit();
 
     // pdfs
     $pdf = rtrim(app()->basePath('public/pdf/payment-details.pdf'), '/');

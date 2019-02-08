@@ -14,7 +14,7 @@
 if (env('APP_ENV') === 'local') {
   Route::get('/email-debug/{id}', function ($id) {
     $oh = new App\Helpers\OrderHelper;
-    return $oh->sendMPEmail($id);
+    return $oh->sendOrder($id);
   });
 
   Route::get('/order/{number}', function ($number, \App\Models\Order $order) {
