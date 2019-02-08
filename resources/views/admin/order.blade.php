@@ -120,6 +120,7 @@
                   <div class="cart-package">{{ $cart->package_name }}</div>
                   <div class="cart-dates">{{ $cart->date_period }}</div>
                   @if ($cart->slimsunday == 1)<div class="cart-slimsunday">+ Slim Sunday</div>@endif
+                  <div class="cart-dates">QUANTITY: {{ $cart->qty }}</div>
                 </div>
                 <div class="cart-subtotal">
                   <label>subtotal</label>
