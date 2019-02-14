@@ -13,7 +13,8 @@ const moment = extendMoment(Moment);
 class GuestDetails extends Component {
   state = {
     startingDate: new Date(),
-    categories: null
+    categories: null,
+    gender: null
   };
 
   componentDidMount() {
@@ -28,6 +29,7 @@ class GuestDetails extends Component {
       orderState.form.email = order.email;
       orderState.form.phone = order.phone;
       orderState.form.price = order.subtotal;
+      orderState.form.gender = order.gender;
       orderState.form.comments = order.comments ? order.comments : "";
       orderState.form.delivery = order.delivery_price;
       orderState.form.discount = order.coupon_value;
@@ -162,6 +164,7 @@ class GuestDetails extends Component {
     };
   };
   changeCartID = e => (orderState.cartID = e.target.value == "" ? orderState.cartID : e.target.value);
+  changeGender = e => (orderState.form.gender = e.target.value);
 
   render() {
     const { form, days, availableDays, endDate, category, carts, cartID } = orderState;
@@ -180,6 +183,18 @@ class GuestDetails extends Component {
               <Input label="Last name" column="lname" value={form.lname} classNames="is-6" />
               <Input label="Email Address" column="email" value={form.email} classNames="is-6" />
               <Input label="Phone number" column="phone" value={form.phone} classNames="is-6" />
+              <div className="column is-12">
+                <label className="pt-label">
+                  Gender
+                  <div className="pt-select">
+                    <select onChange={this.changeGender} value={form.gender ? form.gender : ""}>
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
+                </label>
+              </div>
               <Textarea label="Comments" column="comments" value={form.comments} classNames="is-12" />
             </div>
             <hr className="form-separator" />

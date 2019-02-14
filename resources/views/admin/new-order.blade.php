@@ -3,6 +3,9 @@
 @section('admin')
 <div id="order-app"></div>
 
-<script>var ACTION = 'NEW';</script>
+<script>
+var ACTION = 'NEW';
+var ORDER = {};
+</script>
 <script src="{{ asset('js/neworder.js') }}"></script>
 @endsection

@@ -139,6 +139,7 @@ class OrderController extends Controller
     $order->fname = $form['fname'];
     $order->lname = $form['lname'];
     $order->email = $form['email'];
+    $order->gender = $form['gender'];
     $order->phone = $form['phone'];
     $order->delivery_price = intVal($form['delivery_price']);
     $order->coupon_code = intVal($form['coupon_value']) > 0 ? "Custom Coupon (Backend Order)" : "";
@@ -165,6 +166,7 @@ class OrderController extends Controller
     $oc->meals = $form['category']['name'];
     $oc->package = 2;
     $oc->qty = 1;
+    $oc->eco_price = 0;
     $oc->slimsunday = 0;
     $oc->subtotal = intVal($form['subtotal']);
     $oc->snacks_price = 0;
