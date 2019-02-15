@@ -1,9 +1,10 @@
-<sidebar class="sidebar {!! Request::is('admin/meal-plans*') || Request::is('admin/orders/new*') ? "hidden" : "" !!}">
+<sidebar class="sidebar {!! Request::is('admin/meal-plans*') || Request::is('admin/meal-preset*') || Request::is('admin/orders/new*') ? "hidden" : "" !!}">
   <a href="javascript:" title="" class="logo"><img src="/images/M.jpg" alt="" /></a>
 
   <ul>
     <li class="single"><a href="/admin" title="">Dashboard</a></li>
     <li class="single"><a href="/admin/meal-plans" title="" target="_blank">Manage Meal Plans</a></li>
+    <li class="single"><a href="/admin/meal-preset" title="" target="_blank">Manage Preset</a></li>
     <li class="parent"><i class="fal fa-angle-down"></i> Orders</li>
     <li class="children"><a href="/admin/orders/new" title="">Create New Orders</a></li>
     <li class="children"><a href="/admin/orders" title="">View Orders</a></li>

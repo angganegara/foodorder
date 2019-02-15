@@ -17,6 +17,7 @@ mix
   .js("resources/assets/js/admin.js", "public/js/admin.js")
   .react("resources/assets/js/backend/report.js", "public/js/report.js")
   .react("resources/assets/js/backend/mealplans.js", "public/js/mealplans.js")
+  .react("resources/assets/js/backend/mealpreset.js", "public/js/mealpreset.js")
   .react("resources/assets/js/backend/neworder.js", "public/js/neworder.js")
   .react("resources/assets/js/backend/coupon.js", "public/js/coupon.js")
   .react("resources/assets/js/backend/recommendation.js", "public/js/recommendation.js")

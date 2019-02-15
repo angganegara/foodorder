@@ -18,6 +18,11 @@ class MealController extends Controller
     return view('admin.mealplans');
   }
 
+  public function managePreset()
+  {
+    return view('admin.mealpreset');
+  }
+
   public function newPlan(Request $request)
   {
     $overwrite = $request->overwrite;
