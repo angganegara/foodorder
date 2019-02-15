@@ -140,6 +140,7 @@ class OrderController extends Controller
     $order->lname = $form['lname'];
     $order->email = $form['email'];
     $order->gender = $form['gender'];
+    $order->comments = $form['comments'];
     $order->phone = $form['phone'];
     $order->delivery_price = intVal($form['delivery_price']);
     $order->coupon_code = intVal($form['coupon_value']) > 0 ? "Custom Coupon (Backend Order)" : "";
