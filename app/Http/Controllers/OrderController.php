@@ -213,9 +213,7 @@ class OrderController extends Controller
   {
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
 
-    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
-      $query->where('paid', 1);
-    })->get();
+    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->get();
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
@@ -248,9 +246,7 @@ class OrderController extends Controller
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
     if (!$request->has('date')) { $today->addDay(); }
 
-    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
-      $query->where('paid', 1);
-    })->get();
+    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->get();
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
