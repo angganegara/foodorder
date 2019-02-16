@@ -57,9 +57,13 @@ class Schedule extends Component {
     orderState.editorData = { type, day, data, source, id, sort };
   };
 
-  saveComponentEditor = ({ id, index, pos, text, menu, source, delivery }) => {
+  saveComponentEditor = ({ id, index, pos, text, menu, source }) => {
     if (source == "text") {
-      const { items } = orderState;
+      const { items, schedules } = orderState;
+      let delivery = "";
+      if (schedules[index] && schedules[index].address != "") {
+        delivery = schedules[index].address;
+      }
       let newItems = [...items];
       newItems[pos] = {
         delivery,
@@ -77,9 +81,13 @@ class Schedule extends Component {
   };
   copyComponent = data => (orderState.copyData = data);
   pasteComponent = (e, index) => {
-    const { copyData } = orderState;
+    const { copyData, schedules } = orderState;
+    let delivery = "";
+    if (schedules[index] && schedules[index].address != "") {
+      delivery = schedules[index].address;
+    }
     let items = [...orderState.items];
-    items[index] = copyData;
+    items[index] = { ...copyData, delivery };
     orderState.items = items;
   };
   clearCompoonent = ({ index }) => {

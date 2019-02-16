@@ -96,18 +96,20 @@ class OrderController extends Controller
     OrderSchedule::where('order_carts_id', $form['cartID'])->delete();
 
     foreach ($form['items'] as $index => $sch) {
-      // save schedule
-      $sc = new OrderSchedule;
+      if ($index < $form['duration']) {
+        // save schedule
+        $sc = new OrderSchedule;
 
-      $sc->order_id = $order->id;
-      $sc->order_carts_id = $oc->id;
-      $sc->name = $form['fname'] .' '. $form['lname'];
-      $sc->date = $form['dates'][$index];
-      $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
-      $sc->snacks = null;
-      $sc->station = $sch['delivery'];
+        $sc->order_id = $order->id;
+        $sc->order_carts_id = $oc->id;
+        $sc->name = $form['fname'] .' '. $form['lname'];
+        $sc->date = $form['dates'][$index];
+        $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
+        $sc->snacks = null;
+        $sc->station = $sch['delivery'];
 
-      $sc->save();
+        $sc->save();
+      }
     }
 
     $return = [
