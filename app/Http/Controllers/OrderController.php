@@ -143,6 +143,9 @@ class OrderController extends Controller
       $snacks[$index] = $sch->snacks;
     }
 
+    // area
+    $area = $oc->schedule[0]->area && $oc->schedule[0]->area != '' ? ' ('. $oc->schedule[0]->area .')' : '';
+
     // delete schedule
     OrderSchedule::where('order_carts_id', $form['cartID'])->delete();
 
@@ -157,7 +160,7 @@ class OrderController extends Controller
         $sc->date = $form['dates'][$index];
         $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
         $sc->snacks = array_key_exists($index, $snacks) ? $snacks[$index] : '';
-        $sc->station = $sch['delivery'];
+        $sc->station = $sch['delivery'] . $area;
 
         $sc->save();
       }
