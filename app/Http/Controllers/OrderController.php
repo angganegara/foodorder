@@ -137,6 +137,12 @@ class OrderController extends Controller
 
     $oc->save();
 
+    // get the snacks first!
+    $snacks = [];
+    foreach ($oc->schedule as $index => $sch) {
+      $snacks[$index] = $sch->snacks;
+    }
+
     // delete schedule
     OrderSchedule::where('order_carts_id', $form['cartID'])->delete();
 
@@ -150,7 +156,7 @@ class OrderController extends Controller
         $sc->name = $form['fname'] .' '. $form['lname'];
         $sc->date = $form['dates'][$index];
         $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
-        $sc->snacks = null;
+        $sc->snacks = array_key_exists($index, $snacks) ? $snacks[$index] : '';
         $sc->station = $sch['delivery'];
 
         $sc->save();
