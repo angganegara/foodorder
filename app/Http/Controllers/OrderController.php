@@ -12,6 +12,7 @@ use App\Models\OrderCart;
 use App\Models\OrderSchedule;
 use App\Models\Partner;
 use App\Models\ErrorLog;
+use App\Models\ExtraPayment;
 use App\Helpers\OrderHelper;
 
 class OrderController extends Controller
@@ -43,8 +44,51 @@ class OrderController extends Controller
 
   public function index(Request $request)
   {
-		$orders = Order::orderBy('created_at', 'desc')->with('partner')->paginate(30);
-		return view('admin.orders', compact('orders'));
+    $orders = Order::orderBy('created_at', 'desc')->with(['partner', 'ordercart', 'schedule']);
+    $dates = '';
+    $total_amount = 0;
+    $total_open_amount = 0;
+
+    if ($request->has('keyword')) {
+      $search = $request->keyword;
+      $orders = $orders->where(function ($q) use ($search) {
+        $q
+          ->where('fname', 'like', '%'. $search .'%')
+          ->orWhere('lname', 'like', '%'. $search .'%')
+          ->orWhere('email', 'like', '%'. $search .'%')
+          ->orWhere('phone', 'like', '%'. $search .'%')
+          ->orWhere('order_number', 'like', '%'. $search .'%')
+          ->orWhere('coupon_code', 'like', '%'. $search .'%')
+          ->orWhereHas('ordercart', function ($query) use ($search) {
+            $query->where('meals', 'like', '%'. $search .'%');
+          });
+      })->paginate(30)->withPath('?'. request()->getQueryString());
+    } else if ($request->has('date')) {
+      $dates = $request->date;
+      $dates = explode(' - ', $dates);
+
+      $start = explode('-', $dates[0]);
+      $end = explode('-', $dates[1]);
+
+      $date_start = $start[2] .'-'. $start[1] .'-'. $start[0];
+      $date_end = $end[2] .'-'. $end[1] .'-'. $end[0];
+
+      $orders = $orders
+        ->where('created_at', '>=', $date_start)
+        ->where('created_at', '<=', $date_end)
+        ->paginate(30)->withPath('?'. request()->getQueryString());
+
+      $dates = date('d M Y', strtotime($date_start)) .' to '. date('d M Y', strtotime($date_end));
+    } else {
+      $orders = $orders->paginate(30);
+    }
+
+    $total_amount = $orders->pluck('total')->sum();
+    $total_open_amount = $orders->sum(function ($order) {
+      return $order->openAmount();
+    });
+
+		return view('admin.orders', compact('orders', 'dates', 'total_amount', 'total_open_amount'));
   }
 
   public function edit($id)
@@ -74,10 +118,10 @@ class OrderController extends Controller
     $order->phone = $form['phone'];
     $order->comments = $form['comments'];
     $order->backend_order = 1;
-    $order->delivery_price = intVal($form['delivery_price']);
+    $order->delivery_price = intVal($form['delivery_price']); // should not use this field
     $order->coupon_value = intVal($form['coupon_value']);
     $order->confirmed = 1;
-    $order->subtotal = intVal($form['subtotal']);
+    $order->subtotal = intVal($form['total']);
     $order->total = intVal($form['total']);
     $order->backend_order = 1;
 
@@ -89,6 +133,7 @@ class OrderController extends Controller
     $oc->duration = $form['duration'];
     $oc->end_date = $form['dates'][count($form['dates']) - 1];
     $oc->schedules_data = null;
+    $oc->eco_price = $form['eco_price'];
 
     $oc->save();
 
@@ -145,7 +190,7 @@ class OrderController extends Controller
     $order->comments = $form['comments'];
     $order->phone = $form['phone'];
     $order->delivery_price = intVal($form['delivery_price']);
-    $order->coupon_code = intVal($form['coupon_value']) > 0 ? "Custom Coupon (Backend Order)" : "";
+    $order->coupon_code = intVal($form['coupon_value']) > 0 ? "MP Order" : "";
     $order->coupon_value = intVal($form['coupon_value']);
     $order->confirmed = 1;
     $order->email_sent = 1;
@@ -153,8 +198,8 @@ class OrderController extends Controller
     $order->partner_id = 1;
     $order->payment = 'cash';
     $order->paypal_response = null;
-    $order->subtotal = intVal($form['subtotal']);
-    $order->total = intVal($form['total']);
+    $order->subtotal = intVal($form['total']);
+    $order->total = intVal($form['total'] - $form['coupon_value']);
     $order->paid = 1;
     $order->backend_order = 1;
     $order->menu_email_sent = 0;
@@ -169,13 +214,13 @@ class OrderController extends Controller
     $oc->meals = $form['category']['name'];
     $oc->package = 2;
     $oc->qty = 1;
-    $oc->eco_price = 0;
+    $oc->eco_price = $form['eco_price'];
     $oc->slimsunday = 0;
     $oc->subtotal = intVal($form['subtotal']);
     $oc->snacks_price = 0;
     $oc->slimsunday_price = 0;
     $oc->delivery_price = intVal($form['delivery_price']);
-    $oc->total_price = intVal($form['total']);
+    $oc->total_price = intVal($form['subtotal']) + intVal($form['delivery_price']) + intVal($form['eco_price']);
     $oc->start_date = $form['dates'][0];
     $oc->duration = $form['duration'];
     $oc->end_date = $form['dates'][count($form['dates']) - 1];
@@ -372,7 +417,8 @@ class OrderController extends Controller
     $newDate = $date[2] .'-'. $date[1] .'-'. $date[0];
     $order = Order::find($id)->update([
       'cash_paid' => $request->amount,
-      'cash_paid_date' => $newDate
+      'cash_paid_date' => $newDate,
+      'payment_comment' => $request->comment
     ]);
 
     return response('OK');
@@ -410,5 +456,29 @@ class OrderController extends Controller
     })->store($format, public_path('excel'));
 
     return response(asset('excel/'. $filename .'.'. $format));
+  }
+
+  public function createExtraPayment(Request $request, $id)
+  {
+    $date = explode('/', $request->date);
+    $date = $date[2] .'-'. $date[1] .'-'. $date[0];
+
+    $amount = str_replace(',', '', $request->amount);
+
+    ExtraPayment::create([
+      'order_id' => $id,
+      'description' => $request->description,
+      'date' => $date,
+      'amount' => intVal($amount)
+    ]);
+
+    return 'OK';
+  }
+
+  public function deleteExtraPayment(Request $request, $id)
+  {
+    ExtraPayment::find($request->id)->delete();
+
+    return 'OK';
   }
 }

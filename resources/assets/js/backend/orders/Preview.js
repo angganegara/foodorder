@@ -30,6 +30,7 @@ class Preview extends Component {
       comments: form.comments,
       subtotal: form.price,
       delivery_price: form.delivery,
+      eco_price: form.ecoPrice,
       coupon_value: form.discount,
       total: form.total,
       items: items,
@@ -105,6 +106,8 @@ class Preview extends Component {
                 <div className="column is-8 value">IDR {price(form.price)}</div>
                 <div className="column is-4 label">Discount</div>
                 <div className="column is-8 value">{form.discount > 0 ? "IDR " + price(form.discount) : "-"}</div>
+                <div className="column is-4 label">Eco Pack</div>
+                <div className="column is-8 value">{form.ecoPrice > 0 ? "IDR " + price(form.ecoPrice) : "-"}</div>
                 <div className="column is-4 label">Delivery Fee</div>
                 <div className="column is-8 value">{form.delivery > 0 ? "IDR " + price(form.delivery) : "-"}</div>
                 <div className="column is-4 label no-border">Total Price</div>

@@ -67,6 +67,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('orders/{id}/delete', 'OrderController@delete');
   Route::get('orders/{id}/edit', 'OrderController@edit');
   Route::post('orders/{id}/edit', 'OrderController@update');
+  Route::post('orders/{id}/delete-extra-payment', 'OrderController@deleteExtraPayment');
+  Route::post('orders/{id}/new-extra-payment', 'OrderController@createExtraPayment');
   Route::post('orders/{id}/send-mp-email', 'OrderController@sendMPEmail');
   Route::post('orders/{id}/update-payment', 'OrderController@updatePayment');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');

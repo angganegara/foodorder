@@ -3,12 +3,16 @@ import orderState from "../store/order";
 
 const updateForm = (e, column) => {
   let value = e.target.value;
-  if (column == "price" || column == "discount" || column == "delivery") {
+  if (column == "price" || column == "ecoPrice" || column == "discount" || column == "delivery") {
     if (value == "") {
       value = 0;
     }
     orderState.form[column] = parseInt(value);
-    orderState.form.total = parseInt(orderState.form.price) - parseInt(orderState.form.discount) + parseInt(orderState.form.delivery);
+    orderState.form.total =
+      parseInt(orderState.form.price) +
+      parseInt(orderState.form.ecoPrice) -
+      parseInt(orderState.form.discount) +
+      parseInt(orderState.form.delivery);
   } else {
     orderState.form[column] = value;
   }

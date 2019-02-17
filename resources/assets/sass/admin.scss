@@ -26,10 +26,10 @@ a:hover {
   text-decoration: none;
 }
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
 .text-right {
-  text-align: right;
+  text-align: right !important;
 }
 .is-danger {
   color: rgb(223, 117, 31);
@@ -90,7 +90,7 @@ section.admin {
 .update-payment-button {
   display: flex;
   justify-content: flex-end;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   a {
     display: block;
     background-color: $main-color;
@@ -504,8 +504,10 @@ table.total {
     padding: 0.5rem 1rem;
     border-bottom: 1px dashed #eee;
     text-align: right;
-    font-weight: bold;
     text-transform: uppercase;
+  }
+  tr td:nth-child(2) {
+    font-weight: bold;
   }
 }
 .schedule-wrapper {
@@ -729,5 +731,14 @@ a.schedule-nav {
       color: green;
       padding-right: 5px;
     }
+  }
+}
+
+.tools {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  &-date {
+    width: 250px;
   }
 }

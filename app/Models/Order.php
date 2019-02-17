@@ -8,7 +8,7 @@ class Order extends Model
 {
 	protected $hidden = ['ip_address', 'updated_at', 'user_agent'];
 	protected $appends = ['name', 'date', 'payment_formatted', 'order_status'];
-  protected $fillable = ['total', 'menu_email_sent', 'cash_paid', 'cash_paid_date', 'email_payment_reminder'];
+  protected $fillable = ['total', 'menu_email_sent', 'cash_paid', 'cash_paid_date', 'email_payment_reminder', 'payment_comment'];
 
 	public function getNameAttribute()
 	{
@@ -61,6 +61,16 @@ class Order extends Model
     return $this->hasOne(\App\Models\Partner::class, 'id', 'partner_id');
   }
 
+  public function extra_payment()
+  {
+    return $this->hasMany('App\Models\ExtraPayment');
+  }
+
+  public function total_extra()
+  {
+    return $this->extra_payment()->pluck('amount')->sum();
+  }
+
   public function openAmount()
   {
     $open = $this->total;
@@ -83,7 +93,7 @@ class Order extends Model
       break;
 
       case 'cash':
-        $open = $this->total - $this->cash_paid;
+        $open = $this->total - ($this->cash_paid + $this->total_extra());
       break;
     }
 

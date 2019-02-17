@@ -10,7 +10,48 @@
   </nav>
 
   <div class="body">
-    <h1>view orders</h1>
+    @if (request()->has('keyword'))
+      <h1>Search result for {{ request('keyword') }}</h1>
+    @endif
+    @if (request()->has('date'))
+      <h1>view orders from {{ $dates }}</h1>
+    @endif
+    @if ( ! request()->has('date') && ! request()->has('keyword') )
+      <h1>view orders</h1>
+    @endif
+    <div class="tools">
+      <div class="tools-search">
+        <form action="{{ request()->url() }}" method="get">
+          <div class="pt-input-group pt-round">
+            <span class="pt-icon pt-icon-search"></span>
+            <input type="text" class="pt-input" placeholder="Search keywords" name="keyword" value="{{ request()->has('keyword') ? request('keyword') : '' }}" />
+            <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right"></button>
+          </div>
+        </form>
+      </div>
+      <div class="tools-date">
+        <form action="{{ request()->url() }}" method="get">
+          <div class="pt-input-group">
+            <span class="pt-icon pt-icon-calendar"></span>
+            <input
+              type="text"
+              name="date"
+              autocomplete="off"
+              value="{{ request('date') }}"
+              data-date-format="dd-mm-yyyy"
+              class="pt-input datepicker-here"
+              placeholder="Select order dates"
+              data-language="en"
+              data-range="true"
+              data-position="bottom right"
+              data-multiple-dates-separator=" - "
+              data-auto-close="true"
+            />
+            <button class="pt-button pt-minimal pt-intent-primary pt-icon-arrow-right"></button>
+          </div>
+        </form>
+      </div>
+    </div>
     <table width="100%" class="tbl">
       <tr>
         <th>Order</th>
@@ -19,6 +60,7 @@
         <th class="text-center">Payment</th>
         <th class="text-center">Total Amount</th>
         <th class="text-center">Open Amount</th>
+        <th class="text-center">Meal Plan</th>
         <th class="text-center">MP Email</th>
         <th class="text-center">Status</th>
         <th></th>
@@ -49,6 +91,9 @@
           <td class="text-center">IDR <b>{{ number_format($order->total) }}</b></td>
           <td class="text-center">{!! $order->openAmount() > 0 ? 'IDR <b>'. number_format($order->openAmount()) .'</b>' : '-' !!}</td>
           <td class="text-center">
+            {!! $order->backend_order ? '<i class="fal fa-check is-success"></i>' : '<i class="fal fa-times is-danger"></i>' !!}
+          </td>
+          <td class="text-center">
             {!! $order->menu_email_sent ? '<i class="fal fa-check is-success"></i>' : '<i class="fal fa-times is-danger"></i>' !!}
           </td>
           <td class="text-center"><a title="" class="pill status">{{ strtoupper($order->order_status) }}</a></td>
@@ -59,6 +104,18 @@
           </td>
         </tr>
       @endforeach
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-center">IDR <b>{{ number_format($total_amount, 0) }}</b></td>
+        <td class="text-center">IDR <b>{{ number_format($total_open_amount, 0) }}</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
     </table>
 
     {{ $orders->links() }}

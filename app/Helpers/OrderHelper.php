@@ -126,7 +126,7 @@ class OrderHelper
     $order->lname = $form['lname'];
     $order->email = $form['email'];
     $order->phone = $form['phone'];
-    $order->delivery_price = $request->has('deliveryPrice') ? $request->deliveryPrice : 0;
+    $order->delivery_price = $request->has('deliveryPrice') ? $request->deliveryPrice : 0; // should not use this field
     $order->delivery_discount = $form['discount'];
     $order->coupon_code = $form['coupon'];
     $order->coupon_value = $form['couponValue'];

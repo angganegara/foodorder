@@ -46,15 +46,11 @@
                 {{ $order->phone }}
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h2>Comments</h2>
-          <div class="form-inner">
-            <div class="form-row">
-              <label>Comments</label>
-              {!! $order->comments != '' && $order->comments != NULL ? $order->comments : '<em>Guest did not put a comments</em>' !!}
+            <div class="columns form-row">
+              <div class="column is-half">
+                <label>Comments</label>
+                {!! $order->comments != '' && $order->comments != NULL ? $order->comments : '<em>Guest did not put a comments</em>' !!}
+              </div>
             </div>
           </div>
         </div>
@@ -80,28 +76,86 @@
               @endif
             </div>
             @if ($order->payment == 'cash')
-            <div class="columns form-order is-multiline">
+            <div class="columns form-row">
               <div class="column is-half">
-                <label class="pt-label">Amount paid</label>
-                <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ number_format($order->cash_paid) }}">
-              </div>
-              <div class="column is-half">
-                <label class="pt-label">Date of payment</label>
+                <label class="pt-label">Date</label>
                 <input
                   type="text"
-                  name="amount_paid"
+                  name="payment_date"
+                  autocomplete="off"
                   class="pt-input pt-fill datepicker-here"
                   data-language="en"
                   data-date-format="dd/mm/yyyy"
                   data-auto-close="true"
+                  readonly
                   value="{{ $order->cash_paid_date ? date('d/m/Y', strtotime($order->cash_paid_date)) : '' }}"
                 />
+              </div>
+              <div class="column is-half">
+                <label class="pt-label">Amount paid</label>
+                <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ number_format($order->cash_paid) }}">
+              </div>
+            </div>
+            <div class="columns form-row is-multiline">
+              <div class="column is-12">
+                <label class="pt-label">Payment Comment</label>
+                <textarea name="payment_comment" class="pt-input pt-fill" rows="5" placeholder="Enter payment comment here">{{ $order->payment_comment }}</textarea>
                 <div class="update-payment-button">
-                  <a href="javascript:" title="" class="update-payment-button" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
+                  <a href="javascript:" title="" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
                 </div>
               </div>
             </div>
             @endif
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Extra Payment</h2>
+          <div class="form-inner">
+            <table class="pt-html-table pt-html-table-striped" width="100%">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th class="text-right">Amount</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($order->extra_payment as $extra)
+                <tr class="extra-{{ $extra->id }}">
+                  <td>{{ date('d M Y', strtotime($extra->date)) }}</td>
+                  <td>{{ $extra->description }}</td>
+                  <td class="text-right">{{ number_format($extra->amount, 0) }} IDR</td>
+                  <td class="text-center">
+                    <a href="javascript:" class="delete-extra" title="" data-id="{{ $extra->id }}" data-order-id="{{ $order->id }}"><i class="fal fa-times"></i></a>
+                  </td>
+                </tr>
+                @endforeach
+                <tr>
+                  <td>
+                    <input
+                      type="text"
+                      name="extra_date"
+                      autocomplete="off"
+                      class="pt-input pt-fill datepicker-here"
+                      data-language="en"
+                      data-date-format="dd/mm/yyyy"
+                      data-auto-close="true"
+                      data-position="top left"
+                      readonly
+                    />
+                  </td>
+                  <td>
+                    <input type="text" class="pt-input pt-fill" name="extra_description" placeholder="description" autocomplete="off" />
+                  </td>
+                  <td>
+                    <input type="text" class="pt-input pt-fill" name="extra_amount" placeholder="amount" autocomplete="off" />
+                  </td>
+                  <td><a href="javascript:" title="" class="extra-new"><i class="fal fa-plus"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -155,23 +209,31 @@
               <td width="70%">subtotal</td>
               <td width="30%">{{ number_format($order->subtotal, 0) }} IDR</td>
             </tr>
+            @if ($order->coupon_value > 0)
+              <tr>
+                <td>discount @if ($order->coupon_code)(code: {{ $order->coupon_code }})@endif </td>
+                <td>- {{ number_format($order->coupon_value) }} IDR</td>
+              </tr>
+            @endif
             <tr>
-              <td>discount @if ($order->coupon_code)(code: {{ $order->coupon_code }})@endif </td>
-              <td>- {{ number_format($order->coupon_value) }} IDR</td>
-            </tr>
-            <tr>
-              <td>total</td>
-              <td>{{ number_format($order->total) }} IDR</td>
+              <td><b>total</b></td>
+              <td>{{ number_format($order->total, 0) }} IDR</td>
             </tr>
             @if ($order->payment == 'cash')
-            <tr>
-              <td>Amount Paid</td>
-              <td>{{ number_format($order->cash_paid) }} IDR</td>
-            </tr>
-            <tr>
-              <td>Open Amount</td>
-              <td>{{ number_format($order->openAmount()) }} IDR</td>
-            </tr>
+              <tr>
+                <td>Amount Paid</td>
+                <td>{{ number_format($order->cash_paid) }} IDR</td>
+              </tr>
+              @if ($order->extra_payment()->count() > 0)
+                <tr>
+                  <td>EXTRA PAYMENT</td>
+                  <td>{{ number_format($order->total_extra(), 0) }} IDR</td>
+                </tr>
+              @endif
+              <tr>
+                <td>Open Amount</td>
+                <td>{{ number_format($order->openAmount()) }} IDR</td>
+              </tr>
             @endif
           </table>
         </div>
@@ -185,7 +247,7 @@
 @section('scripts')
 <script>
   var orderID = {{ $order->id }};
-  $('input[name="amount_paid"]').on('keyup', function (e) {
+  $('input[name="amount_paid"], input[name="extra_amount"]').on('keyup', function (e) {
     var val = e.target.value;
     var isMinus = false;
     if (val != "" && val.length > 3 ) {
@@ -206,6 +268,10 @@
     var $el = $(this);
     var buttonText = $el.html();
 
+    if ( ! window.confirm('Send MP Email?') ) {
+      return false;
+    }
+
     $el.html('<i class="fal fa-spinner-third fa-spin"></i> &nbsp;<span>SENDING</span>').attr('disabled', true);
     axios
       .post('/admin/orders/'+ orderID +'/send-mp-email', {
@@ -223,12 +289,58 @@
         $el.html(buttonText);
       })
   });
+
+  $('a.extra-new').click(function (e) {
+    var date = $('input[name="extra_date"]').val();
+    var description = $('input[name="extra_description"]').val();
+    var amount = $('input[name="extra_amount"]').val();
+
+    if (date == '' || description == '' || amount == '') {
+      window.alert("Please enter all fields");
+      return false;
+    }
+
+    axios
+      .post('/admin/orders/'+ orderID +'/new-extra-payment', {
+        date: date,
+        description: description,
+        amount: amount
+      })
+      .then(function (res) {
+        if (res.data == 'OK') {
+          window.location = window.location.href +'?'+ Math.random();
+          return false;
+        }
+      })
+  });
+
+  $('a.delete-extra').click(function (e) {
+    e.preventDefault();
+    var id = $(this).data('id');
+
+    if (window.confirm('Delete this extra payment ?')) {
+      axios
+        .post('/admin/orders/'+ orderID +'/delete-extra-payment', {
+          id: id
+        })
+        .then(function (res) {
+          if (res.data == 'OK') {
+            window.location = window.location.href +'?'+ Math.random();
+            return false;
+          }
+        })
+    }
+
+    return false;
+  })
+
   $('.update-payment-button a').click(function (e) {
     var $this = $(this);
     var id = $this.data('id');
     var ordernumber = $this.data('ordernumber');
     var amount = $('input[name="amount_paid"]').val();
-    var date = $('.datepicker-here').val();
+    var comment = $('textarea[name="payment_comment"]').val();
+    var date = $('input[name="payment_date"]').val();
 
     if (parseInt(amount) <= 0 || amount == '') {
       alert('Please enter the amount');
@@ -246,6 +358,7 @@
     axios
       .post('/admin/orders/'+ id +'/update-payment', {
         amount: amount,
+        comment: comment,
         date: date
       })
       .then(function (res) {

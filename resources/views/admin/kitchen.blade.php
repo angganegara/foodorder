@@ -11,11 +11,11 @@
 
     <table cellpadding="0" cellspacing="0">
       <tr>
-        <th>Name</th>
-        <th>Menu</th>
-        <th>Eco Pack</th>
-        <th>Comments</th>
-        <th>Description</th>
+        <th width="20%">Name</th>
+        <th width="15%">Menu</th>
+        <th width="10%">Eco</th>
+        <th width="10%">Comments</th>
+        <th width="45%">Description</th>
       </tr>
       @foreach ($result as $md5)
         @foreach ($md5 as $index => $sc)

@@ -20,6 +20,7 @@ const orderState = currentData
         price: 0,
         discount: 0,
         delivery: 0,
+        ecoPrice: 0,
         total: 0,
         payment_type: "cash",
         payment_date: "",

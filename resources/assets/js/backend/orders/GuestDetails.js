@@ -28,10 +28,11 @@ class GuestDetails extends Component {
       orderState.form.lname = order.lname;
       orderState.form.email = order.email;
       orderState.form.phone = order.phone;
-      orderState.form.price = order.subtotal;
+      orderState.form.price = carts[0].subtotal + carts[0].snacks_price;
+      orderState.form.ecoPrice = carts[0].eco_price;
       orderState.form.gender = order.gender;
       orderState.form.comments = order.comments ? order.comments : "";
-      orderState.form.delivery = order.delivery_price;
+      orderState.form.delivery = carts[0].delivery_price;
       orderState.form.discount = order.coupon_value;
       orderState.form.total = order.total;
       orderState.carts = carts;
@@ -85,7 +86,7 @@ class GuestDetails extends Component {
   };
 
   loadCategories = () => {
-    axios.get("/api/foods").then(res => this.setState({ categories: res.data }));
+    axios.get("/api/foods?show_hidden=1").then(res => this.setState({ categories: res.data }));
   };
 
   calculateDatePeriod() {
@@ -199,10 +200,11 @@ class GuestDetails extends Component {
             </div>
             <hr className="form-separator" />
             <div className="columns form-inputs is-multiline">
-              <Input label="Price (Subtotal)" column="price" value={form.price} classNames="is-6" />
+              <Input label="Price (Meal inc. snacks)" column="price" value={form.price} classNames="is-6" />
               <Input label="Discount" column="discount" value={form.discount} classNames="is-6" />
               <Input label="Delivery Fee" column="delivery" value={form.delivery} classNames="is-6" />
-              <Input label="Total Price" column="total" value={form.total} classNames="is-6" />
+              <Input label="Eco Pack" column="ecoPrice" value={form.ecoPrice} classNames="is-6" />
+              <Input label="Total Price" column="total" value={form.total} classNames="is-12" />
             </div>
             <hr className="form-separator" />
             <div className="columns form-inputs is-multiline">
