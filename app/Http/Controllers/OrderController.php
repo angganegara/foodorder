@@ -13,6 +13,7 @@ use App\Models\OrderSchedule;
 use App\Models\Partner;
 use App\Models\ErrorLog;
 use App\Models\ExtraPayment;
+use App\Models\OrderHistory;
 use App\Helpers\OrderHelper;
 
 class OrderController extends Controller
@@ -94,6 +95,7 @@ class OrderController extends Controller
   public function edit($id)
   {
     $order = Order::with('ordercart.schedule')->find($id);
+
     return view('admin.edit-order', compact('order'));
   }
 
@@ -143,9 +145,6 @@ class OrderController extends Controller
       $snacks[$index] = $sch->snacks;
     }
 
-    // area
-    $area = $oc->schedule[0]->area && $oc->schedule[0]->area != '' ? ' ('. $oc->schedule[0]->area .')' : '';
-
     // delete schedule
     OrderSchedule::where('order_carts_id', $form['cartID'])->delete();
 
@@ -160,11 +159,20 @@ class OrderController extends Controller
         $sc->date = $form['dates'][$index];
         $sc->meals = "B: {$sch['menu']['b']}<hr />S: {$sch['menu']['bs']}<hr />L: {$sch['menu']['l']}<hr />S: {$sch['menu']['ls']}<hr />D: {$sch['menu']['d']}";
         $sc->snacks = array_key_exists($index, $snacks) ? $snacks[$index] : '';
-        $sc->station = $sch['delivery'] . $area;
+        $sc->station = $sch['delivery'];
+        $sc->area = $oc->schedule->count() > 0 && $oc->schedule[0]->area && $oc->schedule[0]->area != '' ? $oc->schedule[0]->area : '';
 
         $sc->save();
       }
     }
+
+    // history
+    OrderHistory::create([
+      'order_id' => $order->id,
+      'user' => $form['user'],
+      'action' => 'Updating Meal Plan',
+      'notes' => ''
+    ]);
 
     $return = [
       'id' => $order->id,
@@ -252,6 +260,13 @@ class OrderController extends Controller
 
       $sc->save();
     }
+
+    OrderHistory::create([
+      'order_id' => $order->id,
+      'user' => $form['user'],
+      'action' => 'Creating new Order',
+      'notes' => ''
+    ]);
 
     $return = [
       'id' => $order->id,

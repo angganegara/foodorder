@@ -60,26 +60,29 @@ class GuestDetails extends Component {
     const cart = carts.filter(c => c.id == cartID)[0];
     const schedules = cart.schedule;
     let items = [];
+
     schedules.map((sch, index) => {
-      let menu = sch.meals.split("<hr />");
-      let menus = {
-        b: menu[0].replace("B: ", ""),
-        bs: menu[1].replace("S: ", ""),
-        l: menu[2].replace("L: ", ""),
-        ls: menu[3].replace("S: ", ""),
-        d: menu[4].replace("D: ", "")
-      };
-      let data = {
-        delivery: sch.station,
-        scheduleID: sch.id,
-        id: null,
-        index: index + 1,
-        menu: menus,
-        pos: index,
-        text: sch.meals,
-        type: "days"
-      };
-      items.push(data);
+      if (sch.meals.search("<hr />") != -1) {
+        let menu = sch.meals.split("<hr />");
+        let menus = {
+          b: menu[0].replace("B: ", ""),
+          bs: menu[1].replace("S: ", ""),
+          l: menu[2].replace("L: ", ""),
+          ls: menu[3].replace("S: ", ""),
+          d: menu[4].replace("D: ", "")
+        };
+        let data = {
+          delivery: sch.station,
+          scheduleID: sch.id,
+          id: null,
+          index: index + 1,
+          menu: menus,
+          pos: index,
+          text: sch.meals,
+          type: "days"
+        };
+        items.push(data);
+      }
     });
 
     orderState.items = items;

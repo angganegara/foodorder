@@ -8,7 +8,8 @@ $json = json_encode($order);
 ?>
 <script>
 var ACTION = 'EDIT';
+var USER = '{{ Auth::user()->username }}';
 var ORDER = <?php echo $json; ?>;
 </script>
-<script src="{{ asset('js/neworder.js') }}"></script>
+<script src="{{ asset('js/neworder.js?'. date('Ymdh')) }}"></script>
 @endsection

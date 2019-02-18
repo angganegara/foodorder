@@ -71,6 +71,11 @@ class Order extends Model
     return $this->extra_payment()->pluck('amount')->sum();
   }
 
+  public function history()
+  {
+    return $this->hasMany('App\Models\OrderHistory');
+  }
+
   public function openAmount()
   {
     $open = $this->total;

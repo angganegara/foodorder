@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon.png" />
   <title>{{ isset($title) ? $title : "Motion Cafe Bali | Admin" }}</title>
   <link rel="stylesheet" href="/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="/css/backend.css" media="screen" />
+  <link rel="stylesheet" href="/css/backend.css?{{ date('Ymdh') }}" media="screen" />
   <link rel="stylesheet" href="/css/redactor.css" />
   <link rel="stylesheet" href="/css/datepicker.min.css" />
   <link rel="stylesheet" href="/css/print.css" media="print" />
@@ -24,7 +24,7 @@
 
   <script src="{{ asset('js/manifest.js') }}"></script>
   <script src="{{ asset('js/vendor.js') }}"></script>
-  <script src="{{ asset('js/admin.js') }}"></script>
+  <script src="{{ asset('js/admin.js?'. date('Ymdh')) }}"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="/js/datepicker.min.js"></script>
   <script src="/js/datepicker.en.js"></script>

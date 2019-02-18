@@ -19,6 +19,7 @@ class Preview extends Component {
   handleSubmit = (e, { sendEmail }) => {
     const { form, items, dateRaw, category, duration, cartID } = orderState;
     const order = ORDER;
+    const user = USER;
     const data = {
       orderID: order.id,
       cartID: cartID,
@@ -37,8 +38,10 @@ class Preview extends Component {
       duration: duration,
       dates: dateRaw,
       category: category,
-      sendEmail: sendEmail
+      sendEmail: sendEmail,
+      user: user
     };
+
     this.setState({ isLoading: true });
     const successAction = ACTION == "NEW" ? "saved" : "updated";
     const url = ACTION == "NEW" ? "/admin/orders/new" : "/admin/orders/" + ORDER.id + "/edit";
