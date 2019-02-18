@@ -67,7 +67,13 @@
       </tr>
       @foreach ($orders as $index => $order)
         <tr>
-          <td><a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}" title="" class="order-name"><b>{{ $order->name }}</b></a></td>
+          <td>
+            @if ($order->email)
+              <a href="mailto:{{ $order->email }}" target="_blank" class="order-name"><b>{{ $order->name }}</b></a>
+            @else
+              <a href="#" target="_blank"><b>{{ $order->name }}</b></a>
+            @endif
+          </td>
           <td>
             @if ($order->ordercart->count() > 0)
               {{ date('j M', strtotime($order->ordercart[0]->start_date)) .' - '. date('j M y', strtotime($order->ordercart[0]->end_date)) }}

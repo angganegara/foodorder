@@ -44,8 +44,8 @@ class TaskController extends Controller
 
     if ($orders->count() > 0) {
       foreach ($orders as $order) {
-        $this->sendPaymentReminderEmail($order);
-        $order->update(['email_payment_reminder' => 1]);
+        //$this->sendPaymentReminderEmail($order);
+        //$order->update(['email_payment_reminder' => 1]);
       }
     }
 
