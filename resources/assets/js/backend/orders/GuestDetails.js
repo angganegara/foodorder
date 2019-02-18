@@ -28,10 +28,10 @@ class GuestDetails extends Component {
       orderState.form.lname = order.lname;
       orderState.form.email = order.email;
       orderState.form.phone = order.phone;
-      orderState.form.price = parseInt(carts[0].subtotal) + parseInt(carts[0].snacks_price);
-      orderState.form.ecoPrice = parseInt(carts[0].eco_price);
       orderState.form.gender = order.gender;
       orderState.form.comments = order.comments ? order.comments : "";
+      orderState.form.price = parseInt(carts[0].subtotal) + parseInt(carts[0].snacks_price);
+      orderState.form.ecoPrice = parseInt(carts[0].eco_price);
       orderState.form.delivery = parseInt(carts[0].delivery_price);
       orderState.form.discount = order.coupon_value;
       orderState.form.total = order.total;

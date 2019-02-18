@@ -54,9 +54,9 @@
     </div>
     <table width="100%" class="tbl">
       <tr>
-        <th>Order</th>
-        <th>Date</th>
         <th>Name</th>
+        <th>Period</th>
+        <th>Date</th>
         <th class="text-center">Payment</th>
         <th class="text-center">Total Amount</th>
         <th class="text-center">Open Amount</th>
@@ -67,15 +67,15 @@
       </tr>
       @foreach ($orders as $index => $order)
         <tr>
-          <td><a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}" title=""><b>{{ $order->order_number }}</b></a></td>
-          <td>{{ $order->date }}</td>
+          <td><a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}" title="" class="order-name"><b>{{ $order->name }}</b></a></td>
           <td>
-            @if ($order->email)
-              <a href="mailto:{{ $order->email }}" target="_blank"><b>{{ $order->name }}</b></a>
+            @if ($order->ordercart->count() > 0)
+              {{ date('j M', strtotime($order->ordercart[0]->start_date)) .' - '. date('j M y', strtotime($order->ordercart[0]->end_date)) }}
             @else
-              <a href="#" target="_blank"><b>{{ $order->name }}</b></a>
+              <span class="order-corrupted"><i class="fa fa-exclamation-triangle"></i> CORRUPTED</span>
             @endif
           </td>
+          <td>{{ $order->date }}</td>
           <td class="text-center">
             <span class="pill-{{ $order->payment_formatted }}">
               @if ($order->payment_formatted == 'cash')
@@ -105,16 +105,10 @@
         </tr>
       @endforeach
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td colspan="4"></td>
         <td class="text-center">IDR <b>{{ number_format($total_amount, 0) }}</b></td>
         <td class="text-center">IDR <b>{{ number_format($total_open_amount, 0) }}</b></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td colspan="4"></td>
       </tr>
     </table>
 

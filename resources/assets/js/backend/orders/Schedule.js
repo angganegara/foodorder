@@ -200,6 +200,17 @@ class Schedule extends Component {
         return item;
       }
     });
+    // is delivery text exist?
+    const delivery = items.filter(item => item.delivery).length;
+
+    if (delivery < duration) {
+      appToaster.show({
+        message: "Please enter the delivery address",
+        intent: Intent.DANGER
+      });
+      return false;
+    }
+
     orderState.items = newItems;
     orderState.preview = true;
     this.props.goto(null, 3);

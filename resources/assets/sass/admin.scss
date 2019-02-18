@@ -742,3 +742,15 @@ a.schedule-nav {
     width: 250px;
   }
 }
+
+.order-corrupted {
+  .fa {
+    color: orange;
+  }
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: bold;
+}
+.order-name {
+  text-transform: capitalize;
+}
