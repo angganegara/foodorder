@@ -109,7 +109,7 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section" style="display: none">
           <h2>Extra Payment</h2>
           <div class="form-inner">
             <table class="pt-html-table pt-html-table-striped" width="100%">

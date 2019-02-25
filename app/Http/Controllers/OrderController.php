@@ -328,7 +328,9 @@ class OrderController extends Controller
         $result->push([
           'name' => $sc->name,
           'meals' => $sc->meals,
-          'menu' => $sc->ordercart->meals,
+          'menu' => $sc->ordercart->meals != '' ? $sc->ordercart->meals : 'null',
+          'menu_pos' => $sc->ordercart->meals != '' ? $sc->ordercart->diet->position : -1,
+          'menu_symbol' => $sc->meals != '' ? $this->showMealSymbol($sc->meals) : '',
           'gender' => $sc->order->gender,
           'comments' => $sc->order->comments,
           'eco' => $sc->ordercart->eco_price > 0,
@@ -338,9 +340,43 @@ class OrderController extends Controller
       }
     }
 
-    $result = $result->groupBy('md5')->toArray();
+    //$result = $result->groupBy('md5')->toArray();
+    $result = $result->sortBy('menu_pos')->groupBy('md5')->toArray();
 
     return view('admin.kitchen', compact('result', 'today', 'yesterday', 'tomorrow'));
+  }
+
+  protected function showMealSymbol($meals)
+  {
+    $tmp = explode('<hr />', $meals);
+    $b = $tmp[0];
+    $bs = $tmp[1];
+    $l = $tmp[2];
+    $ls = $tmp[3];
+    $d = $tmp[4];
+    $symbol = [];
+
+    if (strlen($b) > 3 && strtoupper($b) != 'B: NONE') {
+      array_push($symbol, 'B');
+    }
+    if (strlen($bs) > 3 && strtoupper($bs) != 'S: NONE') {
+      array_push($symbol, 'S');
+    }
+    if (strlen($l) > 3 && strtoupper($l) != 'L: NONE') {
+      array_push($symbol, 'L');
+    }
+    if (strlen($ls) > 3 && strtoupper($ls) != 'S: NONE') {
+      array_push($symbol, 'S');
+    }
+    if (strlen($d) > 3 && strtoupper($d) != 'D: NONE') {
+      array_push($symbol, 'D');
+    }
+
+    if (count($symbol) > 0) {
+      return implode('+', $symbol);
+    }
+
+    return '';
   }
 
   public function delete($id)

@@ -22,7 +22,10 @@
           <?php $total = count($md5); ?>
           <tr>
             <td>{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
-            <td>{{ $sc['menu'] }}</td>
+            <td>
+              {{ $sc['menu'] != 'null' ? $sc['menu'] : '' }}
+              <span class="symbol">{{ $sc['menu_symbol'] }}</span>
+            </td>
             <td>{{ $sc['eco'] > 0 ? "YES" : "NO" }}</td>
             <td>{{ $sc['comments'] }}</td>
             @if ($total > 1)
