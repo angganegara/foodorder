@@ -349,31 +349,33 @@ class OrderController extends Controller
   protected function showMealSymbol($meals)
   {
     $tmp = explode('<hr />', $meals);
-    $b = $tmp[0];
-    $bs = $tmp[1];
-    $l = $tmp[2];
-    $ls = $tmp[3];
-    $d = $tmp[4];
-    $symbol = [];
+    if (count($tmp) > 1) {
+      $b = $tmp[0];
+      $bs = $tmp[1];
+      $l = $tmp[2];
+      $ls = $tmp[3];
+      $d = $tmp[4];
+      $symbol = [];
 
-    if (strlen($b) > 3 && strtoupper($b) != 'B: NONE') {
-      array_push($symbol, 'B');
-    }
-    if (strlen($bs) > 3 && strtoupper($bs) != 'S: NONE') {
-      array_push($symbol, 'S');
-    }
-    if (strlen($l) > 3 && strtoupper($l) != 'L: NONE') {
-      array_push($symbol, 'L');
-    }
-    if (strlen($ls) > 3 && strtoupper($ls) != 'S: NONE') {
-      array_push($symbol, 'S');
-    }
-    if (strlen($d) > 3 && strtoupper($d) != 'D: NONE') {
-      array_push($symbol, 'D');
-    }
+      if (strlen($b) > 3 && strtoupper($b) != 'B: NONE') {
+        array_push($symbol, 'B');
+      }
+      if (strlen($bs) > 3 && strtoupper($bs) != 'S: NONE') {
+        array_push($symbol, 'S');
+      }
+      if (strlen($l) > 3 && strtoupper($l) != 'L: NONE') {
+        array_push($symbol, 'L');
+      }
+      if (strlen($ls) > 3 && strtoupper($ls) != 'S: NONE') {
+        array_push($symbol, 'S');
+      }
+      if (strlen($d) > 3 && strtoupper($d) != 'D: NONE') {
+        array_push($symbol, 'D');
+      }
 
-    if (count($symbol) > 0) {
-      return implode('+', $symbol);
+      if (count($symbol) > 0) {
+        return implode('+', $symbol);
+      }
     }
 
     return '';
