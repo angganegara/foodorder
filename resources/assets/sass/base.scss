@@ -373,6 +373,18 @@ header {
     &:hover {
       color: #fff;
     }
+    .badge {
+      margin-left: 5px;
+      width: 16px;
+      height: 16px;
+      background-color: $main-color;
+      color: #121212;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 11px;
+    }
   }
   &--sunday {
     font-size: 13px;
@@ -1383,7 +1395,7 @@ a.snacks-close-button {
       color: #454545;
       &:before {
         content: "\F00C";
-        font-family: Font Awesome\5 Pro;
+        font-family: Font awesome\5 Pro;
         position: absolute;
         left: -25px;
         color: $main-color;

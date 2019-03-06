@@ -70,6 +70,12 @@ class MiniCart extends Component {
     }
   };
 
+  totalItems = () => {
+    return cartState.added.reduce((total, cur) => {
+      return total + parseInt(cur.qty);
+    }, 0);
+  };
+
   render() {
     const { isLoading } = this.state;
     const cart = cartState.added.filter(cart => cart.complete);
@@ -96,6 +102,7 @@ class MiniCart extends Component {
           <div className="mini-cart">
             <a href="javascript:" title="" className="toggler">
               <i className="fa fa-fw fa-shopping-cart" />
+              <span className="badge">{this.totalItems()}</span>
             </a>
             <div className="mini-cart--wrapper">
               <div className="mini-cart--content">
