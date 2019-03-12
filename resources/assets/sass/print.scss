@@ -183,17 +183,16 @@ table {
   tr td:first-child {
     border-left: 1px solid #777;
   }
-  tr td:nth-child(1),
-  tr td:nth-child(2),
-  tr td:nth-child(3),
-  tr td:nth-child(4),
-  tr td:nth-child(5) {
+  tr td {
     font-size: 12px;
     text-align: left;
+  }
+  tr td.upp {
     text-transform: uppercase;
   }
-  tr td:nth-child(6) {
-    text-transform: uppercase;
+  tr td.low {
+    text-transform: normal;
+    font-size: 0.9em;
   }
 }
 

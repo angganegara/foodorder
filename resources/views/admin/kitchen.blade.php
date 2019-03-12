@@ -14,29 +14,35 @@
         <th width="20%">Name</th>
         <th width="15%">Menu</th>
         <th width="10%">Eco</th>
+        @if ($isSaturday)
+          <th width="10%">Slim Sunday</th>
+        @endif
         <th width="10%">Comments</th>
-        <th width="45%">Description</th>
+        <th width="35%">Description</th>
       </tr>
       @foreach ($result as $md5)
         @foreach ($md5 as $index => $sc)
           <?php $total = count($md5); ?>
           <tr>
-            <td>{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
-            <td>
+            <td class="upp">{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
+            <td class="upp">
               {{ $sc['menu'] != 'null' ? $sc['menu'] : '' }}
               <span class="symbol">{{ $sc['menu_symbol'] }}</span>
             </td>
-            <td>{{ $sc['eco'] > 0 ? "YES" : "NO" }}</td>
-            <td>{{ $sc['comments'] }}</td>
+            <td class="upp">{{ $sc['eco'] > 0 ? "TUPPERWARE" : "NO" }}</td>
+            @if ($isSaturday)
+              <td>{{ $sc['slimsunday'] == 1 ? 'YES' : 'NO' }}</td>
+            @endif
+            <td class="low">{{ $sc['comments'] }}</td>
             @if ($total > 1)
               @if ($index == 0)
-                <td rowspan="{{ $total }}">
+                <td rowspan="{{ $total }}" class="low">
                   {!! $sc['meals'] !!}
                   {!! $sc['snacks'] ? '<hr />extra snacks : '. $sc['snacks'] : '' !!}
                 </td>
               @endif
             @else
-              <td>
+              <td class="low">
                 {!! $sc['meals'] !!}
                 {!! $sc['snacks'] ? '<hr />extra snacks : '. $sc['snacks'] : '' !!}
               </td>

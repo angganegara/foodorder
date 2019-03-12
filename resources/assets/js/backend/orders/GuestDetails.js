@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { view } from "react-easy-state";
+import { Checkbox } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
@@ -25,12 +26,13 @@ class GuestDetails extends Component {
       const order = ORDER;
       const carts = order.ordercart;
       orderState.form.fname = order.fname;
-      orderState.form.lname = order.lname;
-      orderState.form.email = order.email;
-      orderState.form.phone = order.phone;
-      orderState.form.gender = order.gender;
+      orderState.form.lname = order.lname ? order.lname : "";
+      orderState.form.email = order.email ? order.email : "";
+      orderState.form.phone = order.phone ? order.phone : "";
+      orderState.form.gender = order.gender ? order.gender : "";
       orderState.form.comments = order.comments ? order.comments : "";
       orderState.form.price = parseInt(carts[0].subtotal) + parseInt(carts[0].snacks_price);
+      orderState.form.slimSunday = carts[0].slimsunday == 1 ? true : false;
       orderState.form.ecoPrice = parseInt(carts[0].eco_price);
       orderState.form.delivery = parseInt(carts[0].delivery_price);
       orderState.form.discount = order.coupon_value;
@@ -169,6 +171,7 @@ class GuestDetails extends Component {
   };
   changeCartID = e => (orderState.cartID = e.target.value == "" ? orderState.cartID : e.target.value);
   changeGender = e => (orderState.form.gender = e.target.value);
+  toggleSlimSunday = () => (orderState.form.slimSunday = !orderState.form.slimSunday);
 
   render() {
     const { form, days, availableDays, endDate, category, carts, cartID } = orderState;
@@ -277,6 +280,9 @@ class GuestDetails extends Component {
                   placeholder={"DD MM YYYY"}
                   value={startingDate}
                 />
+              </div>
+              <div className="column is-12">
+                <Checkbox checked={form.slimSunday} label="With Slim Sunday" onChange={this.toggleSlimSunday} />
               </div>
               <div className="column is-12">
                 <div className="page-date-periods">

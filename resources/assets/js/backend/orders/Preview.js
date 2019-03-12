@@ -28,6 +28,7 @@ class Preview extends Component {
       email: form.email,
       phone: form.phone,
       gender: form.gender,
+      slimsunday: form.slimSunday,
       comments: form.comments,
       subtotal: form.price,
       delivery_price: form.delivery,
@@ -58,7 +59,7 @@ class Preview extends Component {
       window.sessionStorage.removeItem(sessionKey);
       setTimeout(() => {
         window.location.href = `/admin/orders/${res.data.order_number}/${res.data.id}`;
-      }, 3000);
+      }, 30000);
     });
   };
   confirmSendingEmail = () => {

@@ -24,7 +24,8 @@ const orderState = currentData
         total: 0,
         payment_type: "cash",
         payment_date: "",
-        amount_paid: 0
+        amount_paid: 0,
+        slimSunday: false
       },
       days: [
         { index: 0, day: 1 },

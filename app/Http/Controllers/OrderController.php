@@ -136,6 +136,7 @@ class OrderController extends Controller
     $oc->end_date = $form['dates'][count($form['dates']) - 1];
     $oc->schedules_data = null;
     $oc->eco_price = $form['eco_price'];
+    $oc->slimsunday = $form['slimsunday'];
 
     $oc->save();
 
@@ -228,11 +229,11 @@ class OrderController extends Controller
 
     $oc->order_id = $order->id;
     $oc->meal_id = intVal($form['category']['id']);
+    $oc->slimsunday = $form['slimsunday'];
     $oc->meals = $form['category']['name'];
     $oc->package = 2;
     $oc->qty = 1;
     $oc->eco_price = $form['eco_price'];
-    $oc->slimsunday = 0;
     $oc->subtotal = intVal($form['subtotal']);
     $oc->snacks_price = 0;
     $oc->slimsunday_price = 0;
@@ -318,6 +319,7 @@ class OrderController extends Controller
     if (!$request->has('date')) { $today->addDay(); }
 
     $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->get();
+    $isSaturday = $today->format('D') == 'Sat';
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
@@ -326,8 +328,9 @@ class OrderController extends Controller
     if ($schedules) {
       foreach ($schedules as $sc) {
         $result->push([
+          'id' => $sc->order->id,
           'name' => $sc->name,
-          'meals' => $sc->meals,
+          'meals' => $this->stripBlankMeals($sc->meals),
           'menu' => $sc->ordercart->meals != '' ? $sc->ordercart->meals : 'null',
           'menu_pos' => $sc->ordercart->meals != '' ? $sc->ordercart->diet->position : -1,
           'menu_symbol' => $sc->meals != '' ? $this->showMealSymbol($sc->meals) : '',
@@ -335,6 +338,7 @@ class OrderController extends Controller
           'comments' => $sc->order->comments,
           'eco' => $sc->ordercart->eco_price > 0,
           'snacks' => $sc->snacks,
+          'slimsunday' => $sc->ordercart->slimsunday,
           'md5' => md5(trim($sc->meals))
         ]);
       }
@@ -343,7 +347,42 @@ class OrderController extends Controller
     //$result = $result->groupBy('md5')->toArray();
     $result = $result->sortBy('menu_pos')->groupBy('md5')->toArray();
 
-    return view('admin.kitchen', compact('result', 'today', 'yesterday', 'tomorrow'));
+    return view('admin.kitchen', compact('result', 'today', 'yesterday', 'tomorrow', 'isSaturday'));
+  }
+
+  protected function stripBlankMeals($meals)
+  {
+    $tmp = explode('<hr />', $meals);
+    if (count($tmp) > 1) {
+      $b = $tmp[0];
+      $bs = $tmp[1];
+      $l = $tmp[2];
+      $ls = $tmp[3];
+      $d = $tmp[4];
+      $newMeals = [];
+
+      if (strlen($b) > 3 && strtoupper($b) != 'B: NONE') {
+        array_push($newMeals, $b);
+      }
+      if (strlen($bs) > 3 && strtoupper($bs) != 'S: NONE') {
+        array_push($newMeals, $bs);
+      }
+      if (strlen($l) > 3 && strtoupper($l) != 'L: NONE') {
+        array_push($newMeals, $l);
+      }
+      if (strlen($ls) > 3 && strtoupper($ls) != 'S: NONE') {
+        array_push($newMeals, $ls);
+      }
+      if (strlen($d) > 3 && strtoupper($d) != 'D: NONE') {
+        array_push($newMeals, $d);
+      }
+
+      if (count($newMeals) > 0) {
+        return implode('<hr />', $newMeals);
+      }
+    }
+
+    return '';
   }
 
   protected function showMealSymbol($meals)
