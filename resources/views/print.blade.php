@@ -10,7 +10,7 @@
   <meta name="robots" content="nofollow" />
   <title>{{ isset($title) ? $title : 'Motion Cafe Bali' }}</title>
   <link rel="stylesheet" href="/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="/css/print.css" />
+  <link rel="stylesheet" href="/css/print.css?{{ date('Ymdh') }}" media="all" />
 </head>
 <body>
   @yield('content')
