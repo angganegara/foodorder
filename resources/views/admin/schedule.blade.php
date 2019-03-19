@@ -22,7 +22,10 @@
         @foreach ($md5 as $index => $sc)
           <?php $total = count($md5); ?>
           <tr>
-            <td class="upp">{{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}</td>
+            <td class="upp">
+              {{ $sc['name'] }} {{ $sc['gender'] ? "({$sc['gender']})" : '' }}
+              {!! $sc['phone'] != '' ? '<br />PH: '. $sc['phone'] : '' !!}
+            </td>
             <td class="upp">{{ $sc['menu'] }}</td>
             <td class="upp">{{ $sc['eco'] > 0 ? "TUPPERWARE" : "NO" }}</td>
             @if ($sc['payment'] == 'cash')

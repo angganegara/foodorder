@@ -296,6 +296,7 @@ class OrderController extends Controller
         $result->push([
           'name' => $sc->name,
           'address' => $sc->station,
+          'phone' => $sc->order->phone,
           'menu' => $sc->ordercart->meals,
           'gender' => $sc->order->gender,
           'eco' => $sc->ordercart->eco_price > 0,
