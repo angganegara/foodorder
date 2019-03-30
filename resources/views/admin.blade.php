@@ -16,7 +16,9 @@
   <link rel="stylesheet" href="/css/backend.css?{{ date('Ymdh') }}" media="screen" />
   <link rel="stylesheet" href="/css/redactor.css" />
   <link rel="stylesheet" href="/css/datepicker.min.css" />
-  <link rel="stylesheet" href="/css/print.css?{{ date('Ymdh') }}" media="all" />
+  @if (request()->is('admin/orders/schedule') || request()->is('admin/orders/delivery'))
+    <link rel="stylesheet" href="/css/print.css?{{ date('Ymdh') }}" media="all" />
+  @endif
 </head>
 <body>
 
