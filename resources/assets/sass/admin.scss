@@ -754,3 +754,25 @@ a.schedule-nav {
 .order-name {
   text-transform: capitalize;
 }
+
+.snack-selector {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #e5e5e5;
+  border-bottom: 1px solid #ddd;
+  .snack-title {
+    background-color: #eee;
+    padding: 8px 12px;
+    font-weight: bold;
+  }
+  .snack-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 6px 12px;
+    border-bottom: 1px solid #eee;
+  }
+  input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
+}
