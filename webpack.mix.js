@@ -1,5 +1,6 @@
 let mix = require("laravel-mix");
-var ZopfliPlugin = require("zopfli-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
+const zopfli = require('@gfx/zopfli');
 
 /*
  |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ mix
   .react("resources/assets/js/backend/neworder.js", "public/js/neworder.js")
   .react("resources/assets/js/backend/coupon.js", "public/js/coupon.js")
   .react("resources/assets/js/backend/recommendation.js", "public/js/recommendation.js")
-  .extract(["react", "react-router-dom", "react-router", "moment"])
+  //.extract(["react", "react-router-dom", "react-router", "moment"])
   .sass("resources/assets/sass/app.scss", "public/css/app.css")
   .sass("resources/assets/sass/print.scss", "public/css/print.css")
   .sass("resources/assets/sass/backend.scss", "public/css/backend.css")
@@ -38,16 +39,21 @@ mix
     output: {
       //chunkFilename: 'js/[name].[chunkhash].js',
       chunkFilename: "js/[name].js"
-    },
+    },/*
     plugins: [
-      new ZopfliPlugin({
-        asset: "[path].gz[query]",
-        algorithm: "zopfli",
+      new CompressionPlugin({
+        compressionOptions: {
+          numiterations: 15
+        },
+        algorithm(input, compressionOptions, callback) {
+          return zopfli.gzip(input, compressionOptions, callback);
+        },
+        filename: "[path].gz[query]",
         test: /\.(js)$/,
         threshold: 10240,
         minRatio: 0.8
       })
-    ]
+    ]*/
   })
   .browserSync({
     proxy: "mealplans.test"

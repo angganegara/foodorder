@@ -51,13 +51,13 @@
                       <?php $total = 0; ?>
                       @foreach ($order->ordercart as $key => $item) @if ($key !== 'total')
                         <tr>
-                          <th width="70%" style="padding: 10px 20px;
+                          <th width="60%" style="padding: 10px 20px;
                             font-size: 12px; text-transform: uppercase;
                             border-bottom: 1px solid #b5e1ed; color: #222;
                             background-color: #f3f3f3; text-align: left">
                             Items
                           </th>
-                          <th width="5%" style="padding: 10px 20px;
+                          <th width="15%" style="padding: 10px 20px;
                             font-size: 12px; text-transform: uppercase;
                             border-bottom: 1px solid #b5e1ed; color: #222;
                             background-color: #f3f3f3; text-align: center">

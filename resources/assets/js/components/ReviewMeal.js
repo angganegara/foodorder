@@ -2,7 +2,7 @@ import React from 'react';
 
 import { parsePrice } from '../helpers/cart';
 
-const ReviewMeal = ({...props, parseStation, food, snack, days, changeSection, prices}) => (
+const ReviewMeal = ({parseStation, food, snack, days, changeSection, prices, ...props}) => (
   <div className="customize--tabs-body">
     <div className="review">
       <div className="review-wrap">

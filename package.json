@@ -18,7 +18,7 @@
     "bulma": "^0.7.1",
     "cross-env": "^5.1.6",
     "jquery": "^3.3.1",
-    "laravel-mix": "^2.1.11",
+    "laravel-mix": "^4.0.15",
     "moment": "^2.22.1",
     "moment-range": "^4.0.1",
     "numeral": "^2.0.6",
@@ -32,8 +32,16 @@
     "zopfli-webpack-plugin": "^0.1.0"
   },
   "devDependencies": {
-    "babel-preset-react": "^6.24.1",
+    "@babel/preset-react": "^7.0.0",
+    "@gfx/zopfli": "^1.0.11",
     "browser-sync": "^2.24.4",
-    "browser-sync-webpack-plugin": "2.0.1"
+    "browser-sync-webpack-plugin": "2.0.1",
+    "compression-webpack-plugin": "^2.0.0",
+    "react-dnd": "^7.4.5",
+    "react-dnd-html5-backend": "^7.4.4",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.19.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10"
   }
 }

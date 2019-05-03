@@ -92,7 +92,7 @@ class PaypalHelper
 	public function cancelPaypal($order_number)
 	{
 		// delete order
-		$this->oh->deleteOrder($order_number);
+		//$this->oh->deleteOrder($order_number);
 
 		// redirect
 		return redirect()->to('checkout');
