@@ -340,7 +340,7 @@ class OrderController extends Controller
           'eco' => $sc->ordercart->eco_price > 0,
           'snacks' => $sc->snacks,
           'slimsunday' => $sc->ordercart->slimsunday,
-          'md5' => md5(trim($sc->meals))
+          'md5' => md5(trim($sc->meals . $sc->snacks))
         ]);
       }
     }

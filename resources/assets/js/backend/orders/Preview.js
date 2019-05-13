@@ -59,7 +59,7 @@ class Preview extends Component {
       window.sessionStorage.removeItem(sessionKey);
       setTimeout(() => {
         window.location.href = `/admin/orders/${res.data.order_number}/${res.data.id}`;
-      }, 30000);
+      }, 3000);
     });
   };
   confirmSendingEmail = () => {
