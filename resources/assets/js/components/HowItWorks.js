@@ -50,7 +50,7 @@ class HowItWorks extends Component {
                       <li>Order must be placed 48hrs in advance to give us time to prepare your diet</li>
                       <li>Sundays we are closed for orders and food production</li>
                       <li>Latest order for Monday until Saturday 10:00.</li>
-                      <li>Office times for possible queries: Mon. - Fri. 08:00 - 17:00.</li>
+                      <li>Office times for possible queries: Monday-Friday 9:00-17:00 and Saturday 9:00-14:00. Sunday closed</li>
                     </ul>
                   </div>
                   <div className="col-xs-12 col-md-4">

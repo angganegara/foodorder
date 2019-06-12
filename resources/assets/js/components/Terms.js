@@ -12,9 +12,9 @@ const Terms = () => (
           <ul>
             <li>Order must be placed min. 48hrs in advanced to ensure timely delivery</li>
             <li>Starting days of each meal plan: Mondays and Wednesdays only</li>
-            <li>Latest order for Monday until Friday midnight</li>
+            <li>Latest order for Monday until Saturday 10:00</li>
             <li>Latest order for Wednesday until Monday midnight</li>
-            <li>Office times for possible queries: Mon &ndash; Fri from 8:00 &ndash; 17:00 per what&rsquo;s app/email</li>
+            <li>Office times for possible queries: Monday-Friday 9:00-17:00 and Saturday 9:00-14:00. Sunday closed</li>
             <li>Office is closed on Saturday and Sunday</li>
           </ul>
 
