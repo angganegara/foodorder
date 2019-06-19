@@ -42,7 +42,7 @@ class Customize extends Component {
     activeIndex: 0,
     pickup: "",
     area: "",
-    ecoPack: false,
+    ecoPack: true,
     scheduleIndex: 0
   };
 
@@ -272,7 +272,9 @@ class Customize extends Component {
         }, 0);
     }
 
-    const ecoPrice = ecoPack ? 100000 : 0;
+    // GANTI NANTI
+    //const ecoPrice = ecoPack ? 100000 : 0;
+    const ecoPrice = 0;
 
     const totalPrice =
       parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice) + parseInt(ecoPrice);
@@ -340,7 +342,9 @@ class Customize extends Component {
         }, 0);
     }
 
-    const ecoPrice = ecoPack ? 100000 : 0;
+    // CHANGE LATER
+    //const ecoPrice = ecoPack ? 100000 : 0;
+    const ecoPrice = 0;
     const totalPrice =
       parseInt(foodPrice) + parseInt(snacksPrice) + parseInt(slimSundayPrice) + parseInt(deliveryPrice) + parseInt(ecoPrice);
 
@@ -623,9 +627,9 @@ class Customize extends Component {
                         <p>
                           We will use environmentally friendly packaging and re-usable jars/bottles wherever possible. But to make a real
                           difference you can purchase your very own set of re-usable plastic boxes. All you need to do is to hand the boxes
-                          of the previous day to our drivers with the next delivery. Price: 100,000 IDR (6-8 boxes, depending on your menu).
+                          of the previous day to our drivers with the next delivery. {/*Price: 100,000 IDR (6-8 boxes, depending on your menu).*/}
                         </p>
-                        <label>
+                        <label style={{display: 'none'}}>
                           <input type="checkbox" checked={ecoPack} onChange={this.toggleEcoPack} />
                           &nbsp; YES, I’d like to purchase the Eco Pack for 100,000 IDR
                         </label>
