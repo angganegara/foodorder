@@ -444,7 +444,7 @@ class Details extends Component {
                         </Popover>
                       </span>
                       <span>
-                        <b>300,000 IDR</b>
+                        <b>350,000 IDR</b>
                       </span>
                     </div>
                     <div className="details--calendar">
