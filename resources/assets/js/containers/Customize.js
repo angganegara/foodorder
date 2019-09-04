@@ -252,7 +252,7 @@ class Customize extends Component {
   calculateDetails = () => {
     const { activeItem, food, ecoPack, pickup, address, area } = this.state;
 
-    const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
+    const slimSundayPrice = activeItem.slimSunday ? 350000 : 0;
 
     let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
 
@@ -326,7 +326,7 @@ class Customize extends Component {
     this.generateSnacksData();
     const schedules = activeItem.schedules;
 
-    const slimSundayPrice = activeItem.slimSunday ? 300000 : 0;
+    const slimSundayPrice = activeItem.slimSunday ? 350000 : 0;
     let foodPrice = food.prices.filter(f => f.sort === activeItem.packageId)[0].price;
     foodPrice = activeItem.packageId === 2 ? foodPrice * schedules.length : foodPrice;
     const snacksPrice = schedules

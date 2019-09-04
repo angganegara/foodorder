@@ -41,7 +41,7 @@ class MiniCart extends Component {
     this.setState({ isLoading: true });
     try {
       let item = cartState.added[index];
-      const slimSunday = item.slimSunday ? 300000 : 0;
+      const slimSunday = item.slimSunday ? 350000 : 0;
       item.qty = vnum;
       item.totalPrice = (parseInt(item.foodPrice) + parseInt(item.ecoPrice) + parseInt(item.snacksPrice) + parseInt(slimSunday)) * vnum;
       const { data } = await this.updateCart();

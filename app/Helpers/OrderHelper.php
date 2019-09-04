@@ -117,7 +117,7 @@ class OrderHelper
 
     $order = new Order;
     $total = 0;
-    $slimSundayPrice = 300000;
+    $slimSundayPrice = 350000;
 
     $form = $request->form;
 
