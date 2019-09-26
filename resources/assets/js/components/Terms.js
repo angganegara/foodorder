@@ -12,10 +12,9 @@ const Terms = () => (
           <ul>
             <li>Order must be placed min. 48hrs in advanced to ensure timely delivery</li>
             <li>Starting days of each meal plan: Mondays and Wednesdays only</li>
-            <li>Latest order for Monday until Saturday 10:00</li>
-            <li>Latest order for Wednesday until Monday midnight</li>
-            <li>Office times for possible queries: Monday-Friday 9:00-17:00 and Saturday 9:00-14:00. Sunday closed</li>
-            <li>Office is closed on Saturday and Sunday</li>
+            <li>Latest order for Monday until Saturday 10:00 o' clock</li>
+            <li>Office times for inquiries: Mon. to Fri. 09:00 – 17:00, Saturday 09:00 - 14:00 by email/phone/WA</li>
+            <li>Office is closed on Sunday</li>
           </ul>
 
           <h3>PAYMENT INFORMATION</h3>
@@ -43,6 +42,10 @@ const Terms = () => (
             <li>Free delivery for Kuta/Seminyak/Canggu&nbsp;</li>
             <li>Delivery surcharge of 50,000 IDR/day for other area (e.g. Sanur/Ubud/Bukit)</li>
           </ul>
+
+          <h3>PACKAGING</h3>
+
+          <p>We are providing reusable containers for the meals, as we try to  minimise any waste and be as environmentally friendly as we can. You’re responsible for returning the containers to our driver or to Motion cafe to Motion Fitness. If the container is not returned or it is damaged there is a 15.000 IDR replacement charge per container.</p>
 
           <h3>WEATHER &amp; TRAFFIC RESERVATIONS</h3>
 

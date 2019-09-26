@@ -1,6 +1,7 @@
 const areas = [
   { name: "Bukit", price: 50000 },
   { name: "Canggu area", price: 0 },
+  { name: "Denpasar", price: 20000 },
   { name: "Jimbaran", price: 50000 },
   { name: "Kerobokan", price: 0 },
   { name: "Kuta", price: 20000 },

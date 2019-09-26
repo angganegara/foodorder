@@ -8,7 +8,7 @@ const Footer = () => (
         <div className="col-xs-12 col-md-6 footer-left">
           <h5>contact motion meal plans</h5>
           <p>
-            Phone/WA: <strong>+62 821 4425 2606</strong> (Mon. - Fri. 08:00 - 17:00)<br />
+            Phone/WA: <strong>+62 821 4425 2606</strong> (Mon. - Fri. 09:00 - 17:00, Sat 9:00 - 14:00)<br />
             Email: <a href="mailto:foodorder@motionfitnessbali.com" title="">foodorder@motionfitnessbali.com</a><br />
           </p>
           <p>
