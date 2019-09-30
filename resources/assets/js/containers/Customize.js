@@ -623,11 +623,9 @@ class Customize extends Component {
                         </div>
                       </div>
                       <div className="customize--eco">
-                        <h3>Eco Pack</h3>
+                        <h3>Packaging</h3>
                         <p>
-                          We will use environmentally friendly packaging and re-usable jars/bottles wherever possible. But to make a real
-                          difference you can purchase your very own set of re-usable plastic boxes. All you need to do is to hand the boxes
-                          of the previous day to our drivers with the next delivery. {/*Price: 100,000 IDR (6-8 boxes, depending on your menu).*/}
+                          We are providing reusable containers for the meals, as we try to minimise any waste and be as environmentally friendly as we can. You’re responsible for returning the containers to our driver or to Motion cafe to Motion Fitness. If the container is not returned or it is damaged there is a 15.000 IDR replacement charge per container.
                         </p>
                         <label style={{display: 'none'}}>
                           <input type="checkbox" checked={ecoPack} onChange={this.toggleEcoPack} />
