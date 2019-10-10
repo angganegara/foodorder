@@ -51,7 +51,7 @@ class Detox extends Component {
                 <div className="col-md-offset-1 col-md-11">
                   <div className="row">
                     {detox.children.map((dt, index) => (
-                      <div className="col-xs-12 col-md-4 blue-line" key={index}>
+                      <div className="col-xs-12 col-md-6 blue-line" key={index}>
                         <div className="detox-card">
                           <Link
                             to={`/${dt.slug}/${dt.id}`}
