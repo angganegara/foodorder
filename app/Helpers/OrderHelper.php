@@ -277,8 +277,10 @@ class OrderHelper
     $dtj = $oc->where('meal_id', 11)->count();
     // slim booster diet
     $sbd = $oc->where('meal_id', 12)->count();
+    // elixir detox
+    $elx = $oc->where('meal_id', 14)->count();
     // parse cart
-    $hasDetox = $dts || $dtj || $sbd;
+    $hasDetox = $dts || $dtj || $sbd || $elx;
 
     //return view('emails.order', compact('order', 'that', 'extra', 'hasDetox'));
     //exit();
@@ -299,7 +301,7 @@ class OrderHelper
         compact('order', 'items', 'that', 'extra', 'hasDetox'),
         function ($m) use (
           $order, $pdf, $pdf_hp, $hp, $pdf_dt, $pdf_ayu1, $pdf_ayu2,
-          $dts, $dtj, $sbd, $email_subject, $resend
+          $dts, $dtj, $sbd, $elx, $email_subject, $resend
         ) {
           $m
             ->from('no-reply@motionfitnessbali.com', 'Motion - Meal Plans')
@@ -359,6 +361,15 @@ class OrderHelper
               $m->attach(
                   rtrim(app()->basePath('public/pdf/slim-booster-detox-info.pdf'), '/'),
                   ['as' => 'Slim Booster Detox Info.pdf', 'mime' => 'application/pdf']
+                );
+            }
+          }
+          // if contain elixir detox
+          if ($elx != '') {
+            if (!$resend) {
+              $m->attach(
+                  rtrim(app()->basePath('public/pdf/pure-elixir-detox-info.pdf'), '/'),
+                  ['as' => 'Pure Elixir Detox Info.pdf', 'mime' => 'application/pdf']
                 );
             }
           }
