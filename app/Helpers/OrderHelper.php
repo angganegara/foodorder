@@ -249,7 +249,7 @@ class OrderHelper
         //$this->deleteOrder($order->id);
       }
       // log in
-      abort(500, 'CANNOT_SEND_MAIL');
+      dd($e);
     }
 
     // set email flag
