@@ -33,6 +33,7 @@ let today = new Date();
 const isDisabled = date => {
   return (
     date.getDay() === 0 ||
+    (date.getDate() === 1 && date.getMonth() === 0) ||
     (date.getDate() === 7 && date.getMonth() === 2) ||
     (date.getDate() === 8 && date.getMonth() === 2) ||
     checkDayLimit(date)
