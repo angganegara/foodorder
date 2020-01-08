@@ -203,7 +203,7 @@ class Schedule extends Component {
     // is delivery text exist?
     const delivery = items.filter(item => item.delivery).length;
 
-    if (delivery < duration) {
+    if (delivery < (duration - 1)) {
       appToaster.show({
         message: "Please enter the delivery address",
         intent: Intent.DANGER

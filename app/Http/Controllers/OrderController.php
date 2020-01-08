@@ -20,7 +20,7 @@ class OrderController extends Controller
 {
   protected $oh;
 
-  public function __construct(\App\Helpers\OrderHelper $oh)
+  public function __construct(OrderHelper $oh)
   {
     $this->oh = $oh;
 	}
@@ -39,7 +39,6 @@ class OrderController extends Controller
 
   public function resendOrder($order_number)
   {
-    // call send order with param resend = true
     return $this->oh->sendOrder($order_number, true);
   }
 

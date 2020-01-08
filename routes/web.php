@@ -11,32 +11,18 @@
 |
 */
 
-if (env('APP_ENV') === 'local') {
-  Route::get('/email-debug/{id}', function ($id) {
-    $oh = new App\Helpers\OrderHelper;
-    return $oh->sendOrder($id);
-  });
-
-  Route::get('/order/{number}', function ($number, \App\Models\Order $order) {
-    $data = $order->with('ordercart.schedule')->where('order_number', $number)->first();
-
-    return ($data);
-  });
-
-  Route::get('meal-plans', 'MealController@index');
-}
 Route::get('tasks', 'TaskController@paymentReminder');
-Route::get('/snap', 'SnapController@snap');
-Route::get('/snaptoken', 'SnapController@token');
-Route::post('/snapfinish', 'SnapController@finish');
+Route::get('snap', 'SnapController@snap');
+Route::get('snaptoken', 'SnapController@token');
+Route::post('snapfinish', 'SnapController@finish');
 
-Route::post('/payment/approve/{order_number}', 'PaymentController@approveChallenge');
-Route::post('/payment/confirm/{order_number}', 'PaymentController@confirm');
-Route::post('/payment/process', 'PaymentController@process');
-Route::post('/payment/delete', 'PaymentController@deleteOrder');
-Route::post('/checkout/start', 'PaymentController@start');
-Route::get('/checkout/cancel/{order_number}', 'PaymentController@cancelPaypal');
-Route::get('/checkout/finish/{order_number}', 'PaymentController@getExpressCheckout');
+Route::post('payment/approve/{order_number}', 'PaymentController@approveChallenge');
+Route::post('payment/confirm/{order_number}', 'PaymentController@confirm');
+Route::post('payment/process', 'PaymentController@process');
+Route::post('payment/delete', 'PaymentController@deleteOrder');
+Route::post('checkout/start', 'PaymentController@start');
+Route::get('checkout/cancel/{order_number}', 'PaymentController@cancelPaypal');
+Route::get('checkout/finish/{order_number}', 'PaymentController@getExpressCheckout');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('/', 'AdminController@index');
