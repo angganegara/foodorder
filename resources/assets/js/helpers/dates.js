@@ -29,6 +29,12 @@ export const checkDayLimit = date => {
   let today = new Date();
   let checkDate = moment(date);
 
+  //let closedDate = moment("2020-03-21");
+
+  if (checkDate.isAfter("2020-03-22")) {
+    return true;
+  }
+
   if (!days.includes(checkDate.format("YYYY-MM-DD"))) {
     return false;
   }
