@@ -31,9 +31,6 @@ class Home extends Component
           </div>
           <div className="bg"></div>
         </section>
-        <section className="home hiw">
-          <HowItWorks closeButton={false} />
-        </section>
         <HomeFoods />
       </React.Fragment>
     );

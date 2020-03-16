@@ -380,11 +380,6 @@ class Details extends Component {
           <Overlay isOpen={LPOpen} onClose={this.toggleLPOpen}>
             <LongPeriod food={food} closePopup={this.toggleLPOpen} />
           </Overlay>
-          <Overlay isOpen={this.state.overlay} onClose={this.toggleOverlay}>
-            <section className="home hiw">
-              <HowItWorks autoOpen={true} closeButton={true} toggleOverlay={this.toggleOverlay} />
-            </section>
-          </Overlay>
           {food && (
             <div className="container">
               <div className="row">
@@ -402,9 +397,10 @@ class Details extends Component {
                   <div className="details--description" dangerouslySetInnerHTML={{ __html: food.description }} />
                   {food.example_menu && <ExampleMenu menu={food.example_menu} />}
                   {food.recommended_snack && snackState.items && <RecommendedSnacks snacks={JSON.parse(food.recommended_snack)} />}
+                  {food.available_symbols && <AvailableOptions icons={this.showFoodIcons(food.available_symbols)} />}
                 </div>
                 <div className="col-xs-12 col-md-4">
-                  <div className="details--price-box">
+                  <div className="details--price-box" style={{ display: 'none' }}>
                     {food.prices.length &&
                       food.prices.map((price, index) => (
                         <React.Fragment key={index}>
@@ -448,7 +444,7 @@ class Details extends Component {
                         <b>350,000 IDR</b>
                       </span>
                     </div>
-                    <div className="details--calendar">
+                    <div className="details--calendar" style={{ display: 'none' }}>
                       <CSSTransition in={form.packageId === 2 && daysAmount <= 0} timeout={200} classNames="fade-flat" unmountOnExit>
                         <div className="calendar-warning">Please select amount of days first.</div>
                       </CSSTransition>
@@ -476,29 +472,27 @@ class Details extends Component {
                       )}
                     </div>
                   </div>
-                  <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart">
-                    Continue <i className="fal fa-fw fa-arrow-right" />
-                  </a>
-                  <Alert
-                    cancelButtonText="No, thanks"
-                    onCancel={this.cancelCart}
-                    confirmButtonText="Add to cart"
-                    onConfirm={this.skipAlert}
-                    icon="Issue"
-                    intent={Intent.PRIMARY}
-                    isOpen={alertOpen}
-                  >
-                    <p>You already have this item in your cart. Do you want to add it anyway?</p>
-                  </Alert>
-                  <div className="info">
-                    <a href="javascript:" title="" className="btn-normal" onClick={this.toggleOverlay}>
-                      <i className="fal fa-fw fa-question-circle" /> How it works
+                  <div style={{ display: 'none' }}>
+                    <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart" style={{ display: 'none' }}>
+                      Continue <i className="fal fa-fw fa-arrow-right" />
                     </a>
-                    <a href="javascript:" title="" className="btn-normal main-color" onClick={this.toggleLPOpen}>
-                      <i className="fal fa-fw fa-question-circle" /> Long-period Order
-                    </a>
+                    <Alert
+                      cancelButtonText="No, thanks"
+                      onCancel={this.cancelCart}
+                      confirmButtonText="Add to cart"
+                      onConfirm={this.skipAlert}
+                      icon="Issue"
+                      intent={Intent.PRIMARY}
+                      isOpen={alertOpen}
+                    >
+                      <p>You already have this item in your cart. Do you want to add it anyway?</p>
+                    </Alert>
+                    <div className="info">
+                      <a href="javascript:" title="" className="btn-normal main-color" onClick={this.toggleLPOpen}>
+                        <i className="fal fa-fw fa-question-circle" /> Long-period Order
+                      </a>
+                    </div>
                   </div>
-                  {food.available_symbols && <AvailableOptions icons={this.showFoodIcons(food.available_symbols)} />}
                 </div>
               </div>
             </div>
