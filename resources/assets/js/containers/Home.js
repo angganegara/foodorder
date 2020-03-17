@@ -24,9 +24,9 @@ class Home extends Component
           <div className="container">
             <h1>Meal Plans</h1>
             <p>
-              <strong>Clean eating, designed for optimal nutrition delivered to your home or office.</strong><br />
+              <strong>Clean eating, designed for optimal nutrition delivered by Gojek.</strong><br />
               100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.<br />
-              All Motion Meals are available as Vegan / Vegetarian / Gluten-Free / Dairy-Free option.
+              Orders: 07:30 - 10:30
             </p>
           </div>
           <div className="bg"></div>
