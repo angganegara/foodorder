@@ -62,25 +62,6 @@ const CustomSpecialized = () => (
                 <i className="fa fa-fw fa-arrow-circle-down" /> Download Questionnaire PDF
               </a>
             </p>
-            <br />
-            <p>
-              <strong>Please find below some existing diets for special needs, that have proven great success.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <br />
-    <div className="container">
-      <div className="row">
-        <div className="col-md-offset-1 col-md-11">
-          <div className="diet-wrap">
-            {diets.map((diet, index) => (
-              <div className="diet-card" key={index}>
-                <div className="diet-card--title">{diet.title}</div>
-                <div className="diet-card--body" dangerouslySetInnerHTML={{ __html: diet.body }} />
-              </div>
-            ))}
           </div>
         </div>
       </div>
