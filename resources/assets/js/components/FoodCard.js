@@ -14,6 +14,8 @@ const FoodCard = ({ food, index, scrollTop }) => {
         </div>
       </div>
     );
+  } else {
+    return '';
   }
 };
 
