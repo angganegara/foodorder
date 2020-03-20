@@ -14,20 +14,6 @@ const FoodCard = ({ food, index, scrollTop }) => {
         </div>
       </div>
     );
-  } else {
-    return (
-      <div className="col-xs-12 col-md-4 blue-line">
-        <div className="food-card">
-          <Link to="/custom-specialized" className="figure no-overlay" onClick={scrollTop}>
-            <div className="food-card--title">Custom / Specialized</div>
-            <img src="/images/custom.png" alt="Custom / Specialized" />
-          </Link>
-          <div className="food-card--desc">
-            <p>Individually created diet to meet your special needs with the help of our professional nutritionists</p>
-          </div>
-        </div>
-      </div>
-    );
   }
 };
 
