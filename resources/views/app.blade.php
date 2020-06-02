@@ -34,7 +34,7 @@
 <body>
   <div id="app"></div>
   <!-- built files will be auto injected -->
-  <script src="{{ asset('js/app.js?'. date('Ymd')) }}"></script>
+  <script src="{{ asset('js/app.js?'. date('Ymdhi')) }}"></script>
   @if (env('APP_ENV') == 'local')
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
   @else
