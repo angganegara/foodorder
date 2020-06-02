@@ -39,8 +39,8 @@ const Terms = () => (
             <li>Delivery time will be between 7:00am &ndash; 9:00am. A preferred time can be requested but without any guarantee of compliance&nbsp;</li>
             <li>A request to eat your meal at Motion Caf&eacute; can be done with a 24 hrs notice.</li>
             <li>Delivery days: Monday to Saturday (Slim Sunday food will be delivered on Saturday)</li>
-            <li>Free delivery for Kuta/Seminyak/Canggu&nbsp;</li>
-            <li>Delivery surcharge of 50,000 IDR/day for other area (e.g. Sanur/Ubud/Bukit)</li>
+            <li>Canggu / Berawa free delivery</li>
+            <li>All other locations vary from 20,000 - 50,000 IDR daily fee</li>
           </ul>
 
           <h3>PACKAGING</h3>
