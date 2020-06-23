@@ -565,7 +565,7 @@ class Customize extends Component {
 
                 <div className={`customize--section ${activeIndex == 1 ? "section-active" : ""}`}>
                   <p>
-                    Your freshly cooked meals and snacks for the day will be delivered daily between 7:30 and 09:00 a.m. (Mon. - Sat.).
+                    Your freshly cooked meals and snacks for the day will be delivered daily between 7:00 and 09:00 a.m. (Mon. - Sat.).
                     <br />
                     Please choose a pick-up station (self-collection) or a delivery address of your choice below.
                   </p>

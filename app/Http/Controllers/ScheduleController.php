@@ -26,7 +26,7 @@ class ScheduleController extends Controller
   {
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
 
-    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
+    $schedules = OrderSchedule::with(['order'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($query) {
       $query->where('paid', 1);
     })->get();
     $tomorrow = $today->addDay()->format('Y-m-d');

@@ -29,9 +29,7 @@ export const checkDayLimit = date => {
   let today = new Date();
   let checkDate = moment(date);
 
-  //let closedDate = moment("2020-03-21");
-
-  if (checkDate.isAfter("2020-03-22")) {
+  if (checkDate.isBefore("2020-07-01")) {
     return true;
   }
 
@@ -42,7 +40,8 @@ export const checkDayLimit = date => {
   let day = date.getDay();
   let hours = today.getHours();
   let limit;
-  let duration = day == 1 ? 47 : 23;
+  //let duration = day == 1 ? 47 : 23;
+  let duration = 12; // will have to change after this i guess?
 
   if (today.getDay() == 6 && hours <= 9) {
     duration = 0;
@@ -52,27 +51,27 @@ export const checkDayLimit = date => {
 
   switch (day) {
     case 1:
-      limit = 17;
+      limit = 23;
       break;
     case 2:
-      limit = 17;
+      limit = 23;
       break;
     case 3:
-      limit = 17;
+      limit = 23;
       break;
     case 4:
-      limit = 17;
+      limit = 23;
       break;
     case 5:
-      limit = 17;
+      limit = 23;
       break;
     case 6:
-      limit = 12;
+      limit = 23;
       break;
   }
 
   if (today.getDay() == 0) {
-    if (day == 1 || day == 2) {
+    if (day == 1) {
       return true;
     }
   }

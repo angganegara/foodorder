@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700");
 
 //$main-color: #a3b955;
-$main-color: #b5e2f0;
-$main-color-darker: #74a6b5;
+$main-color: #111;
+$main-color-darker: #111;
 $alt-color: #5bc0de;
 $heading: "Century Gothic", "Univers LT Std", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
   "Helvetica Neue", sans-serif;
@@ -115,9 +115,9 @@ a.btn-disabled {
 }
 a.btn-normal.main-color {
   background-color: $main-color;
-  color: #454545;
+  color: #fff;
   &:hover {
-    color: #454545;
+    color: #fff;
     box-shadow: 0 2px 4px 1px rgba(#777, 0.1);
   }
 }
@@ -160,7 +160,7 @@ a.btn-primary {
 }
 .blue-line {
   margin-bottom: 2rem;
-  border-bottom: 1px solid $main-color;
+  border-bottom: 1px solid #eee;
 }
 .pt-popover-content {
   padding: 0.75rem 1rem;
@@ -199,6 +199,47 @@ img.responsive {
   }
 }
 
+.ml-1 {
+  margin-left: .25rem;
+}
+.ml-2 {
+  margin-left: .5rem;
+}
+.ml-3 {
+  margin-left: .75rem;
+}
+.ml-4 {
+  margin-left: 1rem;
+}
+.ml-5 {
+  margin-left: 1.25rem;
+}
+.mr-1 {
+  margin-right: .25rem;
+}
+.mr-2 {
+  margin-right: .5rem;
+}
+.mr-3 {
+  margin-right: .75rem;
+}
+.mr-4 {
+  margin-right: 1rem;
+}
+.mr-5 {
+  margin-right: 1.25rem;
+}
+
+.pt-dialog {
+  background-color: #fafafa;
+}
+.pt-button.pt-intent-primary {
+  background-color: #111;
+  color: #fff;
+  &:hover {
+    background-color: #000;
+  }
+}
 .pt-datepicker .DayPicker-Day.DayPicker-Day--outside {
   color: #454545;
 }
@@ -282,10 +323,10 @@ header {
   top: 0;
   z-index: 10;
   backface-visibility: hidden;
-  background-color: rgba(#0a0a0a, 0.65);
+  background-color: rgba(#fff, 0.85);
 }
 .header-mini {
-  background-color: rgba(#0a0a0a, 0.5);
+  background-color: #111;
   border-bottom: 1px solid #000;
 }
 .header.header-socials {
@@ -295,9 +336,6 @@ header {
     font-size: 14px;
     color: #fff;
     padding: 0 7px;
-  }
-  a:last-child {
-    padding: 0 0 0 7px;
   }
   a img {
     display: block;
@@ -310,13 +348,55 @@ header {
   align-items: center;
   padding: 10px 0;
 
+  .menu-parent {
+    position: relative;
+
+    &:hover {
+      .menu-child-wrap {
+        padding-top: 0rem;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+  ul.child-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li a {
+      display: block;
+      padding: 5px 10px;
+      color: #111;
+      font-size: 14px;
+      &:hover {
+        background-color: #eee;
+      }
+    }
+  }
+  .menu-child-wrap {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    transition: 0.2s ease-in-out all;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .menu-child-inner {
+    padding: .5rem;
+    width: 250px;
+    overflow-y: auto;
+    background-color: rgba(#fff, 0.95);
+    border-radius: 4px;
+    box-shadow: 2px 0 6px 1px rgba(#000, 0.1);
+    position: relative;
+  }
+
   a.mobile-menu {
     display: none;
   }
   img.logo {
     margin: 0;
     display: block;
-    width: 218px;
   }
   h1 {
     font-size: 15px;
@@ -330,16 +410,16 @@ header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    a {
+    > a, .menu-parent > a {
       display: block;
-      color: #ddd;
+      color: #111;
       text-transform: uppercase;
-      margin-left: 1rem;
+      margin-left: .25rem;
       font-size: 14px;
-      font-weight: bold;
-      padding: 25px 7px;
+      padding: 20px 7px;
+      font-family: 'Apple Gothic', 'Century Gothic', sans-serif;
     }
-    a.active {
+    > a.active {
       color: #fff;
     }
   }
@@ -363,7 +443,7 @@ header {
     border-bottom: 1px dashed #454545;
   }
   a.toggler {
-    color: #ddd;
+    color: #111;
     font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
@@ -371,14 +451,14 @@ header {
       margin-left: 0.25rem;
     }
     &:hover {
-      color: #fff;
+      color: #111;
     }
     .badge {
       margin-left: 5px;
       width: 16px;
       height: 16px;
-      background-color: $main-color;
-      color: #121212;
+      background-color: #343434;
+      color: #fff;
       border-radius: 50%;
       display: inline-flex;
       justify-content: center;
@@ -404,7 +484,7 @@ header {
   }
   &:hover {
     a {
-      color: #fff;
+      color: #111;
     }
     .mini-cart--wrapper {
       padding-top: 1rem;
@@ -432,7 +512,8 @@ header {
     overflow-y: auto;
     background-color: rgba(#fff, 0.95);
     border-radius: 4px;
-    box-shadow: 2px 0 6px 1px rgba(#000, 0.1);
+    //box-shadow: 2px 0 6px 1px rgba(#000, 0.1);
+    border: 1px solid #f1f1f1;
     position: relative;
     &:before {
       content: "";
@@ -500,7 +581,7 @@ header {
   }
   &--total {
     padding: 0.5rem 1.25rem;
-    background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
+    background-color: #fff;
     text-align: right;
     font-size: 15px;
     border-bottom: 1px dashed #ddd;
@@ -530,7 +611,7 @@ header {
     a.btn-checkout {
       font-size: 14px;
       text-transform: uppercase;
-      color: #454545;
+      color: #fff;
       font-weight: bold;
       display: block;
       padding: 7px 15px;
@@ -581,7 +662,7 @@ section.home.intro {
     padding-bottom: 4rem;
   }
   h1 {
-    color: $main-color;
+    color: #fff;
     text-transform: uppercase;
     font-family: $heading;
     font-size: 62px;
@@ -695,29 +776,10 @@ section.home.intro {
 
 section.home.foods {
   padding: 4rem 0;
-  background: transparent url("/images/pat/notebook.jpg") left top repeat;
+  background: #fafafa;
   position: relative;
   overflow: hidden;
   border-top: 1px solid #eaeaea;
-  .bowl {
-    width: 288px;
-    height: 280px;
-    position: absolute;
-    left: -144px;
-    top: 50%;
-    transform: translate(0, -50%);
-    background: transparent url("/images/bowl.png") center center no-repeat;
-    opacity: 0.1;
-  }
-  .cup {
-    width: 354px;
-    height: 354px;
-    position: absolute;
-    right: -177px;
-    top: 50%;
-    transform: translate(0, -50%);
-    background: transparent url("/images/cup.png") center center no-repeat;
-  }
   h2 {
     text-transform: uppercase;
     font-family: $heading;
@@ -802,7 +864,8 @@ section.top.details {
 .details {
   padding: 3rem 0 5rem 0;
   flex-grow: 1;
-  background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  background-color: #fafafa;
 
   h1 {
     text-transform: uppercase;
@@ -1021,14 +1084,14 @@ section.top.details {
 }
 .pt-datepicker .DayPicker-Day.DayPicker-Day--selected {
   background-color: $main-color;
-  color: #454545;
+  color: #fff;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 .pt-datepicker .DayPicker-Day.dates-range {
-  background-color: rgba($main-color, 0.5);
+  background-color: rgba($main-color, 0.075);
   border-radius: 0;
-  color: #454545 !important;
+  color: #343434 !important;
 }
 .pt-datepicker .DayPicker-Day.dates-range-sunday {
   background-color: #eee;
@@ -1037,7 +1100,7 @@ section.top.details {
 }
 .pt-datepicker .DayPicker-Day.dates-range-start {
   background-color: $main-color;
-  color: #454545;
+  color: #fff !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-top-left-radius: 3px;
@@ -1045,7 +1108,7 @@ section.top.details {
 }
 .pt-datepicker .DayPicker-Day.dates-range-finish {
   background-color: $main-color;
-  color: #454545;
+  color: #fff !important;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 3px;
@@ -1165,7 +1228,7 @@ a.snacks-close-button {
   top: 0;
   padding: 0.35rem 1rem;
   background-color: $main-color;
-  color: #454545;
+  color: #fff;
   font-size: 1.5em;
   z-index: 19;
 }
@@ -1268,7 +1331,7 @@ a.snacks-close-button {
     }
     .quick-add.delete {
       background-color: $main-color;
-      color: $main-color-darker;
+      color: #fff;
     }
   }
   &--price {
@@ -1343,7 +1406,7 @@ a.snacks-close-button {
     font-weight: bold;
     text-transform: uppercase;
     font-size: 13px;
-    color: #454545;
+    color: #fff;
   }
 }
 .snack-description.active {
@@ -1417,7 +1480,8 @@ section.top.customize {
 .customize {
   padding: 3rem 0 5rem 0;
   flex-grow: 1;
-  background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  background-color: #fafafa;
 
   a.customize--return {
     color: $main-color-darker;
@@ -1549,6 +1613,7 @@ section.top.customize {
       background-color: $main-color;
       padding: 4px 16px;
       display: flex;
+      color: #fff;
       justify-content: space-between;
       align-items: center;
       span {
@@ -1566,11 +1631,11 @@ section.top.customize {
     top: 0;
     padding: 0.2rem 0.75rem;
     background-color: $main-color;
-    color: #454545;
+    color: #fff;
     border-radius: 3px;
     font-size: 1.25em;
     border-top-left-radius: 0;
-    opacity: 0.75;
+    opacity: 0.85;
     z-index: 9;
     transition: 0.1s ease-in-out all;
     &:hover {
@@ -1758,7 +1823,7 @@ section.top.customize {
       display: inline-block;
       padding: 0.75rem 2rem;
       background-color: $main-color;
-      color: #454545;
+      color: #fff;
       border-radius: 4px;
       font-weight: bold;
       transition: 0.1s ease-in all;
@@ -1808,7 +1873,7 @@ section.top.customize {
 }
 .calendar {
   width: 100%;
-  height: 150px;
+  min-height: 150px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -1819,7 +1884,7 @@ section.top.customize {
   margin-bottom: 8px;
   &--top {
     background-color: $main-color;
-    color: #454545;
+    color: #fff;
     padding: 8px;
     text-transform: uppercase;
     font-weight: bold;
@@ -1842,7 +1907,7 @@ section.top.customize {
   }
   &--bottom {
     background-color: $main-color;
-    color: #454545;
+    color: #fff;
     padding: 8px;
     text-transform: uppercase;
     font-weight: bold;
@@ -1916,6 +1981,7 @@ section.top.customize {
   }
   li.active &--step {
     background-color: $main-color;
+    color: #fff;
   }
   li.active &--title {
     border-bottom: 5px solid $main-color;
@@ -1946,11 +2012,12 @@ section.top.customize {
     font-size: 14px;
     letter-spacing: 1px;
     display: flex;
+    color: #fff;
     justify-content: space-between;
     align-items: center;
     a {
       font-size: 12px;
-      color: #454545;
+      color: #fff;
     }
     small {
       display: inline-block;
@@ -2031,6 +2098,7 @@ section.top.customize {
       padding: 0.5rem 1rem;
       text-align: left;
       font-size: 14px;
+      color: #fff;
     }
     tbody tr td {
       padding: 0.5rem 1rem;
@@ -2071,7 +2139,8 @@ section.top.checkout {
 .checkout {
   padding: 3rem 0 5rem 0;
   flex-grow: 1;
-  background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  background-color: #fafafa;
 
   h1 {
     text-transform: uppercase;
@@ -2150,13 +2219,16 @@ section.top.checkout {
   &--payment-button.active {
     border: 1px solid $main-color-darker;
     background-color: $main-color;
-    color: #454545;
+    color: #fff;
   }
 }
 .form-footer {
   padding: 1rem 0;
   .form-terms {
     text-align: center;
+    a {
+      color: #343434;
+    }
   }
   .form-submit {
     margin-top: 1rem;
@@ -2360,7 +2432,8 @@ section.top.terms {
   }
   &--total {
     padding: 0.5rem 1.25rem;
-    background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
+    //background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
+    background-color: #fff;
     text-align: right;
     font-size: 15px;
     border-bottom: 1px dashed #ddd;
@@ -2380,7 +2453,7 @@ section.top.terms {
     padding: 5px 1rem;
     border-radius: 20px;
     margin-top: 0.5rem;
-    color: #454545;
+    color: #fff;
   }
 }
 .schedule {
@@ -2411,7 +2484,7 @@ section.top.terms {
 }
 .coupon {
   a.coupon--heading {
-    background-color: #eee;
+    background-color: #fff;
     padding: 0.75rem 1.5rem;
     text-transform: uppercase;
     font-size: 12px;
@@ -2424,7 +2497,7 @@ section.top.terms {
   &--body {
     display: none;
     padding: 1rem 1.5rem;
-    background-color: #f5f5f5;
+    background-color: #fff;
     border-bottom: 1px solid #e5e5e5;
   }
   &--success {
@@ -2469,6 +2542,7 @@ section.top.terms {
     border: 1px solid $main-color;
     border-left: 0;
     cursor: pointer;
+    color: #fff;
   }
 }
 .lp-wrap {
@@ -2486,13 +2560,13 @@ section.top.terms {
 }
 .lp-box {
   max-width: 450px;
-  background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
+  background-color: #fff;
   border-radius: 4px;
 }
 .lp-title {
   padding: 1rem 1.5rem;
   background-color: $main-color;
-  color: #454545;
+  color: #fff;
   font-family: $heading;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -2655,7 +2729,7 @@ footer {
       font-weight: bold;
       color: #aaa;
       &:hover {
-        color: $main-color;
+        color: #fff;
       }
     }
     h5 {
@@ -2682,7 +2756,7 @@ footer {
     font-size: 0.85em;
     color: #aaa;
     &:hover {
-      color: $main-color;
+      color: #fff;
     }
   }
 }

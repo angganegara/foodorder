@@ -42,8 +42,6 @@ class HomeFoods extends Component {
             )}
           </div>
         </div>
-        <div className="bowl" />
-        <div className="cup" />
       </section>
     );
   }

@@ -19,7 +19,7 @@ const Footer = () => (
           <a href="http://www.motionfitnessbali.com" title=""><img src="/images/m-trans.png" alt="Motion Meals" className="logo" /></a>
           <p className="social">
             <a href="https://www.facebook.com/motioncafebali" title=""><i className="fab fa-2x fa-facebook"></i></a>
-            <a href="http://instagram.com/avocadocafebali" title=""><i className="fab fa-2x fa-instagram"></i></a>
+            <a href="http://instagram.com/motioncafe" title=""><i className="fab fa-2x fa-instagram"></i></a>
             <a href="http://www.tripadvisor.com/Restaurant_Review-g311298-d6903656-Reviews-Avocado_Cafe-Canggu_Bali.html" title=""><i className="fab fa-2x fa-tripadvisor"></i></a>
           </p>
         </div>

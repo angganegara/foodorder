@@ -63,7 +63,7 @@
                 <label>Payment methods</label>
                 {{ $order->payment_formatted }}
               </div>
-              @if ($order->payment != 'cash')
+              @if ($order->payment != 'cash' && $order->payment != 'banktransfer')
                 <div class="column is-half">
                   <label>Payment Status</label>
                   {{ $order->order_status }}
@@ -75,7 +75,7 @@
                 </div>
               @endif
             </div>
-            @if ($order->payment == 'cash')
+            @if ($order->payment == 'cash' || $order->payment == 'banktransfer')
             <div class="columns form-row">
               <div class="column is-half">
                 <label class="pt-label">Date</label>
@@ -101,6 +101,7 @@
                 <label class="pt-label">Payment Comment</label>
                 <textarea name="payment_comment" class="pt-input pt-fill" rows="5" placeholder="Enter payment comment here">{{ $order->payment_comment }}</textarea>
                 <div class="update-payment-button">
+                  <input type="hidden" name="total" value="{{ $order->total }}" />
                   <a href="javascript:" title="" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
                 </div>
               </div>
@@ -219,7 +220,7 @@
               <td><b>total</b></td>
               <td>{{ number_format($order->total, 0) }} IDR</td>
             </tr>
-            @if ($order->payment == 'cash')
+            @if ($order->payment == 'cash' || $order->payment == 'banktransfer')
               <tr>
                 <td>Amount Paid</td>
                 <td>{{ number_format($order->cash_paid) }} IDR</td>
@@ -341,6 +342,7 @@
     var amount = $('input[name="amount_paid"]').val();
     var comment = $('textarea[name="payment_comment"]').val();
     var date = $('input[name="payment_date"]').val();
+    var total = $('input[name="total"]').val();
 
     if (parseInt(amount) <= 0 || amount == '') {
       alert('Please enter the amount');
@@ -353,13 +355,15 @@
     }
 
     amount = parseInt(amount.replace(/\,/g, ''));
+    total = parseInt(total.replace(/\,/g, ''));
 
     $this.html('<span><i class="fal fa-spinner-third fa-spin"></i></span>').attr('disabled', true);
     axios
       .post('/admin/orders/'+ id +'/update-payment', {
         amount: amount,
         comment: comment,
-        date: date
+        date: date,
+        total: total,
       })
       .then(function (res) {
         if (res.data == 'OK') {

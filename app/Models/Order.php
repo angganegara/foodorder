@@ -8,7 +8,7 @@ class Order extends Model
 {
 	protected $hidden = ['ip_address', 'updated_at', 'user_agent'];
 	protected $appends = ['name', 'date', 'payment_formatted', 'order_status'];
-  protected $fillable = ['total', 'menu_email_sent', 'cash_paid', 'cash_paid_date', 'email_payment_reminder', 'payment_comment'];
+  protected $fillable = ['total', 'menu_email_sent', 'cash_paid', 'cash_paid_date', 'email_payment_reminder', 'payment_comment', 'paid'];
 
 	public function getNameAttribute()
 	{
@@ -26,11 +26,17 @@ class Order extends Model
       case 'cash':
         return 'cash';
         break;
+        
       case 'paypal':
         return 'Paypal';
         break;
+
       case 'creditcard':
         return $this->trx_type;
+        break;
+
+      case 'banktransfer':
+        return 'Bank Transfer';
         break;
     }
   }
@@ -41,6 +47,8 @@ class Order extends Model
       return $this->trx_status ? $this->trx_status : 'Aborted';
     } else if ($this->payment == 'paypal') {
       return !$this->paid && is_null($this->paypal_response) ? 'Incomplete' : 'Paid';
+    } else if ($this->payment == 'banktransfer') {
+      return $this->openAmount() > 0 ? 'Pending' : 'Paid';
     } else {
       return '';
     }
@@ -98,6 +106,7 @@ class Order extends Model
       break;
 
       case 'cash':
+      case 'banktransfer':
         $open = $this->total - ($this->cash_paid + $this->total_extra());
       break;
     }

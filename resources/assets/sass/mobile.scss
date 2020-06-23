@@ -3,25 +3,51 @@
     margin-left: 1rem;
     margin-right: 1rem;
   }
+  header {
+    background-color: rgba(#fff, .95);
+  }
+  .header-mini {
+    display: none;
+  }
+  .header.header-socials a {
+    padding: 8px 10px;
+  }
+  .mini-cart a.toggler {
+    color: #fff;
+    &:hover {
+      color: #fff;
+    }
+  }
   .header {
     padding: 0;
     flex-direction: row;
     flex-wrap: wrap;
     figure {
-      margin-top: 0.75rem;
+      margin-top: 1rem;
       margin-bottom: 0.75rem;
       margin-left: 1rem;
       width: 75%;
-    }
-    img.logo {
-      width: 164px;
     }
     a.mobile-menu {
       margin-left: auto;
       margin-right: 1rem;
       display: block;
-      color: #fff;
+      color: #111;
       font-size: 1.2em;
+    }
+    .menu-child-wrap {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .menu-child-inner {
+      width: auto;
+      box-shadow: none;
+      padding: .25rem 0;
+      background-color: transparent;
+    }
+    ul.child-links li a {
+      padding: 5px 25px;
     }
     .header-links {
       width: 100%;
@@ -29,10 +55,11 @@
       padding: 0.5rem 0;
       display: none;
     }
-    .header-links a {
+    .header-links > a, .header-links .menu-parent > a {
       display: block;
       width: 100%;
       padding: 0.5rem 0;
+      margin-left: 1rem;
     }
     a.main-site {
       display: none;
@@ -332,6 +359,12 @@
     table tbody tr td:nth-child(even) {
       width: 50%;
     }
+  }
+  .order-nav ul li {
+    text-align: center;
+  }
+  .order-nav--title {
+    font-size: 12px;
   }
   .order-nav ul li.bike-icon {
     display: none;

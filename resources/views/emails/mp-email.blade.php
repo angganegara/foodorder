@@ -17,7 +17,7 @@
               <tr>
                 <td style="width: 36px;"><img src="{{ url('images/email-logo-small.jpg') }}" alt="" style="display: block;"/></td>
                 <td valign="middle" style="
-                  background-color: #b5e1ed; color: #222;
+                  background-color: #121212; color: #fff;
                   text-transform: uppercase; font-weight: bold;
                   padding: 15px 20px;
                   letter-spacing: 1px; font-size: 12px">
@@ -37,7 +37,7 @@
               </tr>
               <tr>
                 <td valign="middle" colspan="2" style="
-                  background-color: #b5e1ed; color: #222;
+                  background-color: #121212; color: #fff;
                   text-transform: uppercase; font-weight: bold;
                   padding: 15px 20px;
                   letter-spacing: 1px; font-size: 12px">
@@ -53,19 +53,19 @@
                         <tr>
                           <th width="60%" style="padding: 10px 20px;
                             font-size: 12px; text-transform: uppercase;
-                            border-bottom: 1px solid #b5e1ed; color: #222;
+                            border-bottom: 1px solid #eee; color: #333;
                             background-color: #f3f3f3; text-align: left">
                             Items
                           </th>
                           <th width="15%" style="padding: 10px 20px;
                             font-size: 12px; text-transform: uppercase;
-                            border-bottom: 1px solid #b5e1ed; color: #222;
+                            border-bottom: 1px solid #eee; color: #333;
                             background-color: #f3f3f3; text-align: center">
                             QTY
                           </th>
                           <th width="25%" style="padding: 10px 20px;
                             font-size: 12px; text-transform: uppercase;
-                            border-bottom: 1px solid #b5e1ed; color: #222;
+                            border-bottom: 1px solid #eee; color: #333;
                             background-color: #f3f3f3; text-align: right">
                             Price
                           </th>
@@ -153,8 +153,8 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                               @foreach ($item['schedule'] as $sch)
                                 <tr>
-                                  <th colspan="2" style="#222;padding: 7px 20px; font-size: 12px; border-top: 1px solid #ddd;color: #222;
-                                    border-bottom: 1px solid #f6f6f6; background-color: #b5e1ed; text-align: left">
+                                  <th colspan="2" style="#222;padding: 7px 20px; font-size: 12px; border-top: 1px solid #ddd; color: #fff;
+                                    border-bottom: 1px solid #f6f6f6; background-color: #121212; text-align: left">
                                     {{ Carbon\Carbon::parse($sch->date)->format('D, M jS') }}
                                     @if (($item['slimsunday'] == 1) && (Carbon\Carbon::parse($sch->date)->format('D') == "Sat"))
                                       (Include Slim Sunday)
@@ -183,7 +183,7 @@
                         </tr>
                         @if (!$loop->last)
                           <tr>
-                            <td colspan="3" style="background-color: #b5e1ed; height: 5px;"></td>
+                            <td colspan="3" style="background-color: #121212; height: 5px;"></td>
                           </tr>
                         @endif
                         <?php $total += $item['total_price']; ?>
@@ -206,7 +206,7 @@
                           </p>
                           <p className="social">
                             <a href="https://www.facebook.com/motioncafebali" title=""><img src="{{ url('images/email-fb.jpg') }}" alt="Facebook" style="border-radius: 4px;"/></a>
-                            <a href="http://instagram.com/avocadocafebali" title=""><img src="{{ url('images/email-in.jpg') }}" alt="Instagram" style="border-radius: 4px;" /></i></a>
+                            <a href="http://instagram.com/motioncafe" title=""><img src="{{ url('images/email-in.jpg') }}" alt="Instagram" style="border-radius: 4px;" /></i></a>
                             <a href="http://www.tripadvisor.com/Restaurant_Review-g311298-d6903656-Reviews-Avocado_Cafe-Canggu_Bali.html" title=""><img src="{{ url('images/email-trip.jpg') }}" alt="Trip Advisor" style="border-radius: 4px;" /></a>
                           </p>
                         </p>

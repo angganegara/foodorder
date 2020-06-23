@@ -32,10 +32,11 @@ let today = new Date();
 
 const isDisabled = date => {
   return (
-    date.getDay() === 0 ||
-    (date.getDate() === 1 && date.getMonth() === 0) ||
-    (date.getDate() === 7 && date.getMonth() === 2) ||
-    (date.getDate() === 8 && date.getMonth() === 2) ||
+    //date.getDay() === 0 ||
+    //(date.getDate() === 1 && date.getMonth() === 0) ||
+    //(date.getDate() === 7 && date.getMonth() === 2) ||
+    //(date.getDate() === 8 && date.getMonth() === 2) ||
+    (date.getHours() >= 23 && date.getHours() < 8) ||
     checkDayLimit(date)
   );
 };
@@ -160,7 +161,8 @@ class Details extends Component {
     let daysData = [];
     for (let days of range.by("days")) {
       // skip sunday if any
-      if (days.format("d") != "0") {
+      // update 22 June 2020, do not skip sunday
+      // if (days.format("d") != "0") {
         daysData.push({
           label: days.format("ddd, MMM DD"),
           date: days.format("YYYY-MM-DD"),
@@ -177,7 +179,7 @@ class Details extends Component {
           snacksQty: {},
           snacksData: []
         });
-      }
+      //}
     }
 
     let data = {
@@ -232,9 +234,13 @@ class Details extends Component {
     let currentDay = day.getDay();
     let duration;
     if (packageId == 1) {
-      duration = currentDay == 1 ? 5 : 6;
+      //duration = currentDay == 1 ? 5 : 6;
+      duration = 5;
     } else {
       duration = daysAmount - 1;
+      /**
+       * this is to check if order overlap sunday and we should add + 1 to duration to skip sunday
+       * for now we remove this code because we no longer skip sunday
       if (
         (currentDay === 1 && daysAmount > 6) ||
         (currentDay === 2 && daysAmount > 5) ||
@@ -245,6 +251,7 @@ class Details extends Component {
       ) {
         duration = duration + 1;
       }
+      */
     }
     cloneDate.setHours(24 * duration);
 
@@ -284,7 +291,8 @@ class Details extends Component {
             cssClass = "dates-range dates-range-start";
           } else {
             if (day == "0") {
-              cssClass = "dates-range-sunday";
+              //cssClass = "dates-range-sunday";
+              cssClass = 'dates-range';
             }
             if (day != "0") {
               cssClass = "dates-range";
@@ -400,7 +408,7 @@ class Details extends Component {
                   {food.available_symbols && <AvailableOptions icons={this.showFoodIcons(food.available_symbols)} />}
                 </div>
                 <div className="col-xs-12 col-md-4">
-                  <div className="details--price-box" style={{ display: 'none' }}>
+                  <div className="details--price-box">
                     {food.prices.length &&
                       food.prices.map((price, index) => (
                         <React.Fragment key={index}>
@@ -444,7 +452,7 @@ class Details extends Component {
                         <b>350,000 IDR</b>
                       </span>
                     </div>
-                    <div className="details--calendar" style={{ display: 'none' }}>
+                    <div className="details--calendar">
                       <CSSTransition in={form.packageId === 2 && daysAmount <= 0} timeout={200} classNames="fade-flat" unmountOnExit>
                         <div className="calendar-warning">Please select amount of days first.</div>
                       </CSSTransition>
@@ -472,8 +480,8 @@ class Details extends Component {
                       )}
                     </div>
                   </div>
-                  <div style={{ display: 'none' }}>
-                    <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart" style={{ display: 'none' }}>
+                  <div>
+                    <a href="javascript:" title="" onClick={this.addtoCart} className="details--add-to-cart">
                       Continue <i className="fal fa-fw fa-arrow-right" />
                     </a>
                     <Alert

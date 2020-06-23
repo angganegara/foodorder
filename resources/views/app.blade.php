@@ -34,7 +34,7 @@
 <body>
   <div id="app"></div>
   <!-- built files will be auto injected -->
-  <script src="{{ asset('js/app.js?'. date('Ymdhi')) }}"></script>
+  <script src="{{ asset('js/app.js?'. date('Ymd')) }}"></script>
   @if (env('APP_ENV') == 'local')
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
   @else
@@ -58,15 +58,6 @@
 
     ga('create', 'UA-49735691-3', 'auto');
     ga('send', 'pageview');
-  </script>
-  <script>
-    function initFreshChat() {
-      window.fcWidget.init({
-        token: "b3dba565-5d12-423a-be4b-88c5b5a1bbd2",
-        host: "https://wchat.freshchat.com"
-      });
-    }
-    function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://wchat.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))}function initiateCall(){initialize(document,"freshchat-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
   </script>
 </body>
 </html>

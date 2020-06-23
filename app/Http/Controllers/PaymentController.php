@@ -27,7 +27,7 @@ class PaymentController extends Controller
 		$methods = $request->methods;
 
 		if ($methods && $order_number) {
-			if ($methods == 'cash') {
+			if ($methods == 'cash' || $methods == 'banktransfer') {
 				// as usual ...
 				$send = $this->oh->sendOrder($order_number);
 				if ($send == 'OK') {

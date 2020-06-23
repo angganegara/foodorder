@@ -43,7 +43,7 @@ class OrderController extends Controller
   }
 
   public function index(Request $request)
-  {
+  { 
     $orders = Order::orderBy('created_at', 'desc')->with(['partner', 'ordercart', 'schedule']);
     $dates = '';
     $total_amount = 0;
@@ -185,6 +185,7 @@ class OrderController extends Controller
   public function show($ordernumber, $id)
   {
     $order = Order::where('id', $id)->with('partner')->with('ordercart.schedule')->first();
+
     return view('admin.order', compact('order'));
   }
 
@@ -284,7 +285,9 @@ class OrderController extends Controller
   {
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
 
-    $schedules = OrderSchedule::where('date', $today->format('Y-m-d'))->get();
+    $schedules = OrderSchedule::with(['order'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($q) {
+      $q->where('paid', 1);
+    })->get();
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
@@ -318,7 +321,9 @@ class OrderController extends Controller
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
     if (!$request->has('date')) { $today->addDay(); }
 
-    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->get();
+    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($q) {
+      $q->where('paid', 1);
+    })->get();
     $isSaturday = $today->format('D') == 'Sat';
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
@@ -516,10 +521,12 @@ class OrderController extends Controller
   {
     $date = explode('/', $request->date);
     $newDate = $date[2] .'-'. $date[1] .'-'. $date[0];
+    $paid = $request->amount >= $request->total ? 1 : 0;
     $order = Order::find($id)->update([
       'cash_paid' => $request->amount,
       'cash_paid_date' => $newDate,
-      'payment_comment' => $request->comment
+      'payment_comment' => $request->comment,
+      'paid' => 1
     ]);
 
     return response('OK');

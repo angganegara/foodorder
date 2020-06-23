@@ -298,7 +298,7 @@ class OrderHelper
     try {
       Mail::send(
         $email_layout,
-        compact('order', 'items', 'that', 'extra', 'hasDetox'),
+        compact('order', 'that', 'extra', 'hasDetox'),
         function ($m) use (
           $order, $pdf, $pdf_hp, $hp, $pdf_dt, $pdf_ayu1, $pdf_ayu2,
           $dts, $dtj, $sbd, $elx, $email_subject, $resend
@@ -382,7 +382,7 @@ class OrderHelper
         //$this->deleteOrder($order->id);
       }
       // log in
-      abort(500, 'CANNOT_SEND_MAIL');
+      abort(500, 'CANNOT_SEND_MAIL : '. $e->getMessage());
     }
 
     // set email flag

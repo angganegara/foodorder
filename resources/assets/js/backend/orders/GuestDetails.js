@@ -106,24 +106,25 @@ class GuestDetails extends Component {
     let datesRaw = [];
 
     const range = moment.rangeFromInterval("days", duration, startDate);
+    /*
     for (let days of range.by("days")) {
       // skip sunday if any
       if (days.format("d") == "0") {
         sundays += 1;
       }
-    }
+    }*/
     cloneDate.setHours(24 * duration + sundays * 24);
     if (moment(cloneDate).format("d") == "0") {
-      cloneDate.setHours(24);
+      //cloneDate.setHours(24);
     }
 
     const periods = moment.range(startingDate, cloneDate);
     const periods2 = periods.snapTo("day");
     for (let pdays of periods2.by("days")) {
-      if (pdays.format("d") != "0") {
+      //if (pdays.format("d") != "0") {
         dates.push(pdays.format("ddd, DD MMM"));
         datesRaw.push(pdays.format("YYYY-MM-DD"));
-      }
+      //}
     }
 
     orderState.duration = orderState.days.length;
