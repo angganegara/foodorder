@@ -429,4 +429,17 @@ class OrderHelper
 
     return $carbon;
   }
+
+  public function generatePaymentKey($number)
+  {
+    $salt = 'hjCMn7DqyUZSpMCz5VElq8fy1sjYM';
+    $enc = base64_encode($number . $salt);
+    $key = substr($enc, 0, 7);
+
+    return [
+      'number' => $number,
+      'enc' => $enc,
+      'key' => $key
+    ];
+  }
 }

@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700");
+
+@import "../css/reset.css";
+@import "../../../node_modules/tailwindcss/base";
+@import "../../../node_modules/tailwindcss/components";
+@import "../../../node_modules/tailwindcss/utilities";
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: "Century Gothic", "Proxima Nova", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.payment-container {
+    width: 640px;
+    margin: 0 auto;
+}
+
+.payment-header {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 140px;
+    img {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+.payment-inner {
+    border: 1px solid #eaeaea;
+    border-radius: 3px;
+}
+.payment-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.payment-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.isLoading {
+    @apply opacity-50 cursor-not-allowed;
+}

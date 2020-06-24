@@ -15,10 +15,11 @@
     "axios": "^0.18.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "bulma": "^0.7.1",
+    "bulma": "^0.9.0",
     "cross-env": "^5.1.6",
     "jquery": "^3.5.1",
     "laravel-mix": "^4.0.15",
+    "laravel-mix-svelte": "github:wewowweb/laravel-mix-svelte",
     "moment": "^2.22.1",
     "moment-range": "^4.0.1",
     "numeral": "^2.0.6",
@@ -28,20 +29,25 @@
     "react-router-dom": "^4.2.2",
     "react-router-hash-link": "^1.2.0",
     "react-transition-group": "^2.3.1",
+    "tailwindcss": "^1.4.6",
     "useragent.js": "^0.5.7",
     "zopfli-webpack-plugin": "^0.1.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.0.0",
     "@gfx/zopfli": "^1.0.11",
+    "@tailwindcss/custom-forms": "^0.2.1",
     "browser-sync": "^2.26.7",
     "browser-sync-webpack-plugin": "2.0.1",
     "compression-webpack-plugin": "^2.0.0",
+    "mix-tailwindcss": "^1.2.0",
     "react-dnd": "^7.4.5",
     "react-dnd-html5-backend": "^7.4.4",
     "resolve-url-loader": "^2.3.1",
     "sass": "^1.19.0",
     "sass-loader": "^7.1.0",
+    "svelte": "^3.23.2",
+    "svelte-loader": "^2.13.6",
     "vue-template-compiler": "^2.6.10"
   }
 }

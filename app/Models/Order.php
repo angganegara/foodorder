@@ -69,6 +69,11 @@ class Order extends Model
     return $this->hasOne(\App\Models\Partner::class, 'id', 'partner_id');
   }
 
+  public function payment()
+  {
+    return $this->hasOne(\App\Models\Payment::class, 'order_number', 'order_number');
+  }
+
   public function extra_payment()
   {
     return $this->hasMany('App\Models\ExtraPayment');

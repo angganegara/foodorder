@@ -16,6 +16,8 @@ Route::get('snap', 'SnapController@snap');
 Route::get('snaptoken', 'SnapController@token');
 Route::post('snapfinish', 'SnapController@finish');
 
+Route::get('payment-confirmation/{ordernumber}/{key}', 'PaymentController@confirmation');
+Route::post('payment-confirmation/{ordernumber}/{key}', 'PaymentController@saveConfirmation');
 Route::post('payment/approve/{order_number}', 'PaymentController@approveChallenge');
 Route::post('payment/confirm/{order_number}', 'PaymentController@confirm');
 Route::post('payment/process', 'PaymentController@process');

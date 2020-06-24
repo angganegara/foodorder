@@ -1,6 +1,8 @@
 let mix = require("laravel-mix");
 const CompressionPlugin = require('compression-webpack-plugin');
-const zopfli = require('@gfx/zopfli');
+
+require('mix-tailwindcss');
+require('laravel-mix-svelte');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,6 +18,7 @@ const zopfli = require('@gfx/zopfli');
 mix
   .react("resources/assets/js/app.js", "public/js/app.js")
   .js("resources/assets/js/admin.js", "public/js/admin.js")
+  .js("resources/assets/js/payment_confirmation.js", "public/js/payment_confirmation.js")
   .react("resources/assets/js/backend/report.js", "public/js/report.js")
   .react("resources/assets/js/backend/mealplans.js", "public/js/mealplans.js")
   .react("resources/assets/js/backend/mealpreset.js", "public/js/mealpreset.js")
@@ -25,6 +28,7 @@ mix
   .sass("resources/assets/sass/app.scss", "public/css/app.css")
   .sass("resources/assets/sass/print.scss", "public/css/print.css")
   .sass("resources/assets/sass/backend.scss", "public/css/backend.css")
+  .sass("resources/assets/sass/payment.scss", "public/css/payment.css").tailwind('./tailwind.config.js')
   .combine(
     [
       "resources/assets/css/pickadate/themes/classic.css",
@@ -41,4 +45,7 @@ mix
   })
   .browserSync({
     proxy: "mealplans.test"
+  })
+  .svelte({
+    dev: true
   });
