@@ -75,40 +75,104 @@
                 </div>
               @endif
             </div>
-            @if ($order->payment == 'cash' || $order->payment == 'banktransfer')
-            <div class="columns form-row">
-              <div class="column is-half">
-                <label class="pt-label">Date</label>
-                <input
-                  type="text"
-                  name="payment_date"
-                  autocomplete="off"
-                  class="pt-input pt-fill datepicker-here"
-                  data-language="en"
-                  data-date-format="dd/mm/yyyy"
-                  data-auto-close="true"
-                  readonly
-                  value="{{ $order->cash_paid_date ? date('d/m/Y', strtotime($order->cash_paid_date)) : '' }}"
-                />
-              </div>
-              <div class="column is-half">
-                <label class="pt-label">Amount paid</label>
-                <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ number_format($order->cash_paid) }}">
-              </div>
-            </div>
-            <div class="columns form-row is-multiline">
-              <div class="column is-12">
-                <label class="pt-label">Payment Comment</label>
-                <textarea name="payment_comment" class="pt-input pt-fill" rows="5" placeholder="Enter payment comment here">{{ $order->payment_comment }}</textarea>
-                <div class="update-payment-button">
-                  <input type="hidden" name="total" value="{{ $order->total }}" />
-                  <a href="javascript:" title="" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
+            @if ($order->payment == 'cash')
+              <div class="columns form-row">
+                <div class="column is-half">
+                  <label class="pt-label">Date</label>
+                  <input
+                    type="text"
+                    name="payment_date"
+                    autocomplete="off"
+                    class="pt-input pt-fill datepicker-here"
+                    data-language="en"
+                    data-date-format="dd/mm/yyyy"
+                    data-auto-close="true"
+                    readonly
+                    value="{{ $order->cash_paid_date ? date('d/m/Y', strtotime($order->cash_paid_date)) : '' }}"
+                  />
+                </div>
+                <div class="column is-half">
+                  <label class="pt-label">Amount paid</label>
+                  <input type="text" name="amount_paid" class="pt-input pt-fill" value="{{ number_format($order->cash_paid) }}">
                 </div>
               </div>
-            </div>
+              <div class="columns form-row is-multiline">
+                <div class="column is-12">
+                  <label class="pt-label">Payment Comment</label>
+                  <textarea name="payment_comment" class="pt-input pt-fill" rows="5" placeholder="Enter payment comment here">{{ $order->payment_comment }}</textarea>
+                  <div class="update-payment-button">
+                    <input type="hidden" name="total" value="{{ $order->total }}" />
+                    <a href="javascript:" title="" data-id="{{ $order->id }}" data-ordernumber="{{ $order->order_number }}"><span>UPDATE</span></a>
+                  </div>
+                </div>
+              </div>
             @endif
           </div>
         </div>
+
+        @if ($order->payment == 'banktransfer')
+          <div class="form-section">
+            <h2>Payment Confirmation</h2>
+            <div class="form-inner">
+              @if ($order->payments()->count() <= 0)
+                <div class="columns form-row">
+                  <div class="column is-12">
+                    <p>This guest has not submit payment confirmation yet</p>
+                  </div>
+                </div>
+              @else
+                <div class="columns form-row">
+                  <div class="column is-half">
+                    <label class="pt-label">Bank Name</label>
+                    {{ $order->payments->bank_name }}
+                  </div>
+                  <div class="column is-half">
+                    <label class="pt-label">IBAN Code</label>
+                    {!! $order->payments->iban_code != '' ? $order->payments->iban_code : '<em>Not specified</em>' !!}
+                  </div>
+                </div>
+                <div class="columns form-row">
+                  <div class="column is-half">
+                    <label class="pt-label">Account Name</label>
+                    {{ $order->payments->account_name }}
+                  </div>
+                  <div class="column is-half">
+                    <label class="pt-label">Account Number</label>
+                    {{ $order->payments->account_number }}
+                  </div>
+                </div>
+                <div class="columns form-row">
+                  <div class="column is-half">
+                    <label class="pt-label">Payment Date</label>
+                    {{ $order->payments->payment_date->format('d M Y') }}
+                  </div>
+                  <div class="column is-half">
+                    <label class="pt-label">Payment Amount</label>
+                    {{ number_format($order->payments->amount) }} IDR
+                  </div>
+                </div>
+                <div class="columns form-row">
+                  <div class="column is-full">
+                    <label class="pt-label">Payment Proof</label>
+                    <a href="{{ asset('/images/proof/'. $order->payments->filename) }}" title="View larger version" target="_blank">
+                      <img src="{{ asset('/images/proof/'. $order->payments->filename) }}" alt="" />
+                    </a>
+                  </div>
+                </div>
+                <div class="columns form-row">
+                  <div class="column is-full text-right">
+                    @if (! $order->payments->approved)
+                      <button class="button is-primary has-text-weight-bold is-small is-uppercase send-payment-confirmation" data-send="true">Confirm</button>
+                      <button class="button is-warning has-text-weight-bold is-small is-uppercase send-payment-confirmation" data-send="false">Confirm without email</button>
+                    @else
+                      <b>PAYMENT APPROVED</b>
+                    @endif
+                  </div>
+                </div>
+              @endif
+            </div>
+          </div>
+        @endif
 
         <div class="form-section" style="display: none">
           <h2>Extra Payment</h2>
@@ -173,7 +237,7 @@
                 <div class="cart-body">
                   <div class="cart-title">{{ $cart->meals }} {!! $cart->eco_price > 0 ? '- with Eco pack' : '' !!}</div>
                   <div class="cart-package">{{ $cart->package_name }}</div>
-                  <div class="cart-dates">{{ $cart->date_period }}</div>
+                  <div class="cart-dates">{!! $cart->date_period !!}</div>
                   @if ($cart->slimsunday == 1)<div class="cart-slimsunday">+ Slim Sunday</div>@endif
                   <div class="cart-dates">QUANTITY: {{ $cart->qty }}</div>
                 </div>
@@ -220,7 +284,7 @@
               <td><b>total</b></td>
               <td>{{ number_format($order->total, 0) }} IDR</td>
             </tr>
-            @if ($order->payment == 'cash' || $order->payment == 'banktransfer')
+            @if ($order->payment == 'cash')
               <tr>
                 <td>Amount Paid</td>
                 <td>{{ number_format($order->cash_paid) }} IDR</td>
@@ -288,6 +352,40 @@
       .catch(function (err) {
         alert("Fail to send email. Please try again");
         $el.html(buttonText);
+      })
+  });
+
+  $('.send-payment-confirmation').click(function (e) {
+    e.preventDefault();
+    var $el = $(this);
+    var buttonText = $el.html();
+    const notifyGuest = $el.data('send');
+    const confirm = notifyGuest ? 'Confirm payment and send notification email to guest?' : 'Confirm payment without sending notification email to guest?';
+
+    if ( ! window.confirm(confirm) ) {
+      return false;
+    }
+
+    $el.html('<i class="fal fa-spinner-third fa-spin"></i> &nbsp;<span>please wait</span>').attr('disabled', true);
+    axios
+      .post('/admin/orders/'+ orderID +'/confirm-payment', {
+        orderID: orderID,
+        sendEmail: notifyGuest
+      })
+      .then(function (res) {
+        const result = res.data;
+
+        if (result.result == 'OK') {
+          window.location.href = result.redirect;
+        }
+
+        $el.html(buttonText).attr('disabled', false);
+      })
+      .catch(function (err) {
+        alert("Fail to send email. Please try again");
+        $el.html(buttonText);
+
+        $el.html(buttonText).attr('disabled', false);
       })
   });
 

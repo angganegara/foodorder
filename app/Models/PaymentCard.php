@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class PaymentCard extends Model
 {
 	protected $guarded = [];
 
 	protected $dates = [
-		'created_at', 'updated_at', 'payment_date'
+		'created_at', 'updated_at'
 	];
 
     public function order()

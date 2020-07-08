@@ -625,7 +625,7 @@ class Customize extends Component {
                       <div className="customize--eco">
                         <h3>Packaging</h3>
                         <p>
-                          We are providing reusable containers for the meals, as we try to minimise any waste and be as environmentally friendly as we can. You’re responsible for returning the containers to our driver or to Motion cafe to Motion Fitness. If the container is not returned or it is damaged there is a 15.000 IDR replacement charge per container.
+                          We use eco-friendly packaging. We <span className="text-green"><b>RECYCLE</b></span>, if you have our bottles or jars at home, please let us know as we are happy to send our drivers to pick it up. For our protein shakes & smoothies we use blender bottles, please give them back to the driver or at Motion Cafe! Thank you!
                         </p>
                         <label style={{display: 'none'}}>
                           <input type="checkbox" checked={ecoPack} onChange={this.toggleEcoPack} />

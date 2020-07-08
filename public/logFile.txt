@@ -1,0 +1,40 @@
+*   Trying 103.10.129.16...
+* Connected to staging.doku.com (103.10.129.16) port 443 (#0)
+* ALPN, offering http/1.1
+* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+* successfully set certificate verify locations:
+*   CAfile: /etc/ssl/certs/ca-certificates.crt
+  CApath: /etc/ssl/certs
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+* ALPN, server accepted to use http/1.1
+* Server certificate:
+* 	 subject: C=ID; ST=Jakarta; L=South Jakarta City; O=PT NUSA SATU INTI ARTHA; OU=IT; CN=staging.doku.com
+* 	 start date: Jul 15 00:00:00 2019 GMT
+* 	 expire date: Aug 13 12:00:00 2020 GMT
+* 	 subjectAltName: staging.doku.com matched
+* 	 issuer: C=US; O=DigiCert Inc; CN=DigiCert SHA2 Secure Server CA
+* 	 SSL certificate verify ok.
+> POST /Suite/Receive HTTP/1.1
+Host: staging.doku.com
+Accept: */*
+Content-Length: 325
+Content-Type: application/x-www-form-urlencoded
+
+* upload completely sent off: 325 out of 325 bytes
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Wed, 08 Jul 2020 10:27:33 GMT
+< Content-Type: text/html;charset=UTF-8
+< Content-Length: 0
+< Connection: keep-alive
+< X-Powered-By: Servlet 2.5; DOKU
+< Cache-Control: no-cache, no-store, must-revalidate
+< Pragma: no-cache
+< Expires: Thu, 01 Jan 1970 00:00:00 GMT
+< Set-Cookie: JSESSIONID=1CD866CB1948C8726F997891333D5688; Path=/; HttpOnly
+< Set-Cookie: JSESSIONID=58228BA05FE625699CB1B7C6F48E0AF3; Path=/; HttpOnly
+< X-Frame-Options: ALLOWALL
+< Set-Cookie: 7522062a27eb2e0bb5705a29d68ac38a=c9dc013da45d52c4511c07e293c3050d; path=/; HttpOnly
+< X-Frame-Options: ALLOWALL
+< 
+* Connection #0 to host staging.doku.com left intact

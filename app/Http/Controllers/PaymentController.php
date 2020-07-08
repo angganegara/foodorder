@@ -3,28 +3,30 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Session;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-use App\Helpers\MidtransHelper;
+use App\Helpers\DokuHelper;
 use App\Helpers\PaypalHelper;
 use App\Helpers\OrderHelper;
 use App\Helpers\FileHelper;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PaymentCard;
 
 class PaymentController extends Controller
 {
-	protected $mt;
+	protected $dk;
 	protected $pp;
 	protected $oh;
 	protected $key;
 	protected $fh;
 
-	public function __construct(MidtransHelper $mt, PaypalHelper $pp, OrderHelper $oh, FileHelper $fh)
+	public function __construct(DokuHelper $dk, PaypalHelper $pp, OrderHelper $oh, FileHelper $fh)
 	{
-		$this->mt = $mt;
+		$this->dk = $dk;
 		$this->pp = $pp;
 		$this->oh = $oh;
 		$this->fh = $fh;
@@ -51,16 +53,83 @@ class PaymentController extends Controller
 			} else if ($methods == 'paypal') {
 				return $this->pp->setExpressCheckout($request, $order_number);
 			} else if ($methods == 'creditcard') {
+				$response = $this->dk->paymentRequest($order_number);
+				session()->put('doku_request', $response);
+
 				return response()->json([
 					'code'     => 102,
-					'message'  => 'SUCCESS',
-					'redirect' => null,
-					'token'    => $this->mt->getToken($request, $order_number)
+					'message'  => 'SUCCESS'
 				]);
 			}
 		} else {
 			return response()->json('INVALID CALL', 500);
 		}
+	}
+
+	public function dokuStart()
+	{
+		if (! session()->has('doku_request')) {
+			return redirect('/');
+		}
+
+		$doku_request = session('doku_request');
+
+		return view('doku.start', compact('doku_request'));
+	}
+
+	public function dokuRedirect()
+	{
+		if (! session()->has('doku_request')) {
+			return redirect('/');
+		}
+
+		$doku_request = session('doku_request');
+
+		$session_id = $doku_request['data']['SESSIONID'];
+
+		if ($session_id !== request('SESSIONID')) {
+			return redirect('/');
+		}
+
+		$order = Order::with(['paymentCard'])->where('order_number', request('TRANSIDMERCHANT'))->first();
+
+		if (! $order) {
+			return redirect('/');
+		}
+
+		$payment = $order->paymentCard()->create(request()->all());
+
+		$payment->update([
+			'raw_response' => json_encode(request()->all())
+		]);
+
+		$order_number = $order->order_number;
+
+		return view('doku.redirect', compact('order_number'));
+	}
+
+	public function dokuFinish()
+	{
+		// cleaning up ...
+		$success = false;
+
+		if (! session()->has('doku_request')) {
+			return redirect('/');
+		}
+
+		$doku_request = session('doku_request');
+
+		$order = Order::with(['paymentCard'])->where('order_number', $doku_request['data']['TRANSIDMERCHANT'])->first();
+
+		if ($order->paymentCard->statuscode === '0000') {
+			$success = true;
+		}
+
+		$from_doku = true;
+
+		$action = null;
+
+		return view('app', compact('from_doku', 'success', 'action'));
 	}
 
 	public function cancelPaypal($order_number)
@@ -118,9 +187,9 @@ class PaymentController extends Controller
 			return redirect('/');
 		}
 
-		$check = Order::with(['payment'])->where('order_number', $ordernumber)->first();
+		$check = Order::with(['payments'])->where('order_number', $ordernumber)->first();
 
-		$total_payment = $check->payment()->count();
+		$total_payment = $check->payments()->count();
 
 		return view('payment', compact('ordernumber', 'key', 'check', 'total_payment'));
 	}
@@ -133,11 +202,13 @@ class PaymentController extends Controller
 			return response('ERROR');
 		}
 
-		$order = Order::with(['payment'])->where('order_number', $ordernumber)->first();
+		$order = Order::with(['payments'])->where('order_number', $ordernumber)->first();
 
 		$payment_date = Carbon::parse(request('payment_date_year') .'-'. intVal(request('payment_date_month') + 1) .'-'. request('payment_date_day'));
 
-		$payment = $order->payment()->create([
+		$order->payments()->delete();
+
+		$payment = $order->payments()->create([
 			'order_number' => request('order_number'),
 			'bank_name' => request('bank_name'),
 			'iban_code' => request('iban_code'),

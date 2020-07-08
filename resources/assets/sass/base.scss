@@ -51,6 +51,9 @@ h6 {
   padding: 0;
   margin: 0;
 }
+.text-green {
+  color: green;
+}
 .ml-overlay-open {
   overflow: hidden;
 }
@@ -199,6 +202,24 @@ img.responsive {
   }
 }
 
+.doku-start {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+.mt-5 {
+  margin-top: 1.25rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
 .ml-1 {
   margin-left: .25rem;
 }

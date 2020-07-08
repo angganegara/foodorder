@@ -36,10 +36,16 @@ const isDisabled = date => {
     //(date.getDate() === 1 && date.getMonth() === 0) ||
     //(date.getDate() === 7 && date.getMonth() === 2) ||
     //(date.getDate() === 8 && date.getMonth() === 2) ||
-    (date.getHours() >= 23 && date.getHours() < 8) ||
+    //(date.getHours() >= 23 && date.getHours() < 8) ||
     checkDayLimit(date)
   );
 };
+
+
+//let a = moment().set({ year: today.getFullYear(), month: today.getMonth(), date: today.getDate(), hour: today.getHours(), minute: 0 });
+//let b = moment('2020-07-02 00:00:00');
+
+//console.log(b.diff(a, 'hours'));
 
 const foodCodes = {
   VG: "Vegetarian",
@@ -441,7 +447,7 @@ class Details extends Component {
                           )}
                         </React.Fragment>
                       ))}
-                    <div className="details--price">
+                    <div className="details--price" style={{ display: 'none' }}>
                       <span>
                         <Popover interactionKind={PopoverInteractionKind.HOVER} position={Position.TOP}>
                           <Switch checked={form.slimSunday} onChange={this.toggleSlimSunday} label="Add Slim Sunday?" />
@@ -460,9 +466,9 @@ class Details extends Component {
                         <strong>Delivery Starting Date</strong>
                       </p>
                       <DatePicker
-                        month={new Date(2018, 12)}
-                        fromMonth={new Date(2018, 12)}
-                        toMonth={new Date(2019, 12)}
+                        month={new Date(2020, 1)}
+                        fromMonth={new Date(2020, 1)}
+                        toMonth={new Date(2022, 12)}
                         onChange={this.handleDayClick}
                         modifiers={modifiers}
                         minDate={today}

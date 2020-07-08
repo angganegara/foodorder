@@ -102,7 +102,7 @@
           <td class="text-center">
             {!! $order->menu_email_sent ? '<i class="fal fa-check is-success"></i>' : '<i class="fal fa-times is-danger"></i>' !!}
           </td>
-          <td class="text-center"><a title="" class="pill status">{{ strtoupper($order->order_status) }}</a></td>
+          <td class="text-center"><b>{!! ($order->order_status) !!}</b></td>
           <td class="actions">
             <a href="/admin/orders/{{ $order->order_number }}/{{ $order->id }}"><i class="far fa-eye"></i></a>
             <a href="/admin/orders/{{ $order->id }}/edit" target="_blank"><i class="far fa-pencil"></i></a>

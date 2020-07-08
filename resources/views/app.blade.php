@@ -34,12 +34,13 @@
 <body>
   <div id="app"></div>
   <!-- built files will be auto injected -->
-  <script src="{{ asset('js/app.js?'. date('Ymd')) }}"></script>
-  @if (env('APP_ENV') == 'local')
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="VT-client-ynStwlFWAgbV4ZRz"></script>
-  @else
-    <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="VT-client-0_yAoB6Dgk_JND-Y"></script>
+  @if (isset($from_doku))
+    <script>
+      window.fromDoku = true;
+      window.dokuResult = {{ $success }};
+    </script>
   @endif
+  <script src="{{ asset('js/app.js?'. date('Ymd')) }}"></script>
   <noscript>
     <div class="noscript">
       <img src="/images/logo-email.jpg" alt="Motion Cafe Bali">

@@ -27,7 +27,7 @@ class Home extends Component
               <strong>Clean eating, designed for optimal nutrition delivered by Gojek.</strong><br />
               100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.<br />
               Order daily between 8am - 12pm for the following day.<br />
-              Only on Sunday we need 48hrs. notice.
+              Only on Sunday we need 48hrs notice.
             </p>
           </div>
           <div className="bg"></div>

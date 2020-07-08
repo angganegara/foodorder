@@ -31,8 +31,9 @@ class Checkout extends Component {
     termsDialog: false,
     finish: false,
     payment: "cash",
+    dokuResult: false,
+    fromDoku: false,
     popupMessage: "Finalizing your order, please don't close your browser",
-    midtrans: false,
     snacks: [],
     foods: [],
     form: {
@@ -84,6 +85,11 @@ class Checkout extends Component {
     // hol up - is this thank you page?
     if (this.props.location.pathname == "/checkout/thank-you") {
       this.setState({ finish: true, checkoutLoading: false });
+      this.clearCart();
+    }
+
+    if (this.props.location.pathname == "/doku/finish") {
+      this.setState({ finish: true, checkoutLoading: false, dokuResult: window.dokuResult, fromDoku: window.fromDoku });
       this.clearCart();
     }
   }
@@ -279,25 +285,9 @@ class Checkout extends Component {
             }
             break;
           case 102:
-            snap.pay(token, {
-              onSuccess: result => {
-                // success
-                this.setState({ finish: true, checkoutLoading: false });
-                this.clearCart();
-              },
-              onPending: result => {
-                // pending
-                this.setState({ finish: true, checkoutLoading: false });
-                this.clearCart();
-              },
-              onError: result => {
-                this.setState({ checkoutLoading: false });
-              },
-              onClose: () => {
-                this.setState({ checkoutLoading: false });
-                snap.hide();
-              }
-            });
+            if (message == 'SUCCESS') {
+              window.location.href = '/doku/start';
+            }
             break;
         }
       })
@@ -326,7 +316,7 @@ class Checkout extends Component {
   };
 
   render() {
-    const { progress, checkoutLoading, payment, finish, form, snacks, errors, termsDialog, popupMessage, activeIndex } = this.state;
+    const { progress, checkoutLoading, payment, finish, form, snacks, errors, termsDialog, popupMessage, activeIndex, dokuResult, fromDoku } = this.state;
 
     return (
       <React.Fragment>
@@ -357,29 +347,58 @@ class Checkout extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-xs-12 col-md-12">
-                  <h1>Thank you</h1>
-                  <div className="checkout--subtitle">
-                    <p>Your food order has been submitted successfully.</p>
-                    <p>Your Motion Cafe Team</p>
-                    <br />
-                    <p>
-                      <Link to="/" title="">
-                        <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home
-                      </Link>
-                    </p>
-                    <br />
-                    <Link to="/" title="">
-                      <img
-                        src="/images/thankyou.jpg?v=1"
-                        alt=""
-                        style={{
-                          width: "25%",
-                          display: "block",
-                          margin: "0 auto"
-                        }}
-                      />
-                    </Link>
-                  </div>
+                  {fromDoku && !dokuResult && (
+                    <React.Fragment>
+                      <h1>Sorry</h1>
+                      <div className="checkout--subtitle">
+                        <p>Your payment has been rejected. Please check your Credit Card or use different payment methods.</p>
+                        <p>
+                          <Link to="/" title="">
+                            <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home
+                          </Link>
+                        </p>
+                        <br />
+                        <Link to="/" title="">
+                          <img
+                            src="/images/thankyou.jpg?v=1"
+                            alt=""
+                            style={{
+                              width: "25%",
+                              display: "block",
+                              margin: "0 auto"
+                            }}
+                          />
+                        </Link>
+                      </div>
+                    </React.Fragment>
+                  )}
+                  {(!fromDoku || (fromDoku && dokuResult)) && (
+                    <React.Fragment>
+                      <h1>Thank you</h1>
+                      <div className="checkout--subtitle">
+                        <p>Your food order has been submitted successfully.</p>
+                        <p>Your Motion Cafe Team</p>
+                        <br />
+                        <p>
+                          <Link to="/" title="">
+                            <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home
+                          </Link>
+                        </p>
+                        <br />
+                        <Link to="/" title="">
+                          <img
+                            src="/images/thankyou.jpg?v=1"
+                            alt=""
+                            style={{
+                              width: "25%",
+                              display: "block",
+                              margin: "0 auto"
+                            }}
+                          />
+                        </Link>
+                      </div>
+                    </React.Fragment>
+                  )}
                 </div>
               </div>
             </div>
@@ -600,11 +619,17 @@ class Checkout extends Component {
                         handleChange={e => this.handlePayment(e, "banktransfer")}
                         label="Bank Transfer"
                       />
-                      <span style={{ display: 'none' }}><PaymentButton
+                      <span><PaymentButton
                         active={payment == "paypal"}
                         icon="fab fa-paypal"
                         handleChange={e => this.handlePayment(e, "paypal")}
                         label="PayPal"
+                      /></span>
+                      <span><PaymentButton
+                        active={payment == "creditcard"}
+                        icon="fa fa-credit-card"
+                        handleChange={e => this.handlePayment(e, "creditcard")}
+                        label="Credit Card"
                       /></span>
                     </div>
                   </div>

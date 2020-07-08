@@ -13,6 +13,10 @@ class VerifyCsrfToken extends BaseVerifier
    */
   protected $except = [
     '/payment/process',
-    '/checkout/start'
+    '/checkout/start',
+    '/doku/redirect',
+    '/doku/notify',
+    '/doku/review',
+    '/doku/identify'
   ];
 }

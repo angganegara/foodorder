@@ -55,6 +55,11 @@ class CartController extends Controller
   public function delete(Request $request)
   {
     Cart::where('cart_key', $request->cartKey)->delete();
+
+    if (session()->has('doku_request')) {
+      session()->delete('doku_request');
+    }
+    
     return 'OK';
   }
 }

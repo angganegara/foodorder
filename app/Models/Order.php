@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+  protected $with = ['paymentCard'];
 	protected $hidden = ['ip_address', 'updated_at', 'user_agent'];
 	protected $appends = ['name', 'date', 'payment_formatted', 'order_status'];
   protected $fillable = ['total', 'menu_email_sent', 'cash_paid', 'cash_paid_date', 'email_payment_reminder', 'payment_comment', 'paid'];
@@ -32,7 +33,7 @@ class Order extends Model
         break;
 
       case 'creditcard':
-        return $this->trx_type;
+        return 'Credit Card';
         break;
 
       case 'banktransfer':
@@ -44,11 +45,18 @@ class Order extends Model
   public function getOrderStatusAttribute()
   {
     if ($this->payment == 'creditcard') {
-      return $this->trx_status ? $this->trx_status : 'Aborted';
+      if ($this->trx_status) {
+        return '<span class="is-uppercase has-text-success">'. $this->trx_status .'</span>';
+      }
+      if ($this->paymentCard && !$this->trx_status) {
+        return $this->paymentCard->statuscode !== '0000' ? '<span class="is-uppercase has-text-danger">FAILED</span>' : '<span class="is-uppercase has-text-success">SUCCESS</span>';
+      }
+
+      return '<span class="is-uppercase has-text-grey">ABORTED</span>';
     } else if ($this->payment == 'paypal') {
-      return !$this->paid && is_null($this->paypal_response) ? 'Incomplete' : 'Paid';
+      return !$this->paid && is_null($this->paypal_response) ? '<span class="has-text-warning is-uppercase">Pending</span>' : '<span class="has-text-success is-uppercase">Paid</span>';
     } else if ($this->payment == 'banktransfer') {
-      return $this->openAmount() > 0 ? 'Pending' : 'Paid';
+      return $this->openAmount() > 0 ? '<span class="has-text-info is-uppercase">Pending</span>' : '<span class="has-text-success is-uppercase">Paid</span>';
     } else {
       return '';
     }
@@ -69,9 +77,14 @@ class Order extends Model
     return $this->hasOne(\App\Models\Partner::class, 'id', 'partner_id');
   }
 
-  public function payment()
+  public function payments()
   {
     return $this->hasOne(\App\Models\Payment::class, 'order_number', 'order_number');
+  }
+
+  public function paymentCard()
+  {
+    return $this->hasOne(\App\Models\PaymentCard::class, 'order_number', 'order_number');
   }
 
   public function extra_payment()
@@ -111,9 +124,14 @@ class Order extends Model
       break;
 
       case 'cash':
-      case 'banktransfer':
         $open = $this->total - ($this->cash_paid + $this->total_extra());
       break;
+
+      case 'banktransfer':
+        $open = $this->total;
+        if ($this->payments()->count() > 0) {
+          $open = $this->total - intVal($this->payments->amount);
+        }
     }
 
     return $open;

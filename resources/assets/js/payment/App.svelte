@@ -55,12 +55,12 @@
 	}
 
 	function submit() {
-		isLoading = true;
-
 		if (isFormEmpty()) {
 			isError = true;
 			isLoading = false;
 			return false;
+		} else {
+			isLoading = true;
 		}
 
 		const formData = new FormData();
@@ -169,7 +169,7 @@
 								</p>
 							</div>
 							<div class="mt-6 flex justify-center">
-								<button class="py-2 px-4 block text-lg uppercase font-bold text-white bg-gray-800 rounded-sm" class:isLoading on:click={submit}>{@html btnText}</button>
+								<button class="py-2 px-4 block text-lg uppercase font-bold text-white bg-gray-800 rounded-sm" class:isLoading on:click={submit} disabled={isLoading}>{@html btnText}</button>
 							</div>
 						</div>
 					</div>

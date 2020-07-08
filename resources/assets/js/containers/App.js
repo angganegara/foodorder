@@ -30,6 +30,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/custom-specialized" component={CustomSpecialized} />
+          <Route path="/doku/finish" component={Checkout} />
           <Route path="/checkout/thank-you" component={Checkout} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/customize-cart/:id" component={Customize} />

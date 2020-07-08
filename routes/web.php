@@ -26,6 +26,12 @@ Route::post('checkout/start', 'PaymentController@start');
 Route::get('checkout/cancel/{order_number}', 'PaymentController@cancelPaypal');
 Route::get('checkout/finish/{order_number}', 'PaymentController@getExpressCheckout');
 
+Route::group(['prefix' => 'doku'], function () {
+  Route::get('start', 'PaymentController@dokuStart');
+  Route::post('redirect', 'PaymentController@dokuRedirect');
+  Route::get('finish', 'PaymentController@dokuFinish');
+});
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::get('/', 'AdminController@index');
 
@@ -59,6 +65,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::post('orders/{id}/new-extra-payment', 'OrderController@createExtraPayment');
   Route::post('orders/{id}/send-mp-email', 'OrderController@sendMPEmail');
   Route::post('orders/{id}/update-payment', 'OrderController@updatePayment');
+  Route::post('orders/{id}/confirm-payment', 'OrderController@confirmPayment');
   Route::get('orders/{ordernumber}/{id}', 'OrderController@show');
 
   Route::get('partners', 'PartnerController@index');

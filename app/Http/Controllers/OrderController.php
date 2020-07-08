@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Mail;
 use Excel;
+use Auth;
 
 use App\Models\Order;
 use App\Models\OrderCart;
@@ -44,7 +45,7 @@ class OrderController extends Controller
 
   public function index(Request $request)
   { 
-    $orders = Order::orderBy('created_at', 'desc')->with(['partner', 'ordercart', 'schedule']);
+    $orders = Order::orderBy('created_at', 'desc')->with(['partner', 'ordercart', 'schedule', 'payments']);
     $dates = '';
     $total_amount = 0;
     $total_open_amount = 0;
@@ -204,7 +205,7 @@ class OrderController extends Controller
     $order->fname = $form['fname'];
     $order->lname = $form['lname'];
     $order->email = $form['email'];
-    $order->gender = $form['gender'];
+    $order->gender = isset($form['gender']) ? $form['gender'] : null;
     $order->comments = $form['comments'];
     $order->phone = $form['phone'];
     $order->delivery_price = intVal($form['delivery_price']);
@@ -285,9 +286,7 @@ class OrderController extends Controller
   {
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
 
-    $schedules = OrderSchedule::with(['order'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($q) {
-      $q->where('paid', 1);
-    })->get();
+    $schedules = OrderSchedule::with(['order'])->where('date', $today->format('Y-m-d'))->get();
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
     $today->addDay();
@@ -321,9 +320,7 @@ class OrderController extends Controller
     $today = $request->has('date') ? new Carbon($request->date) : Carbon::today();
     if (!$request->has('date')) { $today->addDay(); }
 
-    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->whereHas('order', function ($q) {
-      $q->where('paid', 1);
-    })->get();
+    $schedules = OrderSchedule::with(['order', 'ordercart'])->where('date', $today->format('Y-m-d'))->get();
     $isSaturday = $today->format('D') == 'Sat';
     $tomorrow = $today->addDay()->format('Y-m-d');
     $yesterday = $today->subDays(2)->format('Y-m-d');
@@ -588,5 +585,38 @@ class OrderController extends Controller
     ExtraPayment::find($request->id)->delete();
 
     return 'OK';
+  }
+
+  public function confirmPayment($id)
+  {
+    $order = Order::with(['payments'])->find($id);
+
+    if (! $order) {
+      return response(['result' => 'ERROR']); 
+    }
+
+    if ($order->payments()->count() <= 0) {
+      return response(['result' => 'ERROR']); 
+    }
+
+    $notify = boolVal(request('sendEmail'));
+
+    $order->update([
+      'paid' => 1
+    ]);
+
+    $order->payments()->update([
+      'approved' => 1,
+      'approved_by' => Auth::user()->id
+    ]);
+
+    if ($notify) {
+      $this->oh->sendOrder($order->order_number);
+    }
+
+    return response([
+      'result' => 'OK',
+      'redirect' => '/admin/orders/'. $order->order_number .'/'. $id .'?'. time()
+    ]);
   }
 }

@@ -31,7 +31,7 @@
               <tr>
                 <td width="100%" colspan="2" valign="middle" style="padding: 20px;">
                   <p>Dear {{ $order->fname }} {{ $order->lname }}</p>
-                  <p>please find below your detailed menu for your food order.</p>
+                  <p>Thank you for your order. Please find below your detailed menu check and confirm.</p>
                   <p>Enjoy smart eating!<br />Your Motion Team</p>
                 </td>
               </tr>

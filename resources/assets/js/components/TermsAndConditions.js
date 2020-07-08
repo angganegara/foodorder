@@ -40,7 +40,7 @@ const TermsAndConditions = () => (
 
     <h3>PACKAGING</h3>
 
-    <p>We use eco friendly packaging. Glass bottles, jars & paper bags we are happy to received it back. Our driver can pick it up. </p>
+    <p>We use eco-friendly packaging. We <span className="text-green"><b>RECYCLE</b></span>, if you have our bottles or jars at home, please let us know as we are happy to send our drivers to pick it up. For our protein shakes & smoothies we use blender bottles, please give them back to the driver or at Motion Cafe! Thank you!</p>
 
     <h3>WEATHER &amp; TRAFFIC RESERVATIONS</h3>
 

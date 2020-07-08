@@ -1,8 +1,8 @@
 <div style="line-height: 150%; font-size: 14px; font-family: Arial, Helvetica;">
-	<p><b>Dear Administrator</b></p>
+	<p style="margin-bottom: 10px"><b>Dear Administrator</b></p>
 
-	<p>You have new bank transfer payment confirmation. Please check the details below:</p>
-	<p>
+	<p style="margin-bottom: 10px">You have new bank transfer payment confirmation. Please check the details below:</p>
+	<p style="margin-bottom: 10px">
 		<b>Bank Name</b>: {{ $payment->bank_name }}<br />
 		<b>IBAN Code</b>: {{ $payment->iban_code }}<br />
 		<b>Account Name</b>: {{ $payment->account_name }}<br />
@@ -12,10 +12,10 @@
 		<b>Payment Proof</b>:
 
 		<br /><br />
-		<img src="{{ url('/images/proof/'. $payment->filename) }}" style="max-width: 500px; display: block; border-radius: 5px;" />
+		<img src="{{ url('/images/proof/'. $payment->filename) }}" style="max-width: 600px; display: block; border-radius: 5px;" />
 	</p>
 
-	<p>Please <a href="{{ url('/admin/payment-confirmation/'. $payment->order_number) }}" title=""><b>login to the admin panel</b></a> to approve / reject this confirmation.</p>
+	<p style="margin-bottom: 10px">Please <a href="{{ url('/admin/orders/'. $payment->order_number .'/'. $payment->order->id) }}" title=""><b>login to the admin panel</b></a> to review this confirmation.</p>
 
 	<br />
 

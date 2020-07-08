@@ -245,10 +245,6 @@ class OrderHelper
       );
     } catch (\Exception $e) {
       // delete order only if not resend!!!!
-      if (!$resend) {
-        //$this->deleteOrder($order->id);
-      }
-      // log in
       dd($e);
     }
 
@@ -263,6 +259,7 @@ class OrderHelper
   {
     $that = $this;
     $order = Order::with('ordercart.schedule')->where('order_number', $order_number)->first();
+    $encode = $this->generatePaymentKey($order_number);
 
     $orderid = $order->id;
     // extra delivery ?
@@ -293,12 +290,12 @@ class OrderHelper
     $pdf_ayu2 = rtrim(app()->basePath('public/pdf/ayurveda-test.pdf'), '/');
 
     $email_layout = $resend ? 'emails.resend' : 'emails.order';
-    $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation';
+    $email_subject = $resend ? 'Payment Reminder' : 'Motion - meal plan order confirmation #'. $order_number;
 
     try {
       Mail::send(
         $email_layout,
-        compact('order', 'that', 'extra', 'hasDetox'),
+        compact('order', 'that', 'extra', 'hasDetox', 'encode'),
         function ($m) use (
           $order, $pdf, $pdf_hp, $hp, $pdf_dt, $pdf_ayu1, $pdf_ayu2,
           $dts, $dtj, $sbd, $elx, $email_subject, $resend
@@ -433,8 +430,8 @@ class OrderHelper
   public function generatePaymentKey($number)
   {
     $salt = 'hjCMn7DqyUZSpMCz5VElq8fy1sjYM';
-    $enc = base64_encode($number . $salt);
-    $key = substr($enc, 0, 7);
+    $enc = md5($number . $salt);
+    $key = substr($enc, -7, 7);
 
     return [
       'number' => $number,
