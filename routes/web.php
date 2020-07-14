@@ -30,6 +30,7 @@ Route::group(['prefix' => 'doku'], function () {
   Route::get('start', 'PaymentController@dokuStart');
   Route::post('redirect', 'PaymentController@dokuRedirect');
   Route::get('finish', 'PaymentController@dokuFinish');
+  Route::post('notify', 'PaymentController@dokuNotify');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {

@@ -10,7 +10,7 @@ class Header extends Component {
     super(props);
     this.state = {
       backToLink: {
-        href: "http://www.motionfitnessbali.com",
+        href: "https://www.motionfitnessbali.com",
         html: "Home"
       }
     };
@@ -39,9 +39,9 @@ class Header extends Component {
         </div>
         <div className="header container">
           <figure>
-            <Link to="/" title="">
+            <a href="https://www.motionfitnessbali.com" title="">
               <img src="/images/logo.png" alt="Motion Fitness Bali" className="logo" />
-            </Link>
+            </a>
           </figure>
           <a href="javascript:" title="" className="mobile-menu">
             <i className="fal fa-bars" />

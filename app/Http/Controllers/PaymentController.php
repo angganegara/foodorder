@@ -108,10 +108,53 @@ class PaymentController extends Controller
 		return view('doku.redirect', compact('order_number'));
 	}
 
+	public function dokuNotify()
+	{
+		if (!request()->has('TRANSIDMERCHANT')) {
+			abort(500, 'Invalid ID');
+		}
+
+		$order_number = request('TRANSIDMERCHANT');
+
+		$order = Order::with(['paymentCard'])->where('order_number', $order_number)->first();
+
+		if (!$order) {
+			abort(500, 'Order does not exist');
+		}
+
+		if (!$this->dk->validateWords($order, request('WORDS'))) {
+			abort(500, 'Words does not match');
+		}
+
+		$order->paymentCard()->update(request()->only([
+			'TRANSIDMERCHANT',
+			'RESPONSECODE',
+			'APPROVALCODE',
+			'RESULTMSG',
+			'PAYMENTCHANNEL',
+			'PAYMENTCODE',
+			'SESSIONID',
+			'BANK',
+			'MCN',
+			'PAYMENTDATETIME',
+			'VERIFYID',
+			'VERIFYSCORE',
+			'VERIFYSTATUS',
+			'BRAND',
+			'CHNAME',
+			'THREEDSECURESTATUS',
+			'LIABILITY',
+			'CUSTOMERID',
+			'TOKENID'
+		]));
+
+		return response('CONTINUE');
+	}
+
 	public function dokuFinish()
 	{
 		// cleaning up ...
-		$success = false;
+		$success = 0;
 
 		if (! session()->has('doku_request')) {
 			return redirect('/');
@@ -122,7 +165,7 @@ class PaymentController extends Controller
 		$order = Order::with(['paymentCard'])->where('order_number', $doku_request['data']['TRANSIDMERCHANT'])->first();
 
 		if ($order->paymentCard->statuscode === '0000') {
-			$success = true;
+			$success = 1;
 		}
 
 		$from_doku = true;

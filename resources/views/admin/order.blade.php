@@ -66,7 +66,7 @@
               @if ($order->payment != 'cash' && $order->payment != 'banktransfer')
                 <div class="column is-half">
                   <label>Payment Status</label>
-                  {{ $order->order_status }}
+                  {!! $order->order_status !!}
                 </div>
               @else
                 <div class="column is-half">
