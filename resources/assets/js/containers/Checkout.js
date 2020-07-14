@@ -347,7 +347,7 @@ class Checkout extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-xs-12 col-md-12">
-                  {fromDoku && !dokuResult && (
+                  {fromDoku && (dokuResult == 0) && (
                     <React.Fragment>
                       <h1>Sorry</h1>
                       <div className="checkout--subtitle">
@@ -372,7 +372,7 @@ class Checkout extends Component {
                       </div>
                     </React.Fragment>
                   )}
-                  {(!fromDoku || (fromDoku && dokuResult)) && (
+                  {(!fromDoku || (fromDoku && (dokuResult == 1))) && (
                     <React.Fragment>
                       <h1>Thank you</h1>
                       <div className="checkout--subtitle">
