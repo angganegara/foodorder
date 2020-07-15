@@ -161,9 +161,9 @@ class PaymentController extends Controller
 		$order = Order::with(['paymentCard'])->where('order_number', $doku_request['data']['TRANSIDMERCHANT'])->first();
 
 		if ($order->paymentCard->statuscode === '0000') {
-			$success = 1
+			$success = 1;
 
-			$this->oh->sendOrder($order->order_number);;
+			$this->oh->sendOrder($order->order_number);
 		}
 
 		$from_doku = true;
