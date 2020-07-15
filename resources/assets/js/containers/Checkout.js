@@ -351,7 +351,7 @@ class Checkout extends Component {
                     <React.Fragment>
                       <h1>Sorry</h1>
                       <div className="checkout--subtitle">
-                        <p>Your payment has been rejected. Please check your Credit Card or use different payment methods.</p>
+                        <p>We could not finalize the payment. Please check your Credit Card or use different payment methods.</p>
                         <p>
                           <Link to="/" title="">
                             <i className="fa fa-fw fa-long-arrow-alt-left" /> Back to home

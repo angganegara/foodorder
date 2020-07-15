@@ -122,10 +122,6 @@ class PaymentController extends Controller
 			abort(500, 'Order does not exist');
 		}
 
-		if (!$this->dk->validateWords($order, request('WORDS'))) {
-			abort(500, 'Words does not match');
-		}
-
 		$order->paymentCard()->update(request()->only([
 			'TRANSIDMERCHANT',
 			'RESPONSECODE',
@@ -165,7 +161,9 @@ class PaymentController extends Controller
 		$order = Order::with(['paymentCard'])->where('order_number', $doku_request['data']['TRANSIDMERCHANT'])->first();
 
 		if ($order->paymentCard->statuscode === '0000') {
-			$success = 1;
+			$success = 1
+
+			$this->oh->sendOrder($order->order_number);;
 		}
 
 		$from_doku = true;
