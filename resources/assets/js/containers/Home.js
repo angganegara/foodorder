@@ -24,7 +24,7 @@ class Home extends Component
           <div className="container">
             <h1>Meal Plans</h1>
             <p>
-              <strong>Clean eating, designed for optimal nutrition delivered by Gojek.</strong><br />
+              <strong>Clean eating, designed for optimal nutrition.</strong><br />
               100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.<br />
               Order daily between 8am - 12pm for the following day.<br />
               Only on Sunday we need 48hrs notice.
