@@ -33,8 +33,8 @@ class HomeFoods extends Component {
         <div className="container">
           <h2>Select Meal Plan</h2>
           <div className="row">
-            {foods && foods.map((food, index) => <FoodCard {...this.props} food={food} key={index} />)}
             {foods && <FoodCard food={null} scrollTop={this.scrollTop} />}
+            {foods && foods.map((food, index) => <FoodCard {...this.props} food={food} key={index} type="foods" />)}
             {!foods && (
               <div className="col-xs-12 loading">
                 <Spinner intent="primary" />

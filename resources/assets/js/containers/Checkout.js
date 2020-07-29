@@ -615,7 +615,7 @@ class Checkout extends Component {
                       />
                       <PaymentButton
                         active={payment == "banktransfer"}
-                        icon="fa fa-credit-card"
+                        icon="fa fa-money-check"
                         handleChange={e => this.handlePayment(e, "banktransfer")}
                         label="Bank Transfer"
                       />
@@ -625,7 +625,7 @@ class Checkout extends Component {
                         handleChange={e => this.handlePayment(e, "paypal")}
                         label="PayPal"
                       /></span>
-                      <span style={{ display: 'none' }}><PaymentButton
+                      <span><PaymentButton
                         active={payment == "creditcard"}
                         icon="fa fa-credit-card"
                         handleChange={e => this.handlePayment(e, "creditcard")}

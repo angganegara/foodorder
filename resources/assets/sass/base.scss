@@ -6,6 +6,7 @@ $main-color-darker: #111;
 $alt-color: #5bc0de;
 $heading: "Century Gothic", "Univers LT Std", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
   "Helvetica Neue", sans-serif;
+$altFont: 'Freight', sans-serif;
 
 body,
 html {
@@ -26,9 +27,9 @@ html {
 }
 
 body {
-  font-family: "Century Gothic", "Proxima Nova", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+  font-family: "Proxima Nova", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
     "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   color: #333;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -37,6 +38,13 @@ a,
 a:focus,
 a:hover {
   text-decoration: none;
+}
+section a {
+  color: #121212;
+  font-weight: bold;
+  &:hover {
+    color: #020202;
+  }
 }
 figure {
   margin: 0;
@@ -50,6 +58,12 @@ h5,
 h6 {
   padding: 0;
   margin: 0;
+}
+h4 {
+  font-family: 'Univers LT Std';
+}
+h5 {
+  font-family: $heading;
 }
 .text-green {
   color: green;
@@ -109,7 +123,6 @@ a.btn-disabled {
   text-transform: uppercase;
   font-size: 13px;
   text-align: center;
-  border-radius: 4px;
   transition: 0.2s ease-in-out all;
   &:hover {
     color: #fff;
@@ -155,11 +168,14 @@ a.btn-primary {
   padding: 0.75rem 1.5rem;
   background-color: $main-color;
   text-transform: uppercase;
-  border-radius: 4px;
+  font-family: $heading;
   font-size: 14px;
   font-weight: bold;
-  color: #454545;
+  color: #fff;
   border: 1px solid darken($main-color, 10%);
+  &:hover {
+    color: #fff6e1;
+  }
 }
 .blue-line {
   margin-bottom: 2rem;
@@ -217,6 +233,9 @@ img.responsive {
 .mt-5 {
   margin-top: 1.25rem;
 }
+.mb-2 {
+  margin-bottom: .5rem;
+}
 .mb-5 {
   margin-bottom: 1.25rem;
 }
@@ -252,7 +271,7 @@ img.responsive {
 }
 
 .pt-dialog {
-  background-color: #fafafa;
+  background-color: #ffffff;
 }
 .pt-button.pt-intent-primary {
   background-color: #111;
@@ -345,10 +364,10 @@ header {
   z-index: 10;
   backface-visibility: hidden;
   background-color: rgba(#fff, 0.85);
+  box-shadow: 0 3px 20px 5px rgba(#000, .05);
 }
 .header-mini {
   background-color: #111;
-  border-bottom: 1px solid #000;
 }
 .header.header-socials {
   justify-content: flex-end;
@@ -665,25 +684,24 @@ section.top {
  * HOME
  */
 section.home.intro {
-  background-color: #111;
+  background-color: #fff6e1;
   position: relative;
   .bg {
     width: 100%;
     height: 165px;
-    background-color: #0a0a0a;
+    background-color: #fff6e1;
     position: absolute;
     left: 0;
     top: 0;
     z-index: 1;
-    transform: skewY(-3deg);
   }
   .container {
     position: relative;
     z-index: 7;
-    padding-bottom: 4rem;
+    padding-bottom: 3rem;
   }
   h1 {
-    color: #fff;
+    color: #111;
     text-transform: uppercase;
     font-family: $heading;
     font-size: 62px;
@@ -691,9 +709,14 @@ section.home.intro {
   }
   p {
     font-size: 18px;
-    color: #fff;
+    color: #111;
     display: inline;
-    text-shadow: 1px 1px 0 rgba(#000, 0.5);
+    font-family: $altFont;
+  }
+}
+section.home.intro.fitmeals-intro {
+  h1 {
+    padding: 4rem 0 3rem 0;
   }
 }
 
@@ -708,8 +731,9 @@ section.home.intro {
   }
   &--title {
     display: block;
-    background: transparent url("/images/pat/45def_fabric.jpg") left top repeat;
+    background: #fff;
     padding: 1rem 0;
+    border-bottom: 1px solid #f1f1f1;
     span:nth-child(1),
     span:nth-child(3) {
       transition: 0.2s ease-in-out all;
@@ -725,6 +749,7 @@ section.home.intro {
     }
     span:nth-child(2) {
       color: #656565;
+      font-weight: normal;
     }
     span:nth-child(3) {
       margin-left: auto;
@@ -748,7 +773,8 @@ section.home.intro {
   }
   .hiw--body {
     padding: 2rem;
-    background: transparent url("/images/pat/concrete_wall_2.jpg") left top repeat;
+    background: #fff;
+    border-bottom: 1px solid #f1f1f1;
     position: relative;
     z-index: 1;
     color: #454545;
@@ -781,6 +807,7 @@ section.home.intro {
     padding-left: 18px;
     list-style-image: url("/images/arrow.png");
     font-size: 15px;
+    font-family: $altFont;
     li {
       margin-bottom: 0.35rem;
     }
@@ -796,11 +823,10 @@ section.home.intro {
 }
 
 section.home.foods {
-  padding: 4rem 0;
-  background: #fafafa;
+  padding: 3rem 0;
+  background: #ffffff;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid #eaeaea;
   h2 {
     text-transform: uppercase;
     font-family: $heading;
@@ -808,70 +834,75 @@ section.home.foods {
     color: $main-color-darker;
     margin-bottom: 3rem;
   }
-}
 
-.food-card {
-  position: relative;
-  margin-bottom: 1rem;
-  a.figure {
-    display: block;
-    margin: 0 0 1rem 0;
-    padding: 0;
+  .food-card {
     position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    &:not(.no-overlay):before {
-      content: "";
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      background: transparent url("/images/overlay.png") left bottom repeat-x;
-      opacity: 0.75;
-      z-index: 2;
-    }
-    img {
+    margin-bottom: 1rem;
+    a.figure {
       display: block;
-      width: 100%;
-      max-width: 100%;
-      transition: 0.2s ease-in-out transform;
-      backface-visibility: hidden;
+      margin: 0 0 1rem 0;
+      padding: 0;
       position: relative;
-      z-index: 1;
-    }
-    &:hover {
+      border-radius: 4px;
+      overflow: hidden;
+      &:not(.no-overlay):before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: transparent url("/images/overlay.png") left bottom repeat-x;
+        opacity: 0.75;
+        z-index: 2;
+      }
       img {
-        transform: scale(1.1, 1.1);
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        transition: 0.2s ease-in-out transform;
+        backface-visibility: hidden;
+        position: relative;
+        z-index: 1;
+      }
+      &:hover {
+        img {
+          transform: scale(1.1, 1.1);
+        }
       }
     }
-  }
-  &--title {
-    position: absolute;
-    z-index: 2;
-    bottom: 0;
-    left: 0;
-    padding: 1rem;
-    color: #fff;
-    font-size: 26px;
-    font-family: $heading;
-    text-transform: uppercase;
-    text-shadow: 1px 2px 2px rgba(#000, 0.4);
-  }
-  &--desc {
-    font-size: 15px;
-    min-height: 68px;
-  }
-  a.food-card--button {
-    @extend .btn-primary;
-  }
-  &:hover {
-    a.figure:not(.overlay) img {
-      transform: scale(1.1, 1.1);
+    &--title {
+      position: absolute;
+      z-index: 2;
+      bottom: 0;
+      left: 0;
+      padding: 1rem;
+      color: #fff;
+      font-size: 26px;
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Univers LT Std';
+      text-transform: uppercase;
+      text-shadow: 1px 2px 2px rgba(#000, 0.4);
+    }
+    &--desc {
+      font-size: 15px;
+      min-height: 68px;
+      font-family: $altFont;
+      text-align: center;
     }
     a.food-card--button {
-      background-color: darken(#74a6b5, 7%);
-      box-shadow: 0 3px 10px 2px rgba(#000, 0.2);
+      @extend .btn-primary;
+    }
+    &:hover {
+      a.figure:not(.overlay) img {
+        transform: scale(1.1, 1.1);
+      }
+      a.food-card--button {
+        background-color: darken(#74a6b5, 7%);
+        box-shadow: 0 3px 10px 2px rgba(#000, 0.2);
+      }
     }
   }
 }
@@ -886,7 +917,7 @@ section.top.details {
   padding: 3rem 0 5rem 0;
   flex-grow: 1;
   //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
-  background-color: #fafafa;
+  background-color: #ffffff;
 
   h1 {
     text-transform: uppercase;
@@ -899,8 +930,9 @@ section.top.details {
     margin-bottom: 3rem;
   }
   &--short-description {
-    padding-right: 12rem;
+    //padding-right: 12rem;
     margin-bottom: 1.5rem;
+    text-align: center;
     p {
       color: #454545;
       font-weight: bold;
@@ -1024,7 +1056,14 @@ section.top.details {
   }
   a.details--add-to-cart {
     margin-top: 1rem;
-    @extend .btn-primary;
+    background-color: #111;
+    color: #fff;
+    padding: .75rem 1rem;
+    display: block;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: 'Century Gothic';
   }
   .info {
     margin-top: 1rem;
@@ -1048,7 +1087,7 @@ section.top.details {
     }
   }
   &--example-menu {
-    margin-right: 5rem;
+    margin-right: 1rem;
     h3 {
       text-transform: uppercase;
       font-size: 16px;
@@ -1056,6 +1095,7 @@ section.top.details {
       font-family: $heading;
       padding: 0.75rem 0 0.5rem 0;
       border-top: 2px solid $main-color;
+      text-align: center;
     }
     h4 {
       text-transform: uppercase;
@@ -1064,6 +1104,9 @@ section.top.details {
     }
     p {
       font-size: 15px;
+    }
+    &--body p {
+      font-family: $altFont;
     }
     &--body p:last-child {
       margin: 0;
@@ -1082,7 +1125,7 @@ section.top.details {
   .snack ul li {
     margin-right: 1rem;
     max-width: 150px;
-    text-align: center;
+    font-family: $heading;
     figure {
       display: block;
       margin-bottom: 1rem;
@@ -1502,7 +1545,7 @@ section.top.customize {
   padding: 3rem 0 5rem 0;
   flex-grow: 1;
   //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
-  background-color: #fafafa;
+  background-color: #ffffff;
 
   a.customize--return {
     color: $main-color-darker;
@@ -2161,7 +2204,7 @@ section.top.checkout {
   padding: 3rem 0 5rem 0;
   flex-grow: 1;
   //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
-  background-color: #fafafa;
+  background-color: #ffffff;
 
   h1 {
     text-transform: uppercase;
@@ -2655,12 +2698,15 @@ section.top.terms {
     z-index: 3;
     font-size: 18px;
     bottom: 1rem;
-    left: 1rem;
+    left: 0;
+    text-align: center;
+    width: 100%;
     text-shadow: 0 0 2px rgba(#000, 0.4);
   }
   &--desc {
     font-size: 15px;
     min-height: 68px;
+    font-family: $altFont;
   }
   &--button {
     margin-top: 1rem;
@@ -2782,3 +2828,322 @@ footer {
   }
 }
 // YDIKE72XWM
+
+section.home.fm-foods {
+  padding: 4rem 0;
+  //background: transparent url("/images/pat/notebook.jpg") left top repeat;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+  .bowl {
+    width: 288px;
+    height: 280px;
+    position: absolute;
+    left: -144px;
+    top: 50%;
+    transform: translate(0, -50%);
+    background: transparent url("/images/bowl.png") center center no-repeat;
+    opacity: 0.1;
+  }
+  .cup {
+    width: 354px;
+    height: 354px;
+    position: absolute;
+    right: -177px;
+    top: 50%;
+    transform: translate(0, -50%);
+    background: transparent url("/images/cup.png") center center no-repeat;
+  }
+  h2 {
+    text-transform: uppercase;
+    font-family: $heading;
+    font-size: 24px;
+    color: #111;
+    margin-bottom: 3rem;
+  }
+
+  .food-card {
+    position: relative;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    z-index: 1;
+
+    a.figure {
+      display: block;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      img {
+        border-radius: 4px;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        transition: 0.2s ease-in-out transform;
+        backface-visibility: hidden;
+        position: relative;
+        z-index: 1;
+      }
+    }
+    &--footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+    }
+    &--price {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    &--add {
+      display: block;
+      background-color: $main-color;
+      font-weight: bold;
+      padding: 0.15rem 1rem;
+      font-size: 13px;
+      color: #454545;
+      transition: 0.2s ease-in all;
+      &:hover {
+        color: #454545;
+        background-color: darken($main-color, 5%);
+      }
+    }
+    &--info {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 0 0 0.5rem 0;
+      span {
+        color: #999;
+        font-size: 12px;
+        display: block;
+        margin-right: 6px;
+      }
+    }
+    &--title {
+      min-height: 90px;
+      padding: 0.5rem 0 1rem 0;
+      color: #454545;
+      font-size: 15px;
+      font-family: $altFont;
+      font-weight: bold;
+      text-align: center;
+      span {
+        font-weight: normal;
+      }
+      a {
+        color: #454545;
+      }
+    }
+    &--desc {
+      font-size: 15px;
+      min-height: 68px;
+    }
+  }
+}
+
+section.top.fm-details {
+  padding-top: 12rem;
+}
+
+.fm-details {
+  padding: 3rem 0 5rem 0;
+  flex-grow: 1;
+  //background: transparent url("/images/pat/ep_naturalwhite.jpg") left top repeat;
+  background-color: #fff;
+
+  h1 {
+    text-transform: uppercase;
+    color: #454545;
+    font-family: $heading;
+    letter-spacing: 0;
+    font-size: 34px;
+    line-height: 36px;
+    margin-bottom: 2rem;
+  }
+  &--short-description {
+    padding-right: 12rem;
+    margin-bottom: 1.5rem;
+    p {
+      color: #454545;
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+  }
+  &--description {
+    padding-right: 2em;
+    margin-bottom: 2rem;
+  }
+  &--section {
+    padding: 0.5rem 0 1rem 0;
+  }
+  .sec-ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    span {
+      min-width: 175px;
+      font-size: 14px;
+      margin-right: 12px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+  }
+  &--section-title {
+    border-top: 1px solid #454545;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    h3 {
+      font-size: 16px;
+    }
+    .fal {
+      color: $main-color-darker;
+    }
+  }
+  .macros-legend {
+    display: flex;
+    margin-top: 18px;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  .macros-legend > div {
+    margin: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+      text-transform: lowercase;
+      display: block;
+      min-width: 38px;
+      text-align: center;
+      padding: 9px 0;
+      border-radius: 50%;
+      margin-right: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+  }
+  .legend-carbs span {
+    background-color: #bd2447;
+  }
+  .legend-fibre span {
+    background-color: #497e27;
+  }
+  .legend-fat span {
+    background-color: #79611f;
+  }
+  .legend-protein span {
+    background-color: #1a5275;
+  }
+  &--price-box {
+    transition: 0.2s ease-in all;
+    padding: 0;
+    border: 1px dashed #d8d8d8;
+    background-color: rgba(#fff, 0.75);
+  }
+  &--buttons {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  &--qty {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #e5e5e5;
+    p {
+      margin-bottom: 0;
+    }
+    .pt-input-group .pt-input {
+      width: 55px;
+    }
+  }
+  &--pictures {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+    div img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      border-radius: 4px;
+    }
+    div:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    div:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    div:nth-child(3) {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
+  a.details--return {
+    color: #343434;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+  a.details--add-to-cart {
+    margin-top: 1rem;
+    @extend .btn-primary;
+  }
+  .info {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  &--title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  &--icons {
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      margin-right: 4px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+    }
+  }
+  &--example-menu {
+    margin-right: 5rem;
+    h3 {
+      text-transform: uppercase;
+      font-size: 16px;
+      color: #454545;
+      font-family: $heading;
+      padding: 0.75rem 0 0.5rem 0;
+      border-top: 2px solid $main-color;
+    }
+    h4 {
+      text-transform: uppercase;
+      font-size: 15px;
+      color: #454545;
+    }
+    p {
+      font-size: 15px;
+    }
+    &--body p:last-child {
+      margin: 0;
+    }
+  }
+}

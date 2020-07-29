@@ -24,8 +24,8 @@ class DokuHelper
 			$this->sharedKey = 'Hrhk2wzCKlSB';
 			$this->endpoint = 'https://staging.doku.com';
 		} else {
-			$this->mallId = '';
-			$this->sharedKey = '';
+			$this->mallId = '8204';
+			$this->sharedKey = 'pl2SH5tK7w2Q';
 			$this->endpoint = 'https://pay.doku.com';
 		}
 	}

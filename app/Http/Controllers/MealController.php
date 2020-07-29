@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Meal;
 use App\Models\MealPlan;
 use App\Models\Component;
 use Carbon\Carbon;
+use Cache;
 
 class MealController extends Controller
 {
@@ -21,6 +23,24 @@ class MealController extends Controller
   public function managePreset()
   {
     return view('admin.mealpreset');
+  }
+
+  public function meals()
+  {
+    //Cache::forget('meal_index');
+    $meals = Cache::remember('meal_index', 60, function () {
+      return Meal::whereVisible(1)->orderBy('sort', 'asc')->get([
+        'id', 'name', 'symbols', 'price', 'description',
+        'short_desc', 'cal', 'prot', 'fat', 'fibr', 'carb'
+      ]);
+    });
+
+    return $meals;
+  }
+
+  public function show($id)
+  {
+    return Meal::findOrFail($id);
   }
 
   public function newPlan(Request $request)

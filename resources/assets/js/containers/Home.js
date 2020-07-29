@@ -4,6 +4,7 @@ import { view, store } from 'react-easy-state';
 
 import HowItWorks from '../components/HowItWorks';
 import HomeFoods from './HomeFoods';
+import HomeMeals from './HomeMeals';
 
 import { scrollTop } from '../helpers/utils';
 
@@ -23,9 +24,10 @@ class Home extends Component
         <section className="top home intro">
           <div className="container">
             <h1>Meal Plans</h1>
+            <h5 className="mb-2">Clean eating, designed for optimal nutrition.</h5>
             <p>
-              <strong>Clean eating, designed for optimal nutrition.</strong><br />
               100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.<br />
+              All meals are also available vegan.<br />
               Order daily between 8am - 12pm for the following day.<br />
               Only on Sunday we need 48hrs notice.
             </p>
@@ -33,6 +35,21 @@ class Home extends Component
           <div className="bg"></div>
         </section>
         <HomeFoods />
+        <section className="home intro fitmeals-intro">
+          <div className="container">
+            <h1>Fit Meals</h1>
+            <h5 className="mb-2">
+              Choose from 15 whole food dishes, created by nutritionists, from Paleo to Vegan with complete macros.<br />
+              Freshly cooked and delivered daily to your home or office.
+            </h5>
+            <p>100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.</p>
+          </div>
+          <div className="bg"></div>
+        </section>
+        <section className="home hiw">
+          <HowItWorks closeButton={false} />
+        </section>
+        <HomeMeals />
       </React.Fragment>
     );
   }

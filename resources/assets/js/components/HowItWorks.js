@@ -40,36 +40,27 @@ class HowItWorks extends Component {
         <CSSTransition in={this.state.open} timeout={0} classNames="hiw-" unmountOnExit>
           {state => (
             <div className="hiw--body">
-              <div className="bottle" />
               <div className="container">
                 <div className="row">
                   <div className="col-xs-12 col-md-4">
                     <h3>order info</h3>
                     <ul>
-                      <li>Starting days for your diet: Mondays to Saturdays</li>
-                      <li>Order must be placed 48hrs in advance to give us time to prepare your diet</li>
-                      <li>Sundays we are closed for orders and food production</li>
-                      <li>Latest order for Monday until Saturday 10:00.</li>
-                      <li>Office times for possible queries: Monday-Friday 9:00-17:00 and Saturday 9:00-14:00. Sunday closed</li>
+                      <li>Order directly via <a href="https://api.whatsapp.com/send?phone=+6282147097110" title="" target="_blank">WhatsApp</a> or <a href="http://bit.ly/GoFitnessFood" title="" target="_blank">Gojek</a></li>
+                      <li>Order daily from 11:30 am - 07:30 pm</li>
                     </ul>
                   </div>
                   <div className="col-xs-12 col-md-4">
                     <h3>delivery info</h3>
                     <ul>
-                      <li>One delivery per day with all meals/drinks</li>
-                      <li>Delivery days: Monday to Saturday (Slim Sunday will be delivered Saturday)</li>
-                      <li>Delivery times: between 07:30 am. and 09:00 am</li>
-                      <li>Change of delivery address: minimum 24hrs in advance</li>
-                      <li>Eco Effort: please return all our re-usable glasses/bottles to our drivers</li>
+                      <li>Canggu / Berawa free delivery</li>
+                      <li>All other locations vary from 20,000 IDR - 50,000 IDR daily fee</li>
+                      <li>We use eco-friendly packaging. WE RECYCLE, if you have our bottles or jars at home, please let us know as we are happy to send our drivers to pick it up. Thank you!</li>
                     </ul>
                   </div>
                   <div className="col-xs-12 col-md-4">
                     <h3>payment info</h3>
                     <ul>
-                      <li>Free delivery to Kuta/Seminyak/Canggu area</li>
-                      <li>Delivery surcharge of 50,000 IDR/day for other areas (e.g. Sanur/Ubud/Bukit)</li>
-                      <li>Cash payment: on first day of delivery to driver upon receipt</li>
-                      <li>Online payment: by bank transfer / Paypal</li>
+                      <li>Cash payment to our driver</li>
                     </ul>
                   </div>
                 </div>

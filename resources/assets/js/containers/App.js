@@ -11,6 +11,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Home from "./Home";
 import Details from "./Details";
+import Meals from "./Meals";
 import Customize from "./Customize";
 import Detox from "./Detox";
 import CustomSpecialized from "../components/CustomSpecialized";
@@ -36,6 +37,7 @@ class App extends Component {
           <Route path="/customize-cart/:id" component={Customize} />
           <Route path="/terms-and-conditions" component={Terms} />
           <Route path="/detox/8" component={Detox} />
+          <Route path="/meals/:id" component={Meals} />
           <Route path="/:slug/:id" component={Details} />
         </Switch>
         <Footer />

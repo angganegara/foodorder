@@ -49,29 +49,35 @@ class Header extends Component {
           <div className="header-links">
             <div className="menu-parent">
               <a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/04/Kitchen-2-8.pdf" title="">
-                Menu's <i className="fal fa-angle-down ml-1"></i>
+                Motion Kitchen &amp; Cafe <i className="fal fa-angle-down ml-1"></i>
               </a>
               <div className="menu-child-wrap">
                 <div className="menu-child-inner">
                   <ul className="child-links">
-                    <li><a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/05/Kitchen-2-11.pdf" title="">Fitness Food & Store</a></li>
-                    <li><a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/03/Motion-Cafe-Menu-2020-10.pdf" title="">Cafe</a></li>
-                    <li><a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/05/MEAL-PLAN-INFO.pdf" title="">Meal Plan & Detox</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/food/" title="">Meal Plans &amp; Fit Meals</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/food/#detox" title="">Detox</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/catering" title="">Catering</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/food/#cafe" title="">Cafe</a></li>
                   </ul>
                 </div>
               </div>
             </div>
-            <a href="https://www.motionfitnessbali.com/food/#cafe" title="">
-              Motion Cafe
-            </a>
-            <a href="https://www.motionfitnessbali.com/food/#mealplans" title="">
-              Meal Plans
-            </a>
+            <div className="menu-parent">
+              <a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/04/Kitchen-2-8.pdf" title="">
+                Signature Menu's <i className="fal fa-angle-down ml-1"></i>
+              </a>
+              <div className="menu-child-wrap">
+                <div className="menu-child-inner">
+                  <ul className="child-links">
+                    <li><a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/07/fitmeals_menu-.pdf" title="">Fit Meals</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/05/Kitchen-2-11.pdf" title="">Create Your Plate &amp; Snacks</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/wp-content/uploads/2020/03/Motion-Cafe-Menu-2020-10.pdf" title="">Cafe</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             <a href="https://www.motionfitnessbali.com/store/" title="">
-              Store
-            </a>
-            <a href="https://www.motionfitnessbali.com/train-with-melanie-raw-lifestyle/" title="">
-              Train with Mel
+              Health &amp; Beauty Shop
             </a>
             <div className="menu-parent">
               <a href="https://www.motionfitnessbali.com/food/" title="">
@@ -80,17 +86,13 @@ class Header extends Component {
               <div className="menu-child-wrap">
                 <div className="menu-child-inner">
                   <ul className="child-links">
-                    <li><a href="https://www.motionfitnessbali.com/catering/" title="">Catering</a></li>
-                    <li><a href="https://www.motionfitnessbali.com/food/#detox" title="">Detox</a></li>
-                    <li><a href="https://www.motionfitnessbali.com/fitness/" title="">Challenges</a></li>
-                    <li><a href="https://www.motionfitnessbali.com/food/#nutrition_consultant" title="">Nutrition Consultation</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/train-with-melanie-raw-lifestyle/" title="">Train With Mel</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/blog/" title="">Blog</a></li>
+                    <li><a href="https://www.motionfitnessbali.com/fitness/" title="">Personal Healthy Lifestyle Retreats</a></li>
                   </ul>
                 </div>
               </div>
             </div>
-            <a href="https://www.motionfitnessbali.com/blog/" title="">
-              Blog
-            </a>
           </div>
           {this.props.location.pathname != "/checkout" && <MiniCart />}
         </div>

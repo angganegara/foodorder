@@ -20,6 +20,9 @@ Route::get('foods/{diet}', 'FoodController@show');
 Route::get('foods/{id}/type/{type}', 'FoodController@price');
 Route::post('apply-coupon', 'CouponController@applyCoupon');
 
+Route::get('meals', 'MealController@meals')->name('meal.index');
+Route::get('meals/{id}', 'MealController@show');
+
 Route::get('items', 'ItemController@index');
 Route::get('items/categorize', 'ItemController@categorize');
 

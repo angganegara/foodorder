@@ -47,17 +47,15 @@ const CustomSpecialized = () => (
         <div className="col-md-10">
           <h1>custom / specialized</h1>
           <div className="details--description">
-            <p>Depending on your personal preferences and needs we are happy to design a customized meal plan for you.</p>
-            <p>
-              To get started, please download the questionnaire, fill it in and send it to{" "}
-              <a href="mailto:foodorder@motionfitnessbali.com" title="">
-                foodorder@motionfitnessbali.com
-              </a>
-              .
-            </p>
+            <p>Depending on your personal preferences and needs we design a customized meal plan for you. We are specialized to maximize your results to achieve your goals as well as to support your health issues. </p>
             <p>After finalizing the details with you, we will send you a quote for your personal meal plan.</p>
+            <p>To get started, please download the questionnaire, fill it in and send it to <a href="mailto:foodorder@motionfitnessbali.com" title="">foodorder@motionfitnessbali.com</a>.</p>
+            <p>Do you have tried many diets and just don’t know what to do anymore?</p>
+            <p>A nutritional consultation could be the right choice for you. The 1:1 consultation involves building a detailed picture of your lifestyle, eating habits, sport and medical history and
+            any concerns you have about your health and wellbeing. With this information, we can work with you to form an eating plan that suits your needs, your lifestyle and daily commitments.</p>
             <br />
             <p>
+              <a href="mailto:foodorder@motionfitnessbali.com" title="" className="custom-btn mr-2">Book an Appointment</a>
               <a href="/pdf/nutrition-questionnaire.pdf" title="" className="custom-btn">
                 <i className="fa fa-fw fa-arrow-circle-down" /> Download Questionnaire PDF
               </a>
