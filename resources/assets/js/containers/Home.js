@@ -39,7 +39,7 @@ class Home extends Component
           <div className="container">
             <h1>Fit Meals</h1>
             <h5 className="mb-2">
-              Choose from 15 whole food dishes, created by nutritionists, from Paleo to Vegan with complete macros.<br />
+              Choose from 24 whole food dishes, created by nutritionists, from Paleo to Vegan with complete macros.<br />
               Freshly cooked and delivered daily to your home or office.
             </h5>
             <p>100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.</p>
