@@ -12,29 +12,49 @@ class Header extends Component {
       backToLink: {
         href: "https://www.motionfitnessbali.com",
         html: "Home"
-      }
+      },
+      isScroll: false,
+      pos: 0
     };
   }
 
   componentDidMount() {
+    const { isScroll } = this.state;
+    let scrolling = false;
+
     $("a.mobile-menu").on("click", function() {
       $(".header-links").slideToggle();
     });
+
+    $(document).ready(() => {
+      $(window).scroll(() => {
+        const top = parseInt($(document).scrollTop());
+
+        if (!isScroll && top > 0) {
+          this.setState({ isScroll: true, pos: top });
+        }
+      })
+    })
   }
 
   render() {
-    const { backToLink } = this.state;
+    const { backToLink, isScroll, pos } = this.state;
 
     return (
       <header>
-        <div className="header-mini">
-          <div className="header container header-socials">
-            <a href="https://www.facebook.com/motionfitnessbali" title="" target="_blank">
-              <i className="fab fa-facebook-f" />
-            </a>
-            <a href="https://instagram.com/motioncafe" title="" target="_blank">
-              <i className="fab fa-instagram" />
-            </a>
+        <div className={`header-mini ${(pos > 50) ? `header-creme` : ``}`}>
+          <div className="header container">
+            <div className="header-promo">
+              August Promo 200k off on all 6-days package
+            </div>
+            <div className="header-socials">
+              <a href="https://www.facebook.com/motionfitnessbali" title="" target="_blank">
+                <i className="fab fa-facebook-f" />
+              </a>
+              <a href="https://instagram.com/motioncafe" title="" target="_blank">
+                <i className="fab fa-instagram" />
+              </a>
+            </div>
           </div>
         </div>
         <div className="header container">

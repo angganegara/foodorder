@@ -181,6 +181,10 @@ a.btn-primary {
   margin-bottom: 2rem;
   border-bottom: 1px solid #eee;
 }
+.blue-line:nth-child(9) {
+  margin-bottom: 0;
+  border: 0;
+}
 .pt-popover-content {
   padding: 0.75rem 1rem;
   font-size: 15px;
@@ -368,10 +372,23 @@ header {
 }
 .header-mini {
   background-color: #111;
+  justify-content: center;
+  transition: .2s ease-in-out all;
 }
-.header.header-socials {
-  justify-content: flex-end;
-  align-items: center;
+.header-promo {
+  color: #fff;
+  text-align: center;
+  flex-grow: 1;
+  font-family: $heading;
+}
+.header-creme {
+  background-color: #fff6e1;
+}
+.header-creme .header-promo,
+.header-creme .header-socials a {
+  color: #232323;
+}
+.header-socials {
   a {
     font-size: 14px;
     color: #fff;
@@ -384,7 +401,7 @@ header {
 .header {
   position: relative;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   padding: 10px 0;
 
@@ -717,6 +734,9 @@ section.home.intro.fitmeals-intro {
   h1 {
     padding: 4rem 0 3rem 0;
   }
+  h5 {
+    line-height: 150%;
+  }
 }
 
 .hiw {
@@ -822,7 +842,7 @@ section.home.intro.fitmeals-intro {
 }
 
 section.home.foods {
-  padding: 3rem 0;
+  padding: 3rem 0 2rem 0;
   background: #ffffff;
   position: relative;
   overflow: hidden;
