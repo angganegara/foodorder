@@ -39,8 +39,8 @@ class Home extends Component
           <div className="container">
             <h1>Fit Meals</h1>
             <h5 className="mb-2">
-              Choose from 24 whole food dishes, created by nutritionists, from Paleo to Vegan with complete macros.<br />
-              Freshly cooked and delivered daily to your home or office.
+              Choose from 24 whole food dishes, created by nutritionists, from Paleo to Vegan<br />
+              with complete macros. Freshly cooked and delivered daily to your home or office.
             </h5>
             <p>100% Homemade & Fresh - Whole Foods - Organic - No Refined Sugar.
             <br />Order directly via <a href="https://wa.me/6282147097110" title="" target="_blank" rel="nofollow">WhatsApp</a> or <a href="http://bit.ly/GoFitnessFood" title="" target="_blank">Gojek</a> from 11:30 am - 07:30 pm</p>
