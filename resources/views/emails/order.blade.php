@@ -318,6 +318,8 @@
                             <a href="http://instagram.com/motioncafe" title=""><img src="{{ url('images/email-in.jpg') }}" alt="Instagram" style="border-radius: 4px;" /></i></a>
                             <a href="http://www.tripadvisor.com/Restaurant_Review-g311298-d6903656-Reviews-Avocado_Cafe-Canggu_Bali.html" title=""><img src="{{ url('images/email-trip.jpg') }}" alt="Trip Advisor" style="border-radius: 4px;" /></a>
                           </p>
+                          <br />
+                          <img src="{{ url('images/email-recycle-'. mt_rand(1, 2) .'.jpg') }}" alt="" />
                         </p>
                       </td>
                     </tr>

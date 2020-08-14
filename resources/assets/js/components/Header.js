@@ -45,7 +45,7 @@ class Header extends Component {
         <div className={`header-mini ${(pos > 50) ? `header-creme` : ``}`}>
           <div className="header container">
             <div className="header-promo">
-              August Promo 200k off on all 6-days package
+              <b>August Promo 200k off on all 6-days package</b>
             </div>
             <div className="header-socials">
               <a href="https://www.facebook.com/motionfitnessbali" title="" target="_blank">
