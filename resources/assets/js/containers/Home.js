@@ -11,7 +11,11 @@ import { scrollTop } from '../helpers/utils';
 class Home extends Component
 {
   componentDidMount() {
-    scrollTop();
+    if (window.location.hash && window.location.hash == '#fitmeals') {
+      window.scrollTo({ top: $('#fitmeals').offset().top - 100, behavior: 'smooth' })
+    } else {
+      scrollTop();
+    }
   }
 
   componentDidUpdate() {
@@ -37,7 +41,7 @@ class Home extends Component
         <HomeFoods />
         <section className="home intro fitmeals-intro">
           <div className="container">
-            <h1>Fit Meals</h1>
+            <h1 name="fitmeals" id="fitmeals">Fit Meals</h1>
             <h5 className="mb-2">
               Choose from 24 whole food dishes, created by nutritionists, from Paleo to Vegan<br />
               with complete macros. Freshly cooked and delivered daily to your home or office.
