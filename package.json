@@ -39,7 +39,7 @@
     "@tailwindcss/custom-forms": "^0.2.1",
     "browser-sync": "^2.26.12",
     "browser-sync-webpack-plugin": "2.0.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "compression-webpack-plugin": "^2.0.0",
     "mix-tailwindcss": "^1.2.0",
     "react-chartjs-2": "^2.9.0",
